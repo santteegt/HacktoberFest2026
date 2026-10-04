@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Scene dev page</title>
+    <style>
+      body { margin: 0; padding: 16px; background: #0f1419; color: #e8edf2; font: 14px/1.4 system-ui, sans-serif; }
+      #host { width: 100%; max-width: 900px; height: 380px; }
+      .row { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; max-width: 900px; }
+      .row button { min-height: 30px; padding: 0 10px; border: 0; border-radius: 8px; background: #1a222b; color: #e8edf2; font: inherit; font-size: 12px; cursor: pointer; }
+      .row button:hover { outline: 1px solid #7fb2ff; }
+      #stats { font-family: ui-monospace, monospace; white-space: pre; color: #8b98a5; }
+      h1 { font-size: 16px; margin: 0 0 8px; }
+    </style>
+  </head>
+  <body>
+    <h1>CarScene dev page (T5, not linked from the app)</h1>
+    <div id="host"></div>
+    <div id="stats"></div>
+    <div class="row" id="explainers"></div>
+    <div class="row" id="controls"></div>
+    <script type="module" src="./dev.ts"></script>
+  </body>
+</html>

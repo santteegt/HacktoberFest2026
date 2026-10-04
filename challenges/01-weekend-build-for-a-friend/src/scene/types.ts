@@ -18,7 +18,9 @@ export type PartId =
   | "rearArb"
   | "steering"
   | "body"
-  | "camberLinks";
+  | "camberLinks"
+  // T5 additions (additive):
+  | "kingpin";
 
 /** Sign conventions follow data/params.bd12.json (camber = degrees negative; droop gauge: lower = more droop; shock pos 1 = most laid down). */
 export interface ScenePose {
@@ -38,6 +40,19 @@ export interface ScenePose {
   steerDeg: number;
   compressionMm: number;
   liftChassis: boolean;
+  // T5 additions (optional, additive): params with stretch explainers.
+  ackermannShimMm?: number;
+  bumpSteerShimMm?: number;
+  bodyForwardMm?: number;
+  frontCamberLinkInnerShimMm?: number;
+  rearCamberLinkInnerShimMm?: number;
+  weightFrontPct?: number;
+}
+
+/** Options for createCarScene (additive; all optional). */
+export interface CarSceneOptions {
+  /** Show the scene's own camera-preset buttons inside the canvas (default false: hosts usually render their own). */
+  viewButtons?: boolean;
 }
 
 export interface CarScene {
