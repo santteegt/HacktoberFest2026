@@ -33,11 +33,11 @@ Decided 2026-10-04. Project code lives in this folder (`src/`, `data/`, `kb/`); 
 **His stated need (paraphrase of his words, full quote in `docs/CHALLENGE-MEMORY.md`):** quickly store his settings on practice days and get feedback on what works and what might have affected his run. The setup vault and run-feedback are as central as the symptom coach.
 
 **Requirements derived from the persona**
-1. Laptop-first PWA (large touch/click targets, usable in a pit area); voice in/out so hands stay free. Phone is out of scope for v1.
+1. Local web app for a laptop: a Node (Hono) server plus a Preact UI on localhost (large click/touch targets, usable at a pit table); voice in/out so hands stay free. Phone is out of scope for v1.
 2. Coach: symptom from the driver's words, then one change at a time with expected effect and how to verify.
 3. Setup vault: sessions, change log with outcomes, saved setups with track conditions, retrievable by similar conditions.
 4. Works offline once set up. Claim only what was tested, on which device.
-5. Open model served by a local **Ollama** install on the laptop (Gemma 4 E2B QAT is the likely choice for the Intel MacBook; E4B QAT on Apple Silicon; decide from a measurement on his machine), behind `src/llm/provider.ts`. Use Ollama's JSON-schema `format` for structured output. Agent framework (Mastra or plain) and the local store are still to decide.
+5. Open model served by a local **Ollama** install on the laptop (Gemma 4 E2B QAT is the likely choice for the Intel MacBook; E4B QAT on Apple Silicon; decide from a measurement on his machine), behind `src/llm/provider.ts`. Use Ollama's JSON-schema `format` for structured output. Architecture is decided in `docs/IMPLEMENTATION-PLAN.md` (read it, then your task card): Mastra runs only the coach workflow, with a plain-TypeScript fallback.
 
 **Hard rules for this project**
 - **New work only.** Code is written in the window. Knowledge comes from a frozen, credited snapshot of the author's earlier notes, imported in its own commit (`kb/PROVENANCE.md`). Do **not** reuse the author's earlier 3D dynamics-guide app, its BD12 model, or its setup-sheet app. Do not edit the snapshot; put corrections in new files.
