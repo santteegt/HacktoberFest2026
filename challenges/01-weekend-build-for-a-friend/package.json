@@ -21,7 +21,7 @@
     "spike": "npm run setup:wasm && HTTPS=1 vite --host",
     "kb:verify": "node scripts/verify-snapshot.mjs",
     "kb:build": "node scripts/build-kb.mjs",
-    "eval:symptoms": "node scripts/eval-symptoms.mjs",
+    "eval:symptoms": "tsx scripts/eval-symptoms.ts",
     "eval:retrieval": "tsx scripts/eval-retrieval.ts",
     "seed:demo": "tsx scripts/seed-demo.ts"
   },

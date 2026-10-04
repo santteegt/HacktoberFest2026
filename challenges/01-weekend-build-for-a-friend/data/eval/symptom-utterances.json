@@ -1,15 +1,244 @@
 {
-  "symptoms": ["entry-understeer", "mid-understeer", "exit-understeer", "entry-oversteer", "exit-oversteer", "traction-roll", "bumpy-track", "out-of-scope"],
+  "_readme": "25 symptom-classifier cases. `style`: plain (names the symptom in standard setup words) or colloquial (metaphor or slang). `friendWording`: the author sets this to true on a case after rewording `say` in the friend's own way of speaking (edit `say`; keep the old text in `draftSay` if wanted). `rewordSuggested`: the 5 drafts most worth rewording. `source`: original (first 10, from the baseline) or plan (added from plan 8.1). The eval reports friendWording cases separately.",
+  "symptoms": [
+    "entry-understeer",
+    "mid-understeer",
+    "exit-understeer",
+    "entry-oversteer",
+    "exit-oversteer",
+    "traction-roll",
+    "bumpy-track",
+    "nervous-twitchy",
+    "low-grip",
+    "fade-late-run",
+    "left-right-difference",
+    "out-of-scope"
+  ],
   "cases": [
-    { "say": "The front washes out when I turn in to the hairpin", "expect": "entry-understeer" },
-    { "say": "Car pushes wide in the middle of the long sweeper", "expect": "mid-understeer" },
-    { "say": "It won't rotate and runs wide when I get on the throttle out of the corner", "expect": "exit-understeer" },
-    { "say": "The rear steps out as soon as I brake and turn in", "expect": "entry-oversteer" },
-    { "say": "Back end snaps loose when I punch the throttle exiting", "expect": "exit-oversteer" },
-    { "say": "The car wants to roll over on the inside wheels in fast direction changes", "expect": "traction-roll" },
-    { "say": "It skips and gets twitchy over the bumps on the straight", "expect": "bumpy-track" },
-    { "say": "How do I tune my nitro engine needle?", "expect": "out-of-scope" },
-    { "say": "What charge rate should I use for my LiPo pack?", "expect": "out-of-scope" },
-    { "say": "The car feels nervous turning in and the rear is loose off the corner", "expect": "entry-oversteer" }
+    {
+      "id": "c01",
+      "say": "The front washes out when I turn in to the hairpin",
+      "expect": "entry-understeer",
+      "style": "plain",
+      "source": "original",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c02",
+      "say": "Car pushes wide in the middle of the long sweeper",
+      "expect": "mid-understeer",
+      "style": "plain",
+      "source": "original",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c03",
+      "say": "It won't rotate and runs wide when I get on the throttle out of the corner",
+      "expect": "exit-understeer",
+      "style": "plain",
+      "source": "original",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c04",
+      "say": "The rear steps out as soon as I brake and turn in",
+      "expect": "entry-oversteer",
+      "style": "plain",
+      "source": "original",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c05",
+      "say": "Back end snaps loose when I punch the throttle exiting",
+      "expect": "exit-oversteer",
+      "style": "plain",
+      "source": "original",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c06",
+      "say": "The car wants to roll over on the inside wheels in fast direction changes",
+      "expect": "traction-roll",
+      "style": "plain",
+      "source": "original",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c07",
+      "say": "It skips and gets twitchy over the bumps on the straight",
+      "expect": "bumpy-track",
+      "style": "plain",
+      "source": "original",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c08",
+      "say": "How do I tune my nitro engine needle?",
+      "expect": "out-of-scope",
+      "style": "plain",
+      "source": "original",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c09",
+      "say": "What charge rate should I use for my LiPo pack?",
+      "expect": "out-of-scope",
+      "style": "plain",
+      "source": "original",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c10",
+      "say": "The car feels nervous turning in and the rear is loose off the corner",
+      "expect": "entry-oversteer",
+      "style": "plain",
+      "source": "original",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c11",
+      "say": "it's pushing like a shopping cart going into the hairpin",
+      "expect": "entry-understeer",
+      "style": "colloquial",
+      "source": "plan",
+      "rewordSuggested": true,
+      "friendWording": false
+    },
+    {
+      "id": "c12",
+      "say": "tail happy on the brakes into turn one",
+      "expect": "entry-oversteer",
+      "style": "colloquial",
+      "source": "plan",
+      "rewordSuggested": true,
+      "friendWording": false
+    },
+    {
+      "id": "c13",
+      "say": "the back end lets go the moment I squeeze the trigger",
+      "expect": "exit-oversteer",
+      "style": "colloquial",
+      "source": "plan",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c14",
+      "say": "the thing tipped over twice in the fast left-hander",
+      "expect": "traction-roll",
+      "style": "colloquial",
+      "source": "plan",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c15",
+      "say": "super darty down the straight, I can't keep it in a line",
+      "expect": "nervous-twitchy",
+      "style": "colloquial",
+      "source": "plan",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c16",
+      "say": "feels like driving on ice everywhere this morning",
+      "expect": "low-grip",
+      "style": "colloquial",
+      "source": "plan",
+      "rewordSuggested": true,
+      "friendWording": false
+    },
+    {
+      "id": "c17",
+      "say": "great for the first couple of minutes then it goes off and gets lazy",
+      "expect": "fade-late-run",
+      "style": "colloquial",
+      "source": "plan",
+      "rewordSuggested": true,
+      "friendWording": false
+    },
+    {
+      "id": "c18",
+      "say": "it turns way better to the left than to the right",
+      "expect": "left-right-difference",
+      "style": "colloquial",
+      "source": "plan",
+      "rewordSuggested": true,
+      "friendWording": false
+    },
+    {
+      "id": "c19",
+      "say": "it hops and bounces through the bumpy chicane",
+      "expect": "bumpy-track",
+      "style": "plain",
+      "source": "plan",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c20",
+      "say": "plows wide through the long sweeper and never comes back to the apex",
+      "expect": "mid-understeer",
+      "style": "plain",
+      "source": "plan",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c21",
+      "say": "when I get back on the gas it just goes straight on",
+      "expect": "exit-understeer",
+      "style": "plain",
+      "source": "plan",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c22",
+      "say": "what shore hardness tyres should I buy for this track?",
+      "expect": "out-of-scope",
+      "style": "plain",
+      "source": "plan",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c23",
+      "say": "how do I set the timing on my ESC?",
+      "expect": "out-of-scope",
+      "style": "plain",
+      "source": "plan",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c24",
+      "say": "best brushless motor for 13.5 stock?",
+      "expect": "out-of-scope",
+      "style": "plain",
+      "source": "plan",
+      "rewordSuggested": false,
+      "friendWording": false
+    },
+    {
+      "id": "c25",
+      "say": "my buggy lands badly off the double, what shocks?",
+      "expect": "out-of-scope",
+      "style": "plain",
+      "source": "plan",
+      "rewordSuggested": false,
+      "friendWording": false
+    }
   ]
 }

@@ -1,0 +1,149 @@
+{
+  "_readme": "20 follow-up questions with accepted chunk ids (plan 8.1). hit = any accepted id in the MiniSearch top 3.",
+  "questions": [
+    {
+      "id": "q01",
+      "question": "what does droop do",
+      "accept": [
+        "touring-car-setup-procedure#droop-baselines",
+        "vehicle-dynamics-fundamentals#droop"
+      ]
+    },
+    {
+      "id": "q02",
+      "question": "why reset droop after changing ride height",
+      "accept": [
+        "touring-car-setup-procedure#the-load-bearing-dependency"
+      ]
+    },
+    {
+      "id": "q03",
+      "question": "bd12 factory camber and toe",
+      "accept": [
+        "yokomo-bd12#factory-baseline-alignment"
+      ]
+    },
+    {
+      "id": "q04",
+      "question": "how much ackermann shim",
+      "accept": [
+        "touring-car-steering-geometry#ackermann-effect"
+      ]
+    },
+    {
+      "id": "q05",
+      "question": "what is bump steer",
+      "accept": [
+        "touring-car-steering-geometry#bump-steer"
+      ]
+    },
+    {
+      "id": "q06",
+      "question": "caster for tight hairpins",
+      "accept": [
+        "touring-car-steering-geometry#caster"
+      ]
+    },
+    {
+      "id": "q07",
+      "question": "thicker rear anti roll bar effect",
+      "accept": [
+        "touring-car-suspension-tuning#anti-roll-bars-arb"
+      ]
+    },
+    {
+      "id": "q08",
+      "question": "what is the roll centre",
+      "accept": [
+        "touring-car-suspension-tuning#roll-center"
+      ]
+    },
+    {
+      "id": "q09",
+      "question": "shock oil cst range",
+      "accept": [
+        "touring-car-suspension-tuning#shock-oil-viscosity"
+      ]
+    },
+    {
+      "id": "q10",
+      "question": "laying shocks down",
+      "accept": [
+        "touring-car-suspension-tuning#shock-mounting-angle"
+      ]
+    },
+    {
+      "id": "q11",
+      "question": "stop traction rolling",
+      "accept": [
+        "touring-car-traction-and-tire-management#traction-rolling"
+      ]
+    },
+    {
+      "id": "q12",
+      "question": "more rear grip on exit",
+      "accept": [
+        "touring-car-traction-and-tire-management#increasing-rear-specific-traction"
+      ]
+    },
+    {
+      "id": "q13",
+      "question": "how often rotate tyres",
+      "accept": [
+        "touring-car-traction-and-tire-management#rotation-cadence-is-per-pack-not-per-session",
+        "touring-car-traction-and-tire-management#tire-rotation-and-cycling"
+      ]
+    },
+    {
+      "id": "q14",
+      "question": "front rear weight balance target",
+      "accept": [
+        "touring-car-weight-balance#front-rear-target"
+      ]
+    },
+    {
+      "id": "q15",
+      "question": "belt tension steps",
+      "accept": [
+        "touring-car-drivetrain-tuning#belt-tension"
+      ]
+    },
+    {
+      "id": "q16",
+      "question": "final drive ratio formula",
+      "accept": [
+        "touring-car-drivetrain-tuning#gearing"
+      ]
+    },
+    {
+      "id": "q17",
+      "question": "brake epa percent",
+      "accept": [
+        "touring-car-radio-and-servo-setup#brake-epa-is-the-other-mechanically-consequentia",
+        "touring-car-setup-procedure#other-race-day-critical-checks"
+      ]
+    },
+    {
+      "id": "q18",
+      "question": "body shell forward or back",
+      "accept": [
+        "touring-car-aerodynamics#fore-aft-body-position"
+      ]
+    },
+    {
+      "id": "q19",
+      "question": "front lip clearance on asphalt",
+      "accept": [
+        "touring-car-aerodynamics#front-lip-clearance"
+      ]
+    },
+    {
+      "id": "q20",
+      "question": "how many laps to tell a setup is faster",
+      "accept": [
+        "minimum-detectable-lap-time-difference#definition",
+        "minimum-detectable-lap-time-difference#with-a-typical-lap-time-standard-deviation"
+      ]
+    }
+  ]
+}
