@@ -9,11 +9,19 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "setup:wasm": "node scripts/copy-wasm.mjs",
+    "spike": "npm run setup:wasm && HTTPS=1 vite --host"
   },
   "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
+    "@webgpu/types": "^0.1.74",
     "typescript": "^7.0.2",
     "vite": "^8.3.2",
     "vite-plugin-pwa": "^2.0.0"
+  },
+  "dependencies": {
+    "@litert-lm/core": "^0.17.1"
   }
 }

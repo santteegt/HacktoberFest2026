@@ -17,3 +17,6 @@ dev-dist/
 *.gguf
 *.onnx
 *.task
+
+# Copied from node_modules by `npm run setup:wasm` (about 110 MB)
+public/litert-wasm/

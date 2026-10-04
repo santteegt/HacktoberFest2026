@@ -1,8 +1,8 @@
-// One interface, several backends. The app never imports a runtime directly.
-//  - "litert-web": Gemma 4 E2B/E4B on-device via WebGPU (phone or laptop browser)
-//  - "ollama":     Gemma 4 on a laptop running Ollama (localhost, or LAN if HTTPS allows)
+// One interface so the model runtime can be swapped without touching the app.
+// v1 backend: Ollama on the laptop (decided 2026-10-04 after the phone spike, see
+// docs/PHONE-SPIKE.md). The in-browser LiteRT-LM path was only used for that spike.
 
-export type LlmBackend = "litert-web" | "ollama";
+export type LlmBackend = "ollama";
 
 export interface LlmStatus {
   backend: LlmBackend;
@@ -22,7 +22,7 @@ export interface JsonRequest {
 export interface LlmProvider {
   readonly backend: LlmBackend;
   status(): Promise<LlmStatus>;
-  /** Download and cache weights once; resolves when the model can run with the network off. */
+  /** Make sure the model is available locally (pull it if missing); resolves when it can run with the network off. */
   prepare(onProgress?: (fraction: number) => void): Promise<void>;
   generateJson<T>(req: JsonRequest): Promise<T>;
   generateText(req: Omit<JsonRequest, "schema">): AsyncIterable<string>;
