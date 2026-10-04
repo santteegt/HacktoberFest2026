@@ -12,10 +12,11 @@ Project-specific workflow for `challenges/NN-<slug>/`. Read `AGENTS.md` first fo
 1. **Find it live.** Call `get_challenges` (devrelay-gateway). Classify by `starts_at` / `ends_at` against today's date (Active / Upcoming / Past). Never start a past challenge. Report days remaining and the deadline in UTC and PDT.
 2. **Read the rules.** Call `get_challenge_details` with the ID and read `full_details` fully. If `full_details` is empty, the prompt hasn't dropped; say so and wait, don't guess. Hacktoberfest weeks reveal their theme at launch.
 3. **Scaffold.** Pick the next number `NN` (see `challenges/README.md`) and a short slug. Copy `challenges/_template/` to `challenges/NN-<slug>/`.
-4. **Fill `CHALLENGE.md`** with the rules snapshot (fetch date, window in UTC, tag, prompt, theme, judging criteria, prizes, prize categories, requirements) plus the verbatim `full_details`.
-5. **Register it.** Add or update the row in `challenges/README.md` and the root `README.md` table. Tick nothing in `STICKERS.md` until the user confirms the submission is live.
-6. **Brainstorm from the wiki first.** Read `knowledge-base/hacktoberfest-2026/wiki/index.md` and the pages on tools, ideas, and frameworks, then propose 2-3 ideas with a recommendation. Don't search the web for what the wiki already covers.
-7. **Prize categories.** For each category the user wants, load `devrelay-sponsor-skills` (ask before installing anything) and check `hacktoberfest.com/my` for credits (ask before claiming).
+4. **Create the challenge memory.** `docs/CHALLENGE-MEMORY.md` comes from the template; fill the title and post-material table. From now on append to it as things happen (root `AGENTS.md` rule 8).
+5. **Fill `CHALLENGE.md`** with the rules snapshot (fetch date, window in UTC, tag, prompt, theme, judging criteria, prizes, prize categories, requirements) plus the verbatim `full_details`.
+6. **Register it.** Add or update the row in `challenges/README.md` and the root `README.md` table. Tick nothing in `STICKERS.md` until the user confirms the submission is live.
+7. **Brainstorm from the wiki first.** Read `knowledge-base/hacktoberfest-2026/wiki/index.md` and the pages on tools, ideas, and frameworks, then propose 2-3 ideas with a recommendation. Don't search the web for what the wiki already covers.
+8. **Prize categories.** For each category the user wants, load `devrelay-sponsor-skills` (ask before installing anything) and check `hacktoberfest.com/my` for credits (ask before claiming).
 
 ## 2. Audit before submitting
 
@@ -29,6 +30,8 @@ Check the project folder against `CHALLENGE.md`, and report pass/fail per item:
 - README has setup steps, credits for borrowed work, and teammates' DEV handles.
 
 ## 3. Draft the submission
+
+0. Read all of `docs/CHALLENGE-MEMORY.md` first. Use its entries for the post, restrict claims to its "may claim" table, include every `HONEST` item, and resolve every `TODO-REPORT` entry or say it was not done.
 
 1. Use the challenge's submission template (from `full_details` or the announcement post) to fill `SUBMISSION.md`. Include the required tag. Writing quality is often weighted most, so write plainly and concretely; run the `humanizer` skill if available.
 2. For the optional agent session: use `devrelay-sessions`; scrub keys and sensitive data first and remember uploads are unlisted until made public.

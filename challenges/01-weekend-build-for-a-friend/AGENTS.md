@@ -28,17 +28,20 @@ Hard requirements:
 
 Decided 2026-10-04. Project code lives in this folder (`src/`, `data/`, `kb/`); see [README.md](README.md). Idea research is in `ideas/` on the author's machine only (gitignored).
 
-**The friend (persona):** races a 1/10 touring car, a Yokomo BD12, and goes to practice sessions. He wants practices to be worth the effort: tell the agent how the car feels, get setup recommendations, and **store the best setups together with track conditions** so he can retrieve what worked when a championship race comes. He prefers his **phone**, but the on-device phone test failed (`docs/PHONE-SPIKE.md`), so v1 runs on his consumer laptop, which can run a Gemma E2B/E4B model.
+**The friend (persona):** races a 1/10 touring car, a Yokomo BD12, and goes to practice sessions. He wants practices to be worth the effort: tell the agent how the car feels, get setup recommendations, and **store the best setups together with track conditions** so he can retrieve what worked when a championship race comes. He prefers his **phone**, but the on-device phone test failed (`docs/PHONE-SPIKE.md`), so v1 runs on his consumer laptop: a **2019 MacBook Pro, Intel Core i7 (6-core, 2.6 GHz), 16 GB RAM, AMD Radeon Pro 5300M 4 GB + Intel UHD 630**. Ollama's docs only promise CPU inference on Intel Macs (macOS 14+ required), so plan for CPU-only; latency is the main constraint. Benchmarks on his machine are deferred until he is reachable.
+
+**His stated need (paraphrase of his words, full quote in `docs/CHALLENGE-MEMORY.md`):** quickly store his settings on practice days and get feedback on what works and what might have affected his run. The setup vault and run-feedback are as central as the symptom coach.
 
 **Requirements derived from the persona**
 1. Laptop-first PWA (large touch/click targets, usable in a pit area); voice in/out so hands stay free. Phone is out of scope for v1.
 2. Coach: symptom from the driver's words, then one change at a time with expected effect and how to verify.
 3. Setup vault: sessions, change log with outcomes, saved setups with track conditions, retrievable by similar conditions.
 4. Works offline once set up. Claim only what was tested, on which device.
-5. Open model served by a local **Ollama** install on the laptop (Gemma 4 E4B, E2B for weaker machines), behind `src/llm/provider.ts`. Use Ollama's JSON-schema `format` for structured output. Agent framework (Mastra or plain) and the local store are still to decide.
+5. Open model served by a local **Ollama** install on the laptop (Gemma 4 E2B QAT is the likely choice for the Intel MacBook; E4B QAT on Apple Silicon; decide from a measurement on his machine), behind `src/llm/provider.ts`. Use Ollama's JSON-schema `format` for structured output. Agent framework (Mastra or plain) and the local store are still to decide.
 
 **Hard rules for this project**
 - **New work only.** Code is written in the window. Knowledge comes from a frozen, credited snapshot of the author's earlier notes, imported in its own commit (`kb/PROVENANCE.md`). Do **not** reuse the author's earlier 3D dynamics-guide app, its BD12 model, or its setup-sheet app. Do not edit the snapshot; put corrections in new files.
+- **Latency budget (CPU-only laptop).** Keep prompts tiny and stable, set `num_ctx` to 4096, stream tokens to the UI and speech, and call the model only for the two language steps. Everything else (lever lookup, clamping, logging, vault queries) must be plain code. Never put more than a couple of retrieved chunks in a prompt.
 - **The model never invents numbers.** It maps speech to a symptom id and phrases explanations. Values come from `data/levers.json`, which the author reviews row by row. Every answer cites a valid chunk id; unsupported topics get a canned refusal.
 - **Decided:** laptop-only for v1 after the phone spike (`docs/PHONE-SPIKE.md`). Do not re-open the phone path unless the user asks.
 - Do not claim phone support, offline voice, or any partner technology that was not actually tested or used.
@@ -121,6 +124,8 @@ tags: devchallenge, weekendchallenge, hf26challenge
 (In the first line, link the challenge title to the challenge page.)
 
 ## Working conventions for this folder
+
+- **Keep [docs/CHALLENGE-MEMORY.md](docs/CHALLENGE-MEMORY.md) current** (root `AGENTS.md` rule 8). Log decisions, findings, measurements, failures and honest limits as they happen. The final report and post are written from it, and its "may claim / must NOT claim" table is binding.
 
 - The project lives here. Put source in `src/` (or the framework's convention), not in the repo root.
 - Run the `hf26-challenge` skill's **audit** step before drafting the post.

@@ -16,7 +16,8 @@ A monorepo for the **Hacktoberfest 2026** challenges, which are run by MLH and D
 challenges/                One folder per challenge; see challenges/README.md
   _template/               Copy this to start a new challenge folder
   NN-<slug>/               AGENTS.md (challenge brief + instructions), README.md, CHALLENGE.md,
-                           SUBMISSION.md + the project code. Read its AGENTS.md before working there.
+                           SUBMISSION.md, docs/CHALLENGE-MEMORY.md (keep it current) + the project code.
+                           Read its AGENTS.md before working there.
 knowledge-base/hacktoberfest-2026/   OKF wiki (raw/ sources, wiki/ pages)
 STICKERS.md                Sticker tracker toward the 3 / 10 / 15 milestones
 ```
@@ -32,6 +33,7 @@ STICKERS.md                Sticker tracker toward the 3 / 10 / 15 milestones
 5. **Claims and credits.** Offers and promo codes (`devrelay-offers`) consume inventory, so ask before claiming. Sponsor skills (`devrelay-sponsor-skills`) return an install command, so ask before installing.
 6. **Secrets.** Never commit keys or tokens. Use `.env` (ignored) and commit `.env.example`. Check agent-session transcripts for secrets before publishing them.
 7. **Licensing.** Give every project an OSS license (MIT unless stated otherwise). The prompt asks for open-source AI at the core.
+8. **Keep the challenge memory (mandatory).** Every challenge folder has `docs/CHALLENGE-MEMORY.md`, the running log that feeds the final report and DEV post. **Append an entry the moment something relevant happens, not at the end**: a decision and why (including options rejected), a non-obvious finding, a measurement, something that failed, an honest limit, a process lesson, a partner's real behavior, a friend quote, or any prior work used. Never delete or rewrite entries; mark a wrong one `SUPERSEDED by <date>` and add the correction. Measurements need date, machine, model and method, or they don't go in. Never record secrets or private data. Before writing the report or post, read the whole file and honor its "may claim / must NOT claim" table. Details and entry format: [`challenges/_template/docs/CHALLENGE-MEMORY.md`](challenges/_template/docs/CHALLENGE-MEMORY.md). If a session ends or context gets compacted, the memory file is the source of truth for what was decided.
 
 ## Knowledge base (OKF wiki)
 

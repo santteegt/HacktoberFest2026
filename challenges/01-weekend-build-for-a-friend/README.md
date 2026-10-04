@@ -24,7 +24,7 @@ A club racer with a Yokomo BD12 who goes to practice sessions and wants them to 
 
 The friend would rather use it on his phone, so on 2026-10-04 we tested Gemma 4 E2B on-device in a phone browser. Download worked; creating the engine and running prompts lagged too much to be usable. Details and method: [docs/PHONE-SPIKE.md](docs/PHONE-SPIKE.md). v1 targets the consumer laptop he also owns (Gemma E2B/E4B). No phone support is claimed.
 
-**Runtime: Ollama (decided 2026-10-04).** Gemma 4 E4B (E2B for weaker laptops) is served by a local Ollama install, so nothing leaves the machine and the app needs no multi-gigabyte browser cache. Still open: the agent framework (Mastra or plain code), the local store for the field knowledge and the setup vault, and how voice input works offline (on-device speech recognition is documented for desktop Chrome only, so it will be verified on the target laptop before any offline-voice claim).
+**Runtime: Ollama (decided 2026-10-04).** The friend's laptop is a 2019 Intel MacBook Pro (6-core i7, 16 GB), where Ollama runs on CPU only, so the likely model there is Gemma 4 E2B QAT; E4B QAT is used on Apple Silicon dev machines. Gemma 4 E4B (E2B for weaker laptops) is served by a local Ollama install, so nothing leaves the machine and the app needs no multi-gigabyte browser cache. Still open: the agent framework (Mastra or plain code), the local store for the field knowledge and the setup vault, and how voice input works offline (on-device speech recognition is documented for desktop Chrome only, so it will be verified on the target laptop before any offline-voice claim).
 
 ## Prior work, credited
 

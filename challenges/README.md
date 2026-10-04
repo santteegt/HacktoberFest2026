@@ -8,6 +8,7 @@ One folder per challenge, numbered in order of opening: `NN-<slug>/`. Each folde
 | --- | --- |
 | `README.md` | Project README (also what judges see in the repo): what, who for, why open matters, setup, demo link, license, credits |
 | `CHALLENGE.md` | Snapshot of the challenge rules from `get_challenge_details` → `full_details`, with the fetch date |
+| `docs/CHALLENGE-MEMORY.md` | Running log of decisions, findings, measurements, failures and honest limits; feeds the final report. Mandatory, append as things happen |
 | `SUBMISSION.md` | Draft of the DEV post following the challenge's submission template, plus a pre-submission checklist |
 | everything else | Source code, `LICENSE`, `.env.example` |
 
