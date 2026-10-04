@@ -13,7 +13,8 @@
     "setup:wasm": "node scripts/copy-wasm.mjs",
     "spike": "npm run setup:wasm && HTTPS=1 vite --host",
     "kb:verify": "node scripts/verify-snapshot.mjs",
-    "kb:build": "node scripts/build-kb.mjs"
+    "kb:build": "node scripts/build-kb.mjs",
+    "eval:symptoms": "node scripts/eval-symptoms.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.4",

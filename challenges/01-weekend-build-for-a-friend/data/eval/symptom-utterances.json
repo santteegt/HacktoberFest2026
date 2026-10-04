@@ -1,0 +1,15 @@
+{
+  "symptoms": ["entry-understeer", "mid-understeer", "exit-understeer", "entry-oversteer", "exit-oversteer", "traction-roll", "bumpy-track", "out-of-scope"],
+  "cases": [
+    { "say": "The front washes out when I turn in to the hairpin", "expect": "entry-understeer" },
+    { "say": "Car pushes wide in the middle of the long sweeper", "expect": "mid-understeer" },
+    { "say": "It won't rotate and runs wide when I get on the throttle out of the corner", "expect": "exit-understeer" },
+    { "say": "The rear steps out as soon as I brake and turn in", "expect": "entry-oversteer" },
+    { "say": "Back end snaps loose when I punch the throttle exiting", "expect": "exit-oversteer" },
+    { "say": "The car wants to roll over on the inside wheels in fast direction changes", "expect": "traction-roll" },
+    { "say": "It skips and gets twitchy over the bumps on the straight", "expect": "bumpy-track" },
+    { "say": "How do I tune my nitro engine needle?", "expect": "out-of-scope" },
+    { "say": "What charge rate should I use for my LiPo pack?", "expect": "out-of-scope" },
+    { "say": "The car feels nervous turning in and the rear is loose off the corner", "expect": "entry-oversteer" }
+  ]
+}
