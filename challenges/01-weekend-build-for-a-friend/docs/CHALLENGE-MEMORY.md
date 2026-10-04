@@ -107,6 +107,11 @@ Rules: measurements need date, device or machine, model and method, or they don'
 
 - 2026-10-04 20:57Z [PROCESS] Implementation planning delegated to an Opus subagent (planner) that reads the memory, snapshot pages and code state and writes `docs/IMPLEMENTATION-PLAN.md` (stack, API contracts, domain data, UI, visual explainers, task cards with file ownership and recommended model per task, UTC timeline with MVP/cut lines, draft lever rows for the author's review). Execution then goes to subagents (Sonnet for well-specified plumbing/UI, Opus for the visual explainers, workflow/prompt design and integration). The planner was told not to open the author's earlier 3D guide or setup-sheet app (originality rule).
 
+- 2026-10-04 22:03Z [PROCESS] T0 contracts and scaffold done (Opus agent, ~9 min, ~183k tokens). zod schemas in `src/shared` are the single source; Hono server stub where every route answers 501; Preact shell with a hash router; stubs for every module in plan 2.1. typecheck, test, kb:verify, kb:build (12 pages, 113 chunks) and vite build pass (re-run and confirmed by the orchestrator). Evidence: T0 report; commit "feat: contracts and scaffold (T0)".
+- 2026-10-04 22:03Z [FINDING] `@preact/preset-vite` 2.10.6 works with Vite 8.3.2, and TypeScript 7.0.2 checks Preact JSX with `jsx: react-jsx` + `jsxImportSource: preact`, so the `oxc.jsx` fallback was not needed. Evidence: `npm run dev` serves `main.tsx`; `tsc --noEmit` exit 0.
+- 2026-10-04 22:03Z [DECISION] The PWA service worker is gone from the app (VitePWA config and registerSW removed; package left installed). The server binds 127.0.0.1 only and Mastra telemetry is forced off in `server/config.ts` before anything imports Mastra. Also: old `src/llm/provider.ts`, `src/kb/types.ts`, `src/agent/*`, `src/state/types.ts` were deleted (replaced by the shared contracts and the server-side Ollama client).
+- 2026-10-04 22:03Z [HONEST] `@libsql/client` 0.18.0 was verified only on the dev Mac (darwin-arm64, Node 24.13.0). The darwin-x64 binary for the friend's Intel MacBook is untested.
+
 ### Partners
 
 - 2026-10-04 (backfilled) [PARTNER] (SUPERSEDED by 2026-10-04 21:30Z: Entire dropped) Gemma (via Ollama), Mastra and Entire are the only categories planned. Nothing is claimed until the code uses them. Update this section when each is actually integrated or dropped.
