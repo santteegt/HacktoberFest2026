@@ -1,0 +1,34 @@
+/* Race day screen (T4c). Local classes prefixed rd-; uses the theme tokens from src/style.css. */
+.rd-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; margin-top: 16px; }
+@media (max-width: 1180px) { .rd-layout { grid-template-columns: minmax(0, 1fr); } }
+.rd-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: space-between; }
+.rd-today { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 8px; }
+.rd-tag {
+  display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 99px;
+  background: var(--panel-2); border: 1px solid var(--border); font-size: .95rem; font-weight: 600;
+}
+.rd-tag[data-kind="reason"] { background: #12202f; border-color: #2f5a8f; color: #cfe3ff; }
+.rd-tag[data-kind="warn"] { background: #231d0d; border-color: #6b5316; color: var(--warn); }
+.rd-note { color: var(--muted); font-size: .9rem; }
+.rd-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.rd-hit { background: var(--panel-2); border: 1px solid var(--border); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.rd-hit-top { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; }
+.rd-hit-title { font-size: 1.1rem; font-weight: 700; }
+.rd-score { display: flex; align-items: center; gap: 12px; min-width: 220px; flex: 1 1 220px; max-width: 360px; }
+.rd-bar { flex: 1; height: 14px; border-radius: 7px; background: var(--bg); border: 1px solid var(--border); overflow: hidden; }
+.rd-bar > i { display: block; height: 100%; background: var(--accent); }
+.rd-bar[data-other="1"] > i { background: var(--muted); }
+.rd-score b { min-width: 3.4ch; text-align: right; font-size: 1.15rem; }
+.rd-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.rd-table { width: 100%; border-collapse: collapse; }
+.rd-table th, .rd-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.rd-table th { color: var(--muted); font-size: .85rem; font-weight: 700; }
+.rd-hist { width: 100%; border-collapse: collapse; }
+.rd-hist td, .rd-hist th { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--border); font-size: .95rem; }
+.rd-hist th { color: var(--muted); font-size: .8rem; }
+.rd-help { margin-top: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); font-size: .95rem; }
+.rd-group-title { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 0 0 12px; }
+.rd-group + .rd-group { margin-top: 20px; }
+.rd-err { color: var(--danger); font-weight: 600; }
+.rd-ok { color: var(--ok); font-weight: 600; }
+.rd-edit { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }

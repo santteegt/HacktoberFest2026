@@ -1,0 +1,25 @@
+/* "What affected run N" panel (T4c). Rendered inside the Session screen (.pcx); local classes prefixed cp-. */
+.cp-section { margin-top: 16px; }
+.cp-section h4 { margin: 0 0 8px; font-size: 1rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted, #a3b0bd); }
+.cp-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.cp-item { border: 1px solid var(--border, #2b3744); border-left: 4px solid var(--accent, #7fb2ff); border-radius: 10px; padding: 10px 14px; background: var(--bg, #0b0f14); }
+.cp-item[data-kind="cond"] { border-left-color: var(--warn, #ffbf3c); }
+.cp-change { font-weight: 700; }
+.cp-effect { margin-top: 4px; color: var(--text, #f2f5f8); font-size: .95rem; }
+.cp-cites { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.cp-verdict { border: 2px solid var(--border, #2b3744); border-radius: 12px; padding: 14px; background: var(--bg, #0b0f14); }
+.cp-verdict[data-status="within-noise"] { border-color: var(--muted, #a3b0bd); }
+.cp-verdict[data-status="above-noise"] { border-color: var(--accent, #7fb2ff); }
+.cp-verdict[data-status="insufficient-data"] { border-style: dashed; }
+.cp-verdict-head { font-weight: 800; font-size: 1.05rem; margin-bottom: 6px; }
+.cp-nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 12px 0; }
+.cp-num { background: var(--panel, #151c24); border: 1px solid var(--border, #2b3744); border-radius: 10px; padding: 8px 12px; }
+.cp-num b { display: block; font-size: 1.2rem; }
+.cp-num span { color: var(--muted, #a3b0bd); font-size: .8rem; }
+.cp-flag { border: 1px solid #6b5316; background: #231d0d; color: var(--warn, #ffbf3c); border-radius: 10px; padding: 12px 14px; margin-top: 16px; }
+.cp-flag p { color: var(--text, #f2f5f8); }
+.cp-how { margin-top: 16px; border: 1px solid var(--border, #2b3744); border-radius: 10px; padding: 0 14px; }
+.cp-how summary { min-height: 48px; display: flex; align-items: center; cursor: pointer; font-weight: 700; }
+.cp-how[open] summary { border-bottom: 1px solid var(--border, #2b3744); margin-bottom: 10px; }
+.cp-how p { margin: 0 0 10px; }
+.cp-foot { margin-top: 12px; color: var(--muted, #a3b0bd); font-size: .9rem; }

@@ -49,7 +49,8 @@ export function CompareSaved(props: { params: ParamDef[]; current: SetupValues; 
   }, [setupId, setups]);
   const fetched = setupId ? setups.get(setupId) : undefined;
   const selSetup = fetched ?? undefined;
-  const diffs = selSetup ? diffValues(props.current, selSetup.values, props.params) : [];
+  // Tyre wear is a condition, not a setup change: leave the run counter out of the differences (T4c).
+  const diffs = selSetup ? diffValues(props.current, selSetup.values, props.params).filter((d) => d.param !== "tyreRunsOnSet") : [];
   const label = (id: string) => props.params.find((p) => p.id === id);
 
   return (

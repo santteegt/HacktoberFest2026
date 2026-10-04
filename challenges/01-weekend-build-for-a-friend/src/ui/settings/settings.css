@@ -1,0 +1,35 @@
+/* Settings screen (T4c). Local classes prefixed st-; uses the theme tokens from src/style.css. */
+.st-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; align-items: start; }
+@media (max-width: 1180px) { .st-grid { grid-template-columns: minmax(0, 1fr); } }
+.st-wide { grid-column: 1 / -1; }
+.st-card { display: flex; flex-direction: column; gap: 12px; }
+.st-field { display: flex; flex-direction: column; gap: 6px; }
+.st-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.st-toggle { display: flex; gap: 16px; align-items: center; justify-content: space-between; min-height: 56px; padding: 6px 0; }
+.st-toggle-label { font-weight: 700; }
+.st-switch {
+  font: inherit; font-weight: 700; color: var(--text); cursor: pointer; min-width: 88px; min-height: var(--btn-h); padding: 0 16px;
+  border-radius: 99px; border: 2px solid var(--border); background: var(--panel-2);
+}
+.st-switch[aria-checked="true"] { background: var(--ok); border-color: var(--ok); color: #04170d; }
+.st-switch:disabled { opacity: .45; cursor: not-allowed; }
+.st-status { display: flex; gap: 10px; align-items: flex-start; }
+.st-status i { flex: none; width: 12px; height: 12px; border-radius: 50%; margin-top: 7px; background: var(--muted); }
+.st-status[data-tone="ok"] i { background: var(--ok); }
+.st-status[data-tone="warn"] i { background: var(--warn); }
+.st-status[data-tone="danger"] i { background: var(--danger); }
+.st-progress { height: 18px; border-radius: 9px; background: var(--bg); border: 1px solid var(--border); overflow: hidden; }
+.st-progress > i { display: block; height: 100%; background: var(--accent); transition: width .15s; }
+.st-note { padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); font-size: .95rem; }
+.st-note[data-tone="warn"] { border-color: #6b5316; background: #231d0d; }
+.st-counts { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+.st-count { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; }
+.st-count b { display: block; font-size: 1.3rem; }
+.st-count span { color: var(--muted); font-size: .8rem; }
+.st-details summary { min-height: 48px; display: flex; align-items: center; cursor: pointer; font-weight: 700; }
+.st-pre { white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; line-height: 1.5; margin: 0; }
+.st-ok { color: var(--ok); font-weight: 600; }
+.st-err { color: var(--danger); font-weight: 600; }
+.st-saved { color: var(--ok); font-size: .9rem; font-weight: 600; }
+.st-check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.st-select { font: inherit; color: var(--text); background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius); min-height: var(--btn-h); padding: 0 12px; width: 100%; }
