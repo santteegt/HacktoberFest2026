@@ -1,9 +1,8 @@
 // GET /api/meta (T1): params, symptoms, levers, prechecks, kbStats (data read through server/engine/data.ts).
-// T0 stub: 501 until T1 lands.
 import { Hono } from "hono";
-import { notImplemented } from "../http";
+import { loadMeta } from "../vault/meta";
 
 const r = new Hono();
-r.get("/meta", notImplemented("meta"));
+r.get("/meta", (c) => c.json(loadMeta()));
 
 export default r;
