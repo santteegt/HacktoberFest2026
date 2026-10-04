@@ -28,6 +28,7 @@ Rules: measurements need date, device or machine, model and method, or they don'
 | The coach never invents numbers: values come from a hand-reviewed lever table (once built and reviewed) | Phone support, or that Gemma runs on a phone: the phone spike failed |
 | Knowledge snapshot is frozen and hash-verified (`npm run kb:verify`) | Offline voice, until verified on the target laptop |
 | Phone spike method and outcome as recorded in `docs/PHONE-SPIKE.md` | Any partner technology the code does not actually use |
+| | That the 3D explainers are to scale or show measured values |
 | | Any number that is not in a MEASURE entry |
 
 ## Log
@@ -147,6 +148,12 @@ Rules: measurements need date, device or machine, model and method, or they don'
 - 2026-10-04 22:22Z [PROCESS] `?mock=1` serves canned data through the same typed client (lever selection there is a stand-in, not the server engine); used to build and test the UI before the backend existed and kept as a standalone demo fallback. `?mock=1&fresh=1` shows the first-run overlay.
 - 2026-10-04 22:22Z [HONEST] Apply stays disabled until the coach finishes phrasing, because the run id arrives with the `suspended` event; on a slow CPU-only laptop that can take seconds. Voice input is untested (T6 not landed). No outbound traffic from Mastra has been verified yet beyond setting the telemetry env var; that check belongs in the airplane-mode run.
 - 2026-10-04 22:24Z [TODO-REPORT] Integration items queued for T7: emit `runId` early (on `classified` or in the `suggestion` payload) so Apply unlocks at the card; use `explained.text` to replace the streamed line; add an `origin` field on served chunks so the drawer can tell kb/additions from pre-window notes; add synonyms such as "snaps loose" to exit-oversteer (the keyword fallback missed the acceptance utterance); export `createSpeechInput`/`createSpeechOutput` from `src/voice/index.ts` (T6); contract fixes already listed (AddRunBody, confoundCitations, history label, tyre-run handling, setup lookup by id).
+
+- 2026-10-04 22:28Z [PROCESS] T5 (visual explainers) done by an Opus agent in about 21 minutes of wall clock (plan estimate: 2 h; ~271k tokens). Re-verified by the orchestrator: whole-repo typecheck clean, 67 tests pass, build ok with three.js code-split into a lazy 583 kB chunk (main bundle about 106 kB), no references to the earlier OpenGrid project in `src/scene`. Evidence: commit "feat(scene): ... (T5)".
+- 2026-10-04 22:27Z [DECISION] Explainers: ten three.js (camber, toe, caster, rideHeight, droop, shockAngle front/rear, arb, bumpSteer, ackermann, body) plus two SVG (rollCentre, weight) behind one CarScene API; `explainerFor` returns only explainers that animate. Exaggeration multiplies only the active explainer's quantity and an on-canvas label always says "x N for visibility". Rejected: exaggerating only the from-to delta (it would make the label misleading). Evidence: `src/scene/**`.
+- 2026-10-04 22:27Z [MEASURE] Scene cost on the dev Mac (Apple Silicon, Chrome in the Claude Browser pane, three.js 0.186.1), measured by the T5 agent with renderer.info and performance.now around render(): at most 1,440 triangles, 43-85 draw calls, 1.5-4 ms JS time per render call during 600 ms tweens (53 ms for the first ghost frame before shader precompile); the frame counter stayed at 149 from 22:20:16Z to 22:21:36Z while idle (render-on-demand works). Not measured on the friend's Intel UHD 630 / Radeon 5300M.
+- 2026-10-04 22:27Z [HONEST] The explainers are schematic. Directions and sign conventions come from the snapshot pages, but several magnitudes are invented for legibility (droop travel, bump-steer toe, Ackermann angles, roll-centre geometry), a one-step ride-height change is barely visible even at x4, and the label says so. The post must not present the 3D view as to-scale or measured.
+- 2026-10-04 22:27Z [FINDING] The Setup screen's explainer panel did not mount the scene (its mount effect ran once while the host element was not rendered yet); assigned to the integration task (T7).
 
 ### Partners
 
