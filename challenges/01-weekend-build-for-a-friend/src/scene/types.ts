@@ -1,18 +1,53 @@
-// The LLM never emits scene values. A lever row {param, from, to} drives the car model.
+// Scene API for the visual explainers (plan section 6; T5 owns src/scene/**).
+// The LLM never emits scene values: a SceneBinding comes only from the server's
+// LeverSuggestion.scene or from the Setup editor's own values.
+import type { ExplainerId, SceneBinding } from "../shared/types";
 
+export type { ExplainerId, SceneBinding };
+
+export type SceneView = "front" | "side" | "top" | "iso" | "auto";
+
+/** Highlightable parts of the schematic car. T5 may extend this list. */
+export type PartId =
+  | "chassis"
+  | "frontWheels"
+  | "rearWheels"
+  | "frontShocks"
+  | "rearShocks"
+  | "frontArb"
+  | "rearArb"
+  | "steering"
+  | "body"
+  | "camberLinks";
+
+/** Sign conventions follow data/params.bd12.json (camber = degrees negative; droop gauge: lower = more droop; shock pos 1 = most laid down). */
 export interface ScenePose {
   frontCamberDeg: number;
   rearCamberDeg: number;
-  frontToeDeg: number; // + = toe-in
-  rearToeDeg: number;
-  rideHeightMm: number;
+  frontToeOutDeg: number;
+  rearToeInDeg: number;
   casterDeg: number;
-  shockAngleDeg: number;
+  rideHeightFrontMm: number;
+  rideHeightRearMm: number;
+  droopFrontGaugeMm: number;
+  droopRearGaugeMm: number;
+  frontShockPos: number;
+  rearShockPos: number;
+  frontArbMm: number;
+  rearArbMm: number;
+  steerDeg: number;
+  compressionMm: number;
+  liftChassis: boolean;
 }
 
 export interface CarScene {
-  /** Animate from the current pose to `to`, exaggerating by `exaggerate` for legibility. */
-  apply(to: Partial<ScenePose>, opts?: { exaggerate?: number; ms?: number }): void;
-  highlight(param: keyof ScenePose | null): void;
+  mount(el: HTMLElement): void;
+  /** Immediate, no animation. */
+  setPose(pose: Partial<ScenePose>): void;
+  /** Ghost at `from`, solid lerps to `to`, highlights the part. */
+  showChange(b: SceneBinding, opts?: { exaggerate?: number; ms?: number }): void;
+  /** "auto" = the explainer's default view. */
+  setView(v: SceneView): void;
+  highlight(part: PartId | null): void;
   dispose(): void;
 }
