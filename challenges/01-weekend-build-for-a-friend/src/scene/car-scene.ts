@@ -42,7 +42,7 @@ const CSS = `
 .cs-read{background:rgba(15,20,25,.82);padding:4px 8px;border-radius:6px;max-width:75%}
 .cs-read b{color:#7fb2ff;font-weight:600}
 .cs-btns{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;pointer-events:auto}
-.cs-btn{min-height:44px;min-width:44px;padding:0 12px;border:0;border-radius:10px;background:rgba(26,34,43,.92);color:#e8edf2;font:inherit;cursor:pointer}
+.cs-btn{min-height:48px;min-width:48px;padding:0 12px;border:0;border-radius:10px;background:rgba(26,34,43,.92);color:#e8edf2;font:inherit;cursor:pointer}
 .cs-btn[aria-pressed="true"]{outline:2px solid #7fb2ff}
 .cs-views{position:absolute;right:8px;top:8px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:55%}
 .cs-small{font-size:11px}
@@ -326,7 +326,8 @@ export class ProceduralCarScene implements CarScene {
     }
     if (!a) return "iso";
     const e = a.binding.explainer;
-    if (e === "caster") return "casterClose";
+    // T10: the whole car side-on, so the caster change reads against the chassis (casterClose cropped to the hub)
+    if (e === "caster") return "side";
     if (e === "arb") return a.info?.end === "rear" ? "arbRear" : "arbFront";
     if (e === "bumpSteer") return "frontHigh";
     if (e === "rideHeight" || e === "droop") return a.info?.end === "rear" ? "sideRear" : "sideFront";

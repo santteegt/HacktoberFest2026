@@ -106,7 +106,7 @@ export function OutcomePanel({ t }: { t: TurnView }) {
             <div class="card-title">Next in line</div>
             <p>
               <b>{next.lever.action}</b>
-              {next.from !== null && next.to !== null && (
+              {next.from !== null && next.to !== null && !next.currentOutOfRange && (
                 <span class="muted">
                   {" "}
                   {String(next.from)} to {String(next.to)}

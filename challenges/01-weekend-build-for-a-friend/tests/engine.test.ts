@@ -91,9 +91,47 @@ describe("selectLevers", () => {
     expect(s2.primary?.lever.id).not.toBe("eu-caster-down");
   });
 
-  it("does not move a value that is outside the bounds against the lever's direction", () => {
+  it("does not move a value that is outside the bounds: it asks to check the current value instead (T10)", () => {
+    // casterDeg 1 is below the range in the notes (2-6). Before T10 this counted as at-limit; now the driver
+    // is asked to check the value, and nothing is moved against the lever's direction.
     const s = selectLevers(base({ symptomId: "entry-understeer", phase: "entry", setup: { ...stock, casterDeg: 1 } }));
-    expect(s.skipped).toContainEqual({ leverId: "eu-caster-down", reason: "at-limit" });
+    expect(s.primary?.lever.id).toBe("eu-caster-down");
+    expect(s.primary).toMatchObject({ from: 1, to: null, needsCurrentValue: true, currentOutOfRange: true });
+    expect(s.skipped).not.toContainEqual({ leverId: "eu-caster-down", reason: "at-limit" });
+  });
+
+  it("flags a typing slip far above the range instead of clamping it into a huge jump (T10)", () => {
+    // xo-rear-diff-softer: rearDiffOilCst, decrease, step 1000, range 3,000-10,000; low grip only
+    const s = selectLevers(base({ grip: "low", setup: { ...stock, rearDiffOilCst: 50_500_000 } }));
+    expect(s.primary?.lever.id).toBe("xo-rear-diff-softer");
+    expect(s.primary).toMatchObject({ from: 50_500_000, to: null, atLimit: false, needsCurrentValue: true, currentOutOfRange: true });
+    expect(s.primary?.scene).toBeUndefined();
+    // an in-range value still gets its one-step numbers and no flag
+    const ok = selectLevers(base({ grip: "low", setup: { ...stock, rearDiffOilCst: 5000 } }));
+    expect(ok.primary).toMatchObject({ from: 5000, to: 4000, needsCurrentValue: false });
+    expect(ok.primary?.currentOutOfRange).toBeUndefined();
+  });
+
+  it("uses the narrower of the row's and the parameter's bounds for the out-of-range check (T10)", () => {
+    const p: ParamDef = { ...params.find((x) => x.id === "rearShockPos")!, min: 1, max: 5 };
+    const r = row({ id: "t-up", symptomId: "test", param: "rearShockPos", direction: "increase", step: 1, min: 1, max: 3 });
+    const at = (v: number) =>
+      selectLevers(base({ symptomId: "test", phase: "none", params: [p], levers: [r], setup: { rearShockPos: v } }));
+    expect(at(2).primary).toMatchObject({ from: 2, to: 3 });
+    expect(at(3).skipped).toContainEqual({ leverId: "t-up", reason: "at-limit" }); // at the row's top: at-limit
+    expect(at(4).primary).toMatchObject({ from: 4, to: null, currentOutOfRange: true }); // inside the param, outside the row
+    expect(at(0).primary).toMatchObject({ from: 0, to: null, currentOutOfRange: true }); // below both
+  });
+
+  it("refuses to apply an out-of-range suggestion and explains it without the model (T10)", async () => {
+    const { targetOf, templateExplanation, OUT_OF_RANGE_MESSAGE } = await import("../server/coach/steps");
+    const s = selectLevers(base({ grip: "low", setup: { ...stock, rearDiffOilCst: 50_500_000 } }));
+    const text = templateExplanation(s.primary!);
+    expect(text).toContain("looks outside the range in my notes");
+    expect(text).toContain("50500000");
+    expect(text).not.toMatch(/10000|10,000/);
+    const st = { runId: "r1", status: "awaiting-decision", classification: { symptomId: "exit-oversteer" }, suggestion: s } as unknown as Parameters<typeof targetOf>[0];
+    expect(() => targetOf(st, { decision: "apply" })).toThrow(OUT_OF_RANGE_MESSAGE);
   });
 
   it("returns needsCurrentValue with null from/to when the setup has no value", () => {

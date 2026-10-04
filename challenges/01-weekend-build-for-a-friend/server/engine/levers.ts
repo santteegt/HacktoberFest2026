@@ -42,12 +42,19 @@ function directionOf(c: Change): "increase" | "decrease" | null {
   return c.to > c.from ? "increase" : "decrease";
 }
 
+/** Combined bounds: the narrower of the lever row's and the parameter's min/max. */
+function boundsOf(row: LeverRow, param: ParamDef | undefined): { lo: number; hi: number } {
+  return {
+    lo: Math.max(row.min ?? -Infinity, param?.min ?? -Infinity),
+    hi: Math.min(row.max ?? Infinity, param?.max ?? Infinity),
+  };
+}
+
 /** Next value for a numeric row. Returns `current` itself when there is no room to move. */
 function stepNumber(current: number, row: LeverRow, param: ParamDef | undefined): number {
   const dir = row.direction === "decrease" ? -1 : 1;
   const step = row.step ?? param?.step ?? 1;
-  const lo = Math.max(row.min ?? -Infinity, param?.min ?? -Infinity);
-  const hi = Math.min(row.max ?? Infinity, param?.max ?? Infinity);
+  const { lo, hi } = boundsOf(row, param);
   let to = tidy(Math.min(hi, Math.max(lo, current + dir * step)), step);
   // A value already outside the bounds must never be "moved" against the requested direction.
   if ((dir < 0 && to > current) || (dir > 0 && to < current)) to = current;
@@ -108,13 +115,21 @@ export function selectLevers(args: SelectLeversArgs): Suggestion {
     let from: ParamValue = null;
     let to: ParamValue = null;
     let needsCurrentValue = false;
+    let currentOutOfRange = false;
 
     if (row.kind === "numeric" && row.param) {
       const param = paramById.get(row.param);
       const current = setup[row.param];
+      const { lo, hi } = boundsOf(row, param);
       if (current === undefined || current === null || typeof current !== "number") {
         // 2. no current value: the card says "one step <direction>" and asks for it
         needsCurrentValue = true;
+      } else if (param?.kind !== "enum" && (current < lo || current > hi)) {
+        // 2b. (T10) the current value is outside the range in the notes (often a typing slip such as
+        // 50,500,000 cSt): never clamp it into a big jump; ask the driver to check it in Setup.
+        from = current;
+        needsCurrentValue = true;
+        currentOutOfRange = true;
       } else {
         from = current;
         to = param?.kind === "enum" ? stepEnum(current, row, param) : stepNumber(current, row, param);
@@ -130,7 +145,15 @@ export function selectLevers(args: SelectLeversArgs): Suggestion {
         skip(row.id, why);
         continue;
       }
-      candidates.push({ lever: row, from, to, atLimit: false, needsCurrentValue, scene: sceneFor(param, from, to) });
+      candidates.push({
+        lever: row,
+        from,
+        to,
+        atLimit: false,
+        needsCurrentValue,
+        ...(currentOutOfRange ? { currentOutOfRange: true } : {}),
+        scene: sceneFor(param, from, to),
+      });
     } else {
       // qualitative row: nothing to clamp, nothing to remember
       candidates.push({ lever: row, from: null, to: null, atLimit: false, needsCurrentValue: false });

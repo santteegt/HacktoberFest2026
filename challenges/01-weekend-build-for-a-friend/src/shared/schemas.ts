@@ -284,6 +284,10 @@ export const LeverSuggestion = z.object({
   to: ParamValue,
   atLimit: z.boolean(),
   needsCurrentValue: z.boolean(),
+  /** T10: the stored current value is outside the lever row's or the parameter's min/max (a likely typing
+   *  slip such as 50,500,000 cSt). Then `needsCurrentValue` is true too, `from` holds the suspect value,
+   *  `to` is null, and the driver is asked to check the value in Setup instead of getting a clamped jump. */
+  currentOutOfRange: z.boolean().optional(),
   scene: SceneBinding.optional(),
 });
 

@@ -41,6 +41,14 @@ export function paramLabel(param: string | undefined): string {
 
 export function ValueLine({ s }: { s: LeverSuggestion }) {
   const unit = s.lever.unit ? ` ${s.lever.unit}` : "";
+  if (s.currentOutOfRange) {
+    return (
+      <p class="value-line value-hint">
+        Your current {paramLabel(s.lever.param).toLowerCase()} ({String(s.from)}
+        {unit}) looks outside the range in my notes; check it in Setup, then ask again for the exact number.
+      </p>
+    );
+  }
   if (s.needsCurrentValue) {
     return (
       <p class="value-line value-hint">
@@ -90,7 +98,11 @@ export function SuggestionCard({ t, option }: { t: TurnView; option: LeverSugges
         ) : (
           <div class="row card-actions">
             {option.needsCurrentValue ? (
-              <Button variant="primary" size="lg" onClick={() => navigate("setup")}>
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => navigate("setup", l.param ? { focus: l.param } : undefined)}
+              >
                 OPEN SETUP
               </Button>
             ) : (

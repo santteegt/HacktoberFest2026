@@ -25,14 +25,23 @@ export function routeFromHash(hash: string): Route {
   return (ROUTES as readonly string[]).includes(name) ? (name as Route) : "coach";
 }
 
-export function navigate(to: Route): void {
-  location.hash = `#/${to}`;
+/** Query part of the hash ("#/setup?focus=casterDeg" -> { focus: "casterDeg" }) (T10). */
+export function queryFromHash(hash: string): Record<string, string> {
+  const q = hash.split("?")[1];
+  return q ? Object.fromEntries(new URLSearchParams(q)) : {};
+}
+export const routeQuery = signal<Record<string, string>>(queryFromHash(typeof location === "undefined" ? "" : location.hash));
+
+export function navigate(to: Route, query?: Record<string, string>): void {
+  const q = query && Object.keys(query).length ? `?${new URLSearchParams(query).toString()}` : "";
+  location.hash = `#/${to}${q}`;
 }
 
-/** Keeps `route` in sync with location.hash; returns an unsubscribe function. */
+/** Keeps `route` (and `routeQuery`) in sync with location.hash; returns an unsubscribe function. */
 export function startHashRouter(): () => void {
   const sync = () => {
     route.value = routeFromHash(location.hash);
+    routeQuery.value = queryFromHash(location.hash);
   };
   addEventListener("hashchange", sync);
   sync();

@@ -319,11 +319,16 @@ const sentence = (x: string) => {
   return !t ? "" : /[.!?]$/.test(t) ? t : `${t}.`;
 };
 
+/** Shown when the stored current value is outside the lever's or the parameter's range (T10). */
+export const OUT_OF_RANGE_MESSAGE = "Your current value looks outside the range in my notes; check it in Setup.";
+
 /** "{action}: {from} to {to} {unit}. {effect} Trade-off: {tradeOff} Check: {verify}" (with honest variants for missing values). */
 export function templateExplanation(s: LeverSuggestion): string {
   const l = s.lever;
   let head: string;
-  if (s.from !== null && s.to !== null) head = `${l.action.replace(/[.\s]+$/, "")}: ${s.from} to ${s.to}${unitOf(s) ? ` ${unitOf(s)}` : ""}.`;
+  if (s.currentOutOfRange)
+    head = `${l.action.replace(/[.\s]+$/, "")}: ${OUT_OF_RANGE_MESSAGE.replace(/[.]$/, "")} (you have ${s.from}${unitOf(s) ? ` ${unitOf(s)}` : ""}), then ask again for the exact number.`;
+  else if (s.from !== null && s.to !== null) head = `${l.action.replace(/[.\s]+$/, "")}: ${s.from} to ${s.to}${unitOf(s) ? ` ${unitOf(s)}` : ""}.`;
   else if (s.needsCurrentValue)
     head = `${l.action.replace(/[.\s]+$/, "")}: one step ${l.direction === "decrease" ? "down" : "up"}; enter your current value in Setup for the exact number.`;
   else head = sentence(l.action);
@@ -345,7 +350,8 @@ export async function explain(
 ): Promise<{ text: string; source: "llm" | "template"; ms?: number }> {
   const t0 = performance.now();
   const settings = await deps.settings();
-  const llm = settings.llmPhrasing ? deps.llm(settings) : null;
+  // A suspect current value gets the fixed template line: nothing for the model to phrase (T10).
+  const llm = settings.llmPhrasing && !s.currentOutOfRange ? deps.llm(settings) : null;
   let result: { text: string; source: "llm" | "template"; ms?: number } | null = null;
   if (llm) {
     const card: ExplainerCard = {
@@ -462,7 +468,9 @@ export function targetOf(st: CoachStateT, d: { decision: Decision; alternativeIn
   if (!t.lever.param || t.to === null)
     throw new CoachError(
       409,
-      t.needsCurrentValue
+      t.currentOutOfRange
+        ? `${OUT_OF_RANGE_MESSAGE} Fix it there, then ask again for the exact number.`
+        : t.needsCurrentValue
         ? "Enter your current value for this setting in Setup first, then ask again for the exact number."
         : "This change has no single setup value; make it by hand and log it in Setup.",
       "decide",

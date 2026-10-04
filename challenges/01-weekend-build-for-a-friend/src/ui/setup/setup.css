@@ -25,6 +25,8 @@
 .su-row[data-changed="1"] { border-left-color: var(--c-accent); }
 .su-row[data-staged="1"] { border-left-color: var(--c-warn); background: color-mix(in srgb, var(--c-warn) 8%, transparent); }
 .su-row[data-out="1"] { box-shadow: inset 0 0 0 1px var(--c-warn); }
+/* OPEN SETUP from a coach card lands here (#/setup?focus=<paramId>, T10) */
+.su-row[data-focus="1"] { border-left-color: var(--c-accent); background: color-mix(in srgb, var(--c-accent) 18%, transparent); box-shadow: inset 0 0 0 2px var(--c-accent); scroll-margin: 96px; }
 @media (max-width: 900px) {
   .su-colhead { display: none; }
   .su-row { grid-template-columns: 1fr 1fr; }

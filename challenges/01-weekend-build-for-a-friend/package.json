@@ -9,11 +9,12 @@
     "node": ">=22.13"
   },
   "scripts": {
+    "predev": "npm run kb:build",
     "dev": "concurrently -k -n server,ui \"tsx watch server/index.ts\" \"vite\"",
     "dev:server": "tsx watch server/index.ts",
     "dev:ui": "vite",
     "build": "vite build",
-    "start": "vite build && tsx server/index.ts",
+    "start": "npm run kb:build && vite build && tsx server/index.ts",
     "preview": "vite preview",
     "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit",
@@ -23,7 +24,8 @@
     "kb:build": "node scripts/build-kb.mjs",
     "eval:symptoms": "tsx scripts/eval-symptoms.ts",
     "eval:retrieval": "tsx scripts/eval-retrieval.ts",
-    "seed:demo": "tsx scripts/seed-demo.ts"
+    "seed:demo": "tsx scripts/seed-demo.ts",
+    "postinstall": "node scripts/build-kb.mjs"
   },
   "devDependencies": {
     "@preact/preset-vite": "2.10.6",

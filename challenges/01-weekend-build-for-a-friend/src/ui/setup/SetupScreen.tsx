@@ -4,7 +4,7 @@ import { useEffect, useState } from "preact/hooks";
 import { request } from "../../api/client";
 import type { ParamDef, ParamGroup, ParamValue, SavedSetup, SetupValues } from "../../shared/types";
 import { bundle, ensureBundle, refreshBundle } from "../session/bundle";
-import { currentSetup, meta, session } from "../store";
+import { currentSetup, meta, routeQuery, session } from "../store";
 import { CompareSaved } from "./CompareSaved";
 import { ExplainerPanel } from "./ExplainerPanel";
 import { SaveSetupDialog, conditionsSummary } from "./SaveSetupDialog";
@@ -54,6 +54,28 @@ export function SetupScreen() {
     bindStagedToSession(s?.id ?? null);
     void ensureBundle();
   }, [s?.id]);
+
+  // "#/setup?focus=<paramId>" (OPEN SETUP on a coach card, T10): show that row, scroll it into view,
+  // highlight it for a few seconds and put the cursor in its value field.
+  const focusId = routeQuery.value.focus ?? null;
+  const [flashId, setFlashId] = useState<string | null>(null);
+  const ready = !!m && !!s;
+  useEffect(() => {
+    if (!focusId || !ready) return;
+    setChangedOnly(false);
+    setFlashId(focusId);
+    const raf = requestAnimationFrame(() => {
+      const row = document.querySelector<HTMLElement>(`[data-param="${CSS.escape(focusId)}"]`);
+      if (!row) return;
+      row.scrollIntoView({ block: "center" });
+      row.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+    });
+    const t = setTimeout(() => setFlashId(null), 4000);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t);
+    };
+  }, [focusId, ready]);
 
   if (!m) {
     return (
@@ -174,6 +196,7 @@ export function SetupScreen() {
                   onToggle={() => setOpenRow(openRow === p.id ? null : p.id)}
                   onExplain={() => setExplainId(p.id)}
                   explained={explainId === p.id}
+                  flash={flashId === p.id}
                 />
               ))}
             </div>
@@ -228,6 +251,7 @@ function ParamRow(props: {
   onToggle: () => void;
   onExplain: () => void;
   explained: boolean;
+  flash?: boolean;
 }) {
   const { p, committed, effective } = props;
   const base = baselineOf(p);
@@ -286,7 +310,14 @@ function ParamRow(props: {
   const meaning = changed ? deltaMeaning(p, base.value, eff) : "";
 
   return (
-    <div class="su-row" data-changed={changed ? "1" : "0"} data-staged={isStaged ? "1" : "0"} data-out={out ? "1" : "0"}>
+    <div
+      class="su-row"
+      data-param={p.id}
+      data-focus={props.flash ? "1" : "0"}
+      data-changed={changed ? "1" : "0"}
+      data-staged={isStaged ? "1" : "0"}
+      data-out={out ? "1" : "0"}
+    >
       <div class="su-label">
         <span class="su-name">{p.label}</span>
         {props.convention && <span class="pc-small pc-muted">{props.convention}</span>}

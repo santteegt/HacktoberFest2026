@@ -34,7 +34,10 @@ r.post("/coach/turn", async (c) => {
       await stream.writeSSE({ event: e.event, data: JSON.stringify(e.data) });
     };
     try {
+      const t0 = Date.now();
       await engine.start(b.data, emit);
+      // One line per turn so the log shows which engine really ran (Mastra claim; T10).
+      console.log(`[coach] turn finished on the ${engine.kind} engine in ${Date.now() - t0} ms`);
     } catch (e) {
       const stage = e instanceof CoachError ? e.stage : e instanceof VaultError ? e.stage : "coach";
       console.error(`[coach] turn failed (${engine.kind}):`, e);
