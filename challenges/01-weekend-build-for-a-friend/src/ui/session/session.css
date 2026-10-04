@@ -1,0 +1,9 @@
+/* Session screen (T4b). Local classes prefixed se-; theme tokens come from setup/widgets.css (.pcx). */
+.se-head { margin-bottom: 8px; }
+.se-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.se-item { background: var(--c-bg, #0b0f14); border: 1px solid var(--c-line, #333); border-radius: 10px; padding: 12px 14px; }
+.se-setupnote { color: var(--c-warn, #ffbf3c); }
+.se-rating { display: flex; gap: 12px; }
+.se-rating .pc-btn[aria-checked="true"] { background: var(--c-accent, #7fb2ff); color: #07101a; border-color: var(--c-accent, #7fb2ff); }
+.se-tyre { font-size: 1.6rem; min-width: 2ch; text-align: center; }
+.se-compare { border-color: var(--c-accent, #7fb2ff); }

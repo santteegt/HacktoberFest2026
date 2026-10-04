@@ -1,0 +1,70 @@
+/* Shared look for the Setup and Session screens (T4b). Uses the theme tokens from plan section 5 with fallbacks. */
+.pcx {
+  --c-bg: var(--bg, #0b0f14);
+  --c-panel: var(--panel, #151c24);
+  --c-panel2: color-mix(in srgb, var(--c-panel) 80%, #fff 6%);
+  --c-text: var(--text, #f2f5f8);
+  --c-muted: var(--muted, #9fb0c0);
+  --c-accent: var(--accent, #7fb2ff);
+  --c-warn: var(--warn, #ffbf3c);
+  --c-ok: var(--ok, #4fd18b);
+  --c-danger: var(--danger, #ff6b6b);
+  --c-line: color-mix(in srgb, var(--c-text) 18%, transparent);
+  color: var(--c-text);
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+.pcx *, .pcx *::before, .pcx *::after { box-sizing: border-box; }
+.pcx h2 { margin: 0 0 12px; font-size: 1.4rem; }
+.pcx h3 { margin: 0 0 8px; font-size: 1.1rem; }
+.pcx .pc-muted { color: var(--c-muted); }
+.pcx .pc-small { font-size: .85rem; }
+.pcx .pc-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.pcx .pc-grow { flex: 1 1 auto; }
+.pcx .pc-panel { background: var(--c-panel); border: 1px solid var(--c-line); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+
+.pcx .pc-btn {
+  min-height: 48px; min-width: 48px; padding: 8px 18px; border-radius: 10px; cursor: pointer;
+  font: inherit; font-weight: 600; color: var(--c-text); background: var(--c-panel2);
+  border: 2px solid var(--c-line);
+}
+.pcx .pc-btn:hover:not(:disabled) { border-color: var(--c-accent); }
+.pcx .pc-btn:focus-visible, .pcx .pc-chip:focus-visible, .pcx input:focus-visible, .pcx select:focus-visible, .pcx textarea:focus-visible {
+  outline: 3px solid var(--c-accent); outline-offset: 2px;
+}
+.pcx .pc-btn:disabled { opacity: .45; cursor: not-allowed; }
+.pcx .pc-btn.primary { background: var(--c-accent); color: #07101a; border-color: var(--c-accent); min-height: 56px; font-size: 1.05rem; }
+.pcx .pc-btn.warn { background: var(--c-warn); color: #1a1200; border-color: var(--c-warn); }
+.pcx .pc-btn.danger { border-color: var(--c-danger); color: var(--c-danger); }
+.pcx .pc-btn.big { min-height: 64px; min-width: 64px; font-size: 1.3rem; }
+
+.pcx .pc-chips { display: flex; flex-wrap: wrap; gap: 12px; }
+.pcx .pc-chip {
+  min-height: 48px; padding: 6px 18px; border-radius: 99px; cursor: pointer; font: inherit;
+  color: var(--c-text); background: var(--c-panel2); border: 2px solid var(--c-line);
+}
+.pcx .pc-chip[aria-pressed="true"], .pcx .pc-chip[aria-checked="true"] {
+  background: color-mix(in srgb, var(--c-accent) 28%, var(--c-panel)); border-color: var(--c-accent); font-weight: 700;
+}
+
+.pcx label.pc-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.pcx .pc-label { font-size: .9rem; color: var(--c-muted); font-weight: 600; }
+.pcx input[type="text"], .pcx input[type="number"], .pcx input:not([type]), .pcx select, .pcx textarea {
+  min-height: 48px; padding: 8px 12px; font: inherit; color: var(--c-text); background: var(--c-bg);
+  border: 2px solid var(--c-line); border-radius: 10px; width: 100%;
+}
+.pcx textarea { min-height: 96px; resize: vertical; }
+.pcx .pc-flag { color: var(--c-warn); font-size: .85rem; font-weight: 600; }
+.pcx .pc-err { color: var(--c-danger); font-size: .9rem; font-weight: 600; }
+.pcx .pc-ok { color: var(--c-ok); }
+
+.pcx .pc-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.65); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px;
+}
+.pcx .pc-dialog {
+  background: var(--c-panel); border: 2px solid var(--c-accent); border-radius: 14px; padding: 20px;
+  width: min(560px, 100%); max-height: 90vh; overflow: auto;
+}
+.pcx table.pc-table { width: 100%; border-collapse: collapse; }
+.pcx .pc-table th, .pcx .pc-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--c-line); }
+.pcx .pc-table th { color: var(--c-muted); font-size: .85rem; }
