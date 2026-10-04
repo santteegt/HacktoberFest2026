@@ -1,4 +1,4 @@
-// UI entry (T4a owns it after T0). No service worker: this is a localhost app.
+// UI entry (T4a). No service worker: this is a localhost app.
 import { render } from "preact";
 import { App } from "./ui/app/App";
 import "./style.css";
