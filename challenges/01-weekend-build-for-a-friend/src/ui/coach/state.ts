@@ -1,13 +1,15 @@
 // Coach turn state machine (T4a). Module-level signals so the turn survives switching screens.
 // Event order from the server is fixed (src/shared/events.ts):
 //   classified, then refusal (stop) or precheck, suggestion, token*, explained, suspended.
-// The suggestion card is shown as soon as `suggestion` arrives; Apply needs the runId, which arrives with `suspended`.
+// The suggestion card is shown as soon as `suggestion` arrives. The runId comes with `classified`/`suggestion` (T7),
+// so Apply unlocks at the card; the server's decide waits for the turn to suspend before resuming it.
 import { signal } from "@preact/signals";
 import {
   applySetup,
   coachDecide,
   coachOutcome,
   coachTurn,
+  getSession,
   patchSession,
 } from "../../api/client";
 import type {
@@ -142,18 +144,22 @@ export async function startTurn(
       if (!live()) return;
       const nowMs = performance.now();
       switch (ev.event) {
-        case "classified":
-          patch({ classification: ev.data, stage: "pick", t: { ...turn.value!.t, classified: nowMs } });
+        case "classified": {
+          const { runId, ...classification } = ev.data;
+          patch({ classification, runId: runId ?? turn.value!.runId, stage: "pick", t: { ...turn.value!.t, classified: nowMs } });
           break;
+        }
         case "refusal":
           patch({ refusal: ev.data, status: "refused", stage: "done" });
           break;
         case "precheck":
           patch({ prechecks: ev.data });
           break;
-        case "suggestion":
-          patch({ suggestion: ev.data, stage: "phrase", t: { ...turn.value!.t, suggestion: nowMs } });
+        case "suggestion": {
+          const { runId, ...suggestion } = ev.data;
+          patch({ suggestion, runId: runId ?? turn.value!.runId, stage: "phrase", t: { ...turn.value!.t, suggestion: nowMs } });
           break;
+        }
         case "token":
           patch({ coachText: turn.value!.coachText + ev.data.text });
           break;
@@ -161,14 +167,20 @@ export async function startTurn(
           patch({ explanation: ev.data, coachText: ev.data.text, t: { ...turn.value!.t, explained: nowMs } });
           void getSpeechOutput(settings.value)?.speak(ev.data.text).catch(() => {});
           break;
-        case "suspended":
+        case "suspended": {
+          const cur = turn.value!;
+          // The driver may have tapped Apply/Skip before the turn suspended: keep that status.
+          const decided = !!cur.applied || !!cur.skipped || cur.status === "awaiting-outcome" || cur.status === "done";
           patch({
             runId: ev.data.runId,
             stage: "done",
-            status: ev.data.status === "awaiting-outcome" ? "awaiting-outcome" : ev.data.status === "done" ? "done" : "awaiting-decision",
+            status: decided
+              ? cur.status
+              : ev.data.status === "awaiting-outcome" ? "awaiting-outcome" : ev.data.status === "done" ? "done" : "awaiting-decision",
             t: { ...turn.value!.t, explained: turn.value!.t.explained ?? nowMs },
           });
           break;
+        }
         case "error":
           patch({ status: "error", stage: "done", error: `${ev.data.message}${ev.data.stage ? ` (${ev.data.stage})` : ""}` });
           break;
@@ -253,7 +265,15 @@ export function sendOutcome(o: Outcome): Promise<void> {
   return guarded(async () => {
     const t = turn.value;
     if (!t?.runId) return;
-    const res = await coachOutcome(t.runId, { outcome: o });
+    // Tie the outcome to the latest run logged after this turn started, when there is one (T7).
+    let runRef: string | undefined;
+    const sid = session.value?.id;
+    if (sid) {
+      const b = await getSession(sid).catch(() => null);
+      const startedAt = Date.now() - (performance.now() - t.t.start);
+      runRef = b?.runs.filter((r) => r.createdAt >= startedAt).sort((x, y) => y.seq - x.seq)[0]?.id;
+    }
+    const res = await coachOutcome(t.runId, runRef ? { outcome: o, runRef } : { outcome: o });
     patch({ outcomeChoice: o, outcomeResult: res, status: "done" });
     await refreshSession();
   });
@@ -315,7 +335,10 @@ export async function startListening(): Promise<void> {
     if (text) await startTurn({ utterance: text }, text);
     else voiceHint.value = "I did not catch that. Hold the button and try again.";
   } catch (e) {
-    voiceHint.value = `Voice input failed: ${(e as Error).message}. Type or tap a chip.`;
+    // VoiceError (src/voice) carries a code (off|unsupported|no-local|pack-missing|pack-unavailable|permission|failed)
+    // and a driver-facing message; show that message as is.
+    const err = e as Error & { code?: string };
+    voiceHint.value = err.code ? `${err.message} Type or tap a chip.` : `Voice input failed: ${err.message}. Type or tap a chip.`;
   } finally {
     listening.value = false;
     interim.value = "";

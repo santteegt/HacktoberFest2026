@@ -35,9 +35,10 @@ r.post("/sessions/:id/setup", async (c) => {
   const { values, ...meta } = b.data;
   return c.json(await repo.applySetupChanges(c.req.param("id"), values, meta));
 });
+r.get("/setups/:id", async (c) => c.json(await repo.getSetup(c.req.param("id"))));
 r.post("/sessions/:id/runs", async (c) => {
-  // AddRunBody still carries sessionId (the contract only omits id/seq/createdAt/setupId); the path wins.
-  const b = await parseBody(c, AddRunBody.partial({ sessionId: true }));
+  // The path id is the session; an old client's body `sessionId` is stripped by the schema and ignored.
+  const b = await parseBody(c, AddRunBody);
   if (!b.ok) return b.res;
   return c.json(await repo.addRun(c.req.param("id"), b.data));
 });

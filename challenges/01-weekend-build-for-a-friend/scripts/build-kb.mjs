@@ -53,7 +53,8 @@ for (const dir of DIRS) {
       let id = `${slug}#${slugify(lead)}`, n = 2;
       while (seen.has(id)) id = `${slug}#${slugify(lead)}-${n++}`;
       seen.add(id);
-      chunks.push({ id, page: slug, pageTitle: fm.title, section, lead, text: stripLinks(text).trim() });
+      // origin: "snapshot" = frozen pre-window notes (kb/source), "additions" = written in the window (kb/additions).
+      chunks.push({ id, page: slug, pageTitle: fm.title, origin: dir === "kb/additions" ? "additions" : "snapshot", section, lead, text: stripLinks(text).trim() });
     };
     const def = (sec["Definition"] ?? []).join(" ").trim();
     if (def) add("Definition", "definition", def);

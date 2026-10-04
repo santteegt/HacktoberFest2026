@@ -613,6 +613,11 @@ export async function mockRequest<K extends keyof Endpoints>(
       if (i >= 0) saved.splice(i, 1);
       return out({ ok: true });
     }
+    case "GET /api/setups/:id": {
+      const su = setups.get(p.id);
+      if (!su) throw new MockError("setup not found", 404);
+      return out(su);
+    }
     case "GET /api/export":
       return out({
         schemaVersion: 1,

@@ -4,6 +4,7 @@
 import { randomUUID } from "node:crypto";
 import type { CoachTurnInput, OutcomeResult, TurnState } from "../../src/shared/types";
 import type { CoachEngine, DecideArgs, EmitFn, OutcomeArgs } from "./engine";
+import { trackStart, waitForStart } from "./pending";
 import {
   CoachError,
   CoachState,
@@ -62,17 +63,24 @@ export function createPlainEngine(opts: { deps?: () => CoachDeps; store?: RunSto
     async start(input: CoachTurnInput, emit: EmitFn): Promise<TurnState> {
       const deps = depsOf();
       let st = initialState(randomUUID(), input);
-      for (const step of [stepClassify, stepPrecheck, stepPickLever, stepExplain]) st = await step(st, emit, deps);
-      await store.put(st);
+      const started = trackStart(st.runId);
+      try {
+        for (const step of [stepClassify, stepPrecheck, stepPickLever, stepExplain]) st = await step(st, emit, deps);
+        await store.put(st);
+      } finally {
+        started();
+      }
       if (!st.halted && !st.refusal) await emit({ event: "suspended", data: { runId: st.runId, status: st.status } });
       return publicState(st);
     },
     async decide(runId: string, d: DecideArgs): Promise<TurnState> {
+      await waitForStart(runId);
       const st = await stepApply(await load(runId), d, depsOf());
       await store.put(st);
       return publicState(st);
     },
     async outcome(runId: string, o: OutcomeArgs): Promise<OutcomeResult> {
+      await waitForStart(runId);
       const st = await stepLogOutcome(await load(runId), o, depsOf());
       await store.put(st);
       return st.outcomeResult!;

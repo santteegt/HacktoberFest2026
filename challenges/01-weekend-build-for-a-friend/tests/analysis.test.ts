@@ -174,6 +174,18 @@ describe("compareRuns setup and condition differences", () => {
     expect(cmp.confoundText).toContain("3 things changed at once"); // temp, grip, tyre runs; tyreRunsOnSet not double counted
   });
 
+  it("treats the tyre-run counter as a condition only: no setup diff, not confounded by itself (T7)", () => {
+    // The session log writes tyreRunsOnSet to a new setup row before each run; one real change plus one more run.
+    const cmp = compareRuns(
+      bundle(run("a", 1, []), { rearArbMm: 1.2, tyreRunsOnSet: 1 }),
+      bundle(run("b", 2, []), { rearArbMm: 1.1, tyreRunsOnSet: 2 }),
+      ctx,
+    );
+    expect(cmp.setupDiffs.map((d) => d.param)).toEqual(["rearArbMm"]);
+    expect(cmp.conditionDiffs.some((d) => d.text.includes("tyre set"))).toBe(false); // under 3 runs: no note
+    expect(cmp.confounded).toBe(false);
+  });
+
   it("ignores a temperature gap under 5 C", () => {
     const s2: Session = { ...session, id: "s2", conditions: { ...today, trackTempC: 28 } };
     const cmp = compareRuns(bundle(run("a", 1, []), { rearArbMm: 1.2 }), bundle(run("b", 1, [], { sessionId: "s2" }), { rearArbMm: 1.2 }, s2), ctx);
@@ -204,7 +216,9 @@ describe("paramHistory", () => {
       ch("4", "rearArbMm", 1.0, 1.1, "same"),
       ch("5", "casterDeg", 6, 8),
       ch("6", "rearArbMm", 1.1, 1.2, undefined, "revert"),
+      ch("7", "tyreRunsOnSet", 1, 2, undefined, "manual"), // T7: tyre counter is not a try
     ]);
+    expect(rows.some((r) => r.param === "tyreRunsOnSet")).toBe(false);
     const dec = rows.find((r) => r.param === "rearArbMm" && r.direction === "decrease")!;
     expect(dec).toMatchObject({ tries: 3, better: 2, same: 0, worse: 1 });
     const inc = rows.find((r) => r.param === "rearArbMm" && r.direction === "increase")!;

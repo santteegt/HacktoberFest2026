@@ -42,7 +42,8 @@ export function getSpeechInput(s: Settings | null): HoldableSpeechInput | null {
 }
 
 export function getSpeechOutput(s: Settings | null): SpeechOutput | null {
-  if (!mod?.createSpeechOutput || !s || s.voiceOut !== "browser") return null;
+  // "browser" (speechSynthesis) and "say" (macOS say via /api/speak) are both handled by T6's createSpeechOutput.
+  if (!mod?.createSpeechOutput || !s || s.voiceOut === "off") return null;
   const key = `${s.voiceOut}:${s.voiceName ?? ""}`;
   if (outKey !== key || !outInst) {
     try {

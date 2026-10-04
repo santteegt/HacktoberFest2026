@@ -17,6 +17,7 @@ import { config } from "../config";
 import { DecideBody, OutcomeBody } from "../../src/shared/api";
 import type { CoachTurnInput, OutcomeResult, TurnState } from "../../src/shared/types";
 import type { CoachEngine, DecideArgs, EmitFn, OutcomeArgs } from "./engine";
+import { trackStart, waitForStart } from "./pending";
 import {
   assertAwaitingOutcome,
   CoachError,
@@ -151,6 +152,7 @@ export function createMastraEngine(opts: { deps?: () => CoachDeps; dbUrl?: strin
       const { wf } = await wfP();
       const runId = randomUUID();
       emitters.set(runId, emit);
+      const started = trackStart(runId);
       try {
         const run = await wf.createRun({ runId });
         const r = (await run.start({ inputData: initialState(runId, input) })) as RunResult;
@@ -159,10 +161,12 @@ export function createMastraEngine(opts: { deps?: () => CoachDeps; dbUrl?: strin
         return publicState(st);
       } finally {
         emitters.delete(runId);
+        started();
       }
     },
 
     async decide(runId: string, d: DecideArgs): Promise<TurnState> {
+      await waitForStart(runId);
       const st = await readState(runId);
       targetOf(st, d); // validate before resuming, so a bad request never fails the persisted run
       const run = await (await wfP()).wf.createRun({ runId });
@@ -171,6 +175,7 @@ export function createMastraEngine(opts: { deps?: () => CoachDeps; dbUrl?: strin
     },
 
     async outcome(runId: string, o: OutcomeArgs): Promise<OutcomeResult> {
+      await waitForStart(runId);
       const st = await readState(runId);
       assertAwaitingOutcome(st);
       const run = await (await wfP()).wf.createRun({ runId });

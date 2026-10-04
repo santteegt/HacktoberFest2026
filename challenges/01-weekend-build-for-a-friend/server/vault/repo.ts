@@ -193,6 +193,11 @@ async function loadSetup(id: string): Promise<Setup> {
   return rowSetup(row);
 }
 
+/** GET /api/setups/:id (T7): one setup row by id; 404 VaultError when missing. */
+export function getSetup(id: string): Promise<Setup> {
+  return loadSetup(id);
+}
+
 // ---------- sessions ----------
 
 /** Creates the session and its baseline setup row (BD12 value, else generic; plan 4.1) in one batch. */
@@ -331,7 +336,7 @@ export function setChangeOutcome(changeId: string, outcome: Outcome, outcomeRunI
 // ---------- runs ----------
 
 /** setupId = the session's current setup; seq = next number in the session; bestLapMs defaults to the fastest lap. */
-export function addRun(sessionId: string, body: Omit<AddRunBody, "sessionId">): Promise<Run> {
+export function addRun(sessionId: string, body: AddRunBody): Promise<Run> {
   return serial(async () => {
     const session = await loadSession(sessionId);
     const laps = body.lapTimesMs;

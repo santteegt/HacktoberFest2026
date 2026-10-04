@@ -7,10 +7,11 @@ import { closeCitation, openId } from "./drawer";
 
 const cache = new Map<string, KbChunk>();
 
-/** Chunks written during the window live in kb/additions; the API does not say which, so only label what we know. */
+/** The server tags every chunk with its origin (kb/source snapshot vs kb/additions written in the window). */
 function originLabel(c: KbChunk): string {
-  const origin = (c as KbChunk & { origin?: string }).origin;
-  return origin === "additions" ? "From the author's notes added during the challenge window" : "From the author's pre-window notes";
+  return c.origin === "additions"
+    ? "Added in the challenge window (NotebookLM extraction)"
+    : "From the author's pre-window notes";
 }
 
 export function DrawerHost() {

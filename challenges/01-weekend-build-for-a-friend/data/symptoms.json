@@ -14,7 +14,10 @@
       "front washes out",
       "lazy turn-in",
       "no front bite",
-      "plows on entry"
+      "plows on entry",
+      "understeers on entry",
+      "no steering on turn-in",
+      "pushes into the corner"
     ]
   },
   {
@@ -30,7 +33,9 @@
       "pushes mid-corner",
       "runs wide in the sweeper",
       "won't hold a line",
-      "understeers in the middle"
+      "understeers in the middle",
+      "pushes in the middle of the corner",
+      "washes out mid-corner"
     ]
   },
   {
@@ -45,7 +50,10 @@
       "pushes on power",
       "runs wide on exit",
       "won't turn on throttle",
-      "goes straight on the gas"
+      "goes straight on the gas",
+      "understeers on exit",
+      "pushes out of the corner",
+      "no steering on power"
     ]
   },
   {
@@ -62,7 +70,12 @@
       "loose on entry",
       "tail happy into the corner",
       "spins on turn-in",
-      "rear comes around when I brake"
+      "rear comes around when I brake",
+      "loose into the corner",
+      "back end steps out on entry",
+      "oversteer on entry",
+      "rear slides when I brake",
+      "back end comes around on the brakes"
     ]
   },
   {
@@ -79,7 +92,22 @@
       "snaps on throttle",
       "no rear grip out of corners",
       "fishtails accelerating",
-      "rear steps out on exit"
+      "rear steps out on exit",
+      "rear steps out on power",
+      "back end snaps loose",
+      "snaps loose",
+      "back end steps out on power",
+      "rear kicks out on throttle",
+      "tail slides out on power",
+      "loose out of the corner",
+      "loose on exit",
+      "oversteer on exit",
+      "power oversteer",
+      "spins on power",
+      "punch it out of the corner",
+      "back end comes around on throttle",
+      "no traction on exit",
+      "wheelspin out of corners"
     ]
   },
   {
@@ -96,7 +124,9 @@
       "flips in fast corners",
       "digs in",
       "lifts the inside wheels",
-      "grip rolls"
+      "grip rolls",
+      "rolls over",
+      "flips over"
     ]
   },
   {
@@ -111,7 +141,9 @@
       "bounces over bumps",
       "skips on the bumps",
       "unsettled on the bumpy section",
-      "hops"
+      "hops",
+      "bouncy",
+      "crashes over the bumps"
     ]
   },
   {
@@ -128,7 +160,9 @@
       "nervous",
       "edgy",
       "hard to keep straight",
-      "too sensitive"
+      "too sensitive",
+      "twitchy on the straight",
+      "hard to drive straight"
     ]
   },
   {
@@ -145,7 +179,9 @@
       "sliding everywhere",
       "dusty track",
       "feels like ice",
-      "slippery all over"
+      "slippery all over",
+      "no grip at all",
+      "slides everywhere"
     ]
   },
   {
@@ -161,7 +197,9 @@
       "loses grip after a few minutes",
       "slower at the end",
       "motor gets hot",
-      "steering goes soft late"
+      "steering goes soft late",
+      "fades late",
+      "goes off at the end"
     ]
   },
   {
@@ -179,7 +217,9 @@
       "turns better left than right",
       "pulls to one side",
       "different each direction",
-      "one side grips more"
+      "one side grips more",
+      "pulls left",
+      "pulls right"
     ]
   },
   {

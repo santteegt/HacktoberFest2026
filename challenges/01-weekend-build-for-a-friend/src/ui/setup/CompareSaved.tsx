@@ -1,5 +1,5 @@
 // "Compare with a saved setup" (T4b): pick a saved setup, see every param that differs from the current setup.
-// There is no GET /api/setups/:id yet, so setup rows come from GET /api/export (see the change request in the report).
+// The picked entry's setup row comes from GET /api/setups/:id (T7), not the whole export.
 import { useEffect, useState } from "preact/hooks";
 import { request } from "../../api/client";
 import type { ParamDef, SavedSetup, Setup, SetupValues } from "../../shared/types";
@@ -9,7 +9,7 @@ import { errorMessage } from "./widgets";
 
 export function CompareSaved(props: { params: ParamDef[]; current: SetupValues; refreshKey?: number }) {
   const [saved, setSaved] = useState<SavedSetup[]>([]);
-  const [setups, setSetups] = useState<Map<string, Setup>>(new Map());
+  const [setups, setSetups] = useState<Map<string, Setup | null>>(new Map());
   const [picked, setPicked] = useState("");
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -22,11 +22,7 @@ export function CompareSaved(props: { params: ParamDef[]; current: SetupValues; 
         const list = await request("GET /api/saved");
         if (!live) return;
         setSaved(list);
-        if (list.length) {
-          const dump = await request("GET /api/export");
-          if (!live) return;
-          setSetups(new Map(dump.tables.setups.map((s) => [s.id, s])));
-        }
+        setSetups(new Map());
         setErr(null);
       } catch (e) {
         if (live) setErr(errorMessage(e));
@@ -40,7 +36,19 @@ export function CompareSaved(props: { params: ParamDef[]; current: SetupValues; 
   }, [props.refreshKey]);
 
   const sel = saved.find((s) => s.id === picked);
-  const selSetup = sel ? setups.get(sel.setupId) : undefined;
+  const setupId = sel?.setupId;
+  useEffect(() => {
+    if (!setupId || setups.has(setupId)) return;
+    let live = true;
+    request("GET /api/setups/:id", undefined, { params: { id: setupId } })
+      .then((su) => live && setSetups((m) => new Map(m).set(setupId, su)))
+      .catch(() => live && setSetups((m) => new Map(m).set(setupId, null)));
+    return () => {
+      live = false;
+    };
+  }, [setupId, setups]);
+  const fetched = setupId ? setups.get(setupId) : undefined;
+  const selSetup = fetched ?? undefined;
   const diffs = selSetup ? diffValues(props.current, selSetup.values, props.params) : [];
   const label = (id: string) => props.params.find((p) => p.id === id);
 
@@ -68,7 +76,8 @@ export function CompareSaved(props: { params: ParamDef[]; current: SetupValues; 
         <>
           <p class="pc-small pc-muted">{conditionsSummary(sel.conditions)}</p>
           {sel.verdict && <p class="pc-small">Verdict: {sel.verdict}</p>}
-          {!selSetup && <p class="pc-err">The setup row for this saved entry was not found.</p>}
+          {fetched === undefined && <p class="pc-muted">Loading…</p>}
+          {fetched === null && <p class="pc-err">The setup row for this saved entry was not found.</p>}
           {selSetup && diffs.length === 0 && <p class="pc-ok">Identical to your current setup.</p>}
           {selSetup && diffs.length > 0 && (
             <table class="pc-table">

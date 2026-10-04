@@ -5,6 +5,8 @@
 //   precheck, suggestion, token*, explained, suspended.
 // `error` may arrive at any point and ends the stream.
 // The UI renders the suggestion card as soon as `suggestion` arrives; `token`s only fill the "coach says" line.
+// `classified` and `suggestion` carry the turn's `runId` (T7), so Apply can unlock at the card: the server's
+// decide/outcome wait for the turn's first segment (explain + suspend) to finish before resuming it.
 //
 // Wire format (standard SSE, as written by hono/streaming streamSSE):
 //   event: <name>\n data: <JSON payload>\n\n
@@ -32,10 +34,10 @@ export const COACH_EVENTS = [
 export type CoachEventName = (typeof COACH_EVENTS)[number];
 
 export interface CoachEventMap {
-  classified: Classification;
+  classified: Classification & { runId?: string };
   refusal: Refusal;
   precheck: PrecheckDef[];
-  suggestion: Suggestion;
+  suggestion: Suggestion & { runId?: string };
   token: { text: string };
   explained: Explanation;
   suspended: { runId: string; status: TurnStatus };

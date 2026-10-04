@@ -67,8 +67,11 @@ export const ApplySetupBody = z.object({
   coachRunId: z.string().optional(),
 });
 
-/** POST /api/sessions/:id/runs (setupId = session.currentSetupId; seq and createdAt set by the server). */
-export const AddRunBody = Run.omit({ id: true, seq: true, createdAt: true, setupId: true });
+/**
+ * POST /api/sessions/:id/runs (setupId = session.currentSetupId; seq and createdAt set by the server).
+ * The session comes from the path; a stray `sessionId` in the body is stripped (zod drops unknown keys).
+ */
+export const AddRunBody = Run.omit({ id: true, sessionId: true, seq: true, createdAt: true, setupId: true });
 
 /** PATCH /api/changes/:id */
 export const PatchChangeBody = z.object({
@@ -179,6 +182,8 @@ export interface Endpoints {
   "PATCH /api/sessions/:id": { body: PatchSessionBody; res: Session };
   "POST /api/sessions/:id/setup": { body: ApplySetupBody; res: ApplySetupResponse };
   "POST /api/sessions/:id/runs": { body: AddRunBody; res: RunT };
+  /** One setup row (values) by id, e.g. a saved setup's setupId. */
+  "GET /api/setups/:id": { body: never; res: Setup };
   "PATCH /api/changes/:id": { body: PatchChangeBody; res: Change };
   "GET /api/saved": { body: never; res: SavedSetupT[] };
   "POST /api/saved": { body: SaveSetupBody; res: SavedSetupT };

@@ -54,11 +54,22 @@ export function ExplainerPanel({ param, committed, effective, conventions, onClo
   const [view, setView] = useState<SceneView>("auto");
   const [sceneOk, setSceneOk] = useState(true);
 
-  // Mount one scene for the lifetime of the panel.
+  const explainer = param ? (param.explainer ?? safeExplainerFor(param.id)) : null;
+  const from = param ? committed[param.id] : null;
+  const to = param ? effective[param.id] : null;
+  const pose = poseFrom(effective);
+  const poseKey = JSON.stringify(pose);
+  const hasScene = !!param && !!explainer;
+
+  // Mount a scene whenever the host div exists (a param with an explainer is selected); it lives until the
+  // panel goes back to "no param" or "no 3D view". T7 fix: the old mount ran once with [] while param was
+  // still null, so the host div did not exist yet and no canvas was ever created.
   useEffect(() => {
+    if (!hasScene || !host.current) return;
+    let s: CarScene | null = null;
     try {
-      const s = createCarScene();
-      if (host.current) s.mount(host.current);
+      s = createCarScene();
+      s.mount(host.current);
       scene.current = s;
     } catch (e) {
       console.warn("explainer scene unavailable", e);
@@ -66,19 +77,13 @@ export function ExplainerPanel({ param, committed, effective, conventions, onClo
     }
     return () => {
       try {
-        scene.current?.dispose();
+        s?.dispose();
       } catch {
         /* ignore */
       }
-      scene.current = null;
+      if (scene.current === s) scene.current = null;
     };
-  }, []);
-
-  const explainer = param ? (param.explainer ?? safeExplainerFor(param.id)) : null;
-  const from = param ? committed[param.id] : null;
-  const to = param ? effective[param.id] : null;
-  const pose = poseFrom(effective);
-  const poseKey = JSON.stringify(pose);
+  }, [hasScene]);
 
   useEffect(() => {
     const s = scene.current;
@@ -93,7 +98,7 @@ export function ExplainerPanel({ param, committed, effective, conventions, onClo
       setSceneOk(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [param?.id, explainer, poseKey, from, to]);
+  }, [param?.id, explainer, poseKey, from, to, hasScene]);
 
   useEffect(() => {
     try {
@@ -101,7 +106,7 @@ export function ExplainerPanel({ param, committed, effective, conventions, onClo
     } catch {
       /* ignore */
     }
-  }, [view]);
+  }, [view, hasScene]);
 
   const key = param ? conventionKey(param.id) : null;
   const convention = key ? conventions[key] : undefined;

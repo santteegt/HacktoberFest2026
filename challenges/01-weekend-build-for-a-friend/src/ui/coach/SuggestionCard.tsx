@@ -68,7 +68,8 @@ export function SuggestionCard({ t, option }: { t: TurnView; option: LeverSugges
   const idx = optionIndex.value;
   const total = 1 + sug.alternatives.length;
   const l = option.lever;
-  const decidable = t.status === "awaiting-decision" && !!t.runId;
+  // The runId arrives with the card (T7), so Apply works while the coach is still phrasing.
+  const decidable = (t.status === "awaiting-decision" || t.status === "thinking") && !!t.runId;
   const closed = t.status === "awaiting-outcome" || (t.status === "done" && !!t.applied) || t.skipped;
   const numeric = !!l.param && !option.needsCurrentValue && option.to !== null;
   const lines = skippedLines(sug);
@@ -129,7 +130,7 @@ export function SuggestionCard({ t, option }: { t: TurnView; option: LeverSugges
             </Button>
           </div>
         )}
-        {!closed && !decidable && t.status === "thinking" && <p class="muted small">Apply unlocks when the coach finishes.</p>}
+        {!closed && !decidable && t.status === "thinking" && <p class="muted small">Apply unlocks in a moment.</p>}
       </div>
     </Card>
   );

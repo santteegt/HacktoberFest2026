@@ -224,6 +224,7 @@ export const patchSession = (id: string, body: Body<"PATCH /api/sessions/:id">) 
   request("PATCH /api/sessions/:id", body, { params: { id } });
 export const applySetup = (sessionId: string, body: Body<"POST /api/sessions/:id/setup">) =>
   request("POST /api/sessions/:id/setup", body, { params: { id: sessionId } });
+export const getSetup = (id: string) => request("GET /api/setups/:id", undefined, { params: { id } });
 export const addRun = (sessionId: string, body: Body<"POST /api/sessions/:id/runs">) =>
   request("POST /api/sessions/:id/runs", body, { params: { id: sessionId } });
 

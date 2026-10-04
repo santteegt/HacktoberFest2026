@@ -115,6 +115,8 @@ export const KbChunk = z.object({
   id: z.string(),
   page: z.string(),
   pageTitle: z.string(),
+  /** "snapshot" = the author's frozen pre-window notes (kb/source); "additions" = written in the window (kb/additions). */
+  origin: z.enum(["snapshot", "additions"]),
   section: z.string(),
   lead: z.string(),
   text: z.string(),
@@ -414,6 +416,8 @@ export const RunComparison = z.object({
   }),
   confounded: z.boolean(),
   confoundText: z.string().optional(),
+  /** Chunk ids behind the confounding note (one change at a time, back to back). */
+  confoundCitations: z.array(z.string()).optional(),
 });
 
 export const ParamHistoryRow = z.object({
@@ -423,6 +427,8 @@ export const ParamHistoryRow = z.object({
   better: z.number(),
   same: z.number(),
   worse: z.number(),
+  /** Shown next to the row, e.g. "your feel, not lap-time proof". */
+  label: z.string(),
 });
 
 // ---------- export / import (T1) ----------

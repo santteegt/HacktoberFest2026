@@ -395,8 +395,17 @@ export async function explain(
 
 // ---------- workflow-level steps (shared by both engines; each no-ops once the turn has stopped) ----------
 
+/** Adds the turn's runId to `classified` and `suggestion` so the UI can unlock Apply at the card (T7). */
+export function withRunId(emit: EmitFn, runId: string): EmitFn {
+  return (e) => {
+    if (e.event === "classified") return emit({ event: "classified", data: { ...e.data, runId } });
+    if (e.event === "suggestion") return emit({ event: "suggestion", data: { ...e.data, runId } });
+    return emit(e);
+  };
+}
+
 export async function stepClassify(st: CoachStateT, emit: EmitFn, deps: CoachDeps = current): Promise<CoachStateT> {
-  const r = await classify(st.input, emit, deps);
+  const r = await classify(st.input, withRunId(emit, st.runId), deps);
   if (!r.classification) return { ...st, halted: { stage: "classify", message: "no classification" }, status: "done" };
   return { ...st, ...r, status: r.refusal ? "done" : st.status };
 }
@@ -411,7 +420,7 @@ export async function stepPrecheck(st: CoachStateT, emit: EmitFn, deps: CoachDep
 export async function stepPickLever(st: CoachStateT, emit: EmitFn, deps: CoachDeps = current): Promise<CoachStateT> {
   if (stopped(st)) return st;
   try {
-    const suggestion = await pickLever(publicState(st), emit, deps);
+    const suggestion = await pickLever(publicState(st), withRunId(emit, st.runId), deps);
     return { ...st, suggestion };
   } catch (e) {
     const message = `could not pick a change: ${(e as Error).message}`;

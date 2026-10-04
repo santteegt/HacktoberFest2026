@@ -13,10 +13,14 @@ export const CITE = {
   tyreDiameter: "touring-car-traction-and-tire-management#tyre-diameter-is-a-geometry-input-not-just-a-wea",
 } as const;
 
-/** Extra field on top of the provisional `RunComparison` (change request: add to the zod schema). */
-export type RunComparisonOut = RunComparison & { confoundCitations?: string[] };
+/** Kept as an alias: `confoundCitations` now lives in the shared `RunComparison` schema (T7). */
+export type RunComparisonOut = RunComparison;
 
-const TYRE_RUNS_PARAM = "tyreRunsOnSet";
+/**
+ * Tyre wear is a condition, not a setup change (T7): the session log writes the run counter to the setup row
+ * before each run, so it is left out of the setup diff and only shows up as the "3 or more runs" condition note.
+ */
+export const TYRE_RUNS_PARAM = "tyreRunsOnSet";
 const TEMP_DELTA_C = 5;
 const TYRE_RUNS_DELTA = 3;
 const MIN_LAPS = 3;
@@ -106,7 +110,9 @@ export function compareRuns(a: RunBundle, b: RunBundle, ctx: { params: ParamDef[
   const unit = (id: string) => ctx.params.find((p) => p.id === id)?.unit ?? "";
 
   // 1. Setup differences (A -> B).
-  const setupDiffs: RunComparison["setupDiffs"] = diffSetups(a.setup.values, b.setup.values).map((d) => {
+  const setupDiffs: RunComparison["setupDiffs"] = diffSetups(a.setup.values, b.setup.values)
+    .filter((d) => d.param !== TYRE_RUNS_PARAM)
+    .map((d) => {
     const rows = d.direction === "changed" ? [] : leverRowsFor(ctx.levers, d.param, d.direction);
     const u = unit(d.param);
     const change = `${label(d.param)} ${fmt(d.from)} to ${fmt(d.to)}${u ? ` ${u}` : ""}`;
@@ -142,9 +148,7 @@ export function compareRuns(a: RunBundle, b: RunBundle, ctx: { params: ParamDef[
   if (ca.timeOfDay && cb.timeOfDay && ca.timeOfDay !== cb.timeOfDay) note(`Time of day changed from ${ca.timeOfDay} to ${cb.timeOfDay}.`, [CITE.gripEvolves]);
   const ta = a.setup.values[TYRE_RUNS_PARAM];
   const tb = b.setup.values[TYRE_RUNS_PARAM];
-  let tyreFlagged = false;
   if (typeof ta === "number" && typeof tb === "number" && Math.abs(tb - ta) >= TYRE_RUNS_DELTA) {
-    tyreFlagged = true;
     note(`The tyre set has ${Math.abs(tb - ta)} ${tb > ta ? "more" : "fewer"} runs on it in run B (${ta} to ${tb}); wear changes tyre diameter, which shifts ride height and droop.`, [CITE.tyreDiameter]);
   }
   const later = isLater(a, b);
@@ -156,7 +160,7 @@ export function compareRuns(a: RunBundle, b: RunBundle, ctx: { params: ParamDef[
   const lapStats = lapStatsFor(a.run.lapTimesMs, b.run.lapTimesMs);
 
   // 4. Confounding: more than one thing changed (setup params plus real condition changes).
-  const setupThings = setupDiffs.filter((d) => !(tyreFlagged && d.param === TYRE_RUNS_PARAM)).length;
+  const setupThings = setupDiffs.length; // tyreRunsOnSet is never in setupDiffs, so it is not double counted
   const things = setupThings + conditionThings;
   const confounded = things > 1;
 

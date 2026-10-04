@@ -223,6 +223,10 @@ describe("keywordClassify", () => {
     expect(keywordClassify("the car pushes on turn-in", symptoms)?.symptomId).toBe("entry-understeer");
     expect(keywordClassify("my motor gets hot and it fades late", symptoms)?.symptomId).toBe("fade-late-run");
     expect(keywordClassify("front washes out", symptoms)?.symptomId).toBe("entry-understeer");
+    // T7: acceptance phrasings for the Ollama-down fallback
+    expect(keywordClassify("the back end snaps loose when I punch it out of the hairpin", symptoms)?.symptomId).toBe("exit-oversteer");
+    expect(keywordClassify("rear steps out on power", symptoms)?.symptomId).toBe("exit-oversteer");
+    expect(keywordClassify("rear steps out on the brakes", symptoms)?.symptomId).toBe("entry-oversteer");
   });
 
   it("returns null for talk it cannot place", () => {

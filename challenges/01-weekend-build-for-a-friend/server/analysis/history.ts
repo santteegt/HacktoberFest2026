@@ -1,11 +1,13 @@
 // What has worked: outcome counts per (param, direction) across sessions (T8; plan 4.7 item 5).
 import type { Change, ParamHistoryRow } from "../../src/shared/types";
+import { TYRE_RUNS_PARAM } from "./compare";
 import { directionOf } from "./util";
 
 /** Shown next to every history row: these are the driver's own taps, not measurements. */
 export const HISTORY_LABEL = "your feel, not lap-time proof";
 
-export type ParamHistoryRowOut = ParamHistoryRow & { label: string };
+/** Kept as an alias: `label` now lives in the shared `ParamHistoryRow` schema (T7). */
+export type ParamHistoryRowOut = ParamHistoryRow;
 
 /**
  * One row per (param, direction). `tries` counts the driver's changes (reverts excluded, they undo a try rather
@@ -16,6 +18,7 @@ export function paramHistory(changes: Change[]): ParamHistoryRowOut[] {
   const rows = new Map<string, ParamHistoryRowOut>();
   for (const c of changes) {
     if (c.source === "revert") continue;
+    if (c.param === TYRE_RUNS_PARAM) continue; // tyre wear counter, logged before each run: not a setup try (T7)
     const direction = directionOf(c.from, c.to);
     const key = `${c.param}|${direction}`;
     let row = rows.get(key);

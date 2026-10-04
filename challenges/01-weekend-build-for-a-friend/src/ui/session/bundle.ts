@@ -36,11 +36,12 @@ export async function refreshBundle(): Promise<SessionBundle | null> {
   }
 }
 
-/** Makes sure the bundle for the app's open session is loaded (used when a screen mounts). */
+/**
+ * Loads the bundle for the app's open session (used when a screen mounts). Always re-fetches (T7): the coach
+ * screen writes changes and outcomes through its own calls, so a cached bundle would hide them here.
+ */
 export async function ensureBundle(): Promise<void> {
-  const id = session.value?.id;
-  if (!id) return;
-  if (bundle.value?.session.id === id && currentSetup.value) return;
+  if (!session.value?.id) return;
   await refreshBundle();
 }
 

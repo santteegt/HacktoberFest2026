@@ -285,6 +285,15 @@ describe("HTTP routes", () => {
     expect((await call("GET", "/api/health")).status).toBe(200);
   });
 
+  it("serves one setup by id and tolerates a stray sessionId in a run body (T7)", async () => {
+    const session = await (await call("POST", "/api/sessions", { date: "2026-10-04", car: "yokomo-bd12", conditions: COND })).json();
+    const su = await (await call("GET", `/api/setups/${session.currentSetupId}`)).json();
+    expect(su).toMatchObject({ id: session.currentSetupId, values: { rearToeInDeg: 3.5 } });
+    expect((await call("GET", "/api/setups/nope")).status).toBe(404);
+    const run = await (await call("POST", `/api/sessions/${session.id}/runs`, { sessionId: "ignored", feel: [] })).json();
+    expect(run.sessionId).toBe(session.id);
+  });
+
   it("serves /api/meta from the real data files", async () => {
     setParamsOverride(null);
     const m = await (await call("GET", "/api/meta")).json();

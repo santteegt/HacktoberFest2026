@@ -70,7 +70,6 @@ export function LogRunForm(props: {
       const run = await request(
         "POST /api/sessions/:id/runs",
         {
-          sessionId: props.session.id,
           feel,
           ...(rating ? { rating } : {}),
           ...(bestMs !== undefined ? { bestLapMs: bestMs } : {}),
