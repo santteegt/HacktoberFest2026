@@ -1,0 +1,94 @@
+{
+  "snapshotImportedAt": "2026-10-04T20:30Z",
+  "origin": "author's personal touring-car wiki (OKF markdown), written Sept 2026, before the Hacktoberfest 2026 Weekend Challenge window",
+  "files": [
+    {
+      "file": "source/touring-car-setup-procedure.md",
+      "sha256": "77e119cc25fac2f96ea1737195ccdebc2f1c8c37becc167837b4129e2dc77871",
+      "bytes": 7466,
+      "originalModified": "2026-09-19",
+      "originalFirstCommitted": "2026-09-18",
+      "frontmatterTimestamp": "2026-09-09T00:00:00Z"
+    },
+    {
+      "file": "source/touring-car-suspension-tuning.md",
+      "sha256": "ed09d6cdb756d4ac726c7f88a1195959455ee226a404a0a3c44751c9f6dfe200",
+      "bytes": 9047,
+      "originalModified": "2026-09-30",
+      "originalFirstCommitted": "2026-09-18",
+      "frontmatterTimestamp": "2026-09-16T00:00:00Z"
+    },
+    {
+      "file": "source/touring-car-steering-geometry.md",
+      "sha256": "4b7989fad4277a645ecebb3218a7ad06508c11e924a9d31591916e3b25568017",
+      "bytes": 3444,
+      "originalModified": "2026-09-30",
+      "originalFirstCommitted": "2026-09-18",
+      "frontmatterTimestamp": "2026-09-16T00:00:00Z"
+    },
+    {
+      "file": "source/touring-car-weight-balance.md",
+      "sha256": "c2da03d8e18e38f89bb01afc09a308f99f9bb173ebc453b9dc537f0abd9459c0",
+      "bytes": 3945,
+      "originalModified": "2026-09-30",
+      "originalFirstCommitted": "2026-09-18",
+      "frontmatterTimestamp": "2026-09-16T00:00:00Z"
+    },
+    {
+      "file": "source/touring-car-traction-and-tire-management.md",
+      "sha256": "43fc6e3ff062f4138fe06cba962df6e3d1f0f857987afa399255cbde7a368f0e",
+      "bytes": 6098,
+      "originalModified": "2026-09-19",
+      "originalFirstCommitted": "2026-09-18",
+      "frontmatterTimestamp": "2026-09-16T00:00:00Z"
+    },
+    {
+      "file": "source/touring-car-drivetrain-tuning.md",
+      "sha256": "7add18afc3e599be5f44abe4335d098b55a7988c6a42d46c3cf15a443574c14f",
+      "bytes": 6748,
+      "originalModified": "2026-09-19",
+      "originalFirstCommitted": "2026-09-18",
+      "frontmatterTimestamp": "2026-09-09T00:00:00Z"
+    },
+    {
+      "file": "source/touring-car-aerodynamics.md",
+      "sha256": "437606f290a94b09870815bdfa4fc69ad1065eafcd4ee5446a7b5783a480fc04",
+      "bytes": 4886,
+      "originalModified": "2026-09-19",
+      "originalFirstCommitted": null,
+      "frontmatterTimestamp": "2026-09-18T00:00:00Z"
+    },
+    {
+      "file": "source/touring-car-radio-and-servo-setup.md",
+      "sha256": "88ba301db232cf8679e0c42ad61fc0b60579130eb668600a403c4332f9da9e69",
+      "bytes": 4808,
+      "originalModified": "2026-09-19",
+      "originalFirstCommitted": null,
+      "frontmatterTimestamp": "2026-09-18T00:00:00Z"
+    },
+    {
+      "file": "source/vehicle-dynamics-fundamentals.md",
+      "sha256": "9381d6cb74a7f879d5ec13f3322641132148d21bdf8320ffadd26e0ffec0f233",
+      "bytes": 4522,
+      "originalModified": "2026-09-19",
+      "originalFirstCommitted": "2026-09-18",
+      "frontmatterTimestamp": "2026-08-26T00:00:00Z"
+    },
+    {
+      "file": "source/yokomo-bd12.md",
+      "sha256": "443fa0efe062166349cda32421eeebd9415434a097f07e203e04c92e8fb72be6",
+      "bytes": 9525,
+      "originalModified": "2026-09-30",
+      "originalFirstCommitted": "2026-09-18",
+      "frontmatterTimestamp": "2026-09-15T00:00:00Z"
+    },
+    {
+      "file": "source/minimum-detectable-lap-time-difference.md",
+      "sha256": "b72789ddb17c316272cf859a88da28f42a39d6cac4b1446868d176d2e0bd4f65",
+      "bytes": 2422,
+      "originalModified": "2026-08-26",
+      "originalFirstCommitted": "2026-08-26",
+      "frontmatterTimestamp": "2026-08-26T00:00:00Z"
+    }
+  ]
+}

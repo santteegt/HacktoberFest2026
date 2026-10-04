@@ -28,7 +28,7 @@ The friend would rather use it on his phone, so on 2026-10-04 we tested Gemma 4 
 
 ## Prior work, credited
 
-All code in this repository was started during the challenge window (see `git log`). The setup **knowledge** it retrieves comes from the author's earlier touring-car notes, will be imported as a frozen, credited snapshot; see [kb/PROVENANCE.md](kb/PROVENANCE.md). The author's earlier 3D dynamics guide, its BD12 model and its setup-sheet app are **not** reused.
+All code in this repository was started during the challenge window (see `git log`). The setup **knowledge** it retrieves comes from the author's earlier touring-car notes, imported as a frozen, credited snapshot (`kb/source/`, verified by `npm run kb:verify`); see [kb/PROVENANCE.md](kb/PROVENANCE.md). The author's earlier 3D dynamics guide, its BD12 model and its setup-sheet app are **not** reused.
 
 ## Run
 
@@ -36,6 +36,8 @@ All code in this repository was started during the challenge window (see `git lo
 npm install
 npm run dev        # http://localhost:5173
 npm run build      # typecheck + production build
+npm run kb:verify  # snapshot unchanged?
+npm run kb:build   # compile kb/ into data/generated/kb.json
 ```
 
 ## Layout
@@ -43,9 +45,10 @@ npm run build      # typecheck + production build
 ```
 src/agent  src/llm  src/voice  src/kb  src/scene  src/state  src/ui   typed stubs, no logic yet
 data/                symptoms.json, levers.json (authored, reviewed)
-kb/                  PROVENANCE.md, later the frozen notes snapshot
+kb/source/           frozen, credited snapshot of the author's earlier touring-car notes (11 pages)
+kb/additions/        new knowledge written in the window; kb/PROVENANCE.md explains the split
 public/icons/        PWA icons
-scripts/             copy-wasm.mjs (phone spike); build-kb.ts (planned)
+scripts/             verify-snapshot.mjs, build-kb.mjs, copy-wasm.mjs (phone spike)
 ```
 
 ## License
