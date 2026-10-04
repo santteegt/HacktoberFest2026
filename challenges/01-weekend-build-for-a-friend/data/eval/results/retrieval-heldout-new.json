@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-04T22:54:03.191Z",
+  "set": "heldout",
+  "searchModule": "server/kb/search.ts",
+  "questions": 10,
+  "hits": 9,
+  "hitPct": 90,
+  "acceptedIdsMissingFromKb": [],
+  "misses": [
+    {
+      "id": "h02",
+      "question": "front end washes out what do I change",
+      "accept": [
+        "touring-car-steering-geometry#caster",
+        "touring-car-aerodynamics#front-lip-clearance",
+        "touring-car-traction-and-tire-management#increasing-overall-traction"
+      ],
+      "returned": [
+        "touring-car-weight-balance#front-rear-target",
+        "touring-car-setup-procedure#front-body-clearance-and-up-stops",
+        "touring-car-steering-geometry#definition"
+      ]
+    }
+  ]
+}

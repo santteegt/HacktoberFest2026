@@ -1,29 +1,33 @@
-// Prompts and the classifier JSON schema (T3; Appendix B, copied verbatim).
-// The system prompts are byte-stable on every call so Ollama can reuse the cached prefix; the variable
-// part goes last in the user message and stays short. The model never produces numbers that reach the
-// user: the explainer output passes the number guard in steps.ts or is replaced by the template.
+// Prompts and the classifier JSON schema (T3, from plan Appendix B; the classifier prompt was shortened in T11).
+// The system prompts are kept identical on every call and the variable part goes last and short. Do NOT expect
+// Ollama to reuse a cached prefix: measured on gemma4 (T11), it only reuses a fully identical prompt, so prompt
+// LENGTH is what sets classify latency. Any edit to the classifier prompt must re-run `npm run eval:symptoms`
+// with and without CPU_ONLY=1 (25/25 at 252 tokens is the floor found; shorter variants lost cases).
+// The model never produces numbers that reach the user: the explainer output passes the number guard in
+// steps.ts or is replaced by the template.
 
-/** System prompt for the symptom classifier (Appendix B.1). */
-export const CLASSIFIER_SYSTEM = `You sort what an RC touring car driver says about how the car feels into ONE symptom id.
-Reply with JSON only.
-Symptom ids:
-entry-understeer: front will not turn in, pushes or washes out as the car enters a corner
-mid-understeer: pushes or runs wide in the middle of the corner
-exit-understeer: runs wide or goes straight when back on the throttle
-entry-oversteer: rear slides or steps out on braking or turn-in
-exit-oversteer: rear loose, snaps or spins on throttle out of corners
-traction-roll: car tips, digs in, lifts inside wheels or rolls over in corners
-bumpy-track: bounces, hops, skips or gets unsettled over bumps
-nervous-twitchy: darty, twitchy, edgy, hard to keep straight
-low-grip: slides everywhere, no grip front or rear, dusty or cold track
-fade-late-run: good early in the run, then grip, speed or steering fades
-left-right-difference: turns better one way than the other, pulls to one side
-out-of-scope: anything else (engines, nitro, batteries, charging, ESC, motors, tyre compounds, other car types, not about RC handling)
-Rules: pick the closest id. If a second id also fits, put it in alt_id, else "none". phase: entry, mid, exit or none. confidence: 0 to 1.
-Examples:
-"front washes out into the hairpin" -> entry-understeer
-"tail steps out when I hit the gas" -> exit-oversteer
-"what lipo charger should I buy" -> out-of-scope`;
+/**
+ * System prompt for the symptom classifier. Slimmed by T11 (2026-10-04) from the 389-token Appendix B.1 prompt
+ * (examples dropped, definitions shortened): 252 prompt tokens per call, still 25/25 on the eval on both the GPU and
+ * the CPU_ONLY proxy. Time to first token tracks prompt tokens (Ollama does not reuse a shared prefix when the user
+ * text differs, measured), so do not grow this casually; re-run `npm run eval:symptoms` (and CPU_ONLY=1) after any edit.
+ * The schema's `enum`s are grammar only: the model never sees them (a prompt with the definitions only in schema
+ * descriptions scored 3/25), so every id and its meaning must stay in this text.
+ */
+export const CLASSIFIER_SYSTEM = `Pick ONE id for an RC touring car driver's handling complaint. JSON only.
+entry-understeer: front won't turn in, pushes on entry
+mid-understeer: pushes wide mid-corner
+exit-understeer: wide or straight on throttle exit
+entry-oversteer: rear steps out braking or turn-in
+exit-oversteer: rear snaps loose on throttle exit
+traction-roll: tips over, digs in, lifts inside wheels
+bumpy-track: bounces, hops, skips, unsettled over bumps
+nervous-twitchy: darty, edgy, hard to keep straight
+low-grip: slides everywhere, ice, dusty or cold
+fade-late-run: good early, then fades
+left-right-difference: better one way, pulls to a side
+out-of-scope: not RC handling (engines, batteries, ESC, motors, tyres, other cars)
+alt_id: runner-up id or "none". phase: entry, mid, exit or none. confidence: 0 to 1.`;
 
 /** System prompt for the explainer (Appendix B.2). */
 export const EXPLAINER_SYSTEM = `You are a calm pit-side setup coach for a 1/10 touring car.

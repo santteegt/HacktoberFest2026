@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-04T22:54:02.955Z",
+  "set": "original",
+  "searchModule": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/01-weekend-build-for-a-friend/var/t11-search-A.ts",
+  "questions": 20,
+  "hits": 18,
+  "hitPct": 90,
+  "acceptedIdsMissingFromKb": [],
+  "misses": [
+    {
+      "id": "q12",
+      "question": "more rear grip on exit",
+      "accept": [
+        "touring-car-traction-and-tire-management#increasing-rear-specific-traction"
+      ],
+      "returned": [
+        "rear-diff-oil-and-low-grip-exit-traction#loose-on-power-on-low-grip-go-softer-on-the-rear",
+        "rear-diff-oil-and-low-grip-exit-traction#pair-thinner-oil-with-enough-rear-toe-in",
+        "rear-diff-oil-and-low-grip-exit-traction#thicker-oil-is-not-a-side-grip-fix"
+      ]
+    },
+    {
+      "id": "q16",
+      "question": "final drive ratio formula",
+      "accept": [
+        "touring-car-drivetrain-tuning#gearing"
+      ],
+      "returned": [
+        "touring-car-radio-and-servo-setup#throttle-expo-belongs-in-the-esc-not-the-radio",
+        "touring-car-drivetrain-tuning#overheating-remedy-order",
+        "touring-car-drivetrain-tuning#drive-shaft-orientation-is-a-reliability-issue-n"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "_readme": "10 held-out follow-up questions written by T11 on 2026-10-04 BEFORE the new search.ts was implemented or run on them. Accepted chunk ids were chosen by reading chunk text in data/generated/kb.json, not by looking at search results. The 20 questions in retrieval-questions.json were used to design the stopword/prefix/synonym fixes, so only these 10 are an unbiased measure of the new search. hit = any accepted id in the top 3. Do not tune search.ts against these 10; add new held-out questions instead.",
+  "questions": [
+    {
+      "id": "h01",
+      "question": "how many laps should I run to compare two setups",
+      "accept": [
+        "minimum-detectable-lap-time-difference#definition",
+        "minimum-detectable-lap-time-difference#with-a-typical-lap-time-standard-deviation",
+        "minimum-detectable-lap-time-difference#a-paired-back-to-back-testing-design-same",
+        "minimum-detectable-lap-time-difference#laps-within-a-single-run-are"
+      ]
+    },
+    {
+      "id": "h02",
+      "question": "front end washes out what do I change",
+      "accept": [
+        "touring-car-steering-geometry#caster",
+        "touring-car-aerodynamics#front-lip-clearance",
+        "touring-car-traction-and-tire-management#increasing-overall-traction"
+      ]
+    },
+    {
+      "id": "h03",
+      "question": "what is the ride height on a bumpy track",
+      "accept": [
+        "touring-car-setup-procedure#ride-height-baseline"
+      ]
+    },
+    {
+      "id": "h04",
+      "question": "belt keeps skipping teeth",
+      "accept": [
+        "touring-car-drivetrain-tuning#belt-failure-signature",
+        "touring-car-drivetrain-tuning#belt-tension"
+      ]
+    },
+    {
+      "id": "h05",
+      "question": "my motor is running hot",
+      "accept": [
+        "touring-car-drivetrain-tuning#overheating-remedy-order"
+      ]
+    },
+    {
+      "id": "h06",
+      "question": "how do I set the steering throw",
+      "accept": [
+        "touring-car-radio-and-servo-setup#steering-epa",
+        "touring-car-setup-procedure#steering-lock",
+        "touring-car-radio-and-servo-setup#dual-rate-and-total-steering-angle"
+      ]
+    },
+    {
+      "id": "h07",
+      "question": "how much weight should be on the left side",
+      "accept": [
+        "touring-car-weight-balance#left-right-target"
+      ]
+    },
+    {
+      "id": "h08",
+      "question": "what springs for a dusty low grip track",
+      "accept": [
+        "touring-car-suspension-tuning#springs"
+      ]
+    },
+    {
+      "id": "h09",
+      "question": "wing angle for more rear traction at speed",
+      "accept": [
+        "touring-car-aerodynamics#wing-angle-and-position"
+      ]
+    },
+    {
+      "id": "h10",
+      "question": "car is loose on the gas on low grip, what diff oil",
+      "accept": [
+        "rear-diff-oil-and-low-grip-exit-traction#loose-on-power-on-low-grip-go-softer-on-the-rear",
+        "rear-diff-oil-and-low-grip-exit-traction#pair-thinner-oil-with-enough-rear-toe-in",
+        "touring-car-traction-and-tire-management#increasing-rear-specific-traction"
+      ]
+    }
+  ]
+}

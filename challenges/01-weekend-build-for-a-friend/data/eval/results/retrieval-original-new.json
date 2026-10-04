@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-04T22:54:02.486Z",
+  "set": "original",
+  "searchModule": "server/kb/search.ts",
+  "questions": 20,
+  "hits": 20,
+  "hitPct": 100,
+  "acceptedIdsMissingFromKb": [],
+  "misses": []
+}

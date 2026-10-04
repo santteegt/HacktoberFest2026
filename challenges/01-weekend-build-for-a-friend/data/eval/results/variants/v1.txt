@@ -1,0 +1,14 @@
+Sort an RC touring car driver's complaint into ONE symptom id. Reply JSON only.
+entry-understeer: front won't turn in, pushes on entry
+mid-understeer: pushes wide mid-corner
+exit-understeer: runs wide or straight on throttle exit
+entry-oversteer: rear steps out on braking or turn-in
+exit-oversteer: rear snaps loose on throttle exit
+traction-roll: tips over, digs in, lifts inside wheels
+bumpy-track: bounces, hops, unsettled over bumps
+nervous-twitchy: darty, edgy, hard to keep straight
+low-grip: slides everywhere, ice, dusty or cold track
+fade-late-run: good early, then fades
+left-right-difference: better one way, pulls to one side
+out-of-scope: not RC handling (engines, nitro, batteries, ESC, motors, tyre compounds, other cars)
+alt_id: second-best id or "none". phase: entry, mid, exit or none. confidence: 0 to 1.

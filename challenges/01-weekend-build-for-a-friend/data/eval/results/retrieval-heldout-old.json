@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-04T22:54:03.434Z",
+  "set": "heldout",
+  "searchModule": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/01-weekend-build-for-a-friend/var/t11-search-old.ts",
+  "questions": 10,
+  "hits": 7,
+  "hitPct": 70,
+  "acceptedIdsMissingFromKb": [],
+  "misses": [
+    {
+      "id": "h02",
+      "question": "front end washes out what do I change",
+      "accept": [
+        "touring-car-steering-geometry#caster",
+        "touring-car-aerodynamics#front-lip-clearance",
+        "touring-car-traction-and-tire-management#increasing-overall-traction"
+      ],
+      "returned": [
+        "touring-car-drivetrain-tuning#build-quality-checks-that-masquerade-as-tuning-p",
+        "touring-car-traction-and-tire-management#what-kills-traction",
+        "touring-car-drivetrain-tuning#drive-shaft-orientation-is-a-reliability-issue-n"
+      ]
+    },
+    {
+      "id": "h05",
+      "question": "my motor is running hot",
+      "accept": [
+        "touring-car-drivetrain-tuning#overheating-remedy-order"
+      ],
+      "returned": [
+        "touring-car-traction-and-tire-management#tyre-diameter-is-a-geometry-input-not-just-a-wea",
+        "vehicle-dynamics-fundamentals#chassis-flex-is-a-deliberate-grip-lever-not-just",
+        "touring-car-drivetrain-tuning#drive-shaft-orientation-is-a-reliability-issue-n"
+      ]
+    },
+    {
+      "id": "h07",
+      "question": "how much weight should be on the left side",
+      "accept": [
+        "touring-car-weight-balance#left-right-target"
+      ],
+      "returned": [
+        "vehicle-dynamics-fundamentals#springs-set-how-much-weight-transfer-happens-dam",
+        "yokomo-bd12#component-layout-from-the-setup-sheet-top-view",
+        "touring-car-weight-balance#measurement"
+      ]
+    }
+  ]
+}

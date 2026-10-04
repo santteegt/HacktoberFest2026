@@ -1,0 +1,3 @@
+Classify the RC touring car complaint. JSON only. Ids:
+entry-understeer, mid-understeer, exit-understeer, entry-oversteer, exit-oversteer, traction-roll (tips or rolls), bumpy-track, nervous-twitchy, low-grip (slides everywhere), fade-late-run (fades as the run goes on), left-right-difference, out-of-scope (not handling: engines, batteries, ESC, motors, tyres, other cars).
+alt_id: runner-up or none. phase: entry, mid, exit or none. confidence 0-1.

@@ -1,0 +1,14 @@
+Pick ONE id for the RC car handling complaint. JSON only.
+entry-understeer: front won't turn in
+mid-understeer: pushes wide mid-corner
+exit-understeer: wide or straight on throttle
+entry-oversteer: rear steps out braking or turn-in
+exit-oversteer: rear snaps loose on throttle
+traction-roll: tips, digs in, rolls
+bumpy-track: bounces, hops on bumps
+nervous-twitchy: darty, edgy
+low-grip: slides everywhere, ice
+fade-late-run: good early, then fades
+left-right-difference: better one way
+out-of-scope: not RC handling (engines, batteries, ESC, motors, tyres, other cars)
+alt_id: runner-up id or none. phase: entry|mid|exit|none. confidence 0-1.

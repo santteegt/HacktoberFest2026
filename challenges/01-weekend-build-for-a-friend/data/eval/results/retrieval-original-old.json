@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-04T22:54:02.717Z",
+  "set": "original",
+  "searchModule": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/01-weekend-build-for-a-friend/var/t11-search-old.ts",
+  "questions": 20,
+  "hits": 17,
+  "hitPct": 85,
+  "acceptedIdsMissingFromKb": [],
+  "misses": [
+    {
+      "id": "q01",
+      "question": "what does droop do",
+      "accept": [
+        "touring-car-setup-procedure#droop-baselines",
+        "vehicle-dynamics-fundamentals#droop"
+      ],
+      "returned": [
+        "touring-car-traction-and-tire-management#what-kills-traction",
+        "yokomo-bd12#factory-baseline-alignment",
+        "touring-car-drivetrain-tuning#build-quality-checks-that-masquerade-as-tuning-p"
+      ]
+    },
+    {
+      "id": "q12",
+      "question": "more rear grip on exit",
+      "accept": [
+        "touring-car-traction-and-tire-management#increasing-rear-specific-traction"
+      ],
+      "returned": [
+        "rear-diff-oil-and-low-grip-exit-traction#loose-on-power-on-low-grip-go-softer-on-the-rear",
+        "rear-diff-oil-and-low-grip-exit-traction#lower-confidence-very-thin-oil-can-make-the-apex",
+        "rear-diff-oil-and-low-grip-exit-traction#thicker-oil-is-not-a-side-grip-fix"
+      ]
+    },
+    {
+      "id": "q16",
+      "question": "final drive ratio formula",
+      "accept": [
+        "touring-car-drivetrain-tuning#gearing"
+      ],
+      "returned": [
+        "touring-car-radio-and-servo-setup#throttle-expo-belongs-in-the-esc-not-the-radio",
+        "touring-car-drivetrain-tuning#overheating-remedy-order",
+        "touring-car-drivetrain-tuning#drive-shaft-orientation-is-a-reliability-issue-n"
+      ]
+    }
+  ]
+}
