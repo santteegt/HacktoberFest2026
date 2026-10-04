@@ -179,14 +179,9 @@ export function CoachScreen() {
             </p>
             {c && t.status !== "refused" && (
               <p class="classified">
-                &rarr; <b>{symptomLabel(c.symptomId)}</b>{" "}
+                <span aria-hidden="true">&rarr;</span> <b>{symptomLabel(c.symptomId)}</b>
                 <span class="muted">({c.symptomId.replace(/-/g, " ")})</span>
-                {c.source !== "chip" && (
-                  <>
-                    {" "}
-                    <span class="muted">conf {c.confidence.toFixed(2)}</span>
-                  </>
-                )}
+                {c.source !== "chip" && <span class="muted">conf {c.confidence.toFixed(2)}</span>}
                 {c.source !== "chip" && (
                   <span class="row inline">
                     <span class="muted">Not it?</span>
@@ -236,7 +231,8 @@ export function CoachScreen() {
             </Banner>
           )}
 
-          {t.status !== "refused" && <Prechecks t={t} />}
+          {/* Once the change is applied or skipped the checks have done their job; keep them only if one was flagged. */}
+          {t.status !== "refused" && (!(t.applied || t.skipped) || !!problem) && <Prechecks key={t.localId} t={t} />}
 
           {t.suggestion && !t.suggestion.primary && (
             <Card tone="muted" title="No change to suggest">
@@ -253,25 +249,24 @@ export function CoachScreen() {
           )}
 
           {option && !hideCard && (
-            <div class="coach-grid">
-              <div class="stack grow">
-                <SuggestionCard t={t} option={option} />
-                {(t.coachText || t.status === "thinking") && (
-                  <div class="coach-says" aria-live="polite">
-                    <span class="muted small">Coach says{t.explanation?.source === "template" ? " (notes' own wording)" : ""}:</span>
-                    {optionIndex.value === 0 ? (
-                      <p>{t.coachText || "…"}</p>
-                    ) : (
-                      <p class="muted">The coach phrased the first option only. The card above has this option's details.</p>
-                    )}
-                  </div>
-                )}
-              </div>
+            <div class="coach-grid" data-scene={option.scene && explainerFor(option.scene.param) ? "1" : "0"}>
+              <SuggestionCard t={t} option={option} />
               {option.scene && explainerFor(option.scene.param) && <ScenePanel binding={option.scene} />}
             </div>
           )}
 
           <OutcomePanel t={t} />
+
+          {option && !hideCard && (t.coachText || t.status === "thinking") && (
+            <div class="coach-says" aria-live="polite">
+              <span class="muted small">Coach says{t.explanation?.source === "template" ? " (notes' own wording)" : ""}:</span>
+              {optionIndex.value === 0 ? (
+                <p>{t.coachText || "…"}</p>
+              ) : (
+                <p class="muted">The coach phrased the first option only. The card above has this option's details.</p>
+              )}
+            </div>
+          )}
         </div>
       )}
 

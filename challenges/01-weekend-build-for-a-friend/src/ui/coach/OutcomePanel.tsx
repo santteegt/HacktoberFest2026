@@ -43,10 +43,10 @@ export function OutcomePanel({ t }: { t: TurnView }) {
   if (!res) {
     if (t.status !== "awaiting-outcome") return null;
     return (
-      <Card title="After your run" class="outcome">
+      <Card title="After your run" class="outcome outcome-ask">
         <div class="stack">
-          <p>Run 3 to 5 laps, then tell me how the car felt compared with before.</p>
-          <div class="row">
+          <div class="row outcome-row">
+            <p class="grow">Run 3 to 5 laps, then tell me how the car felt compared with before.</p>
             <Button variant="ok" size="lg" disabled={busy.value} onClick={() => void sendOutcome("better")}>
               BETTER
             </Button>
@@ -84,7 +84,7 @@ export function OutcomePanel({ t }: { t: TurnView }) {
               <>Reverted. The setup is back to what it was before this change.</>
             ) : (
               <>
-                <b>That made it worse.</b> Put it back? Reverting returns <code>{paramLabel(res.revert?.param)}</code> to{" "}
+                <b>That made it worse.</b> Put it back? Reverting returns <b>{paramLabel(res.revert?.param)}</b> to{" "}
                 <b>{String(res.revert?.to ?? "its previous value")}</b> and logs the revert.
               </>
             )}

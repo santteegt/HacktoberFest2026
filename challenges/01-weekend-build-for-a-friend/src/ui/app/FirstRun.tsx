@@ -42,7 +42,7 @@ export function FirstRun() {
     try {
       const conditions: TrackConditions = { trackName: track.trim() || "Practice", surface, grip, bumpy };
       const t = Number(temp);
-      if (temp.trim() && Number.isFinite(t)) conditions.trackTempC = settings.value?.tempUnit === "F" ? Math.round(((t - 32) * 5) / 9) : t;
+      if (temp.trim() && Number.isFinite(t)) conditions.trackTempC = t;
       const s = await createSession({ date: new Date().toISOString().slice(0, 10), car: settings.value?.car ?? car, conditions });
       await setActiveSession(s.id);
       void pollLlmStatus();
@@ -126,7 +126,7 @@ export function FirstRun() {
               </div>
             </div>
             <div>
-              <label class="label" for="fr-temp">Track temperature ({settings.value?.tempUnit ?? "C"}, optional)</label>
+              <label class="label" for="fr-temp">Track temperature, C (optional)</label>
               <input id="fr-temp" class="field" inputMode="decimal" value={temp} onInput={(e) => setTemp((e.target as HTMLInputElement).value)} style="max-width:180px" />
             </div>
             {err && <Banner tone="danger">{err}</Banner>}

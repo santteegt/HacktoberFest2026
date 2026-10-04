@@ -47,7 +47,8 @@
   background: color-mix(in srgb, var(--c-accent) 28%, var(--c-panel)); border-color: var(--c-accent); font-weight: 700;
 }
 
-.pcx label.pc-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+/* T12: div fields (chip groups, rating) get the same rhythm as label fields. */
+.pcx .pc-field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
 .pcx .pc-label { font-size: .9rem; color: var(--c-muted); font-weight: 600; }
 .pcx input[type="text"], .pcx input[type="number"], .pcx input:not([type]), .pcx select, .pcx textarea {
   min-height: 48px; padding: 8px 12px; font: inherit; color: var(--c-text); background: var(--c-bg);

@@ -43,7 +43,7 @@ export function ValueLine({ s }: { s: LeverSuggestion }) {
   const unit = s.lever.unit ? ` ${s.lever.unit}` : "";
   if (s.needsCurrentValue) {
     return (
-      <p class="value-line muted">
+      <p class="value-line value-hint">
         One step {s.lever.direction ?? "that way"}; enter your current {paramLabel(s.lever.param).toLowerCase()} in Setup for the exact number.
       </p>
     );
@@ -81,38 +81,14 @@ export function SuggestionCard({ t, option }: { t: TurnView; option: LeverSugges
           {l.status === "draft" && <span class="badge" title="The author has not reviewed this row yet">draft row (not reviewed)</span>}
         </div>
         <ValueLine s={option} />
-        <p>{l.effect}</p>
-        <p>
-          <b>Trade-off:</b> {l.tradeOff}
-        </p>
-        <p>
-          <b>Check:</b> {l.verify}
-        </p>
-        {l.followUp && (
-          <p class="muted">
-            <b>Then:</b> {l.followUp}
-          </p>
-        )}
-        {l.citations.length > 0 && (
-          <div class="row" aria-label="Notes behind this">
-            <span class="muted small">Notes:</span>
-            {l.citations.map((c) => (
-              <CitationChip key={c} id={c} />
-            ))}
-          </div>
-        )}
-        {lines.length > 0 && idx === 0 && (
-          <p class="muted small">
-            <b>Not picked:</b> {lines.join(" · ")}
-          </p>
-        )}
         {actionError.value && <p class="err">{actionError.value}</p>}
         {closed ? (
-          <div class="row">
+          <div class="row card-actions">
             <span class="badge ok">{t.skipped ? "Skipped" : "Applied"}</span>
+            {!t.skipped && <span class="muted small">Run your laps, then answer below.</span>}
           </div>
         ) : (
-          <div class="row">
+          <div class="row card-actions">
             {option.needsCurrentValue ? (
               <Button variant="primary" size="lg" onClick={() => navigate("setup")}>
                 OPEN SETUP
@@ -131,6 +107,35 @@ export function SuggestionCard({ t, option }: { t: TurnView; option: LeverSugges
           </div>
         )}
         {!closed && !decidable && t.status === "thinking" && <p class="muted small">Apply unlocks in a moment.</p>}
+        {/* Once applied or skipped, the card shrinks to what matters for the laps (Check / Then), so the
+            Better / Same / Worse buttons below stay on the first screen (T12). */}
+        {!closed && <p>{l.effect}</p>}
+        {!closed && (
+          <p>
+            <b>Trade-off:</b> {l.tradeOff}
+          </p>
+        )}
+        <p>
+          <b>Check:</b> {l.verify}
+        </p>
+        {l.followUp && (
+          <p class="muted">
+            <b>Then:</b> {l.followUp}
+          </p>
+        )}
+        {l.citations.length > 0 && !closed && (
+          <div class="row" aria-label="Notes behind this">
+            <span class="muted small">Notes:</span>
+            {l.citations.map((c) => (
+              <CitationChip key={c} id={c} />
+            ))}
+          </div>
+        )}
+        {lines.length > 0 && idx === 0 && !closed && (
+          <p class="muted small">
+            <b>Not picked:</b> {lines.join(" · ")}
+          </p>
+        )}
       </div>
     </Card>
   );

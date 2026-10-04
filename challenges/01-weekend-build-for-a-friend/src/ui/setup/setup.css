@@ -1,7 +1,15 @@
 /* Setup editor (T4b). Local classes prefixed su-; theme tokens come from widgets.css (.pcx) with fallbacks. */
-.pcx.su-screen { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 16px; align-items: start; }
-@media (max-width: 1000px) { .pcx.su-screen { grid-template-columns: minmax(0, 1fr); } }
-.su-side { position: sticky; top: 12px; }
+.pcx.su-screen { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; }
+.su-side { position: sticky; top: 12px; max-height: calc(100vh - 110px); overflow-y: auto; border-radius: 12px; }
+.su-base { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+/* T12: below ~1240 px the table needs the full width, so the explainer becomes a right-hand drawer that opens
+   only while a setting is selected (no overflow at 1024). */
+@media (max-width: 1239px) {
+  .pcx.su-screen { grid-template-columns: minmax(0, 1fr); }
+  .su-side { position: fixed; top: 80px; right: 12px; bottom: 12px; width: 400px; z-index: 30; overflow-y: auto; border-radius: 12px; box-shadow: -12px 0 40px rgba(0, 0, 0, .55); }
+  .su-side[data-open="0"] { display: none; }
+  .su-side .su-explainer { min-height: 100%; border: 2px solid var(--c-accent); }
+}
 .su-head { justify-content: space-between; margin-bottom: 8px; }
 
 .su-stagebar {
@@ -27,7 +35,7 @@
 .su-btns { display: flex; gap: 12px; margin-top: 4px; }
 .su-q { min-width: 48px; padding: 4px 12px; }
 .su-q[aria-pressed="true"] { border-color: var(--c-accent); background: color-mix(in srgb, var(--c-accent) 25%, var(--c-panel)); }
-.su-tag { font-size: .75rem; color: var(--c-muted); border: 1px solid var(--c-line); border-radius: 99px; padding: 0 8px; }
+.su-tag { white-space: nowrap; font-size: .75rem; color: var(--c-muted); border: 1px solid var(--c-line); border-radius: 99px; padding: 0 8px; }
 .su-unsourced { color: var(--c-warn); font-weight: 600; }
 .su-cur { display: flex; flex-direction: column; gap: 6px; }
 .su-stepper { display: flex; align-items: center; gap: 12px; }
@@ -45,5 +53,6 @@
 .su-actions { margin: 12px 0; }
 
 .su-explainer { background: var(--c-panel); border: 1px solid var(--c-line); border-radius: 12px; padding: 16px; }
-.su-scene { width: 100%; aspect-ratio: 4 / 3; background: var(--c-bg); border-radius: 10px; margin-bottom: 12px; }
+.su-scene { width: 100%; height: 340px; background: var(--c-bg); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
 .su-scene[data-active="0"] { display: none; }
+@media (min-width: 1440px) { .pcx.su-screen { grid-template-columns: minmax(0, 1fr) 440px; } .su-scene { height: 380px; } }

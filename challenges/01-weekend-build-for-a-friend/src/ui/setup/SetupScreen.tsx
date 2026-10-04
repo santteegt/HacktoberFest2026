@@ -191,7 +191,7 @@ export function SetupScreen() {
         <CompareSaved params={params} current={effective} refreshKey={savedTick} />
       </div>
 
-      <div class="su-side">
+      <div class="su-side" data-open={explainParam ? "1" : "0"}>
         <ExplainerPanel
           param={explainParam}
           committed={committed}

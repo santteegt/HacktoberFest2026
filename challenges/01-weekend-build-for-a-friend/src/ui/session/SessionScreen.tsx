@@ -235,8 +235,8 @@ export function SessionScreen() {
             <li key={r.id} class="se-item">
               <div class="pc-row">
                 <strong>Run {r.seq}</strong>
-                <span>rating {r.rating ?? "-"}</span>
-                <span>best {formatLap(r.bestLapMs)}</span>
+                <span>rating {r.rating ?? "not given"}</span>
+                {typeof r.bestLapMs === "number" && <span>best lap {formatLap(r.bestLapMs)} s</span>}
                 {r.lapTimesMs && r.lapTimesMs.length > 0 && <span class="pc-muted pc-small">{r.lapTimesMs.length} laps</span>}
                 <span class="pc-muted pc-small">{timeOfDayLabel(r.createdAt)}</span>
               </div>

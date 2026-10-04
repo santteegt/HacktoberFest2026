@@ -6,6 +6,7 @@ import { Button, Card } from "../app/components";
 import { meta } from "../store";
 
 const VIEWS: { v: SceneView; label: string }[] = [
+  { v: "auto", label: "Auto" },
   { v: "front", label: "Front" },
   { v: "side", label: "Side" },
   { v: "top", label: "Top" },

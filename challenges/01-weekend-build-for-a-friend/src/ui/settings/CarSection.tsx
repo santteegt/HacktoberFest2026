@@ -25,16 +25,7 @@ export function CarSection({ s }: { s: Settings }) {
       </div>
       <div class="st-field">
         <span class="label">Temperature</span>
-        <Choice<Settings["tempUnit"]>
-          label="Temperature unit"
-          value={s.tempUnit}
-          options={[
-            { value: "C", label: "Celsius (C)" },
-            { value: "F", label: "Fahrenheit (F)" },
-          ]}
-          onChange={(v) => void saveSettings({ tempUnit: v }).catch(fail)}
-        />
-        <span class="muted small">Applies to the top bar and the first-run form. The condition forms still take Celsius.</span>
+        <p>All temperatures are in Celsius (C).</p>
       </div>
       {err && <p class="st-err" role="alert">{err}</p>}
     </Card>

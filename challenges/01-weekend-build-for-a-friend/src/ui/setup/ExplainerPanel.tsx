@@ -90,7 +90,9 @@ export function ExplainerPanel({ param, committed, effective, conventions, onClo
     if (!s || !param || !explainer) return;
     try {
       s.setPose(pose);
-      if (typeof from === "number" && typeof to === "number" && from !== to) {
+      // T12: also call showChange when nothing is staged (from === to): it frames the camera on the selected
+      // setting and highlights the part, instead of leaving the generic "pick a setting" view.
+      if (typeof from === "number" && typeof to === "number") {
         s.showChange({ explainer, param: param.id, from, to });
       }
     } catch (e) {

@@ -2,7 +2,7 @@
 import { signal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { isMock } from "../../api/client";
-import { llmStatus, session, settings } from "../store";
+import { llmStatus, session } from "../store";
 import { openStartSession, pollLlmStatus, serverReachable } from "./bootstrap";
 import { Button } from "./components";
 
@@ -26,13 +26,14 @@ function llmPill(): { tone: "ok" | "warn" | "danger" | "idle"; text: string } {
   return { tone: "ok", text: `${name}: ready` };
 }
 
-export function summarizeSession(tempUnit: "C" | "F"): string[] | null {
+/** All temperatures are Celsius (the C/F setting is no longer exposed). */
+export function summarizeSession(): string[] | null {
   const s = session.value;
   if (!s) return null;
   const c = s.conditions;
   const parts = [c.trackName || "Untitled track", c.surface, `${c.grip} grip`];
   if (typeof c.trackTempC === "number") {
-    parts.push(tempUnit === "F" ? `${Math.round((c.trackTempC * 9) / 5 + 32)} F` : `${c.trackTempC} C`);
+    parts.push(`track ${c.trackTempC} C`);
   }
   return parts;
 }
@@ -51,7 +52,7 @@ export function StatusBar() {
     };
   }, []);
   const pill = llmPill();
-  const parts = summarizeSession(settings.value?.tempUnit ?? "C");
+  const parts = summarizeSession();
   return (
     <header class="statusbar">
       <span class="brand">RC PIT COMPANION</span>
@@ -73,7 +74,7 @@ export function StatusBar() {
       <span
         class="status-pill"
         data-tone={online.value ? "ok" : "warn"}
-        title={online.value ? "Network is up. Nothing here needs it." : "Offline is fine: the coach, notes and vault all run on this laptop."}
+        title={online.value ? "Network is up. The coach, notes and vault are built to run on this laptop without it." : "Network is down. The coach, notes and vault are built to run on this laptop; online voice input needs the network."}
       >
         {online.value ? "online" : "offline"}
       </span>

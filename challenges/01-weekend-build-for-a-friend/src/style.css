@@ -41,7 +41,7 @@ code, kbd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-si
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .muted { color: var(--muted); }
 .small { font-size: .85rem; }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .row { display: flex; flex-wrap: wrap; gap: var(--gap); align-items: center; }
 .stack { display: flex; flex-direction: column; gap: var(--gap); }
 .grow { flex: 1 1 0; min-width: 0; }
@@ -71,7 +71,9 @@ code, kbd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-si
 }
 .nav a[aria-current="page"] { background: var(--panel-2); color: var(--text); box-shadow: inset 4px 0 0 var(--accent); }
 .nav a:hover { color: var(--text); }
-.main { overflow-y: auto; padding: 20px 24px 48px; }
+/* position: relative keeps absolutely positioned helpers (.sr-only inputs) inside the scroller, so the document
+   itself never grows taller than the window and focus() cannot scroll the shell out of view (T12). */
+.main { position: relative; overflow-y: auto; overflow-x: hidden; padding: 20px 24px 48px; }
 .main > * { max-width: 1600px; margin-inline: auto; }
 .mock-flag { background: var(--warn); color: #231a00; font-weight: 700; padding: 4px 12px; border-radius: 99px; font-size: .8rem; }
 
@@ -143,3 +145,6 @@ code, kbd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-si
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+
+/* The 3D explainer's own overlay buttons (src/scene) get the 48 px pit-table target too (T12). */
+.su-scene .cs-btn, .scene-host .cs-btn { min-height: var(--btn-h); min-width: var(--btn-h); }

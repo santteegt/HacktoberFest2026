@@ -1,7 +1,7 @@
 // "Thinking" step list with live timers (plan 5.1/5.5): Understanding -> Picking a change -> Phrasing, plus Cancel.
 import { useEffect, useState } from "preact/hooks";
 import { llmStatus } from "../store";
-import { Button, Card } from "../app/components";
+import { Button } from "../app/components";
 import { cancelTurn, type TurnView } from "./state";
 
 const fmt = (ms: number) => (ms < 50 ? "instant" : `${(ms / 1000).toFixed(1)} s`);
@@ -35,21 +35,19 @@ export function Thinking({ t }: { t: TurnView }) {
   ];
   const slow = llmStatus.value && llmStatus.value.reachable && !llmStatus.value.loaded && now - start > 1500;
   return (
-    <Card title="Working on it" class="thinking" aria-label="Coach progress">
+    <section class="thinking-bar" aria-label="Coach progress">
+      <span class="card-title thinking-title">Working on it</span>
       <ol class="steps-list">
         {steps.map((s) => (
           <li key={s.label} data-state={s.state}>
             <span class="dot" aria-hidden="true" />
-            <span class="grow">{s.label}</span>
+            <span>{s.label}</span>
             <span class="muted time">{s.time}</span>
           </li>
         ))}
       </ol>
-      {slow && <p class="muted small">First answer after start can take longer while the model loads.</p>}
-      <div class="row">
-        <Button onClick={cancelTurn}>Cancel</Button>
-        {t.suggestion && <span class="muted small">The card below is ready to read. Apply unlocks when the coach finishes phrasing.</span>}
-      </div>
-    </Card>
+      <Button onClick={cancelTurn}>Cancel</Button>
+      {slow && <p class="muted small thinking-note">First answer after start can take longer while the model loads.</p>}
+    </section>
   );
 }

@@ -174,7 +174,12 @@ export function RaceScreen() {
             {!s && <p class="muted">Start or open a session to rank your saved setups against its conditions.</p>}
             {s && hits === null && <p class="muted">Looking through your saved setups...</p>}
             {hits !== null && hits.length === 0 && !err && (
-              <p data-testid="race-empty">No saved setups yet. Save one from a practice session that went well.</p>
+              <div class="stack" data-testid="race-empty">
+                <p>No saved setups yet. Save one from a practice session that went well.</p>
+                <div class="row">
+                  <Button onClick={() => navigate("setup")}>Open Setup to save one</Button>
+                </div>
+              </div>
             )}
 
             {groups.same.length > 0 && (
