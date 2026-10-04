@@ -1,6 +1,6 @@
 // Compiles kb/source + kb/additions (OKF markdown) into data/generated/kb.json:
 // one chunk per Definition and per top-level Key Points bullet, with stable readable ids.
-// Also checks that every citation in data/levers.json resolves to a chunk.
+// Also cross-checks data/*.json: citations resolve to chunks, lever params and symptom prechecks to known ids.
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, readdirSync, existsSync, writeFileSync } from "node:fs";
 
@@ -66,12 +66,27 @@ for (const dir of DIRS) {
 mkdirSync("data/generated", { recursive: true });
 writeFileSync("data/generated/kb.json", JSON.stringify({ contentHash: hash.digest("hex"), pages, chunks }, null, 1));
 
+// Cross-checks the domain data: every citation must be a known chunk id, every lever param a known
+// param id, every precheck id used by a symptom a known precheck, every lever symptom a known symptom.
+const readJson = (f) => (existsSync(f) ? JSON.parse(readFileSync(f, "utf8")) : null);
+const params = readJson("data/params.bd12.json")?.params ?? [];
+const symptoms = readJson("data/symptoms.json") ?? [];
+const prechecks = readJson("data/prechecks.json") ?? [];
+const levers = readJson("data/levers.json") ?? [];
+const paramIds = new Set(params.map((p) => p.id));
+const symptomIds = new Set(symptoms.map((s) => s.id));
+const precheckIds = new Set(prechecks.map((p) => p.id));
 let missing = 0;
-if (existsSync("data/levers.json")) {
-  for (const lever of JSON.parse(readFileSync("data/levers.json", "utf8"))) {
-    for (const c of lever.citations ?? []) if (!seen.has(c)) { console.error(`lever ${lever.id}: unknown citation ${c}`); missing++; }
-  }
+const bad = (msg) => { console.error(msg); missing++; };
+for (const p of params) for (const c of p.src ?? []) if (!seen.has(c)) bad(`param ${p.id}: unknown citation ${c}`);
+for (const p of prechecks) for (const c of p.citations ?? []) if (!seen.has(c)) bad(`precheck ${p.id}: unknown citation ${c}`);
+for (const s of symptoms) for (const id of s.prechecks ?? []) if (!precheckIds.has(id)) bad(`symptom ${s.id}: unknown precheck ${id}`);
+for (const l of levers) {
+  for (const c of l.citations ?? []) if (!seen.has(c)) bad(`lever ${l.id}: unknown citation ${c}`);
+  if (l.param !== undefined && !paramIds.has(l.param)) bad(`lever ${l.id}: unknown param ${l.param}`);
+  if (!symptomIds.has(l.symptomId)) bad(`lever ${l.id}: unknown symptom ${l.symptomId}`);
 }
+console.log(`data: ${params.length} params, ${symptoms.length} symptoms, ${prechecks.length} prechecks, ${levers.length} levers (${levers.filter((l) => l.status === "reviewed").length} reviewed); ${missing} unknown citations/params/prechecks`);
 const words = chunks.reduce((n, c) => n + c.text.split(/\s+/).length, 0);
 console.log(`kb: ${pages.length} pages, ${chunks.length} chunks, ${words} words`);
 if (missing) process.exit(1);

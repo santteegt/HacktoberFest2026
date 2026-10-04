@@ -1,0 +1,125 @@
+[
+  {
+    "id": "pc-cross-tweak",
+    "label": "Cross-tweak",
+    "detail": "Lift from the centre holes: all four tyres should leave the board together. Needing more than 1.0 mm preload difference means a real fault, not a tweak.",
+    "citations": [
+      "touring-car-setup-procedure#cross-tweak-diagnostic-limit",
+      "touring-car-setup-procedure#pre-race-pit-sequence"
+    ]
+  },
+  {
+    "id": "pc-ride-height-unworn",
+    "label": "Ride height measured right",
+    "detail": "Measure behind the front arm and in front of the rear arm, never at the worn chassis ends.",
+    "citations": [
+      "touring-car-setup-procedure#ride-height-baseline",
+      "touring-car-setup-procedure#other-race-day-critical-checks"
+    ]
+  },
+  {
+    "id": "pc-belt-noise",
+    "label": "Belts quiet, rear not tighter",
+    "detail": "No clack or skip under hard throttle or braking; the rear belt must not be tighter than the front (rear overdrive makes it loose on power).",
+    "citations": [
+      "touring-car-drivetrain-tuning#belt-tension",
+      "touring-car-drivetrain-tuning#belt-failure-signature"
+    ]
+  },
+  {
+    "id": "pc-tyre-glue",
+    "label": "Tyres glued",
+    "detail": "Check the beads; re-glue every 3-4 runs.",
+    "citations": [
+      "touring-car-traction-and-tire-management#tire-preparation"
+    ]
+  },
+  {
+    "id": "pc-free-steering",
+    "label": "Steering free at full lock",
+    "detail": "At full lock the linkage moves by hand and the servo does not buzz (EPA not binding).",
+    "citations": [
+      "touring-car-setup-procedure#five-common-setup-errors-named-against-the-xray-",
+      "touring-car-radio-and-servo-setup#steering-epa"
+    ]
+  },
+  {
+    "id": "pc-battery-holder",
+    "label": "Battery holder not over-tight",
+    "detail": "The pack should float slightly; a clamped pack locks out chassis flex.",
+    "citations": [
+      "touring-car-setup-procedure#five-common-setup-errors-named-against-the-xray-",
+      "touring-car-suspension-tuning#chassis-flex"
+    ]
+  },
+  {
+    "id": "pc-arb-free",
+    "label": "Anti-roll bars free",
+    "detail": "Bars sit flat and move freely with slight play; over-tight collars bind them.",
+    "citations": [
+      "touring-car-suspension-tuning#anti-roll-bars-arb",
+      "yokomo-bd12#assembly-maintenance-notes-from-the-designer"
+    ]
+  },
+  {
+    "id": "pc-body-stoppers",
+    "label": "Body lip and stoppers",
+    "detail": "Front lip 7-8 mm on asphalt; stoppers touch only at the end of travel, not holding the body up.",
+    "citations": [
+      "touring-car-aerodynamics#front-lip-clearance",
+      "touring-car-aerodynamics#the-named-failure-mode"
+    ]
+  },
+  {
+    "id": "pc-drivetrain-free",
+    "label": "Drivetrain spins free",
+    "detail": "With the pinion out of mesh the drivetrain spins freely; spur mesh has a little backlash.",
+    "citations": [
+      "touring-car-drivetrain-tuning#pre-run-mechanical-checks"
+    ]
+  },
+  {
+    "id": "pc-tyre-rotation",
+    "label": "Tyres rotated",
+    "detail": "Swap left/right after every pack so wear stays even.",
+    "citations": [
+      "touring-car-traction-and-tire-management#rotation-cadence-is-per-pack-not-per-session"
+    ]
+  },
+  {
+    "id": "pc-lr-balance",
+    "label": "Left/right weight",
+    "detail": "Aim for 50/50; 51/49 is acceptable. On the BD12 the electronics sit left and the battery right.",
+    "citations": [
+      "touring-car-weight-balance#left-right-target",
+      "touring-car-weight-balance#on-the-owner-s-bd12-the-layout-starts-asymmetric"
+    ]
+  },
+  {
+    "id": "pc-steering-equal",
+    "label": "Steering equal both ways",
+    "detail": "Turnbuckles equal length; the physical throw matches left and right (EPA numbers may differ).",
+    "citations": [
+      "touring-car-radio-and-servo-setup#the-90-degree-horn-rule",
+      "touring-car-radio-and-servo-setup#steering-epa"
+    ]
+  },
+  {
+    "id": "pc-droop-after-rh",
+    "label": "Droop re-set after ride height",
+    "detail": "Ride height (and tyre wear) changes droop; re-set the downstops after any ride-height change.",
+    "citations": [
+      "touring-car-setup-procedure#the-load-bearing-dependency",
+      "touring-car-traction-and-tire-management#tyre-diameter-is-a-geometry-input-not-just-a-wea"
+    ]
+  },
+  {
+    "id": "pc-track-state",
+    "label": "Track state",
+    "detail": "Cold, dusty morning track? Grip usually climbs through the day; compare runs with that in mind.",
+    "citations": [
+      "touring-car-traction-and-tire-management#what-kills-traction",
+      "vehicle-dynamics-fundamentals#track-grip-changes-across-a-race-day"
+    ]
+  }
+]

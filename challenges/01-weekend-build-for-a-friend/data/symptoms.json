@@ -1,1 +1,192 @@
-[]
+[
+  {
+    "id": "entry-understeer",
+    "label": "Pushes on turn-in",
+    "phase": "entry",
+    "prechecks": [
+      "pc-body-stoppers",
+      "pc-free-steering",
+      "pc-droop-after-rh"
+    ],
+    "synonyms": [
+      "pushes on turn-in",
+      "won't turn in",
+      "front washes out",
+      "lazy turn-in",
+      "no front bite",
+      "plows on entry"
+    ]
+  },
+  {
+    "id": "mid-understeer",
+    "label": "Pushes mid-corner",
+    "phase": "mid",
+    "prechecks": [
+      "pc-body-stoppers",
+      "pc-arb-free",
+      "pc-free-steering"
+    ],
+    "synonyms": [
+      "pushes mid-corner",
+      "runs wide in the sweeper",
+      "won't hold a line",
+      "understeers in the middle"
+    ]
+  },
+  {
+    "id": "exit-understeer",
+    "label": "Pushes on power",
+    "phase": "exit",
+    "prechecks": [
+      "pc-arb-free",
+      "pc-tyre-glue"
+    ],
+    "synonyms": [
+      "pushes on power",
+      "runs wide on exit",
+      "won't turn on throttle",
+      "goes straight on the gas"
+    ]
+  },
+  {
+    "id": "entry-oversteer",
+    "label": "Loose on entry",
+    "phase": "entry",
+    "prechecks": [
+      "pc-cross-tweak",
+      "pc-droop-after-rh",
+      "pc-tyre-glue"
+    ],
+    "synonyms": [
+      "rear steps out on the brakes",
+      "loose on entry",
+      "tail happy into the corner",
+      "spins on turn-in",
+      "rear comes around when I brake"
+    ]
+  },
+  {
+    "id": "exit-oversteer",
+    "label": "Loose on power",
+    "phase": "exit",
+    "prechecks": [
+      "pc-belt-noise",
+      "pc-tyre-glue",
+      "pc-cross-tweak"
+    ],
+    "synonyms": [
+      "loose on power",
+      "snaps on throttle",
+      "no rear grip out of corners",
+      "fishtails accelerating",
+      "rear steps out on exit"
+    ]
+  },
+  {
+    "id": "traction-roll",
+    "label": "Traction rolls / digs in",
+    "phase": "mid",
+    "prechecks": [
+      "pc-cross-tweak",
+      "pc-arb-free"
+    ],
+    "synonyms": [
+      "traction rolls",
+      "tips over",
+      "flips in fast corners",
+      "digs in",
+      "lifts the inside wheels",
+      "grip rolls"
+    ]
+  },
+  {
+    "id": "bumpy-track",
+    "label": "Unsettled over bumps",
+    "phase": "none",
+    "prechecks": [
+      "pc-belt-noise",
+      "pc-droop-after-rh"
+    ],
+    "synonyms": [
+      "bounces over bumps",
+      "skips on the bumps",
+      "unsettled on the bumpy section",
+      "hops"
+    ]
+  },
+  {
+    "id": "nervous-twitchy",
+    "label": "Nervous / darty",
+    "phase": "none",
+    "prechecks": [
+      "pc-free-steering",
+      "pc-cross-tweak"
+    ],
+    "synonyms": [
+      "twitchy",
+      "darty",
+      "nervous",
+      "edgy",
+      "hard to keep straight",
+      "too sensitive"
+    ]
+  },
+  {
+    "id": "low-grip",
+    "label": "No grip anywhere",
+    "phase": "none",
+    "prechecks": [
+      "pc-track-state",
+      "pc-battery-holder",
+      "pc-tyre-glue"
+    ],
+    "synonyms": [
+      "no grip anywhere",
+      "sliding everywhere",
+      "dusty track",
+      "feels like ice",
+      "slippery all over"
+    ]
+  },
+  {
+    "id": "fade-late-run",
+    "label": "Fades late in the run",
+    "phase": "none",
+    "prechecks": [
+      "pc-drivetrain-free",
+      "pc-tyre-rotation"
+    ],
+    "synonyms": [
+      "fades at the end of the run",
+      "loses grip after a few minutes",
+      "slower at the end",
+      "motor gets hot",
+      "steering goes soft late"
+    ]
+  },
+  {
+    "id": "left-right-difference",
+    "label": "Different left vs right",
+    "phase": "none",
+    "precheckOnly": true,
+    "prechecks": [
+      "pc-cross-tweak",
+      "pc-lr-balance",
+      "pc-steering-equal",
+      "pc-tyre-rotation"
+    ],
+    "synonyms": [
+      "turns better left than right",
+      "pulls to one side",
+      "different each direction",
+      "one side grips more"
+    ]
+  },
+  {
+    "id": "out-of-scope",
+    "label": "Not something my notes cover",
+    "phase": "none",
+    "prechecks": [],
+    "synonyms": []
+  }
+]

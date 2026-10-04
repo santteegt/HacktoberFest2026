@@ -1,0 +1,644 @@
+{
+  "car": "yokomo-bd12",
+  "status": "DRAFT-FOR-REVIEW",
+  "baselineRule": "Use the bd12 value when present; otherwise the generic (Xray-derived) value, shown with a 'generic' tag. Source: yokomo-bd12#factory-baseline-alignment.",
+  "conventions": {
+    "camber": "Stored as degrees of NEGATIVE camber (1.5 = 1.5 deg negative; top of the tyre leans in).",
+    "frontToe": "Front toe-OUT per side in degrees; front toe-in is never used (min 0).",
+    "rearToe": "Rear toe-IN in degrees.",
+    "caster": "Positive caster in degrees: steering axis tilted back, pivot ahead of the contact patch.",
+    "droop": "Droop GAUGE reading in mm: a LOWER number means MORE droop (more travel).",
+    "rideHeight": "mm, measured behind the front arm / in front of the rear arm, never at the chassis ends.",
+    "shockPos": "Index: 1 = most laid down (inner hole) ... max = most upright (outer hole).",
+    "camberLinkShim": "Shim under the INNER camber-link ball stud: more shim = flatter link = lower roll centre, less camber gain."
+  },
+  "params": [
+    {
+      "id": "frontCamberDeg",
+      "label": "Front camber",
+      "group": "alignment",
+      "unit": "deg neg",
+      "kind": "number",
+      "min": 1,
+      "max": 2.5,
+      "step": 0.5,
+      "bd12": 1.5,
+      "generic": 2,
+      "src": [
+        "yokomo-bd12#factory-baseline-alignment",
+        "touring-car-setup-procedure#camber-and-toe-baselines",
+        "touring-car-traction-and-tire-management#traction-rolling"
+      ],
+      "range": "partial: 1.0 from traction-rolling; max 2.5 UNSOURCED",
+      "explainer": "camber"
+    },
+    {
+      "id": "rearCamberDeg",
+      "label": "Rear camber",
+      "group": "alignment",
+      "unit": "deg neg",
+      "kind": "number",
+      "min": 1.5,
+      "max": 3,
+      "step": 0.5,
+      "bd12": 2.5,
+      "generic": 2,
+      "src": [
+        "yokomo-bd12#factory-baseline-alignment",
+        "touring-car-setup-procedure#camber-and-toe-baselines"
+      ],
+      "range": "UNSOURCED",
+      "explainer": "camber"
+    },
+    {
+      "id": "frontToeOutDeg",
+      "label": "Front toe-out (per side)",
+      "group": "alignment",
+      "unit": "deg",
+      "kind": "number",
+      "min": 0,
+      "max": 1.5,
+      "step": 0.5,
+      "bd12": 1,
+      "generic": 1,
+      "src": [
+        "yokomo-bd12#factory-baseline-alignment",
+        "touring-car-setup-procedure#camber-and-toe-baselines",
+        "touring-car-traction-and-tire-management#traction-rolling"
+      ],
+      "range": "snapshot (toe-in never used; ~1.5 for traction rolling)",
+      "explainer": "toe"
+    },
+    {
+      "id": "rearToeInDeg",
+      "label": "Rear toe-in",
+      "group": "alignment",
+      "unit": "deg",
+      "kind": "number",
+      "min": 2,
+      "max": 3.5,
+      "step": 0.5,
+      "bd12": 3.5,
+      "generic": 2.5,
+      "src": [
+        "yokomo-bd12#factory-baseline-alignment",
+        "touring-car-setup-procedure#camber-and-toe-baselines",
+        "touring-car-traction-and-tire-management#increasing-rear-specific-traction"
+      ],
+      "range": "snapshot (2.0 high grip ... 3.5 low grip)",
+      "explainer": "toe"
+    },
+    {
+      "id": "casterDeg",
+      "label": "Caster",
+      "group": "alignment",
+      "unit": "deg",
+      "kind": "number",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "bd12": null,
+      "generic": 4,
+      "src": [
+        "touring-car-steering-geometry#caster"
+      ],
+      "range": "snapshot (2 ... 5-6)",
+      "explainer": "caster"
+    },
+    {
+      "id": "rideHeightFrontMm",
+      "label": "Ride height front",
+      "group": "chassis",
+      "unit": "mm",
+      "kind": "number",
+      "min": 5,
+      "max": 5.8,
+      "step": 0.2,
+      "bd12": 5,
+      "generic": 5,
+      "src": [
+        "yokomo-bd12#factory-baseline-alignment",
+        "touring-car-setup-procedure#ride-height-baseline"
+      ],
+      "range": "snapshot (5.0 smooth ... 5.8 bumpy)",
+      "explainer": "rideHeight"
+    },
+    {
+      "id": "rideHeightRearMm",
+      "label": "Ride height rear",
+      "group": "chassis",
+      "unit": "mm",
+      "kind": "number",
+      "min": 5,
+      "max": 5.8,
+      "step": 0.2,
+      "bd12": 5,
+      "generic": 5.2,
+      "src": [
+        "yokomo-bd12#factory-baseline-alignment",
+        "touring-car-setup-procedure#ride-height-baseline"
+      ],
+      "range": "snapshot; rear usually 0.2 above front (rake)",
+      "explainer": "rideHeight"
+    },
+    {
+      "id": "droopFrontGaugeMm",
+      "label": "Droop front (gauge; lower = more droop)",
+      "group": "chassis",
+      "unit": "mm",
+      "kind": "number",
+      "min": 4.8,
+      "max": 6.4,
+      "step": 0.2,
+      "bd12": null,
+      "generic": 5.6,
+      "src": [
+        "touring-car-setup-procedure#droop-baselines",
+        "yokomo-bd12#factory-baseline-alignment"
+      ],
+      "range": "UNSOURCED (only baseline known); BD12 specifies droop differently: 1.5-2.0 mm upward extension when lifted at 5.0 mm ride height",
+      "explainer": "droop"
+    },
+    {
+      "id": "droopRearGaugeMm",
+      "label": "Droop rear (gauge; lower = more droop)",
+      "group": "chassis",
+      "unit": "mm",
+      "kind": "number",
+      "min": 3.8,
+      "max": 5.4,
+      "step": 0.2,
+      "bd12": null,
+      "generic": 4.6,
+      "src": [
+        "touring-car-setup-procedure#droop-baselines"
+      ],
+      "range": "UNSOURCED (only baseline known)",
+      "explainer": "droop"
+    },
+    {
+      "id": "weightFrontPct",
+      "label": "Front weight",
+      "group": "chassis",
+      "unit": "%",
+      "kind": "number",
+      "min": 48,
+      "max": 52,
+      "step": 1,
+      "bd12": null,
+      "generic": 50,
+      "src": [
+        "touring-car-weight-balance#front-rear-target"
+      ],
+      "range": "snapshot (48/52 ... 52/48)",
+      "explainer": "weight"
+    },
+    {
+      "id": "weightLeftPct",
+      "label": "Left weight",
+      "group": "chassis",
+      "unit": "%",
+      "kind": "number",
+      "min": 48,
+      "max": 52,
+      "step": 1,
+      "bd12": null,
+      "generic": 50,
+      "src": [
+        "touring-car-weight-balance#left-right-target",
+        "touring-car-weight-balance#on-the-owner-s-bd12-the-layout-starts-asymmetric"
+      ],
+      "range": "target 50, 49-51 acceptable; outer bounds UNSOURCED"
+    },
+    {
+      "id": "ackermannShimMm",
+      "label": "Ackermann shim (rack)",
+      "group": "steering",
+      "unit": "mm",
+      "kind": "number",
+      "min": 0,
+      "max": 1,
+      "step": 0.5,
+      "bd12": null,
+      "generic": 0.5,
+      "src": [
+        "touring-car-steering-geometry#ackermann-effect"
+      ],
+      "range": "snapshot (0 ... ~1.0 ceiling; baseline 0-0.5)",
+      "explainer": "ackermann"
+    },
+    {
+      "id": "bumpSteerShimMm",
+      "label": "Bump-steer shim (outer block)",
+      "group": "steering",
+      "unit": "mm",
+      "kind": "number",
+      "min": 0,
+      "max": 2,
+      "step": 0.5,
+      "bd12": null,
+      "generic": 1,
+      "src": [
+        "touring-car-steering-geometry#bump-steer"
+      ],
+      "range": "snapshot (asphalt 1.0-2.0, carpet 0-1.0)",
+      "explainer": "bumpSteer"
+    },
+    {
+      "id": "steeringExpoPct",
+      "label": "Steering expo",
+      "group": "steering",
+      "unit": "%",
+      "kind": "number",
+      "min": -20,
+      "max": 0,
+      "step": 5,
+      "bd12": null,
+      "generic": -5,
+      "src": [
+        "touring-car-radio-and-servo-setup#steering-expo"
+      ],
+      "range": "snapshot (wheel -5 to -10, stick -10 to -20)"
+    },
+    {
+      "id": "frontArbMm",
+      "label": "Front anti-roll bar",
+      "group": "damping",
+      "unit": "mm",
+      "kind": "number",
+      "min": 1,
+      "max": 1.6,
+      "step": 0.1,
+      "bd12": null,
+      "generic": 1.3,
+      "src": [
+        "touring-car-suspension-tuning#anti-roll-bars-arb"
+      ],
+      "range": "UNSOURCED (baseline ~1.3 only)",
+      "explainer": "arb"
+    },
+    {
+      "id": "rearArbMm",
+      "label": "Rear anti-roll bar",
+      "group": "damping",
+      "unit": "mm",
+      "kind": "number",
+      "min": 1,
+      "max": 1.6,
+      "step": 0.1,
+      "bd12": null,
+      "generic": 1.2,
+      "src": [
+        "touring-car-suspension-tuning#anti-roll-bars-arb"
+      ],
+      "range": "UNSOURCED (baseline ~1.2 only)",
+      "explainer": "arb"
+    },
+    {
+      "id": "frontSpringRate",
+      "label": "Front spring rate (one brand's scale)",
+      "group": "damping",
+      "unit": "rate",
+      "kind": "number",
+      "min": 2,
+      "max": 3.2,
+      "step": 0.1,
+      "bd12": null,
+      "generic": null,
+      "src": [
+        "touring-car-suspension-tuning#springs"
+      ],
+      "range": "snapshot spans 2.0-2.3 (BD11 rear) to 3.0-3.2 (hard); step UNSOURCED"
+    },
+    {
+      "id": "rearSpringRate",
+      "label": "Rear spring rate (one brand's scale)",
+      "group": "damping",
+      "unit": "rate",
+      "kind": "number",
+      "min": 2,
+      "max": 3.2,
+      "step": 0.1,
+      "bd12": null,
+      "generic": null,
+      "src": [
+        "touring-car-suspension-tuning#springs",
+        "yokomo-bd12#the-bd11-predecessor"
+      ],
+      "range": "as front"
+    },
+    {
+      "id": "frontOilCst",
+      "label": "Front shock oil",
+      "group": "damping",
+      "unit": "cSt",
+      "kind": "number",
+      "min": 300,
+      "max": 600,
+      "step": 50,
+      "bd12": null,
+      "generic": null,
+      "src": [
+        "touring-car-suspension-tuning#shock-oil-viscosity"
+      ],
+      "range": "snapshot (300-600, usually 400-500); step UNSOURCED"
+    },
+    {
+      "id": "rearOilCst",
+      "label": "Rear shock oil",
+      "group": "damping",
+      "unit": "cSt",
+      "kind": "number",
+      "min": 300,
+      "max": 600,
+      "step": 50,
+      "bd12": null,
+      "generic": null,
+      "src": [
+        "touring-car-suspension-tuning#shock-oil-viscosity"
+      ],
+      "range": "as front"
+    },
+    {
+      "id": "frontShockPos",
+      "label": "Front shock top hole (1 laid down ... 5 upright)",
+      "group": "damping",
+      "unit": "hole",
+      "kind": "number",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "bd12": null,
+      "generic": null,
+      "src": [
+        "yokomo-bd12#design-changes-versus-the-bd11",
+        "touring-car-suspension-tuning#shock-mounting-angle"
+      ],
+      "range": "BD12 has 5 front mounting steps (snapshot); which index is the kit default is UNSOURCED",
+      "explainer": "shockAngle"
+    },
+    {
+      "id": "rearShockPos",
+      "label": "Rear shock position (1 laid down ... 3 upright)",
+      "group": "damping",
+      "unit": "pos",
+      "kind": "number",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "bd12": null,
+      "generic": null,
+      "src": [
+        "yokomo-bd12#design-changes-versus-the-bd11",
+        "touring-car-suspension-tuning#shock-mounting-angle"
+      ],
+      "range": "UNSOURCED: BD12 rear angle is set with spacers; 3 positions is a modelling choice",
+      "explainer": "shockAngle"
+    },
+    {
+      "id": "frontShockTopSpacerMm",
+      "label": "Front shock top spacer",
+      "group": "damping",
+      "unit": "mm",
+      "kind": "number",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "bd12": null,
+      "generic": 4,
+      "src": [
+        "touring-car-suspension-tuning#shock-shimming"
+      ],
+      "range": "UNSOURCED (baseline 4.0 only)"
+    },
+    {
+      "id": "frontCamberLinkInnerShimMm",
+      "label": "Front camber-link inner shim",
+      "group": "damping",
+      "unit": "mm",
+      "kind": "number",
+      "min": 0,
+      "max": 3,
+      "step": 0.5,
+      "bd12": null,
+      "generic": null,
+      "src": [
+        "touring-car-suspension-tuning#camber-link-length-and-ball-stud-height-are-the-",
+        "touring-car-suspension-tuning#roll-center"
+      ],
+      "range": "UNSOURCED",
+      "explainer": "rollCentre"
+    },
+    {
+      "id": "rearCamberLinkInnerShimMm",
+      "label": "Rear camber-link inner shim",
+      "group": "damping",
+      "unit": "mm",
+      "kind": "number",
+      "min": 0,
+      "max": 3,
+      "step": 0.5,
+      "bd12": null,
+      "generic": null,
+      "src": [
+        "touring-car-suspension-tuning#camber-link-length-and-ball-stud-height-are-the-",
+        "touring-car-suspension-tuning#roll-center"
+      ],
+      "range": "UNSOURCED",
+      "explainer": "rollCentre"
+    },
+    {
+      "id": "rearDiffOilCst",
+      "label": "Rear gear-diff oil",
+      "group": "drivetrain",
+      "unit": "cSt",
+      "kind": "number",
+      "min": 3000,
+      "max": 10000,
+      "step": 1000,
+      "bd12": null,
+      "generic": null,
+      "src": [
+        "touring-car-drivetrain-tuning#differentials"
+      ],
+      "range": "snapshot (3,000-10,000); step UNSOURCED; 3,000 is a spec-class baseline, not Modified"
+    },
+    {
+      "id": "spurT",
+      "label": "Spur",
+      "group": "drivetrain",
+      "unit": "T",
+      "kind": "number",
+      "min": 60,
+      "max": 120,
+      "step": 1,
+      "bd12": 90,
+      "generic": null,
+      "src": [
+        "yokomo-bd12#design-changes-versus-the-bd11"
+      ],
+      "range": "UNSOURCED bounds"
+    },
+    {
+      "id": "pinionT",
+      "label": "Pinion",
+      "group": "drivetrain",
+      "unit": "T",
+      "kind": "number",
+      "min": 15,
+      "max": 60,
+      "step": 1,
+      "bd12": null,
+      "generic": null,
+      "src": [
+        "touring-car-drivetrain-tuning#gearing"
+      ],
+      "range": "UNSOURCED bounds"
+    },
+    {
+      "id": "fdr",
+      "label": "Final drive ratio (computed)",
+      "group": "drivetrain",
+      "unit": "",
+      "kind": "computed",
+      "formula": "spurT / pinionT * 1.9",
+      "src": [
+        "touring-car-drivetrain-tuning#gearing"
+      ],
+      "range": "IGR 1.9 = 38T diff gear / 20T pulley from BD-series build notes; confirm for BD12 with the manual"
+    },
+    {
+      "id": "beltFrontSteps",
+      "label": "Front belt (steps tighter than centre)",
+      "group": "drivetrain",
+      "unit": "steps",
+      "kind": "number",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "bd12": null,
+      "generic": 3,
+      "src": [
+        "touring-car-drivetrain-tuning#belt-tension"
+      ],
+      "range": "UNSOURCED bounds"
+    },
+    {
+      "id": "beltRearSteps",
+      "label": "Rear belt (steps tighter than centre)",
+      "group": "drivetrain",
+      "unit": "steps",
+      "kind": "number",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "bd12": null,
+      "generic": 2,
+      "src": [
+        "touring-car-drivetrain-tuning#belt-tension"
+      ],
+      "range": "UNSOURCED bounds; rear must not be tighter than front"
+    },
+    {
+      "id": "bodyForwardMm",
+      "label": "Body shell forward offset",
+      "group": "aero",
+      "unit": "mm",
+      "kind": "number",
+      "min": 0,
+      "max": 6,
+      "step": 2,
+      "bd12": null,
+      "generic": 0,
+      "src": [
+        "touring-car-aerodynamics#fore-aft-body-position"
+      ],
+      "range": "snapshot cites forward 2.0-6.0 mm; 0 reference UNSOURCED",
+      "explainer": "body"
+    },
+    {
+      "id": "frontLipClearanceMm",
+      "label": "Front lip clearance",
+      "group": "aero",
+      "unit": "mm",
+      "kind": "number",
+      "min": 6,
+      "max": 10,
+      "step": 0.5,
+      "bd12": null,
+      "generic": 7.5,
+      "src": [
+        "touring-car-aerodynamics#front-lip-clearance",
+        "touring-car-setup-procedure#front-body-clearance-and-up-stops"
+      ],
+      "range": "snapshot (7-8 asphalt; 6 with stoppers; 9-10 CRC carpet only)"
+    },
+    {
+      "id": "frontHexMm",
+      "label": "Front wheel hex",
+      "group": "aero",
+      "unit": "mm",
+      "kind": "enum",
+      "options": [
+        4,
+        4.3,
+        4.5,
+        5
+      ],
+      "bd12": null,
+      "generic": null,
+      "src": [
+        "touring-car-aerodynamics#wheelbase-and-track-width-sit-alongside-these-as",
+        "yokomo-bd12#the-setup-sheet-pdf-s-field-structure-has-been-f"
+      ],
+      "range": "options from snapshot"
+    },
+    {
+      "id": "rearHexMm",
+      "label": "Rear wheel hex",
+      "group": "aero",
+      "unit": "mm",
+      "kind": "enum",
+      "options": [
+        4,
+        4.3,
+        4.5,
+        5
+      ],
+      "bd12": null,
+      "generic": null,
+      "src": [
+        "touring-car-aerodynamics#wheelbase-and-track-width-sit-alongside-these-as",
+        "yokomo-bd12#the-setup-sheet-pdf-s-field-structure-has-been-f"
+      ],
+      "range": "options from snapshot"
+    },
+    {
+      "id": "tyreSet",
+      "label": "Tyre set label",
+      "group": "tyres",
+      "unit": "",
+      "kind": "text",
+      "bd12": null,
+      "generic": null,
+      "src": [],
+      "range": "free text; no compound advice (snapshot gap)"
+    },
+    {
+      "id": "tyreRunsOnSet",
+      "label": "Runs on this tyre set",
+      "group": "tyres",
+      "unit": "runs",
+      "kind": "number",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "bd12": null,
+      "generic": 0,
+      "src": [
+        "touring-car-traction-and-tire-management#tyre-diameter-is-a-geometry-input-not-just-a-wea"
+      ],
+      "range": "counter"
+    }
+  ]
+}
