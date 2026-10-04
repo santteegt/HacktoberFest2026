@@ -1,0 +1,19 @@
+# Local-only research for this challenge (idea deep dives, comparison report). Not committed.
+ideas/
+
+# Build / deps
+node_modules/
+dist/
+dev-dist/
+*.tsbuildinfo
+
+# Secrets and local config
+.env
+.env.*
+!.env.example
+
+# Model weights are fetched at runtime, never committed
+*.litertlm
+*.gguf
+*.onnx
+*.task

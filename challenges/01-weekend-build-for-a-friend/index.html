@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f1419" />
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <title>RC Pit Companion</title>
+  </head>
+  <body>
+    <header class="top">
+      <h1>RC Pit Companion</h1>
+      <span id="net" class="pill" aria-live="polite">checking…</span>
+    </header>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="coach" aria-selected="true">Coach</button>
+      <button role="tab" data-tab="vault" aria-selected="false">Setup vault</button>
+      <button role="tab" data-tab="about" aria-selected="false">About</button>
+    </nav>
+    <main>
+      <section id="tab-coach" role="tabpanel">
+        <p class="muted">Scaffold only. Tell it how the car feels; it will suggest one change at a time.</p>
+      </section>
+      <section id="tab-vault" role="tabpanel" hidden>
+        <p class="muted">Best setups with their track conditions will live here.</p>
+      </section>
+      <section id="tab-about" role="tabpanel" hidden>
+        <p class="muted">Built for a friend who races a Yokomo BD12. See the README for what is new and what is credited.</p>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

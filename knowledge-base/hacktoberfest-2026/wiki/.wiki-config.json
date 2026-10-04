@@ -1,0 +1,9 @@
+{
+  "okf_version": "0.1",
+  "vault_name": "Hacktoberfest 2026",
+  "type_vocabulary": ["concept", "topic", "source", "idea", "tool", "framework"],
+  "domain_tags": ["program", "challenges", "ideas", "tools", "frameworks", "models"],
+  "subtopic_tags": [],
+  "link_style": "okf-path",
+  "strict_lint": false
+}

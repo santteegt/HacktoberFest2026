@@ -1,0 +1,9 @@
+{
+  "okf_version": "0.1",
+  "vault_name": "MyProject",
+  "type_vocabulary": ["concept", "topic", "source"],
+  "domain_tags": ["domain-a", "domain-b"],
+  "subtopic_tags": [],
+  "link_style": "okf-path",
+  "strict_lint": false
+}

@@ -1,0 +1,25 @@
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Dependencies and build output (per-challenge projects)
+node_modules/
+.venv/
+__pycache__/
+dist/
+build/
+.next/
+*.log
+
+# Local agent state
+.claude/settings.local.json
+.claude/worktrees/
+graphify-out/

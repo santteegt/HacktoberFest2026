@@ -1,0 +1,19 @@
+{
+  "name": "rc-pit-companion",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Offline, voice-first setup coach and setup vault for 1/10 touring car (Hacktoberfest 2026 Weekend Challenge: Build for a Friend)",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2",
+    "vite-plugin-pwa": "^2.0.0"
+  }
+}
