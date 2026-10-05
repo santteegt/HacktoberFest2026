@@ -88,7 +88,7 @@ The video was recorded on his laptop. It is a walkthrough of the app with Wi-Fi 
 
 {% github santteegt/HacktoberFest2026 %}
 
-The project is in the `challenges/01-weekend-build-for-a-friend` folder of that repo. MIT licensed. The README has run steps (Node 22.13+, Ollama, two commands) and the full list of limits.
+The project is in the `challenges/01-weekend-build-for-a-friend` folder of that repo. MIT licensed. The README has run steps (Node 22.13+, Ollama, two commands) and the full list of limits, and [docs/GETTING-STARTED.md](https://github.com/santteegt/HacktoberFest2026/blob/main/challenges/01-weekend-build-for-a-friend/docs/GETTING-STARTED.md) walks through install, first launch, a practice day, voice and the common problems.
 
 ## How I Built It
 

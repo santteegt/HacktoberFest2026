@@ -253,6 +253,8 @@ Rules: measurements need date, device or machine, model and method, or they don'
 
 - 2026-10-05 05:27Z [PROCESS] Post PUBLISHED on DEV by the orchestrator on the author's explicit instruction ("publish it") at 2026-10-05 05:26:57 UTC, about 1.5 h before the deadline: https://dev.to/santteegt/a-setup-coach-for-my-friends-rc-car-that-stays-on-his-laptop-4ahn (article id 4798987, tags devchallenge, weekendchallenge, hf26challenge, `ai_disclosure_level` left at the default some_ai). Pre-publish audit passed: no TODO comments in the body, all 13 image URLs return 200, public repo, MIT LICENSE, `.env.example`, no secrets in tracked files, first commit 2026-10-04 (inside the window). Open after publishing: the agent session (DEV session 548) is still UNPUBLISHED and must be made public by the author from DEV, otherwise readers may not see the embed.
 
+- 2026-10-05 05:33Z [PROCESS] The getting-started guide was not linked from the README or the published post (only the memory file and a private artifact). Added `docs/GETTING-STARTED.md` (Markdown, renders on GitHub, same content as `docs/getting-started.html`), linked it from the README's Run section and from the post's Code section, and updated the live post. Lesson: when an artifact is made for users, link it from the places users start (README, post) at the time it is made.
+
 ### Partners
 
 - 2026-10-04 (backfilled) [PARTNER] (SUPERSEDED by 2026-10-04 21:30Z: Entire dropped) Gemma (via Ollama), Mastra and Entire are the only categories planned. Nothing is claimed until the code uses them. Update this section when each is actually integrated or dropped.

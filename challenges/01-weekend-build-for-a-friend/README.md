@@ -36,6 +36,8 @@ Source: [docs/architecture.svg](docs/architecture.svg). Only the two green boxes
 
 ## Run it
 
+A step-by-step guide with fixes for common problems is in [docs/GETTING-STARTED.md](docs/GETTING-STARTED.md). The short version:
+
 You need **Node 22.13+** and [Ollama](https://ollama.com) (macOS 14+ on a Mac).
 
 ```bash
