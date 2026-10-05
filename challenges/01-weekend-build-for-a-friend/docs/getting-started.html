@@ -225,7 +225,7 @@ footer { border-top: 3px solid var(--ink); padding-top: 16px; font-size: 0.92rem
         </details>
         <details>
           <summary>The answer is slow</summary>
-          <div><p>On a CPU-only laptop the first answer after starting is the slowest because the model has to load. Use the small E2B model, close other heavy apps, and use chips, which skip one of the two model steps.</p></div>
+          <div><p>On an older CPU-only laptop the model writes only a few words a second (about 9 tokens on the one laptop we measured), so a full answer can take 15 to 25 seconds. The first answer after starting is the slowest because the model has to load. Close other heavy apps and use the small E2B model. Then try the quick fix: open <b>Settings</b>, find <b>Coach phrasing (LLM explanations)</b> and switch it off. The coach then shows its plain template text instead of a model-written paragraph. The advice and the numbers are the same, a symptom chip answers right away, and a typed sentence only waits for the model to understand it.</p></div>
         </details>
         <details>
           <summary>It misread what I said</summary>

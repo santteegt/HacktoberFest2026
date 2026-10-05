@@ -88,7 +88,7 @@ On testing: the symptom test has 25 cases; Gemma got 24 right. Twenty cases are 
 
 What fell short:
 
-- It is slow on his laptop. A typed sentence goes through the model twice, and from his one speed reading I estimate about 25 seconds for a full answer, and about 15 seconds for a symptom chip, which skips one of the two model steps. Text streams in while it is written. That is an estimate from the speed test, not a timing of the app, which I haven't done on his laptop yet.
+- It is slow on his laptop. A typed sentence goes through the model twice, and from his one speed reading I estimate about 25 seconds for a full answer, and about 15 seconds for a symptom chip, which skips one of the two model steps. Text streams in while it is written. That is an estimate from the speed test, not a timing of the app, which I haven't done on his laptop yet. There is a setting that turns the model's wording off and shows the plain template text instead: the advice and numbers are the same, a chip answers straight away, and a typed sentence only waits for the model to understand it.
 - The 3D scenes are schematic. The directions come from the notes and some sizes are exaggerated so you can see them. The label says so.
 - On-device speech recognition said "unavailable" in the browser I tested with. Typing and tapping a symptom chip both work without it, but I can't tell you the voice path works offline until I run it with Wi-Fi off on a real desktop browser.
 - Setup needs Node and Ollama. There's no installer.
