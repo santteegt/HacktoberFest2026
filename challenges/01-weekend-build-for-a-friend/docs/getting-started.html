@@ -1,0 +1,306 @@
+<title>RC Pit Companion Setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a setup sheet. One narrow column of numbered stations, like the boxes on a pit-lane board. */
+:root {
+  --paper: #eef1ec;
+  --card: #f8faf6;
+  --ink: #16201c;
+  --muted: #526159;
+  --line: #cbd3c9;
+  --accent: #0d6b5f;
+  --accent-ink: #ffffff;
+  --mark: #e3b505;
+  --warn-bg: #fbf1d3;
+  --warn-ink: #5a4500;
+  --code-bg: #1b2521;
+  --code-ink: #e4ece6;
+  --display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #111815; --card: #19211d; --ink: #e5ece7; --muted: #9aaaa1; --line: #2c3933;
+    --accent: #4cc2ab; --accent-ink: #0b1411; --mark: #f0c419; --warn-bg: #3a3112; --warn-ink: #f1dc8f;
+    --code-bg: #0b100e; --code-ink: #dfe8e2; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #111815; --card: #19211d; --ink: #e5ece7; --muted: #9aaaa1; --line: #2c3933;
+  --accent: #4cc2ab; --accent-ink: #0b1411; --mark: #f0c419; --warn-bg: #3a3112; --warn-ink: #f1dc8f;
+  --code-bg: #0b100e; --code-ink: #dfe8e2; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 17px/1.55 var(--body); padding-inline: 16px; padding-block: 28px 64px; }
+main { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.05; text-wrap: balance; margin: 0; letter-spacing: 0.01em; }
+h1 { font-size: clamp(2.6rem, 8vw, 3.8rem); text-transform: uppercase; }
+h2 { font-size: 1.9rem; text-transform: uppercase; }
+h3 { font-size: 1.25rem; }
+p { margin: 0; max-width: 65ch; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+code { font-family: var(--mono); font-size: 0.88em; background: color-mix(in srgb, var(--ink) 9%, transparent); padding: 1px 5px; border-radius: 3px; }
+.eyebrow { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+header { display: flex; flex-direction: column; gap: 14px; border-bottom: 3px solid var(--ink); padding-bottom: 22px; }
+.lede { font-size: 1.15rem; max-width: 56ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 22px; font-family: var(--mono); font-size: 0.82rem; color: var(--muted); }
+.meta b { color: var(--ink); font-weight: 600; }
+
+.station { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 4px 16px; }
+.num { font-family: var(--display); font-size: 2.6rem; line-height: 1; background: var(--mark); color: #1a1500; text-align: center; padding: 6px 0 8px; align-self: start; font-weight: 700; }
+.station > div { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.panel { background: var(--card); border: 1px solid var(--line); padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+
+.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.checks label { display: flex; gap: 12px; align-items: flex-start; padding: 8px 4px; cursor: pointer; min-height: 44px; }
+.checks input { width: 22px; height: 22px; margin-top: 2px; accent-color: var(--accent); flex: none; }
+.checks input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+.progress { font-family: var(--mono); font-size: 0.82rem; color: var(--muted); }
+
+.seg { display: inline-flex; border: 2px solid var(--ink); align-self: flex-start; }
+.seg button { font: 600 0.95rem var(--body); background: transparent; color: var(--ink); border: 0; padding: 10px 16px; min-height: 44px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+.cmd { position: relative; background: var(--code-bg); color: var(--code-ink); border-radius: 4px; }
+.cmd pre { margin: 0; padding: 14px 92px 14px 16px; overflow-x: auto; font: 0.9rem/1.6 var(--mono); }
+.cmd button { position: absolute; top: 8px; right: 8px; font: 600 0.8rem var(--body); background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 3px; padding: 8px 12px; min-height: 36px; cursor: pointer; }
+.cmd .c { color: #8fa398; }
+.note { background: var(--warn-bg); color: var(--warn-ink); padding: 10px 14px; border-left: 4px solid var(--mark); font-size: 0.95rem; }
+.small { font-size: 0.92rem; color: var(--muted); }
+
+.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.flow li { background: var(--card); border: 1px solid var(--line); border-top: 4px solid var(--accent); padding: 10px 12px; font-size: 0.95rem; }
+.flow b { display: block; font-family: var(--display); font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.02em; }
+
+details { background: var(--card); border: 1px solid var(--line); }
+details + details { margin-top: -1px; }
+summary { cursor: pointer; padding: 14px 16px; min-height: 48px; font-weight: 600; list-style-position: inside; }
+details > div { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 10px; }
+.report { font-family: var(--mono); font-size: 0.85rem; white-space: pre-wrap; background: var(--card); border: 1px dashed var(--muted); padding: 14px 16px; }
+footer { border-top: 3px solid var(--ink); padding-top: 16px; font-size: 0.92rem; color: var(--muted); display: flex; flex-direction: column; gap: 6px; }
+@media (max-width: 520px) { .station { grid-template-columns: 40px minmax(0, 1fr); gap: 4px 12px; } .num { font-size: 2rem; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+</style>
+
+<main>
+  <header>
+    <span class="eyebrow">Hacktoberfest 2026 · Build for a Friend</span>
+    <h1>RC Pit Companion</h1>
+    <p class="lede">A setup coach and setup vault for a 1/10 touring car that runs on your laptop. This page gets it running, then shows how to use it at the pit table.</p>
+    <div class="meta"><span><b>About 15 min</b> the first time</span><span><b>Internet needed once</b> for downloads</span><span><b>Mac:</b> macOS 14 or newer</span></div>
+  </header>
+
+  <section class="station">
+    <div class="num" aria-hidden="true">1</div>
+    <div>
+      <h2>Before you start</h2>
+      <div class="panel">
+        <div class="progress" id="progress">0 of 4 ready</div>
+        <ul class="checks" id="prereqs">
+          <li><label><input type="checkbox" data-k="mac"><span>A Mac on macOS 14 or newer (Apple menu, About This Mac).</span></label></li>
+          <li><label><input type="checkbox" data-k="node"><span>Node 22.13 or newer. Check with <code>node -v</code>. Install from nodejs.org if it is older or missing.</span></label></li>
+          <li><label><input type="checkbox" data-k="ollama"><span>Ollama installed and open (ollama.com/download). You should see its icon in the menu bar.</span></label></li>
+          <li><label><input type="checkbox" data-k="git"><span>Git, or use the green Code button on GitHub and download the ZIP instead.</span></label></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="station">
+    <div class="num" aria-hidden="true">2</div>
+    <div>
+      <h2>Install</h2>
+      <p>Pick the model first. The small one is the safe choice for an older Intel laptop. The bigger one gives nicer wording if the laptop is fast.</p>
+      <div class="seg" role="group" aria-label="Model size">
+        <button type="button" id="m-e2b" aria-pressed="true">E2B, small (about 4.3 GB)</button>
+        <button type="button" id="m-e4b" aria-pressed="false">E4B, larger (about 6.1 GB)</button>
+      </div>
+      <div class="cmd"><pre id="cmd-install"></pre><button type="button" data-copy="cmd-install">Copy</button></div>
+      <p class="small">The first line downloads the project. The <code>ollama pull</code> line downloads the model, which is the slow part. <code>npm ci</code> installs packages and builds the offline notes index.</p>
+      <div class="cmd"><pre id="cmd-env"></pre><button type="button" data-copy="cmd-env">Copy</button></div>
+      <p class="small">This edits the <code>.env</code> file so the app asks Ollama for the model you pulled.</p>
+    </div>
+  </section>
+
+  <section class="station">
+    <div class="num" aria-hidden="true">3</div>
+    <div>
+      <h2>Start it</h2>
+      <div class="cmd"><pre>npm start</pre><button type="button" data-copy="cmd-start">Copy</button></div>
+      <p>Wait for the line that says the server is running, then open <a href="http://localhost:8787" rel="noopener">http://localhost:8787</a> in Chrome. Leave the terminal window open while you use the app. Press Ctrl+C in it to stop.</p>
+      <div class="panel">
+        <h3>First launch asks three things</h3>
+        <ol style="margin:0;padding-left:1.2em">
+          <li>Which car. Pick the Yokomo BD12.</li>
+          <li>The first practice session: track name, surface, grip, bumpy or not, and the temperature if you know it.</li>
+          <li>A model check. It tells you if Ollama is not running or the model is not pulled.</li>
+        </ol>
+      </div>
+      <p class="small">Want to look around with example data first? In the project folder run <code>npm run seed:demo</code>. Everything it adds is labelled DEMO.</p>
+    </div>
+  </section>
+
+  <section class="station">
+    <div class="num" aria-hidden="true">4</div>
+    <div>
+      <h2>A practice day</h2>
+      <ol class="flow">
+        <li><b>Coach</b>Tap a symptom chip, or type or say how the car feels.</li>
+        <li><b>Apply</b>It suggests one change with what to expect. Accept it, then make the change on the car.</li>
+        <li><b>Drive</b>Run the 3 to 5 laps it asks for, on the same corners.</li>
+        <li><b>Rate</b>Better, Same or Worse. The change is saved in the Session log.</li>
+        <li><b>Save setup</b>If it was better, save the setup with today's track conditions.</li>
+        <li><b>Race day</b>Enter the conditions and see your saved setups ranked by how close they are.</li>
+      </ol>
+      <div class="panel">
+        <h3>Things worth knowing</h3>
+        <ul style="margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px">
+          <li>It changes one thing at a time on purpose. If you change two, you cannot tell which one helped.</li>
+          <li>Every answer lists the notes it came from. Tap a citation to read the source.</li>
+          <li>Questions outside the notes get a refusal. That is by design.</li>
+          <li>Chips and typed keywords work even if Ollama is off. The model only improves how it understands and words things.</li>
+          <li>Most adjustment rows are marked draft. Treat those as a starting point, not as gospel.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="station">
+    <div class="num" aria-hidden="true">5</div>
+    <div>
+      <h2>Voice</h2>
+      <p>Push-to-talk works in desktop Chrome when the browser can recognise speech on the device. It has not been checked on this laptop yet, so test it before relying on it.</p>
+      <div class="panel">
+        <ol style="margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px">
+          <li>Open <b>Settings</b>, then the voice section.</li>
+          <li>If it says the speech pack is missing, press <b>Install speech pack</b>. That needs internet once.</li>
+          <li>Press <b>Test voice input</b> and say a sentence. If nothing happens, use chips or type. Nothing else in the app depends on voice.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="station">
+    <div class="num" aria-hidden="true">6</div>
+    <div>
+      <h2>Try it with Wi-Fi off</h2>
+      <p>Once the model is pulled and <code>npm start</code> is running, turn Wi-Fi off and do one coach turn. It should still answer. Then send back what you saw.</p>
+      <div class="cmd"><pre>ollama run gemma4:e2b-it-qat --verbose</pre><button type="button" data-copy="cmd-speed">Copy</button></div>
+      <p class="small">Ask it one short thing. When it finishes it prints "prompt eval rate" and "eval rate" in tokens per second. Those two numbers are the useful part.</p>
+      <div class="report">Please send:
+- macOS version
+- prompt eval rate and eval rate (tokens/s) from the command above
+- seconds from tapping a chip to seeing text, and the same for a typed sentence
+- did the mic work with Wi-Fi on? with Wi-Fi off?
+- anything confusing or slow</div>
+    </div>
+  </section>
+
+  <section class="station">
+    <div class="num" aria-hidden="true">7</div>
+    <div>
+      <h2>If something goes wrong</h2>
+      <div>
+        <details>
+          <summary>The app says "Ollama not reachable"</summary>
+          <div><p>Open the Ollama app so its menu bar icon appears. Reload the page. Chips and typed keywords still work without it.</p></div>
+        </details>
+        <details>
+          <summary>The app says the model "is not pulled"</summary>
+          <div><p>Run the pull command from step 2 for the model you chose. Check the name in <code>.env</code> matches it exactly.</p>
+          <div class="cmd"><pre>ollama list</pre><button type="button" data-copy="cmd-list">Copy</button></div></div>
+        </details>
+        <details>
+          <summary><code>npm start</code> stops with a message about <code>kb.json</code></summary>
+          <div><p>The offline notes index is missing. Rebuild it, then start again.</p>
+          <div class="cmd"><pre>npm run kb:build</pre><button type="button" data-copy="cmd-kb">Copy</button></div></div>
+        </details>
+        <details>
+          <summary>The port is already in use</summary>
+          <div><p>Another copy is still running. Close its terminal window, or set a different port in <code>.env</code> (<code>PORT=8790</code>) and open that address instead.</p></div>
+        </details>
+        <details>
+          <summary>The answer is slow</summary>
+          <div><p>On a CPU-only laptop the first answer after starting is the slowest because the model has to load. Use the small E2B model, close other heavy apps, and use chips, which skip one of the two model steps.</p></div>
+        </details>
+        <details>
+          <summary>It misread what I said</summary>
+          <div><p>Tap the right chip instead, and tell the author the exact words you used. Real phrasings are what the app learns from most.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Your setups and sessions live in one file on this laptop, in the project's <code>var</code> folder. Nothing is sent anywhere. Settings has an export button for a JSON backup.</span>
+    <span>Code: <a href="https://github.com/santteegt/HacktoberFest2026" rel="noopener">github.com/santteegt/HacktoberFest2026</a>, folder <code>challenges/01-weekend-build-for-a-friend</code>. MIT licensed. The 3D views are schematic, not to scale.</span>
+  </footer>
+</main>
+
+<script>
+(function () {
+  var REPO = "https://github.com/santteegt/HacktoberFest2026.git";
+  var model = "gemma4:e2b-it-qat";
+  var cmds = {};
+
+  function build() {
+    cmds["cmd-install"] = "git clone " + REPO + "\ncd HacktoberFest2026/challenges/01-weekend-build-for-a-friend\nollama pull " + model + "\nnpm ci";
+    cmds["cmd-env"] = "cp .env.example .env\nsed -i '' 's|^OLLAMA_MODEL=.*|OLLAMA_MODEL=" + model + "|' .env";
+    cmds["cmd-start"] = "npm start";
+    cmds["cmd-speed"] = "ollama run " + model + " --verbose";
+    cmds["cmd-list"] = "ollama list";
+    cmds["cmd-kb"] = "npm run kb:build";
+    document.getElementById("cmd-install").textContent = cmds["cmd-install"];
+    document.getElementById("cmd-env").textContent = cmds["cmd-env"];
+    var s = document.querySelector('[data-copy="cmd-speed"]');
+    if (s) s.parentNode.querySelector("pre").textContent = cmds["cmd-speed"];
+  }
+
+  function setModel(m) {
+    model = m;
+    document.getElementById("m-e2b").setAttribute("aria-pressed", String(m === "gemma4:e2b-it-qat"));
+    document.getElementById("m-e4b").setAttribute("aria-pressed", String(m === "gemma4:e4b-it-qat"));
+    build();
+    try { localStorage.setItem("pc-model", m); } catch (e) {}
+  }
+  document.getElementById("m-e2b").addEventListener("click", function () { setModel("gemma4:e2b-it-qat"); });
+  document.getElementById("m-e4b").addEventListener("click", function () { setModel("gemma4:e4b-it-qat"); });
+
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-copy]");
+    if (!b) return;
+    var pre = b.parentNode.querySelector("pre");
+    var text = cmds[b.getAttribute("data-copy")] || pre.textContent;
+    var done = function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1400); };
+    var fallback = function () {
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      b.textContent = "Selected";
+      setTimeout(function () { b.textContent = "Copy"; }, 1400);
+    };
+    try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
+  });
+
+  var boxes = Array.prototype.slice.call(document.querySelectorAll("#prereqs input"));
+  function count() {
+    var n = boxes.filter(function (b) { return b.checked; }).length;
+    document.getElementById("progress").textContent = n === boxes.length ? "All set. On to step 2." : n + " of " + boxes.length + " ready";
+  }
+  boxes.forEach(function (b) {
+    try { b.checked = localStorage.getItem("pc-" + b.dataset.k) === "1"; } catch (e) {}
+    b.addEventListener("change", function () {
+      try { localStorage.setItem("pc-" + b.dataset.k, b.checked ? "1" : "0"); } catch (e) {}
+      count();
+    });
+  });
+
+  var saved = null;
+  try { saved = localStorage.getItem("pc-model"); } catch (e) {}
+  setModel(saved === "gemma4:e4b-it-qat" ? saved : "gemma4:e2b-it-qat");
+  count();
+})();
+</script>

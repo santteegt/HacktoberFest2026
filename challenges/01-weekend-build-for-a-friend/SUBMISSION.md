@@ -30,8 +30,9 @@ He hasn't used it yet. I don't know what he thinks of it, and I haven't run it o
 
 ## Code
 
-<!-- TODO author: push to a public GitHub repo and put the link here, then embed it with {% github user/repo %} -->
-The project is in `challenges/01-weekend-build-for-a-friend`. MIT licensed. The README has run steps (Node 22.13+, Ollama, two commands) and the full list of limits.
+{% github santteegt/HacktoberFest2026 %}
+
+The project is in the `challenges/01-weekend-build-for-a-friend` folder of that repo. MIT licensed. The README has run steps (Node 22.13+, Ollama, two commands) and the full list of limits.
 
 ## How I Built It
 
@@ -49,11 +50,11 @@ The stack:
 - A Hono server and Preact UI on localhost, three.js for the 3D scenes, one LibSQL file for the vault, MiniSearch for finding the right passage in the notes.
 - Voice: push-to-talk in, speech out. I have not verified this works offline on his laptop (see below).
 
-Where the knowledge comes from. The touring-car notes are not new. They are a frozen snapshot of my earlier notes, which I distilled from other people's videos and manuals, and the repo credits that separately and checks it against a hash. All the code is new and written during the window. I did not reuse my earlier 3D guide or setup-sheet app.
+The touring-car notes are not new. They are a frozen snapshot of my earlier notes, which I distilled from other people's videos and manuals, and the repo credits that separately and checks it against a hash. All the code is new and written during the window. I did not reuse my earlier 3D guide or setup-sheet app.
 
-What I measured, and what it doesn't show. The symptom test has 25 cases; Gemma got 24 right. Twenty cases are in my wording. Five are in my friend's words, and Gemma got 4 of those 5 right as I'd labelled them. The miss was "it's understeering out of the corner": I'd labelled it as pushing on corner *entry*, the model said corner *exit*, and I think the model's reading is fair. A plain keyword matcher got 17 of 25. On 14 fresh phrasings I'd written down answers for before running them, Gemma got 13. Finding the right passage in the notes hit 9 of 10 on questions I wrote before tuning the search. These are small tests, written by me, run on an Apple M4 Max with a model loaded. They say the app works for the sentences I tried; they do not say it understands everyone. My friend's laptop will be slower, and I haven't timed it.
+On testing: the symptom test has 25 cases; Gemma got 24 right. Twenty cases are in my wording. Five are in my friend's words, and Gemma got 4 of those 5 right as I'd labelled them. The miss was "it's understeering out of the corner": I'd labelled it as pushing on corner *entry*, the model said corner *exit*, and I think the model's reading is fair. A plain keyword matcher got 17 of 25. On 14 fresh phrasings I'd written down answers for before running them, Gemma got 13. Finding the right passage in the notes hit 9 of 10 on questions I wrote before tuning the search. These are small tests, written by me, run on an Apple M4 Max with a model loaded. They say the app works for the sentences I tried; they do not say it understands everyone. My friend's laptop will be slower, and I haven't timed it.
 
-Where it fell short:
+What fell short:
 
 - The 3D scenes are schematic. The directions come from the notes and some sizes are exaggerated so you can see them. The label says so.
 - On-device speech recognition said "unavailable" in the browser I tested with. Typing and tapping a symptom chip both work without it, but I can't tell you the voice path works offline until I run it with Wi-Fi off on a real desktop browser.
@@ -63,11 +64,11 @@ Where it fell short:
 
 Three things here depend on the model being open.
 
-It runs where he races. A pit table is not a place I can count on a good connection. The model, the notes, the vault and the search are all on his laptop, so the app doesn't need a connection to answer. I checked that the server and Ollama opened only local connections during a full loop, but that is an audit, not a Wi-Fi-off test, and I'll say so plainly.
+First, it runs where he races. A pit table is not a place I can count on a good connection. The model, the notes, the vault and the search are all on his laptop, so the app doesn't need a connection to answer. I checked that the server and Ollama opened only local connections during a full loop, but that is an audit, not a Wi-Fi-off test, and I'll say so plainly.
 
-His setups stay with him. What he runs at a track, and how it goes, is his own record. The vault is one file on his disk.
+Second, his setups stay with him. What he runs at a track, and how it goes, is his own record. The vault is one file on his disk.
 
-It costs nothing per question, and I can see why it answers what it answers. A closed API would bill per turn and would send his habits somewhere. With open weights I could also shrink the prompt until it fit a slow CPU (252 tokens, down from 389, with accuracy unchanged on my 25 cases) and find out that Ollama's JSON schema doesn't reach the model: a version that relied on the schema alone scored 3 of 25. The advice itself isn't hidden in model weights either. It's in a table and a set of notes he or I can open and correct in an editor. I did not fine-tune Gemma, because tuned weights can't cite a source or be fixed by editing a file.
+Third, it costs nothing per question, and I can see why it answers what it answers. A closed API would bill per turn and would send his habits somewhere. With open weights I could also shrink the prompt until it fit a slow CPU (252 tokens, down from 389, with accuracy unchanged on my 25 cases) and find out that Ollama's JSON schema doesn't reach the model: a version that relied on the schema alone scored 3 of 25. The advice itself isn't hidden in model weights either. It's in a table and a set of notes he or I can open and correct in an editor. I did not fine-tune Gemma, because tuned weights can't cite a source or be fixed by editing a file.
 
 ## My Agent Session
 
