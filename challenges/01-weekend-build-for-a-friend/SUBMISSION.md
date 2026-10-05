@@ -32,6 +32,26 @@ Race day ranks the saved setups against the conditions he enters.
 
 ![The Race day screen with today's conditions and a saved demo setup scored 100 for matching track, grip and temperature](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/race-day.png)
 
+The 3D view is how the app explains a setting, because a number like "rear shock position 2 to 3" doesn't mean much until you can see it. Each suggestion plays on a small schematic car: the faint copy is the setting before and the blue one is after. There are twelve of these explainers, ten in 3D and two flat diagrams. Four of them, captured from the scene's own test page:
+
+![Front camber going from 1.5 to 1.0 degrees negative, seen from the front: the faint tyres lean in more and the blue ones lean in less. The label reads "Camber angles exaggerated x3 for visibility"](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/scenes/camber-front.png)
+
+Camber, seen from the front. The tops of the tyres lean in less.
+
+![Front toe-out going from 1.0 to 1.5 degrees, seen from above, with the front wheel fronts pointing slightly further apart. The label reads "Toe angles exaggerated x4 for visibility"](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/scenes/toe-front.png)
+
+Toe, seen from above. Front toe-out points the wheel fronts out.
+
+![Rear ride height going from 5.0 to 5.8 millimetres, seen from the side, with the chassis sitting higher on the rear. The label reads "Heights exaggerated x4 for visibility"](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/scenes/ride-height-rear.png)
+
+Ride height, seen from the side.
+
+![Rear shock position going from hole 2 to hole 3, seen from the front, with the blue shocks standing more upright than the faint ones. The label reads "Shock angles exaggerated x1.5 for visibility"](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/scenes/shock-angle-rear.png)
+
+Shock position: the outer hole stands the shock more upright. This is the move behind one of the reviewed rows in the table.
+
+Every frame is labelled "Schematic, not to scale" and says how much the movement is exaggerated, because a 0.5 degree change would be invisible at true size.
+
 It is a laptop app. He would have preferred his phone, and I tried: Gemma 4 E2B downloaded in a phone browser, but it lagged too much to use. I wrote that down, dropped the phone, and built for the 2019 MacBook Pro he also has.
 
 He hasn't used it yet. I don't know what he thinks of it, and I haven't run it on his machine. <!-- TODO author: if he tries it before publishing, add what he said and his OK to be quoted. -->
