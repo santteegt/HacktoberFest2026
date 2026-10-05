@@ -107,21 +107,23 @@
     },
     {
       "id": "c11",
-      "say": "it's pushing like a shopping cart going into the hairpin",
+      "say": "it's understeering out of the corner",
       "expect": "entry-understeer",
       "style": "colloquial",
       "source": "plan",
       "rewordSuggested": true,
-      "friendWording": false
+      "friendWording": true,
+      "draftSay": "it's pushing like a shopping cart going into the hairpin"
     },
     {
       "id": "c12",
-      "say": "tail happy on the brakes into turn one",
+      "say": "once i hit the breaks into the corner the car oversteers",
       "expect": "entry-oversteer",
       "style": "colloquial",
       "source": "plan",
       "rewordSuggested": true,
-      "friendWording": false
+      "friendWording": true,
+      "draftSay": "tail happy on the brakes into turn one"
     },
     {
       "id": "c13",
@@ -152,30 +154,33 @@
     },
     {
       "id": "c16",
-      "say": "feels like driving on ice everywhere this morning",
+      "say": "the track is very slippery",
       "expect": "low-grip",
       "style": "colloquial",
       "source": "plan",
       "rewordSuggested": true,
-      "friendWording": false
+      "friendWording": true,
+      "draftSay": "feels like driving on ice everywhere this morning"
     },
     {
       "id": "c17",
-      "say": "great for the first couple of minutes then it goes off and gets lazy",
+      "say": "the car pushing power goes down in the last few laps",
       "expect": "fade-late-run",
       "style": "colloquial",
       "source": "plan",
       "rewordSuggested": true,
-      "friendWording": false
+      "friendWording": true,
+      "draftSay": "great for the first couple of minutes then it goes off and gets lazy"
     },
     {
       "id": "c18",
-      "say": "it turns way better to the left than to the right",
+      "say": "steering feels deviated to one side",
       "expect": "left-right-difference",
       "style": "colloquial",
       "source": "plan",
       "rewordSuggested": true,
-      "friendWording": false
+      "friendWording": true,
+      "draftSay": "it turns way better to the left than to the right"
     },
     {
       "id": "c19",
