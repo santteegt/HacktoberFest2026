@@ -28,6 +28,12 @@ In between, a hand-reviewed table (`data/levers.json`) decides what to change an
 
 Every answer cites the offline notes it came from. Questions outside the notes get a refusal, not a guess.
 
+## Architecture
+
+![Architecture diagram: Chrome with the Preact screens, 3D explainers and voice talks over HTTP to a local Hono server; the server runs the six-step coach workflow (refuse, classify, pre-checks, pick lever, explain, pause) with Mastra and a plain-TypeScript fallback, calls Ollama on localhost for the two Gemma steps, and reads and writes files on disk (levers.json, the notes snapshot, the vault and the paused-turn store)](docs/architecture.png)
+
+Source: [docs/architecture.svg](docs/architecture.svg). Only the two green boxes (classify and explain) call the model; everything else is plain code, and a chip tap skips the classify step.
+
 ## Run it
 
 You need **Node 22.13+** and [Ollama](https://ollama.com) (macOS 14+ on a Mac).

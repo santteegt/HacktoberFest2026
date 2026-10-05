@@ -242,6 +242,8 @@ Rules: measurements need date, device or machine, model and method, or they don'
 
 - 2026-10-05 05:05Z [PROCESS] Demo video recorded by the author and uploaded to YouTube (https://youtu.be/8ufLdPvyBes, title "HacktoberFest26 - Weekend Challenge - RC Pit Companion"); oEmbed resolves, so it is embeddable. Embedded in the post's Demo section. What the video shows (Wi-Fi off? voice input working? which laptop?) has NOT been confirmed to the orchestrator, so the post says only that it is a walkthrough; claims about offline use and voice stay as they were until the author confirms.
 
+- 2026-10-05 05:07Z [PROCESS] Added an architecture diagram (`docs/architecture.svg`, rendered to `docs/architecture.png` with headless Chrome at 2x) to the README and the post's How I Built It section. It is hand-built from the code (routes, six-step coach workflow in `server/coach/steps.ts`, Ollama client, data files, vault) and marks which two steps call the model; checked against the code for: routes list, 61 lever rows / 12 reviewed, 113 chunks, two Ollama calls per typed turn, chip skips classify. The claim 'nothing goes to a cloud API' rests on the 2026-10-04 23:20Z network audit and the absence of runtime fetches in src and server, not on a Wi-Fi-off test.
+
 ### Partners
 
 - 2026-10-04 (backfilled) [PARTNER] (SUPERSEDED by 2026-10-04 21:30Z: Entire dropped) Gemma (via Ollama), Mastra and Entire are the only categories planned. Nothing is claimed until the code uses them. Update this section when each is actually integrated or dropped.

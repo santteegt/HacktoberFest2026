@@ -99,6 +99,10 @@ The model does two small jobs. Everything else is plain code.
 
 Between those two steps there is no model. A table of 61 adjustments (`levers.json`) says what to change, in which direction, by how much, and what it costs elsewhere on the car. I reviewed 12 of those rows by hand, and the app marks the other 49 as drafts. The model never makes up a number: a guard checks the wording against the table, and a template answer replaces the model's text if it strays. Every answer cites the notes it came from. A question outside the notes gets a refusal, not a guess.
 
+Here is how a turn moves through the app. Only the two green boxes call the model. Everything else is plain code, and everything runs on his laptop.
+
+![Architecture diagram: Chrome with the Preact screens, 3D explainers and voice talks over HTTP to a local Hono server; the server runs the six-step coach workflow (refuse, classify, pre-checks, pick lever, explain, pause) with Mastra and a plain-TypeScript fallback, calls Ollama on localhost for the two Gemma steps, and reads and writes files on disk (levers.json, the notes snapshot, the vault and the paused-turn store)](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/architecture.png)
+
 The stack:
 
 - Gemma 4 E4B (QAT build) on my Mac, served by Ollama, using Ollama's JSON-schema output so the symptom label is always a valid id. His 2019 laptop has no usable GPU for this, so it runs on the CPU. I asked him for a raw speed test with the small E2B model (`gemma4:e2b-it-qat`) and got one reading: about 9 tokens per second writing and about 39 tokens per second reading a prompt. <!-- TODO author: add his macOS version if you want it in the post -->

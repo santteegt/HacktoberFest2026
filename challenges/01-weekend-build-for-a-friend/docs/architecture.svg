@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 690" width="1200" height="690" font-family="-apple-system, Helvetica, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#16201c"/></marker></defs>
+<rect width="1200" height="690" fill="#ffffff"/>
+<text x="24" y="34" font-size="22" font-weight="700" fill="#16201c">RC Pit Companion: what runs where</text>
+<rect x="20" y="52" width="1160" height="560" rx="10" fill="none" stroke="#526159" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="34" y="76" font-size="15" font-weight="700" fill="#526159">The friend's laptop: everything below runs here (127.0.0.1), nothing goes to a cloud API</text>
+<rect x="40" y="92" width="270" height="500" rx="10" fill="none" stroke="#16201c" stroke-width="2"/>
+<text x="54" y="116" font-size="15" font-weight="700" fill="#16201c">Chrome</text>
+<rect x="55" y="125" width="240" height="70" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="175.0" y="146.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c">Preact screens</text>
+<text x="175.0" y="164.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">Coach, Setup, Session,</text>
+<text x="175.0" y="182.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">Race day, Settings</text>
+<rect x="55" y="208" width="240" height="78" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="175.0" y="233.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c">3D explainers (three.js)</text>
+<text x="175.0" y="251.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">12 scenes, schematic,</text>
+<text x="175.0" y="269.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">exaggeration is labelled</text>
+<rect x="55" y="299" width="240" height="70" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="175.0" y="320.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c">Voice in</text>
+<text x="175.0" y="338.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">Web Speech, on-device only</text>
+<text x="175.0" y="356.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">(typing and chips always work)</text>
+<rect x="55" y="382" width="240" height="60" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="175.0" y="407.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c">Voice out</text>
+<text x="175.0" y="425.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">browser voice or macOS say</text>
+<rect x="55" y="455" width="240" height="62" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="175.0" y="481.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c">Symptom chips</text>
+<text x="175.0" y="499.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">tap = no model for step 2</text>
+<rect x="350" y="92" width="530" height="500" rx="10" fill="none" stroke="#16201c" stroke-width="2"/>
+<text x="364" y="116" font-size="15" font-weight="700" fill="#16201c">Node server (Hono)</text>
+<rect x="368" y="122" width="494" height="40" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="615.0" y="146.55" text-anchor="middle" font-size="13" font-weight="400" fill="#16201c">Routes: coach, vault, analysis, kb, settings, speak, llm</text>
+<rect x="368" y="176" width="494" height="262" rx="10" fill="none" stroke="#16201c" stroke-width="2"/>
+<text x="382" y="200" font-size="15" font-weight="700" fill="#16201c">Coach workflow: Mastra (plain-TypeScript fallback)</text>
+<rect x="384" y="212" width="150" height="86" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="459.0" y="232.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c">1 Refuse</text>
+<text x="459.0" y="250.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">keyword rules and</text>
+<text x="459.0" y="268.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">an off-topic gate</text>
+<text x="459.0" y="286.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">(no model)</text>
+<rect x="544" y="212" width="150" height="86" rx="6" fill="#d5efe8" stroke="#0d6b5f" stroke-width="2"/>
+<text x="619.0" y="232.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c">2 Classify</text>
+<text x="619.0" y="250.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">Gemma maps what he</text>
+<text x="619.0" y="268.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">said to one of 12</text>
+<text x="619.0" y="286.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">symptom ids</text>
+<rect x="704" y="212" width="150" height="86" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="779.0" y="241.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c">3 Pre-checks</text>
+<text x="779.0" y="259.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">a short checklist per</text>
+<text x="779.0" y="277.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">symptom (no model)</text>
+<rect x="384" y="336" width="150" height="86" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="459.0" y="356.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c">4 Pick lever</text>
+<text x="459.0" y="374.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">levers.json, clamps,</text>
+<text x="459.0" y="392.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">one change at a time</text>
+<text x="459.0" y="410.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">(no model)</text>
+<rect x="544" y="336" width="150" height="86" rx="6" fill="#d5efe8" stroke="#0d6b5f" stroke-width="2"/>
+<text x="619.0" y="356.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c">5 Explain</text>
+<text x="619.0" y="374.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">Gemma phrases it; a</text>
+<text x="619.0" y="392.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">number guard, else a</text>
+<text x="619.0" y="410.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">template</text>
+<rect x="704" y="336" width="150" height="86" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="779.0" y="356.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c">6 Pause</text>
+<text x="779.0" y="374.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">wait for Apply, then for</text>
+<text x="779.0" y="392.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">Better / Same / Worse,</text>
+<text x="779.0" y="410.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">then log the change</text>
+<polyline points="534,255 544,255" fill="none" stroke="#16201c" stroke-width="2" marker-end="url(#a)"/>
+<polyline points="694,255 704,255" fill="none" stroke="#16201c" stroke-width="2" marker-end="url(#a)"/>
+<polyline points="779.0,298 779.0,316 459.0,316 459.0,336" fill="none" stroke="#16201c" stroke-width="2" marker-end="url(#a)"/>
+<polyline points="534,379 544,379" fill="none" stroke="#16201c" stroke-width="2" marker-end="url(#a)"/>
+<polyline points="694,379 704,379" fill="none" stroke="#16201c" stroke-width="2" marker-end="url(#a)"/>
+<rect x="368" y="452" width="242" height="62" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="489.0" y="470.55" text-anchor="middle" font-size="13" font-weight="700" fill="#16201c">Notes search</text>
+<text x="489.0" y="487.55" text-anchor="middle" font-size="11.5" font-weight="400" fill="#16201c">MiniSearch over 113 chunks;</text>
+<text x="489.0" y="504.55" text-anchor="middle" font-size="11.5" font-weight="400" fill="#16201c">every answer cites its notes</text>
+<rect x="620" y="452" width="242" height="62" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="741.0" y="470.55" text-anchor="middle" font-size="13" font-weight="700" fill="#16201c">Vault logic</text>
+<text x="741.0" y="487.55" text-anchor="middle" font-size="11.5" font-weight="400" fill="#16201c">sessions, runs, changes,</text>
+<text x="741.0" y="504.55" text-anchor="middle" font-size="11.5" font-weight="400" fill="#16201c">saved setups, similar-track score</text>
+<rect x="368" y="528" width="494" height="50" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="615.0" y="557.375" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">Server-sent events stream the result to the screen as it is produced</text>
+<rect x="930" y="92" width="230" height="170" rx="10" fill="none" stroke="#16201c" stroke-width="2"/>
+<text x="944" y="116" font-size="15" font-weight="700" fill="#16201c">Ollama</text>
+<rect x="944" y="124" width="202" height="64" rx="6" fill="#d5efe8" stroke="#0d6b5f" stroke-width="2"/>
+<text x="1045.0" y="143.55" text-anchor="middle" font-size="13" font-weight="700" fill="#16201c">Gemma 4 QAT</text>
+<text x="1045.0" y="160.55" text-anchor="middle" font-size="11.5" font-weight="400" fill="#16201c">E2B on his laptop</text>
+<text x="1045.0" y="177.55" text-anchor="middle" font-size="11.5" font-weight="400" fill="#16201c">E4B on my Mac</text>
+<rect x="944" y="196" width="202" height="52" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="1045.0" y="218.125" text-anchor="middle" font-size="12.5" font-weight="400" fill="#16201c">localhost:11434</text>
+<text x="1045.0" y="234.625" text-anchor="middle" font-size="11.0" font-weight="400" fill="#16201c">2 short calls per typed turn</text>
+<rect x="930" y="282" width="230" height="310" rx="10" fill="none" stroke="#16201c" stroke-width="2"/>
+<text x="944" y="306" font-size="15" font-weight="700" fill="#16201c">Files on disk</text>
+<rect x="944" y="314" width="202" height="56" rx="6" fill="#f6f1e3" stroke="#b9a766" stroke-width="1.5"/>
+<text x="1045.0" y="338.05" text-anchor="middle" font-size="13" font-weight="700" fill="#16201c">data/levers.json</text>
+<text x="1045.0" y="355.05" text-anchor="middle" font-size="11.5" font-weight="400" fill="#16201c">61 rows, 12 reviewed</text>
+<rect x="944" y="380" width="202" height="64" rx="6" fill="#f6f1e3" stroke="#b9a766" stroke-width="1.5"/>
+<text x="1045.0" y="399.55" text-anchor="middle" font-size="13" font-weight="700" fill="#16201c">kb/ notes snapshot</text>
+<text x="1045.0" y="416.55" text-anchor="middle" font-size="11.5" font-weight="400" fill="#16201c">+ additions, built into</text>
+<text x="1045.0" y="433.55" text-anchor="middle" font-size="11.5" font-weight="400" fill="#16201c">kb.json (hash-checked)</text>
+<rect x="944" y="454" width="202" height="62" rx="6" fill="#f6f1e3" stroke="#b9a766" stroke-width="1.5"/>
+<text x="1045.0" y="472.55" text-anchor="middle" font-size="13" font-weight="700" fill="#16201c">var/pit.db (LibSQL)</text>
+<text x="1045.0" y="489.55" text-anchor="middle" font-size="11.5" font-weight="400" fill="#16201c">the vault: his sessions</text>
+<text x="1045.0" y="506.55" text-anchor="middle" font-size="11.5" font-weight="400" fill="#16201c">and saved setups</text>
+<rect x="944" y="526" width="202" height="50" rx="6" fill="#f6f1e3" stroke="#b9a766" stroke-width="1.5"/>
+<text x="1045.0" y="547.05" text-anchor="middle" font-size="13" font-weight="700" fill="#16201c">var/mastra.db</text>
+<text x="1045.0" y="564.05" text-anchor="middle" font-size="11.5" font-weight="400" fill="#16201c">paused coach turns</text>
+<polyline points="310,300 350,300" fill="none" stroke="#16201c" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="330" y="288" text-anchor="middle" font-size="12" fill="#16201c">HTTP</text>
+<polyline points="880,160 930,160" fill="none" stroke="#16201c" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+<polyline points="880,430 930,430" fill="none" stroke="#16201c" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="905" y="150" text-anchor="middle" font-size="11" fill="#16201c">chat</text>
+<text x="905" y="420" text-anchor="middle" font-size="11" fill="#16201c">files</text>
+<rect x="40" y="630" width="18" height="18" rx="6" fill="#d5efe8" stroke="#0d6b5f" stroke-width="2"/>
+<text x="49.0" y="643.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c"></text>
+<text x="66" y="644" font-size="13" fill="#16201c">calls the model (2 of 6 steps; a chip tap skips step 2)</text>
+<rect x="470" y="630" width="18" height="18" rx="6" fill="#eef1ec" stroke="#b9c4b8" stroke-width="1.5"/>
+<text x="479.0" y="643.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c"></text>
+<text x="496" y="644" font-size="13" fill="#16201c">plain code</text>
+<rect x="600" y="630" width="18" height="18" rx="6" fill="#f6f1e3" stroke="#b9a766" stroke-width="1.5"/>
+<text x="609.0" y="643.9" text-anchor="middle" font-size="14" font-weight="700" fill="#16201c"></text>
+<text x="626" y="644" font-size="13" fill="#16201c">files on disk</text>
+<text x="40" y="672" font-size="12.5" fill="#526159">Internet is needed once, to install: npm packages, `ollama pull`, and the optional on-device speech pack. Telemetry is switched off.</text>
+</svg>
