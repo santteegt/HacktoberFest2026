@@ -33,6 +33,10 @@ Every answer cites the offline notes it came from. Questions outside the notes g
 You need **Node 22.13+** and [Ollama](https://ollama.com) (macOS 14+ on a Mac).
 
 ```bash
+# 0. Get the code (the project is one folder of a larger repo)
+git clone https://github.com/santteegt/HacktoberFest2026.git
+cd HacktoberFest2026/challenges/01-weekend-build-for-a-friend
+
 # 1. Get a model. E2B is the small one for older laptops; E4B is what the author develops with.
 ollama pull gemma4:e2b-it-qat      # about 4.3 GB
 # ollama pull gemma4:e4b-it-qat    # about 6.1 GB
