@@ -80,7 +80,9 @@ He hasn't tried it himself yet. I installed it on his laptop to test it, and I d
 
 ## Demo
 
-<!-- TODO author: video link (record the Wi-Fi-off run) -->
+{% embed https://youtu.be/8ufLdPvyBes %}
+
+The video is a walkthrough of the app. The screenshots above show the same steps one by one, and the sections below say what I did and did not verify.
 
 ## Code
 
