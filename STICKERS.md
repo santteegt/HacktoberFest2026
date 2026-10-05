@@ -18,7 +18,7 @@ The two **Required** stickers must be earned first. Signing in alone does not qu
 
 ## DEV Challenges (6)
 - [ ] Connect your DEV account
-- [ ] Submit to Launch Weekend (`challenges/01-weekend-build-for-a-friend`)
+- [x] Submit to Launch Weekend (`challenges/01-weekend-build-for-a-friend`): [post](https://dev.to/santteegt/a-setup-coach-for-my-friends-rc-car-that-stays-on-his-laptop-4ahn), published 2026-10-05 05:26 UTC
 - [ ] Submit to Week 1
 - [ ] Submit to Week 2
 - [ ] Submit to Week 3

@@ -10,7 +10,7 @@ Each challenge lives in its own folder under [`challenges/`](challenges/README.m
 
 | # | Challenge | Window (UTC) | Status |
 | --- | --- | --- | --- |
-| 01 | [Weekend: Build for a Friend](challenges/01-weekend-build-for-a-friend): RC Pit Companion | Oct 2 02:00 → Oct 5 06:59 | 🟡 In progress |
+| 01 | [Weekend: Build for a Friend](challenges/01-weekend-build-for-a-friend): RC Pit Companion | Oct 2 02:00 → Oct 5 06:59 | ✅ [Published](https://dev.to/santteegt/a-setup-coach-for-my-friends-rc-car-that-stays-on-his-laptop-4ahn) |
 | 02 | Week 1: Open-Source AI | Oct 5 → Oct 12 | 🔵 Opens Oct 5 |
 | 03 | Week 2: Open-Source AI | Oct 12 → Oct 19 | 🔵 Upcoming |
 | 04 | Week 3: Open-Source AI | Oct 19 → Oct 26 | 🔵 Upcoming |

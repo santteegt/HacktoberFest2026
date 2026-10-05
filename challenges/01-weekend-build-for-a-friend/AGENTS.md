@@ -137,10 +137,10 @@ tags: devchallenge, weekendchallenge, hf26challenge
 ## Status
 
 - [x] Friend and problem chosen (RC Pit Companion, see above)
-- [ ] Open-source AI core chosen (model / framework / where it runs)
-- [ ] Prize categories chosen (and credits claimed, with the user's OK)
-- [ ] MVP working
-- [ ] Demo recorded or deployed
-- [ ] README, LICENSE, `.env.example` done; audit passed
-- [ ] DEV draft staged
-- [ ] Published by the user before the deadline
+- [x] Open-source AI core chosen (Gemma 4 via Ollama; E2B on his laptop, E4B on the author's Mac)
+- [x] Prize categories chosen (Gemma, Mastra; no credits claimed)
+- [x] MVP working
+- [x] Demo recorded (YouTube, on the friend's laptop)
+- [x] README, LICENSE, `.env.example` done; audit passed
+- [x] DEV draft staged
+- [x] Published by the user before the deadline: https://dev.to/santteegt/a-setup-coach-for-my-friends-rc-car-that-stays-on-his-laptop-4ahn

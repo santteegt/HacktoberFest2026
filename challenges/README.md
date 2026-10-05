@@ -20,7 +20,7 @@ Dates are in UTC. **Source: DEV Events API (`get_challenges`) and `hacktoberfest
 
 | # | Folder | Challenge | DEV ID | Tag | Window | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 01 | [`01-weekend-build-for-a-friend`](01-weekend-build-for-a-friend) | Hacktoberfest Weekend Challenge: Build for a Friend (project: **RC Pit Companion**) | 78 | `#hf26challenge` | Oct 2 02:00 → Oct 5 06:59 | 🟡 In progress |
+| 01 | [`01-weekend-build-for-a-friend`](01-weekend-build-for-a-friend) | Hacktoberfest Weekend Challenge: Build for a Friend (project: **RC Pit Companion**) | 78 | `#hf26challenge` | Oct 2 02:00 → Oct 5 06:59 | ✅ [Published](https://dev.to/santteegt/a-setup-coach-for-my-friends-rc-car-that-stays-on-his-laptop-4ahn) |
 | 02 | _not created yet_ | Open-Source AI Challenge: Week 1 | 79 | `#hf26challenge` (confirm) | Oct 5 → Oct 12 | 🔵 Details drop at launch |
 | 03 | _not created yet_ | Open-Source AI Challenge: Week 2 | 80 | confirm | Oct 12 → Oct 19 | 🔵 |
 | 04 | _not created yet_ | Open-Source AI Challenge: Week 3 | 81 | confirm | Oct 19 → Oct 26 | 🔵 |
