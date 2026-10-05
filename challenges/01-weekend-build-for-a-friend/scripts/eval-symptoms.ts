@@ -17,7 +17,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { CLASSIFIER_OPTIONS, CLASSIFIER_SCHEMA, CLASSIFIER_SYSTEM } from "../server/coach/prompts";
-import { keywordClassify, refusalFor } from "../server/engine/keyword";
+import { keywordClassify, offTopic, refusalFor } from "../server/engine/keyword";
 import { KEEP_ALIVE, ndjson } from "../server/llm/ollama";
 import type { SymptomDef } from "../src/shared/types";
 
@@ -166,7 +166,7 @@ interface Row {
 
 /** Keyword baseline: the server's refusal rules, then keywordClassify; no match is reported as "no-match". */
 function keywordBaseline(say: string): string {
-  if (refusalFor(say)) return "out-of-scope";
+  if (refusalFor(say) || offTopic(say)) return "out-of-scope";
   return keywordClassify(say, symptoms)?.symptomId ?? "no-match";
 }
 
@@ -192,7 +192,7 @@ async function main() {
     } catch {
       /* counted as a miss, and reported under parseFailures */
     }
-    const pipelineGot = refusalFor(c.say) ? "out-of-scope" : got;
+    const pipelineGot = refusalFor(c.say) || offTopic(c.say) ? "out-of-scope" : got;
     const kw = keywordBaseline(c.say);
     rows.push({
       id: c.id,

@@ -41,7 +41,7 @@ import {
   type ExplainerCard,
 } from "./prompts";
 import { loadLevers, loadParams, loadPrechecks, loadSymptoms } from "../engine/data";
-import { keywordClassify, refusalFor } from "../engine/keyword";
+import { keywordClassify, offTopic, refusalFor } from "../engine/keyword";
 import { selectLevers, type SelectLeversArgs } from "../engine/levers";
 import { getChunk } from "../kb/search";
 import * as repo from "../vault/repo";
@@ -215,6 +215,12 @@ export async function classify(
       await emit({ event: "classified", data: oc });
       await emit({ event: "refusal", data: kwRefusal });
       return { classification: oc, refusal: kwRefusal };
+    }
+    if (offTopic(utterance)) {
+      const oc: Classification = { symptomId: "out-of-scope", altId: "none", phase: "none", confidence: 1, source: "keyword", ms: Math.round(performance.now() - t0) };
+      await emit({ event: "classified", data: oc });
+      await emit({ event: "refusal", data: OUT_OF_SCOPE });
+      return { classification: oc, refusal: OUT_OF_SCOPE };
     }
     try {
       c = await llmClassify(utterance, deps);

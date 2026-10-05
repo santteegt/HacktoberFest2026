@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { loadLevers, loadParams, loadPrechecks, loadSymptoms } from "../server/engine/data";
-import { keywordClassify, refusalFor } from "../server/engine/keyword";
+import { keywordClassify, offTopic, refusalFor } from "../server/engine/keyword";
 import { NO_LEVER_REASON, selectLevers, type SelectLeversArgs } from "../server/engine/levers";
 import { getChunk, search } from "../server/kb/search";
 import type { Change, LeverRow, ParamDef, SetupValues } from "../src/shared/types";
@@ -279,5 +279,47 @@ describe("kb search", () => {
     expect(hits).toHaveLength(3);
     expect(getChunk(hits[0]!.id)).toEqual(hits[0]);
     expect(search("", 3)).toEqual([]);
+  });
+});
+
+describe("offTopic gate (small-model fallback guard)", () => {
+  it("refuses sentences with no driving or setup word, before any model call", () => {
+    for (const q of [
+      "hello",
+      "what time is it",
+      "how should I run cli commands on a macbook",
+      "what's the weather like today",
+      "who won the football game yesterday",
+      "how do I cook rice",
+      "tell me a joke",
+      "what is the capital of France",
+      "write me a short poem",
+      "how do I fix my wifi",
+      "can you recommend a good movie",
+    ]) {
+      expect(offTopic(q), q).toBe(true);
+    }
+  });
+  it("lets every driving complaint through, including the friend's own wording", () => {
+    for (const q of [
+      "it's understeering out of the corner",
+      "once i hit the breaks into the corner the car oversteers",
+      "the track is very slippery",
+      "the car pushing power goes down in the last few laps",
+      "steering feels deviated to one side",
+      "the back steps out when I get on the power out of the hairpin",
+      "it's pushing like a shopping cart going into the hairpin",
+      "tail happy on the brakes into turn one",
+      "feels like driving on ice everywhere this morning",
+      "great for the first couple of minutes then it goes off and gets lazy",
+      "it turns way better to the left than to the right",
+      "the car pushes wide on the way into the hairpin",
+      "bouncy over the rumble strips",
+      "she tips over in the fast sweeper",
+      "so twitchy on the straight",
+      "no bite at the front",
+    ]) {
+      expect(offTopic(q), q).toBe(false);
+    }
   });
 });

@@ -154,3 +154,20 @@ export function refusalFor(utterance: string): Refusal | null {
   }
   return null;
 }
+
+// ---------- offTopic ----------
+
+/**
+ * Words that mark a sentence as being about how an RC car drives or is set up. A sentence with none of them is
+ * refused before any model call. Added on 2026-10-05 after the friend's laptop (gemma4:e2b-it-qat) answered
+ * "hello" or "what time is it" with a handling symptom: the small model falls back to a symptom id on anything.
+ * Deliberately generous (a false refusal costs one chip tap; a wrong suggestion costs a lap), and deliberately
+ * without very common words such as "run", "time" or "good".
+ */
+const DOMAIN_WORDS =
+  /\b(under|over)steer\w*|\bpush(es|ed|ing)?\b|\bplow\w*|\bwash(es|ed|ing)?\b|\bloose\b|\btail\b|\brear\b|\bfront\b|\bback\b|\bsteer\w*|\bturn\w*|\bcorner\w*|\bhairpin\w*|\bsweeper\w*|\bchicane\w*|\bapex\b|\bentry\b|\bexit\w*|\bbrak\w+|\bbreak(s|ing)?\b|\bthrottle\b|\bpower\b|\bgas\b|\baccelerat\w*|\bgrip\w*|\btraction\b|\bslid\w*|\bslip\w*|\bice\b|\bicy\b|\bdust\w*|\bbump\w*|\bbounc\w*|\bhop(s|ping)?\b|\bskip\w*|\btwitch\w*|\bdart\w*|\bnervous\b|\bedgy\b|\bfad(e|es|ed|ing)\b|\blaps?\b|\bstraight\b|\bwide\b|\bspin\w*|\bsnap\w*|\bfishtail\w*|\bflip\w*|\broll\w*|\btip(s|ped|ping)?\b|\bdig(s|ging)?\b|\blift\w*|\bwheels?\b|\btyres?\b|\btires?\b|\btrack\b|\bcar\b|\bchassis\b|\bset-?up\b|\bcamber\b|\btoe\b|\bcaster\b|\bdroop\b|\bride height\b|\bshocks?\b|\bdamper\w*|\bsprings?\b|\bdiff\w*|\bsway\b|\barb\b|\broll bar\b|\bweight\w*|\bbalance\w*|\bhandl\w*|\bone side\b|\bleft\b|\bright\b|\bbite\b|\bsettle\w*|\bstable\b|\bunstable\b|\bsensitive\b|\bsoft\b|\bstiff\b|\bdeviat\w*|\bpulls?\b|\bpulling\b|\blazy\b|\bsluggish\b|\bminutes?\b/i;
+
+/** True when the sentence has no word about driving or setting up a car (see DOMAIN_WORDS). */
+export function offTopic(utterance: string): boolean {
+  return !DOMAIN_WORDS.test(utterance);
+}
