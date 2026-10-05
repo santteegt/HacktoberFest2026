@@ -77,7 +77,7 @@ Between those two steps there is no model. A table of 61 adjustments (`levers.js
 
 The stack:
 
-- Gemma 4 E4B (QAT build) served by Ollama, using Ollama's JSON-schema output so the symptom label is always a valid id. His 2019 laptop has no usable GPU for this, so it runs on the CPU. I asked him for a raw speed test with the small E2B model and got one reading: about 9 tokens per second writing and about 39 tokens per second reading a prompt. <!-- TODO author: confirm that reading was gemma4:e2b-it-qat, and add his macOS version -->
+- Gemma 4 E4B (QAT build) on my Mac, served by Ollama, using Ollama's JSON-schema output so the symptom label is always a valid id. His 2019 laptop has no usable GPU for this, so it runs on the CPU. I asked him for a raw speed test with the small E2B model and got one reading: about 9 tokens per second writing and about 39 tokens per second reading a prompt. <!-- TODO author: confirm that reading was gemma4:e2b-it-qat, and add his macOS version -->
 - Mastra runs the coach as a workflow with two pause points: one waiting for him to accept the suggestion, one waiting for the outcome after the laps. There is a plain TypeScript fallback behind the same interface, in case the workflow misbehaves.
 - A Hono server and Preact UI on localhost, three.js for the 3D scenes, one LibSQL file for the vault, MiniSearch for finding the right passage in the notes.
 - Voice: push-to-talk in, speech out. I have not verified this works offline on his laptop (see below).
