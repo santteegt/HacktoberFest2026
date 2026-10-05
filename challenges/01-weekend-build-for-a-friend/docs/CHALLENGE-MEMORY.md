@@ -30,6 +30,7 @@ Rules: measurements need date, device or machine, model and method, or they don'
 | Phone spike method and outcome as recorded in `docs/PHONE-SPIKE.md` | Any partner technology the code does not actually use |
 | | That the 3D explainers are to scale or show measured values |
 | | Any number that is not in a MEASURE entry |
+| The demo video shows Wi-Fi off and voice in and out working (author-confirmed 2026-10-05; one recording; speech pack needs a one-time download) | That voice or offline use was tested broadly, or on which exact laptop the video was recorded (not confirmed to the orchestrator) |
 
 ## Log
 
@@ -243,6 +244,9 @@ Rules: measurements need date, device or machine, model and method, or they don'
 - 2026-10-05 05:05Z [PROCESS] Demo video recorded by the author and uploaded to YouTube (https://youtu.be/8ufLdPvyBes, title "HacktoberFest26 - Weekend Challenge - RC Pit Companion"); oEmbed resolves, so it is embeddable. Embedded in the post's Demo section. What the video shows (Wi-Fi off? voice input working? which laptop?) has NOT been confirmed to the orchestrator, so the post says only that it is a walkthrough; claims about offline use and voice stay as they were until the author confirms.
 
 - 2026-10-05 05:07Z [PROCESS] Added an architecture diagram (`docs/architecture.svg`, rendered to `docs/architecture.png` with headless Chrome at 2x) to the README and the post's How I Built It section. It is hand-built from the code (routes, six-step coach workflow in `server/coach/steps.ts`, Ollama client, data files, vault) and marks which two steps call the model; checked against the code for: routes list, 61 lever rows / 12 reviewed, 113 chunks, two Ollama calls per typed turn, chip skips classify. The claim 'nothing goes to a cloud API' rests on the 2026-10-04 23:20Z network audit and the absence of runtime fetches in src and server, not on a Wi-Fi-off test.
+
+- 2026-10-05 05:14Z [DECISION] The author confirmed that the demo video shows Wi-Fi off and voice input and output working. The post, README and the may-claim table now say exactly that (one recording, Wi-Fi off, voice in and out working, speech pack downloaded once) and no longer say offline voice is unverified. Not confirmed: which laptop the video was recorded on (the post does not say). This supersedes the 2026-10-04 [HONEST] entries that said offline voice must not be claimed, for the video only.
+- 2026-10-05 05:14Z [PROCESS] TODO-REPORT resolution for the post: offline run with Wi-Fi off and voice outcome: shown in the demo video (author-confirmed), not independently verified by the orchestrator; top-3 retrieval hit rate: done, held-out 9/10 (n=10) quoted; baseline on the friend's laptop: only one raw `ollama run --verbose` reading, the app itself was not timed there (the post says so); friend's own words: five sentences used, quote permission given, his reaction after using it is NOT available (the post says he has not tried it himself); contract and integration TODO-REPORT items from T7: closed by T7/T10. Remaining open TODO comments in the post: his reaction (optional) and the agent-session embed.
 
 ### Partners
 

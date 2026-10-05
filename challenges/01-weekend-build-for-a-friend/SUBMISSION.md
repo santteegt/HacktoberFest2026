@@ -82,7 +82,7 @@ He hasn't tried it himself yet. I installed it on his laptop to test it, and I d
 
 {% embed https://youtu.be/8ufLdPvyBes %}
 
-The video is a walkthrough of the app. The screenshots above show the same steps one by one, and the sections below say what I did and did not verify.
+The video is a walkthrough of the app with Wi-Fi turned off, using voice in and out. The screenshots above show the same steps one by one, and the sections below say what I did and did not verify.
 
 ## Code
 
@@ -105,10 +105,10 @@ Here is how a turn moves through the app. Only the two green boxes call the mode
 
 The stack:
 
-- Gemma 4 E4B (QAT build) on my Mac, served by Ollama, using Ollama's JSON-schema output so the symptom label is always a valid id. His 2019 laptop has no usable GPU for this, so it runs on the CPU. I asked him for a raw speed test with the small E2B model (`gemma4:e2b-it-qat`) and got one reading: about 9 tokens per second writing and about 39 tokens per second reading a prompt. <!-- TODO author: add his macOS version if you want it in the post -->
+- Gemma 4 E4B (QAT build) on my Mac, served by Ollama, using Ollama's JSON-schema output so the symptom label is always a valid id. His 2019 laptop has no usable GPU for this, so it runs on the CPU. I asked him for a raw speed test with the small E2B model (`gemma4:e2b-it-qat`) and got one reading: about 9 tokens per second writing and about 39 tokens per second reading a prompt.
 - Mastra runs the coach as a workflow with two pause points: one waiting for him to accept the suggestion, one waiting for the outcome after the laps. There is a plain TypeScript fallback behind the same interface, in case the workflow misbehaves.
 - A Hono server and Preact UI on localhost, three.js for the 3D scenes, one LibSQL file for the vault, MiniSearch for finding the right passage in the notes.
-- Voice: push-to-talk in, speech out. I have not verified this works offline on his laptop (see below).
+- Voice: push-to-talk in, speech out. In the demo video both work with Wi-Fi off. Speech recognition runs on the device in desktop Chrome, after a one-time download of the English speech pack.
 
 The touring-car notes are not new. They are a frozen snapshot of my earlier notes, which I distilled from other people's videos and manuals, and the repo credits that separately and checks it against a hash. All the code is new and written during the window. I did not reuse my earlier 3D guide or setup-sheet app.
 
@@ -122,14 +122,14 @@ What fell short:
 
 - It is slow on his laptop. A typed sentence goes through the model twice, and from his one speed reading I estimate about 25 seconds for a full answer, and about 15 seconds for a symptom chip, which skips one of the two model steps. Text streams in while it is written. That is an estimate from the speed test, not a timing of the app, which I haven't done on his laptop yet. There is a setting that turns the model's wording off and shows the plain template text instead: the advice and numbers are the same, a chip answers straight away, and a typed sentence only waits for the model to understand it.
 - The 3D scenes are schematic. The directions come from the notes and some sizes are exaggerated so you can see them. The label says so.
-- On-device speech recognition said "unavailable" in the browser I tested with. Typing and tapping a symptom chip both work without it, but I can't tell you the voice path works offline until I run it with Wi-Fi off on a real desktop browser.
+- Voice needs desktop Chrome and the on-device English speech pack, which downloads once. The embedded browser I used while building reported on-device recognition as unavailable, so I only saw it work in the demo video, once. Typing and tapping a symptom chip work without it.
 - Setup needs Node and Ollama. There's no installer.
 
 ## Why Does Open Innovation Matter?
 
 Three things here depend on the model being open.
 
-First, it runs where he races. A pit table is not a place I can count on a good connection. The model, the notes, the vault and the search are all on his laptop, so the app doesn't need a connection to answer. I checked that the server and Ollama opened only local connections during a full loop, but that is an audit, not a Wi-Fi-off test, and I'll say so plainly.
+First, it runs where he races. A pit table is not a place I can count on a good connection. The model, the notes, the vault and the search are all on his laptop, so the app doesn't need a connection to answer. In the demo video Wi-Fi is off and it still answers. I also checked that the server and Ollama opened only local connections during a full loop on my Mac. Installing it needs the internet once, for the packages, the model and the speech pack.
 
 Second, his setups stay with him. What he runs at a track, and how it goes, is his own record. The vault is one file on his disk.
 
