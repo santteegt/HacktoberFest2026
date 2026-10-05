@@ -255,6 +255,8 @@ Rules: measurements need date, device or machine, model and method, or they don'
 
 - 2026-10-05 05:33Z [PROCESS] The getting-started guide was not linked from the README or the published post (only the memory file and a private artifact). Added `docs/GETTING-STARTED.md` (Markdown, renders on GitHub, same content as `docs/getting-started.html`), linked it from the README's Run section and from the post's Code section, and updated the live post. Lesson: when an artifact is made for users, link it from the places users start (README, post) at the time it is made.
 
+- 2026-10-05 05:36Z [PROCESS] The author made DEV session 548 public (API shows published true, page returns 200). The live post's HTML contains the agent-session embed, the YouTube embed, the GitHub repo card, 33 images and the link to docs/GETTING-STARTED.md. Submission complete; the remaining items were optional (okf-wiki retrospective in the knowledge base).
+
 ### Partners
 
 - 2026-10-04 (backfilled) [PARTNER] (SUPERSEDED by 2026-10-04 21:30Z: Entire dropped) Gemma (via Ollama), Mastra and Entire are the only categories planned. Nothing is claimed until the code uses them. Update this section when each is actually integrated or dropped.
