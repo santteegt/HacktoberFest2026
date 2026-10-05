@@ -68,7 +68,7 @@ Developing: `npm run dev`. Checks: `npm run typecheck`, `npm test`, `npm run kb:
 
 ## Honest limits
 
-- **Not tested on the friend's laptop yet.** His machine is a 2019 Intel MacBook Pro (CPU-only inference). All timings in this project come from the author's Apple M4 Max, so his speed is unmeasured and will be slower. The choice between E2B and E4B for him is still open.
+- **Barely tested on the friend's laptop.** His machine is a 2019 Intel MacBook Pro (CPU-only inference). The only reading from it is one raw `ollama run --verbose` prompt: about 9.2 tokens/s generating and 38.7 tokens/s reading the prompt (model tag to be confirmed, presumed E2B). From that the author estimates a typed coach turn at roughly 25 s and a chip turn at roughly 15 s; the app itself has not been timed there. All other timings come from the author's Apple M4 Max. E4B on that laptop is untested and would be slower.
 - **Offline voice is not verified.** On-device speech recognition is documented for desktop Chrome only. In the author's embedded browser it reported "unavailable", and no real Wi-Fi-off run of the voice path has been done. Typing and the symptom chips work without it.
 - **Offline use** is supported by design (everything is local, and a network audit of the author's machine saw only loopback traffic), but that is an audit, not a proof. Model download and `npm ci` need internet once.
 - **Accuracy figures are small and ours.** The symptom set has 25 cases, 20 in the author's wording and 5 reworded in the friend's own words. Details and caveats are in [docs/CHALLENGE-MEMORY.md](docs/CHALLENGE-MEMORY.md). A fresh set of 14 phrasings scored 13 of 14. These are not general accuracy claims.

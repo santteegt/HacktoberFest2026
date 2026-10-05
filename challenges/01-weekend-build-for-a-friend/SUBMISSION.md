@@ -77,17 +77,18 @@ Between those two steps there is no model. A table of 61 adjustments (`levers.js
 
 The stack:
 
-- Gemma 4 E4B (QAT build) served by Ollama, using Ollama's JSON-schema output so the symptom label is always a valid id. On a CPU-only 2019 laptop the likely choice is E2B; I don't know yet, because I haven't measured on his machine.
+- Gemma 4 E4B (QAT build) served by Ollama, using Ollama's JSON-schema output so the symptom label is always a valid id. His 2019 laptop has no usable GPU for this, so it runs on the CPU. I asked him for a raw speed test with the small E2B model and got one reading: about 9 tokens per second writing and about 39 tokens per second reading a prompt. <!-- TODO author: confirm that reading was gemma4:e2b-it-qat, and add his macOS version -->
 - Mastra runs the coach as a workflow with two pause points: one waiting for him to accept the suggestion, one waiting for the outcome after the laps. There is a plain TypeScript fallback behind the same interface, in case the workflow misbehaves.
 - A Hono server and Preact UI on localhost, three.js for the 3D scenes, one LibSQL file for the vault, MiniSearch for finding the right passage in the notes.
 - Voice: push-to-talk in, speech out. I have not verified this works offline on his laptop (see below).
 
 The touring-car notes are not new. They are a frozen snapshot of my earlier notes, which I distilled from other people's videos and manuals, and the repo credits that separately and checks it against a hash. All the code is new and written during the window. I did not reuse my earlier 3D guide or setup-sheet app.
 
-On testing: the symptom test has 25 cases; Gemma got 24 right. Twenty cases are in my wording. Five are in my friend's words, and Gemma got 4 of those 5 right as I'd labelled them. The miss was "it's understeering out of the corner": I'd labelled it as pushing on corner *entry*, the model said corner *exit*, and I think the model's reading is fair. A plain keyword matcher got 17 of 25. On 14 fresh phrasings I'd written down answers for before running them, Gemma got 13. Finding the right passage in the notes hit 9 of 10 on questions I wrote before tuning the search. These are small tests, written by me, run on an Apple M4 Max with a model loaded. They say the app works for the sentences I tried; they do not say it understands everyone. My friend's laptop will be slower, and I haven't timed it.
+On testing: the symptom test has 25 cases; Gemma got 24 right. Twenty cases are in my wording. Five are in my friend's words, and Gemma got 4 of those 5 right as I'd labelled them. The miss was "it's understeering out of the corner": I'd labelled it as pushing on corner *entry*, the model said corner *exit*, and I think the model's reading is fair. A plain keyword matcher got 17 of 25. On 14 fresh phrasings I'd written down answers for before running them, Gemma got 13. Finding the right passage in the notes hit 9 of 10 on questions I wrote before tuning the search. These are small tests, written by me, run on an Apple M4 Max with a model loaded. They say the app works for the sentences I tried; they do not say it understands everyone. Those numbers are from my Mac. His laptop is several times slower, as the next list shows.
 
 What fell short:
 
+- It is slow on his laptop. A typed sentence goes through the model twice, and from his one speed reading I estimate about 25 seconds for a full answer, and about 15 seconds for a symptom chip, which skips one of the two model steps. Text streams in while it is written. That is an estimate from the speed test, not a timing of the app, which I haven't done on his laptop yet.
 - The 3D scenes are schematic. The directions come from the notes and some sizes are exaggerated so you can see them. The label says so.
 - On-device speech recognition said "unavailable" in the browser I tested with. Typing and tapping a symptom chip both work without it, but I can't tell you the voice path works offline until I run it with Wi-Fi off on a real desktop browser.
 - Setup needs Node and Ollama. There's no installer.
