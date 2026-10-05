@@ -1,55 +1,100 @@
 # RC Pit Companion
 
-An offline, voice-first setup coach and setup vault for the 1/10 touring car (built around the Yokomo BD12). Tell it how the car feels; it suggests **one** change at a time, shows the effect on a 3D car, and lets you save the setups that worked together with the track conditions, so you can pull them up on race day.
+An offline setup coach and setup vault for a 1/10 touring car (built around the Yokomo BD12), made for one friend who races it. Tell it how the car feels. It suggests **one** change at a time, says what to expect and how to check it, and lets you save the setups that worked together with the track conditions, so you can pull them up on race day.
 
-Built for a friend, for the [Hacktoberfest Weekend Challenge: Build for a Friend](https://dev.to/challenges/hacktoberfest-weekend-2026-10-01) (`#hf26challenge`). **Status: scaffold. Nothing below "Planned" works yet.**
+**Challenge:** [Hacktoberfest Weekend Challenge: Build for a Friend](https://dev.to/challenges/hacktoberfest-weekend-2026-10-01) (DEV event 78) · **Window:** Oct 2, 2026 02:00 → Oct 5, 2026 06:59 UTC · **Tag:** `#hf26challenge`
 
 ## The friend
 
-A club racer with a Yokomo BD12 who goes to practice sessions and wants them to be worth the trip:
+A club racer with a BD12 who goes to practice sessions and wants them to be worth the trip. In his words: "this app will be very useful for practice days so I can quickly store my settings and get feedback from what works, what might have affected my run."
 
-- say what the car feels like and get a setup change to try next;
-- keep the best setups with their track conditions (surface, grip, bumps, temperature);
-- find the setups that worked at a similar track when a championship race comes around;
-- use it at the pit table. He prefers his phone, but the phone test failed (see below), so v1 runs on his consumer laptop, which can run a small Gemma model (E2B/E4B).
+What he asked for, and where it lives:
 
-## Planned
+- Say what the car feels like, get a change to try next: **Coach** screen.
+- Keep settings and the changes made during a practice day, with a better/same/worse outcome for each: **Setup** and **Session** screens.
+- Find the setups that worked at a similar track when a championship race comes: **Race day** screen.
+- Hands free at the pit table: push-to-talk in, spoken answer out. See the limits below before relying on it.
 
-- **Coach:** push-to-talk voice in, spoken answer out. A fixed symptom list and a hand-reviewed table of adjustments (`data/`) decide the advice; the model only maps speech to a symptom and phrases the explanation. Every answer cites the offline notes it came from, and out-of-scope questions get a refusal.
-- **Setup vault:** sessions, change log with better/same/worse outcomes, saved setups searchable by track conditions. Stored on the device (IndexedDB), no account.
-- **3D view:** a small parametric car that animates the change (camber, toe, ride height, shock angle).
-- **Open AI core:** Gemma 4 (E2B/E4B) served by a local Ollama install on the laptop, behind one interface (`src/llm/provider.ts`).
+He would rather use it on his phone, but the phone test failed ([docs/PHONE-SPIKE.md](docs/PHONE-SPIKE.md)), so v1 is a laptop app. **No phone support is claimed.**
 
-## Decision: laptop-first (phone spike failed)
+## How it works
 
-The friend would rather use it on his phone, so on 2026-10-04 we tested Gemma 4 E2B on-device in a phone browser. Download worked; creating the engine and running prompts lagged too much to be usable. Details and method: [docs/PHONE-SPIKE.md](docs/PHONE-SPIKE.md). v1 targets the consumer laptop he also owns (Gemma E2B/E4B). No phone support is claimed.
+The model is only allowed to do two language jobs. Everything else is plain code.
 
-**Runtime: Ollama (decided 2026-10-04).** The friend's laptop is a 2019 Intel MacBook Pro (6-core i7, 16 GB), where Ollama runs on CPU only, so the likely model there is Gemma 4 E2B QAT; E4B QAT is used on Apple Silicon dev machines. Gemma 4 E4B (E2B for weaker laptops) is served by a local Ollama install, so nothing leaves the machine and the app needs no multi-gigabyte browser cache. Still open: the agent framework (Mastra or plain code), the local store for the field knowledge and the setup vault, and how voice input works offline (on-device speech recognition is documented for desktop Chrome only, so it will be verified on the target laptop before any offline-voice claim).
+1. **Understand the symptom.** Gemma 4 maps what you said to one of 12 symptom ids (for example "pushes on turn-in" or "loose on power"), or to "not something my notes cover". Ollama's JSON-schema output keeps the answer to a valid id.
+2. **Phrase the explanation.** After the advice is chosen, the model puts it into a short spoken-style paragraph.
+
+In between, a hand-reviewed table (`data/levers.json`) decides what to change and by how much. The model never invents a number: values come from the table, a number guard checks the wording, and a template answer replaces the model's text if it strays. Only the 12 demo-path rows were reviewed by the author; the other 49 are shown with a "draft" badge in the app.
+
+Every answer cites the offline notes it came from. Questions outside the notes get a refusal, not a guess.
+
+## Run it
+
+You need **Node 22.13+** and [Ollama](https://ollama.com) (macOS 14+ on a Mac).
+
+```bash
+# 1. Get a model. E2B is the small one for older laptops; E4B is what the author develops with.
+ollama pull gemma4:e2b-it-qat      # about 4.3 GB
+# ollama pull gemma4:e4b-it-qat    # about 6.1 GB
+
+# 2. Install and start
+cp .env.example .env               # set OLLAMA_MODEL to the tag you pulled
+npm ci                             # also builds the knowledge index
+npm start                          # builds the UI and serves it from the local server
+```
+
+Open the address `npm start` prints (the server listens on `127.0.0.1:8787`). The first run walks through three steps: pick the car, start a practice session, and check that Ollama and the model are reachable.
+
+Optional, to try it with example data before you have real sessions:
+
+```bash
+npm run seed:demo                  # clearly labelled DEMO tracks, runs and setups
+```
+
+Developing: `npm run dev`. Checks: `npm run typecheck`, `npm test`, `npm run kb:verify`, `npm run eval:symptoms`, `npm run eval:retrieval`.
+
+`COACH_ENGINE=plain` runs the coach without Mastra, for comparison or if the workflow ever misbehaves.
+
+## What is built on what
+
+- **Model:** Gemma 4 (E2B / E4B, QAT builds), open weights, served by a local Ollama install. The browser never talks to Ollama; only the Node server does. No cloud call exists in `src` or `server`, and Mastra telemetry is switched off.
+- **Agent framework:** [Mastra](https://mastra.ai) runs the coach as a workflow with two pause points (waiting for the driver's choice, then for the outcome), with a plain-TypeScript fallback behind the same interface.
+- **Server:** Hono. **UI:** Preact, Vite, three.js for the explainer scenes. **Vault:** a single LibSQL file (`var/pit.db`). **Search over the notes:** MiniSearch (keyword, no embeddings).
+- **Explainers:** ten three.js scenes and two SVG ones show what a change does to the car. They are schematic: directions come from the notes, some magnitudes are exaggerated for legibility, and the label says so. They are not to scale and show no measured values.
+
+## Honest limits
+
+- **Not tested on the friend's laptop yet.** His machine is a 2019 Intel MacBook Pro (CPU-only inference). All timings in this project come from the author's Apple M4 Max, so his speed is unmeasured and will be slower. The choice between E2B and E4B for him is still open.
+- **Offline voice is not verified.** On-device speech recognition is documented for desktop Chrome only. In the author's embedded browser it reported "unavailable", and no real Wi-Fi-off run of the voice path has been done. Typing and the symptom chips work without it.
+- **Offline use** is supported by design (everything is local, and a network audit of the author's machine saw only loopback traffic), but that is an audit, not a proof. Model download and `npm ci` need internet once.
+- **Accuracy figures are small and ours.** The symptom set has 25 cases, 20 in the author's wording and 5 reworded in the friend's own words. Details and caveats are in [docs/CHALLENGE-MEMORY.md](docs/CHALLENGE-MEMORY.md). A fresh set of 14 phrasings scored 13 of 14. These are not general accuracy claims.
+- **The coach is advice from notes, not from the car.** It knows what the author's notes say about a BD12 and touring cars in general. Droop uses the generic gauge convention, not Yokomo's own BD12 procedure.
+- **No installer.** The friend needs Node and Ollama.
 
 ## Prior work, credited
 
-All code in this repository was started during the challenge window (see `git log`). The setup **knowledge** it retrieves comes from the author's earlier touring-car notes, imported as a frozen, credited snapshot (`kb/source/`, verified by `npm run kb:verify`); see [kb/PROVENANCE.md](kb/PROVENANCE.md). The author's earlier 3D dynamics guide, its BD12 model and its setup-sheet app are **not** reused.
+All code in this repository was written during the challenge window (`git log` starts on Oct 4, 2026). The touring-car **knowledge** it retrieves is not new: it is a frozen, hash-verified snapshot of the author's earlier notes (`kb/source/`, checked by `npm run kb:verify`), which were themselves distilled from third-party videos and manuals. Corrections and additions written in the window live separately in `kb/additions/`. See [kb/PROVENANCE.md](kb/PROVENANCE.md). The author's earlier 3D dynamics guide, its BD12 model and its setup-sheet app are **not** reused.
 
-## Run
-
-```bash
-npm install
-npm run dev        # http://localhost:5173
-npm run build      # typecheck + production build
-npm run kb:verify  # snapshot unchanged?
-npm run kb:build   # compile kb/ into data/generated/kb.json
-```
+The agent-written parts of the code were produced with Claude Code (planner, builder and reviewer subagents). The working log of decisions, failures and measurements is [docs/CHALLENGE-MEMORY.md](docs/CHALLENGE-MEMORY.md), and the build plan is [docs/IMPLEMENTATION-PLAN.md](docs/IMPLEMENTATION-PLAN.md).
 
 ## Layout
 
 ```
-src/agent  src/llm  src/voice  src/kb  src/scene  src/state  src/ui   typed stubs, no logic yet
-data/                symptoms.json, levers.json (authored, reviewed)
-kb/source/           frozen, credited snapshot of the author's earlier touring-car notes (11 pages)
-kb/additions/        new knowledge written in the window; kb/PROVENANCE.md explains the split
-public/icons/        PWA icons
-scripts/             verify-snapshot.mjs, build-kb.mjs, copy-wasm.mjs (phone spike)
+server/         Hono server: routes, coach workflow (Mastra + plain), lever engine, vault, search, Ollama client
+src/shared/     zod contracts used by both sides
+src/ui/         Coach, Setup, Session, Race day, Settings screens
+src/scene/      three.js and SVG explainers
+src/voice/      push-to-talk and speech output
+data/           params, symptoms, prechecks, levers (authored), eval sets and results
+kb/             frozen snapshot, additions, manifest, provenance
+scripts/        knowledge build and verify, evals, demo seed
+tests/          engine, vault, analysis, UI logic, voice, search
+src/spike/      the phone feasibility spike (kept for the record)
 ```
+
+## Commits after the deadline
+
+None so far. Any commit after Oct 5, 2026 06:59 UTC will be listed here.
 
 ## License
 
