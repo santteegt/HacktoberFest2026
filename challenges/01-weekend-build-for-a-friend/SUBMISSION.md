@@ -76,13 +76,13 @@ Every frame is labelled "Schematic, not to scale" and says how much the movement
 
 It is a laptop app. He would have preferred his phone, and I tried: Gemma 4 E2B downloaded in a phone browser, but it lagged too much to use. I wrote that down, dropped the phone, and built for the 2019 MacBook Pro he also has.
 
-He hasn't tried it himself yet. I installed it on his laptop to test it, and I don't know what he thinks of it. <!-- TODO author: if he tries it before publishing, add what he said (he has OK'd being quoted). -->
+I installed it on his laptop and recorded the demo there. He was very happy with it, and he can't wait to use it at the next practice sessions.
 
 ## Demo
 
 {% embed https://youtu.be/8ufLdPvyBes %}
 
-The video is a walkthrough of the app with Wi-Fi turned off, using voice in and out. The screenshots above show the same steps one by one, and the sections below say what I did and did not verify.
+The video was recorded on his laptop. It is a walkthrough of the app with Wi-Fi turned off, using voice in and out. The screenshots above show the same steps one by one, and the sections below say what I did and did not verify.
 
 ## Code
 
@@ -129,7 +129,7 @@ What fell short:
 
 Three things here depend on the model being open.
 
-First, it runs where he races. A pit table is not a place I can count on a good connection. The model, the notes, the vault and the search are all on his laptop, so the app doesn't need a connection to answer. In the demo video Wi-Fi is off and it still answers. I also checked that the server and Ollama opened only local connections during a full loop on my Mac. Installing it needs the internet once, for the packages, the model and the speech pack.
+First, it runs where he races. A pit table is not a place I can count on a good connection. The model, the notes, the vault and the search are all on his laptop, so the app doesn't need a connection to answer. In the demo video, recorded on his laptop, Wi-Fi is off and it still answers. I also checked that the server and Ollama opened only local connections during a full loop on my Mac. Installing it needs the internet once, for the packages, the model and the speech pack.
 
 Second, his setups stay with him. What he runs at a track, and how it goes, is his own record. The vault is one file on his disk.
 
@@ -137,8 +137,11 @@ Third, it costs nothing per question, and I can see why it answers what it answe
 
 ## My Agent Session
 
-<!-- TODO author: after the DevRelay upload is made public, embed it here with the agent_session tag, or link it. -->
+{% agent_session 548 %}
+
 I built this with Claude Code: one planner agent, then builder and reviewer subagents working on separate parts of the code. The session shows the phone test that failed, the frozen-notes decision, and how I checked the agents' claims, including a fresh-clone test that found the project didn't install cleanly and led to a fix.
+
+This is a curated copy, not the raw log. It keeps every prompt I wrote and the assistant's final reply to each, shortened, and leaves out the subagents' reports, tool output and reasoning. Paths, my email and local IP addresses are scrubbed. It ends where I asked for the upload, so the last few steps (the 3D explainers, the architecture diagram and the Wi-Fi-off demo check) are in the post and the repo's `docs/CHALLENGE-MEMORY.md`, not in the session.
 
 ## Prize Categories
 
