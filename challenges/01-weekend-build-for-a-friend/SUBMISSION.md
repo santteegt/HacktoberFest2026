@@ -77,14 +77,18 @@ Between those two steps there is no model. A table of 61 adjustments (`levers.js
 
 The stack:
 
-- Gemma 4 E4B (QAT build) on my Mac, served by Ollama, using Ollama's JSON-schema output so the symptom label is always a valid id. His 2019 laptop has no usable GPU for this, so it runs on the CPU. I asked him for a raw speed test with the small E2B model and got one reading: about 9 tokens per second writing and about 39 tokens per second reading a prompt. <!-- TODO author: confirm that reading was gemma4:e2b-it-qat, and add his macOS version -->
+- Gemma 4 E4B (QAT build) on my Mac, served by Ollama, using Ollama's JSON-schema output so the symptom label is always a valid id. His 2019 laptop has no usable GPU for this, so it runs on the CPU. I asked him for a raw speed test with the small E2B model (`gemma4:e2b-it-qat`) and got one reading: about 9 tokens per second writing and about 39 tokens per second reading a prompt. <!-- TODO author: add his macOS version if you want it in the post -->
 - Mastra runs the coach as a workflow with two pause points: one waiting for him to accept the suggestion, one waiting for the outcome after the laps. There is a plain TypeScript fallback behind the same interface, in case the workflow misbehaves.
 - A Hono server and Preact UI on localhost, three.js for the 3D scenes, one LibSQL file for the vault, MiniSearch for finding the right passage in the notes.
 - Voice: push-to-talk in, speech out. I have not verified this works offline on his laptop (see below).
 
 The touring-car notes are not new. They are a frozen snapshot of my earlier notes, which I distilled from other people's videos and manuals, and the repo credits that separately and checks it against a hash. All the code is new and written during the window. I did not reuse my earlier 3D guide or setup-sheet app.
 
-On testing: the symptom test has 25 cases; Gemma got 24 right. Twenty cases are in my wording. Five are in my friend's words, and Gemma got 4 of those 5 right as I'd labelled them. The miss was "it's understeering out of the corner": I'd labelled it as pushing on corner *entry*, the model said corner *exit*, and I think the model's reading is fair. A plain keyword matcher got 17 of 25. On 14 fresh phrasings I'd written down answers for before running them, Gemma got 13. Finding the right passage in the notes hit 9 of 10 on questions I wrote before tuning the search. These are small tests, written by me, run on an Apple M4 Max with a model loaded. They say the app works for the sentences I tried; they do not say it understands everyone. Those numbers are from my Mac. His laptop is several times slower, as the next list shows.
+On testing: the symptom test has 25 cases, 20 in my wording and 5 in my friend's. I ran it on the bigger E4B model first, and Gemma got 24 right. Then my friend opened the app on his laptop, which runs the smaller E2B model, and found a bug my test had hidden: whatever he asked, the coach answered "reduce caster". When the small model can't place a sentence it falls back to the same symptom, even for "hello". On the same 25 cases E2B gets 21 right, and it refused only 6 of 12 off-topic sentences I tried.
+
+I added a plain-code check in front of the model. A sentence with no word about driving or setup gets the refusal without calling the model at all, which also saves a few seconds on his laptop. With it E2B gets 23 of 25, and "hello", "what time is it" and "how should I run cli commands on a macbook" are all refused. A sentence that does contain a driving word, like "how many laps is the main race", still goes through to the model. I widened the word list once after it wrongly refused one of my slangy test cases, so that 23 is partly tuned on the test and not a clean number.
+
+On his own five sentences E2B got 5 right and E4B got 4. The E4B miss was "it's understeering out of the corner": I'd labelled it as pushing on corner *entry*, the model said corner *exit*, and I think the model's reading is fair. A plain keyword matcher got 17 of 25. On 14 fresh phrasings I'd written down answers for before running them, E4B got 13. Finding the right passage in the notes hit 9 of 10 on questions I wrote before tuning the search. These are small tests, written by me, run on an Apple M4 Max with the model loaded. They say the app works for the sentences I tried; they do not say it understands everyone. His laptop is several times slower than my Mac, as the next list shows.
 
 What fell short:
 
@@ -110,7 +114,7 @@ I built this with Claude Code: one planner agent, then builder and reviewer suba
 
 ## Prize Categories
 
-- Gemma: Gemma 4 (E4B QAT on my machine, E2B QAT planned for his) is the model behind both language steps, served by Ollama.
+- Gemma: Gemma 4 (E4B QAT on my machine, E2B QAT on his) is the model behind both language steps, served by Ollama.
 - Mastra: Mastra 1.74 runs the coach workflow, including the two pause points.
 
 I looked at the other partners and left them out. Most would have meant a cloud service in a project that is meant to run on one person's laptop.
