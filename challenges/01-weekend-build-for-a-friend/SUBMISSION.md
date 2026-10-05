@@ -18,19 +18,41 @@ RC Pit Companion does three things:
 - The practice log: each change is stored with a better, same or worse outcome, next to the track conditions. It tells him whether a lap-time difference is bigger than the usual run-to-run noise.
 - Race day: he enters the conditions and gets his saved setups ranked by how close the track was to the one he's racing.
 
-Here is one real turn. Session on a low-grip carpet track, and I said: "the back steps out when I get on the power out of the hairpin." The model labelled it *loose on power* (confidence 0.95). A hand-written table then picked the lever: softer rear diff oil, toward 3,000 to 4,000 cSt. The model read it back as: "We are softening the rear diff oil to around 3,000 to 4,000 cSt to let the rear wheels turn independently for more side grip. This might feel looser into the corner, so check power-on exits over three to five laps while confirming turn-in hasn't gotten looser." The whole turn took 4.0 seconds on my Mac.
+Here is one real turn. Session on a low-grip carpet track, and I said: "the back steps out when I get on the power out of the hairpin." The model labelled it *loose on power* (confidence 0.95). A hand-written table then picked the lever: softer rear diff oil, toward 3,000 to 4,000 cSt. The model read it back as: "We are softening the rear diff oil to around 3,000 to 4,000 cSt to let the rear wheels turn independently for more side grip. This might feel looser into the corner, so check power-on exits over three to five laps while confirming turn-in hasn't gotten looser." The whole turn took 4.0 seconds on my Mac with the E4B model.
 
-The screenshots below come from the app running on its labelled demo data (`npm run seed:demo`), not from real laps. This first one has my friend's own sentence typed in. The suggestion it gets comes from a row of the table that I haven't reviewed yet, and the card says "draft row (not reviewed)". The 3D view is labelled "Schematic, not to scale."
+That turn was on my Mac with the bigger E4B model. Here is the app from first launch to race day, on a clean database with the small E2B model that runs on his laptop, one screenshot per step. The track ("Club carpet") and the "better" verdict are made up for the screenshots. Nothing in the images is edited.
 
-![The Coach screen after typing "once i hit the breaks into the corner the car oversteers": the app reads it as loose on entry, lists three quick checks, suggests one change with the trade-off and how to check it, and shows it on a schematic 3D view](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/coach.png)
+**1. Start a session.** It asks for the track, the surface and the grip, because some advice depends on them: the softer diff oil row only applies on low grip.
 
-The session log keeps each run with the change made before it. "What affected run 3?" is the question he asked for.
+![The first-run form "Start a practice session" with the track name Club carpet, surface carpet and grip low selected](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/walkthrough/1-start-session.png)
+
+**2. Say what the car feels like.** I typed "the back steps out when I get on the power out of the hairpin". It reads that as *loose on power*, lists three quick checks to do first (belts, tyres, cross-tweak), then offers one change with the trade-off, how to check it and the notes it came from. It doesn't know his current diff oil, so it tells him to enter it in Setup. It won't guess a number.
+
+![The Coach screen after the typed sentence: Loose on power, three quick checks, and the suggestion Softer rear diff oil toward 3,000-4,000 cSt with its trade-off, check and note links, plus an Open Setup button](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/walkthrough/2-say-it.png)
+
+**3. Or tap a chip.** Chips skip the model's understanding step, which makes them faster on his laptop. "Push in" gives "Reduce caster, 4 to 3 degrees", the trade-off ("more twitchy on the straight"), and the 3D view of the change.
+
+![The Coach screen after tapping Push in: Reduce caster from 4 to 3 degrees with the trade-off and check, a schematic 3D view labelled "Schematic, not to scale", and the coach's spoken-style wording below](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/walkthrough/3-tap-a-chip.png)
+
+**4. Apply it, drive 3 to 5 laps, say how it felt.**
+
+![The Coach screen after pressing Apply, marked Applied, with the question "Run 3 to 5 laps, then tell me how the car felt compared with before" and Better, Same and Worse buttons](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/walkthrough/4-apply-and-rate.png)
+
+**5. If it was better, save the setup with today's conditions.**
+
+![The outcome panel after pressing Better, saying "Worth keeping: save this setup with today's track conditions so you can find it on race day", and a confirmation that it was saved](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/walkthrough/5-save-setup.png)
+
+**6. Every change is kept with its outcome.**
+
+![The Session screen listing the change "Caster 4 deg to 3 deg (coach)" with the outcome Better selected](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/walkthrough/6-session-log.png)
+
+With runs logged, each run shows the change made before it, and "What affected run 3?" asks the app. This one is the demo data from `npm run seed:demo`, labelled DEMO in the app.
 
 ![The Session screen with three demo runs, their ratings and best laps, and the setup change recorded with each](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/session.png)
 
-Race day ranks the saved setups against the conditions he enters.
+**7. On race day, rank the saved setups for the conditions he enters.** This frame was taken after loading the labelled DEMO setups, so my one live setup ("Club carpet", score 100) sits next to them. Setups saved on a different surface are listed separately and never rank above a matching one.
 
-![The Race day screen with today's conditions and a saved demo setup scored 100 for matching track, grip and temperature](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/race-day.png)
+![The Race day screen: today's conditions, the saved setup Club carpet scored 100 for same track and same grip, a DEMO carpet setup scored 50, and a separate group for other surfaces](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/01-weekend-build-for-a-friend/docs/screenshots/walkthrough/7-race-day.png)
 
 The 3D view is how the app explains a setting, because a number like "rear shock position 2 to 3" doesn't mean much until you can see it. Each suggestion plays on a small schematic car: the faint copy is the setting before and the blue one is after. There are twelve of these explainers, ten in 3D and two flat diagrams. Four of them, captured from the scene's own test page:
 
