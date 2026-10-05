@@ -20,7 +20,7 @@ RC Pit Companion does three things:
 
 Here is one real turn. Session on a low-grip carpet track, and I said: "the back steps out when I get on the power out of the hairpin." The model labelled it *loose on power* (confidence 0.95). A hand-written table then picked the lever: softer rear diff oil, toward 3,000 to 4,000 cSt. The model read it back as: "We are softening the rear diff oil to around 3,000 to 4,000 cSt to let the rear wheels turn independently for more side grip. This might feel looser into the corner, so check power-on exits over three to five laps while confirming turn-in hasn't gotten looser." The whole turn took 4.0 seconds on my Mac with the E4B model.
 
-That turn was on my Mac with the bigger E4B model. Here is the app from first launch to race day, on a clean database with the small E2B model that runs on his laptop, one screenshot per step. The track ("Club carpet") and the "better" verdict are made up for the screenshots. Nothing in the images is edited.
+Here is the app from first launch to race day, on a clean database with the small E2B model that runs on his laptop, one screenshot per step. The track ("Club carpet") and the "better" verdict are made up for the screenshots. Nothing in the images is edited.
 
 **1. Start a session.** It asks for the track, the surface and the grip, because some advice depends on them: the softer diff oil row only applies on low grip.
 
@@ -76,7 +76,7 @@ Every frame is labelled "Schematic, not to scale" and says how much the movement
 
 It is a laptop app. He would have preferred his phone, and I tried: Gemma 4 E2B downloaded in a phone browser, but it lagged too much to use. I wrote that down, dropped the phone, and built for the 2019 MacBook Pro he also has.
 
-He hasn't used it yet. I don't know what he thinks of it, and I haven't run it on his machine. <!-- TODO author: if he tries it before publishing, add what he said and his OK to be quoted. -->
+He hasn't tried it himself yet. I installed it on his laptop to test it, and I don't know what he thinks of it. <!-- TODO author: if he tries it before publishing, add what he said (he has OK'd being quoted). -->
 
 ## Demo
 
@@ -106,7 +106,7 @@ The stack:
 
 The touring-car notes are not new. They are a frozen snapshot of my earlier notes, which I distilled from other people's videos and manuals, and the repo credits that separately and checks it against a hash. All the code is new and written during the window. I did not reuse my earlier 3D guide or setup-sheet app.
 
-On testing: the symptom test has 25 cases, 20 in my wording and 5 in my friend's. I ran it on the bigger E4B model first, and Gemma got 24 right. Then my friend opened the app on his laptop, which runs the smaller E2B model, and found a bug my test had hidden: whatever he asked, the coach answered "reduce caster". When the small model can't place a sentence it falls back to the same symptom, even for "hello". On the same 25 cases E2B gets 21 right, and it refused only 6 of 12 off-topic sentences I tried.
+On testing: the symptom test has 25 cases, 20 in my wording and 5 in my friend's. I ran it on the bigger E4B model first, and Gemma got 24 right. Then I installed it on my friend's laptop, which runs the smaller E2B model, and hit a bug my test had hidden: whatever I asked, the coach answered "reduce caster". When the small model can't place a sentence it falls back to the same symptom, even for "hello". On the same 25 cases E2B gets 21 right, and it refused only 6 of 12 off-topic sentences I tried.
 
 I added a plain-code check in front of the model. A sentence with no word about driving or setup gets the refusal without calling the model at all, which also saves a few seconds on his laptop. With it E2B gets 23 of 25, and "hello", "what time is it" and "how should I run cli commands on a macbook" are all refused. A sentence that does contain a driving word, like "how many laps is the main race", still goes through to the model. I widened the word list once after it wrongly refused one of my slangy test cases, so that 23 is partly tuned on the test and not a clean number.
 
