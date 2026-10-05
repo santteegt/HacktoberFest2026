@@ -316,7 +316,7 @@ export async function startListening(): Promise<void> {
   if (listening.value) return;
   const s = settings.value;
   if (s?.voiceIn === "off") {
-    voiceHint.value = "Voice input is off in Settings. Type or tap a chip.";
+    voiceHint.value = "Voice input is off. Turn it on in Settings, under Voice, or type or tap a chip.";
     return;
   }
   const input = getSpeechInput(s);

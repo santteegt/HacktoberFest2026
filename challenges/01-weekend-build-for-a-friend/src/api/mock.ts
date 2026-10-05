@@ -85,7 +85,7 @@ const settings: Settings = {
   numCtx: 4096,
   llmPhrasing: true,
   reviewedOnly: false,
-  voiceIn: "off",
+  voiceIn: "local",
   voiceOut: "browser",
   tempUnit: "C",
   car: "yokomo-bd12",

@@ -159,7 +159,7 @@ describe("saved setups", () => {
 describe("settings", () => {
   it("returns defaults, merges patches, validates", async () => {
     const d = await repo.getSettings();
-    expect(d).toMatchObject({ numCtx: 4096, llmPhrasing: true, voiceIn: "off", tempUnit: "C" });
+    expect(d).toMatchObject({ numCtx: 4096, llmPhrasing: true, voiceIn: "local", tempUnit: "C" });
     const s = await repo.putSettings({ reviewedOnly: true, voiceName: "Samantha" });
     expect(s).toMatchObject({ reviewedOnly: true, voiceName: "Samantha", model: d.model });
     expect((await repo.getSettings()).reviewedOnly).toBe(true);

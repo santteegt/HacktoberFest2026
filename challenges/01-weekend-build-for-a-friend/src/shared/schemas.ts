@@ -249,7 +249,7 @@ export const Settings = z.object({
   numCtx: settingsFields.numCtx.default(4096),
   llmPhrasing: settingsFields.llmPhrasing.default(true),
   reviewedOnly: settingsFields.reviewedOnly.default(false),
-  voiceIn: settingsFields.voiceIn.default("off"),
+  voiceIn: settingsFields.voiceIn.default("local"),
   voiceOut: settingsFields.voiceOut.default("browser"),
   voiceName: settingsFields.voiceName.optional(),
   tempUnit: settingsFields.tempUnit.default("C"),
