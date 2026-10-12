@@ -19,6 +19,9 @@ build/
 .next/
 *.log
 
+# demo resources
+demo_resources/
+
 # Local agent state
 .claude/settings.local.json
 .claude/worktrees/

@@ -1,0 +1,65 @@
+{
+  "skill_name": "podcast-quiz",
+  "evals": [
+    {
+      "id": 1,
+      "name": "plain-narration",
+      "prompt": "I just walked 30 minutes listening to this episode and I'm back at the car. Quiz me on what I heard. The transcript is attached.",
+      "expected_output": "A five-question quiz (4 multiple choice then 1 field-link), every question backed by a verbatim quote spread across the transcript.",
+      "files": [
+        "evals/files/t1-partner-docs-narration.txt"
+      ],
+      "expectations": [
+        "Quiz has exactly 4 multiple-choice questions followed by 1 field-link question",
+        "Every question's quote is found in the transcript (no invented quotes)",
+        "Questions are short enough to hear: at most 25 words, choices at most 12",
+        "Quotes are spread across at least two different parts of the episode",
+        "Each multiple-choice question has 4 distinct choices and no 'all/none of the above'",
+        "The field-link question lists 3 to 6 concept terms and asks the learner to connect the idea to the walk",
+        "The correct choice is not the longest option in 3 or more of the 4 multiple-choice questions",
+        "The correct answers are spread over at least 3 different positions (after shuffling)"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "opinionated-dialogue",
+      "prompt": "Make me a quiz from this two-person podcast transcript so I can test myself on my evening fast walk. I only get to listen, no screen.",
+      "expected_output": "Quiz that attributes opinions to the guest, avoids financial advice, and stays grounded in the transcript.",
+      "files": [
+        "evals/files/t2-amm-dialogue.txt"
+      ],
+      "expectations": [
+        "Quiz has exactly 4 multiple-choice questions followed by 1 field-link question",
+        "Every question's quote is found in the transcript (no invented quotes)",
+        "Questions are short enough to hear: at most 25 words, choices at most 12",
+        "Quotes are spread across at least two different parts of the episode",
+        "Each multiple-choice question has 4 distinct choices and no 'all/none of the above'",
+        "The field-link question lists 3 to 6 concept terms and asks the learner to connect the idea to the walk",
+        "The correct choice is not the longest option in 3 or more of the 4 multiple-choice questions",
+        "No question asks for investment advice or a price prediction",
+        "At least three questions attribute a view to a speaker (host, guest, speaker, 'according to', 'argued')",
+        "The correct answers are spread over at least 3 different positions (after shuffling)"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "srt-with-timestamps",
+      "prompt": "This is an SRT file from a talk I listened to. Test my understanding of it, I'll answer by voice after my walk.",
+      "expected_output": "Quiz from an SRT transcript where no timestamps or cue numbers leak into questions or quotes.",
+      "files": [
+        "evals/files/t3-deliberate-practice.srt"
+      ],
+      "expectations": [
+        "Quiz has exactly 4 multiple-choice questions followed by 1 field-link question",
+        "Every question's quote is found in the transcript (no invented quotes)",
+        "Questions are short enough to hear: at most 25 words, choices at most 12",
+        "Quotes are spread across at least two different parts of the episode",
+        "Each multiple-choice question has 4 distinct choices and no 'all/none of the above'",
+        "The field-link question lists 3 to 6 concept terms and asks the learner to connect the idea to the walk",
+        "The correct choice is not the longest option in 3 or more of the 4 multiple-choice questions",
+        "No timestamps or cue numbers appear in the questions or quotes",
+        "The correct answers are spread over at least 3 different positions (after shuffling)"
+      ]
+    }
+  ]
+}

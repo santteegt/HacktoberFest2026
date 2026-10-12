@@ -1,0 +1,28 @@
+HOST: Welcome back. Today we're talking about automated market makers, and I want to start with the thing most people get wrong.
+GUEST: Sure. Most people think a pool is an order book with the orders hidden. It isn't. There are no orders. There's a formula, and the formula sets the price.
+HOST: So walk me through the simplest version.
+GUEST: Take a pool with two tokens, say one thousand units of token A and one thousand of token B. The rule is that the product of the two balances has to stay constant. If you buy some A, you put B in, and the pool's price for A goes up because there's less A left. That's the whole idea. The price moves because the balances move.
+HOST: And that's why big trades get a worse price.
+GUEST: Exactly. We call it slippage. The bigger your trade compared to the pool, the further along the curve you travel, and the worse your average price gets. A trade that's one percent of the pool barely moves anything. A trade that's twenty percent of the pool is going to hurt.
+HOST: Okay, so who's putting the tokens in the pool?
+GUEST: Liquidity providers. They deposit both tokens and in return they earn a cut of every trade, usually somewhere between a tenth of a percent and one percent, depending on the pool. And here's where I get a bit opinionated. I think providing liquidity is sold as free yield, and it really isn't.
+HOST: Because of impermanent loss.
+GUEST: Right. If the price of one token runs away from the other, the formula keeps rebalancing the pool, so you end up holding more of the token that went down and less of the one that went up. If you'd just held both tokens in your wallet you'd have done better. The fees are supposed to pay you for that risk. Sometimes they do. Sometimes they don't.
+HOST: How do people know which is which?
+GUEST: Honestly, mostly they don't. I'd say the honest answer is that you need volume. A pool with a lot of trading volume relative to its size earns fees quickly, and that can outrun the loss. A quiet pool with a famous name on it can lose you money for months and the dashboard still shows a nice annual percentage.
+HOST: That annual number is a bit of a trap, then.
+GUEST: In my view, yes. It's a snapshot extrapolated forward. Yesterday's volume tells you very little about next month.
+HOST: Let's talk about stable pairs, because I know you think those are different.
+GUEST: They are. If both tokens are meant to be worth one dollar, you don't want the normal curve, because it would let the price drift far more than it should. So stable pools use a flatter curve near the peg. Around the target price, trades barely move the price at all, and only when the pool gets very lopsided does the price start to bend. That gives traders low slippage and gives providers much less impermanent loss, as long as the peg holds.
+HOST: As long as the peg holds. That's the catch.
+GUEST: That's the whole catch. Stable pools look safe right up until one of the tokens loses its peg. Then everybody runs to sell the weak token into the pool, the pool fills up with it, and the providers are left holding the bag. We saw that happen in a few well-known episodes. So I'd tell anyone the real question isn't what the yield is, it's what you're trusting to keep the peg.
+HOST: And what would you look at?
+GUEST: Three things. Who backs the token and can you check it. How much of the pool is one single token. And how fast liquidity leaves when something looks wrong. If the exits are crowded, the first people out get the good price and the last people out get nothing.
+HOST: Do you think these pools replace exchanges, the order book kind?
+GUEST: Not entirely. For long-tail tokens, absolutely, because nobody wants to run an order book for a token that trades twice a day. For the biggest pairs, professional market makers on order books still tend to offer tighter prices. I think the future is both, with pools handling the long tail and smarter pools borrowing ideas from order books, like letting providers pick a price range instead of spreading their money across every possible price.
+HOST: That range idea, how does it change things?
+GUEST: If you concentrate your money in a narrow range around the current price, you earn far more fees per dollar while the price stays in that range. But the moment the price leaves your range you earn nothing and you're fully in one token. So you've traded passive for active. You have to watch it, or pay someone to watch it.
+HOST: Last question. What should a beginner do?
+GUEST: Start by swapping, not providing. Swap small amounts and look at the slippage yourself. Understand what you're paying before you ask what you can earn. And I'd say treat any pool you don't understand the way you'd treat a loan you didn't read, which is to say, don't.
+HOST: That feels like a good place to stop. Thanks for coming on.
+GUEST: Thanks for having me.

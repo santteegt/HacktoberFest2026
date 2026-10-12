@@ -1,0 +1,13 @@
+IDEA LEASH WALK TEST
+duration: 7m 57s
+GPS fixes: 54 (46 within 30 m) · median accuracy 10 m
+distance (filtered): 125 m
+longest gap between fixes: 34 s · gaps over 30 s: 1
+timer ticks: 151 of 477 expected · longest timer gap 326 s
+page hidden for: 6m 57s · visibility events: [{"at":"0m 22s","state":"hidden"},{"at":"0m 53s","state":"visible"},{"at":"1m 04s","state":"hidden"},{"at":"7m 29s","state":"visible"}]
+wake lock: [{"at":"0m 00s","ev":"acquired"},{"at":"0m 22s","ev":"released"},{"at":"0m 53s","ev":"acquired"},{"at":"1m 04s","ev":"released"},{"at":"7m 30s","ev":"acquired"},{"at":"7m 57s","ev":"released"}]
+battery: 78% -> 77%
+voice clips: 1 saved in IndexedDB (1 stored in total) [{"at":"7m 46s","s":2.9,"kb":41,"type":"audio/webm;codecs=opus"}]
+beeps played: 2
+errors: gps: 1 User denied Geolocation
+device: Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Mobile Safari/537.36

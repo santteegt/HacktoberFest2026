@@ -1,0 +1,36 @@
+# Model: an open-weight Gemma served by Ollama on the host Mac, reached from the VM
+# through a reverse SSH tunnel (see agent/README.md). Hermes needs a 64K context window,
+# so we use the derived model from agent/Modelfile.leash.
+model:
+  default: "leash-gemma4-12b"
+  provider: "custom"
+  base_url: "http://127.0.0.1:11434/v1"
+
+# The Telegram agent only gets what Leash needs: a shell (for the leashctl command), files, skills,
+# clarifying questions, scheduled jobs and small built-in memory. No browser, computer control,
+# code execution, delegation or web tools: search goes through leashctl so the key stays on the Mac.
+platform_toolsets:
+  telegram: ["terminal", "file", "skills", "clarify", "cronjob", "memory", "session_search"]
+
+# Voice notes from Telegram are transcribed on the Mac, not in the VM: the command sends the audio
+# through the tunnel to whisper.cpp (open Whisper large-v3-turbo, same model as podcast ingest).
+# A command provider is the documented route for "a whisper.cpp build"; no model download in the VM.
+stt:
+  enabled: true
+  provider: mac_whisper
+  providers:
+    mac_whisper:
+      type: command
+      command: '"$HOME/.local/bin/leashctl" transcribe {input_path}'
+      format: txt
+      language: en
+      timeout: 180
+
+# Ask before anything dangerous; leashctl itself is an ordinary command.
+approvals:
+  mode: smart
+
+# Hermes keeps secrets out of the shell tool unless allowed. leashctl needs the tool-server token
+# (the skill declares it too; this entry works even when the skill was not loaded in that turn).
+terminal:
+  env_passthrough: ["LEASH_UPLOAD_TOKEN", "LEASH_SERVER"]

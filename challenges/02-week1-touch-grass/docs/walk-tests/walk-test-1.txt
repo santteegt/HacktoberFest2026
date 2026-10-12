@@ -1,0 +1,13 @@
+IDEA LEASH WALK TEST
+duration: 9m 29s
+GPS fixes: 1172 (1164 within 30 m) · median accuracy 5 m
+distance (filtered): 906 m
+longest gap between fixes: 3 s · gaps over 30 s: 0
+timer ticks: 568 of 569 expected · longest timer gap 1.1 s
+page hidden for: 0m 00s · visibility events: []
+wake lock: [{"at":"0m 00s","ev":"acquired"},{"at":"9m 28s","ev":"released"}]
+battery: 91% -> 89%
+voice clips: 1 saved in IndexedDB (1 stored in total) [{"at":"7m 05s","s":4.6,"kb":65,"type":"audio/webm;codecs=opus"}]
+beeps played: 2
+errors: none
+device: Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Mobile Safari/537.36

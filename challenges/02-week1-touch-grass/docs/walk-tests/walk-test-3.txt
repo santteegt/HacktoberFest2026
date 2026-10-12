@@ -1,0 +1,13 @@
+IDEA LEASH WALK TEST
+duration: 8m 44s
+GPS fixes: 96 (93 within 30 m) · median accuracy 6 m
+distance (filtered): 365 m
+longest gap between fixes: 274 s · gaps over 30 s: 4
+timer ticks: 275 of 524 expected · longest timer gap 192.3 s
+page hidden for: 7m 32s · visibility events: [{"at":"0m 06s","state":"hidden"},{"at":"4m 36s","state":"visible"},{"at":"4m 58s","state":"hidden"},{"at":"6m 38s","state":"visible"},{"at":"6m 51s","state":"hidden"},{"at":"7m 36s","state":"visible"},{"at":"7m 51s","state":"hidden"},{"at":"8m 28s","state":"visible"}]
+wake lock: [{"at":"0m 00s","ev":"acquired"},{"at":"0m 06s","ev":"released"},{"at":"4m 36s","ev":"acquired"},{"at":"4m 58s","ev":"released"},{"at":"6m 38s","ev":"acquired"},{"at":"6m 51s","ev":"released"},{"at":"7m 36s","ev":"acquired"},{"at":"7m 51s","ev":"released"},{"at":"8m 28s","ev":"acquired"},{"at":"8m 44s","ev":"released"}]
+battery: 76% -> 75%
+voice clips: 3 saved in IndexedDB (4 stored in total) [{"at":"4m 39s","s":3.4,"kb":43,"type":"audio/webm;codecs=opus"},{"at":"6m 41s","s":4.6,"kb":64,"type":"audio/webm;codecs=opus"},{"at":"7m 39s","s":8.9,"kb":131,"type":"audio/webm;codecs=opus"}]
+beeps played: 2
+errors: none
+device: Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Mobile Safari/537.36

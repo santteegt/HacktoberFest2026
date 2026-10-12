@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1222" width="1200" height="1222" font-family="-apple-system, Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f3a5f"/></marker></defs>
+<rect width="1200" height="1222" fill="#ffffff"/>
+<text x="24" y="36" font-size="24" font-weight="700" fill="#16201c" text-anchor="start">Idea Leash: what runs where</text>
+<text x="24" y="62" font-size="15" font-weight="400" fill="#4a5650" text-anchor="start">Green = open source. Grey = not open source. White = my own files. Numbers follow one loop (key at the bottom).</text>
+<rect x="350" y="84" width="260" height="66" rx="8" fill="#eceff1" stroke="#6b7b85" stroke-width="2"/>
+<text x="362" y="108" font-size="16" font-weight="700" fill="#16201c" text-anchor="start">SerpApi (not open)</text>
+<text x="362" y="130" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">receives the search words only</text>
+<rect x="640" y="84" width="280" height="66" rx="8" fill="#eceff1" stroke="#6b7b85" stroke-width="2"/>
+<text x="652" y="108" font-size="16" font-weight="700" fill="#16201c" text-anchor="start">Podcast host (not open)</text>
+<text x="652" y="130" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">where the episode audio comes from</text>
+<rect x="20" y="200" width="240" height="420" rx="8" fill="#e4f2e7" stroke="#2f7d4a" stroke-width="2"/>
+<text x="32" y="224" font-size="16" font-weight="700" fill="#16201c" text-anchor="start">Phone: web app</text>
+<text x="32" y="246" font-size="15" font-weight="400" fill="#4a5650" text-anchor="start">Chrome on Android, one</text>
+<text x="32" y="266" font-size="15" font-weight="400" fill="#4a5650" text-anchor="start">HTML file (MIT, this project)</text>
+<text x="32" y="300" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Walk mode: black cover,</text>
+<text x="32" y="321" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">screen stays on (a hidden</text>
+<text x="32" y="342" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">page gets no GPS)</text>
+<text x="32" y="363" font-size="15" font-weight="400" fill="#16201c" text-anchor="start"></text>
+<text x="32" y="384" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">GPS track of the walk</text>
+<text x="32" y="405" font-size="15" font-weight="400" fill="#16201c" text-anchor="start"></text>
+<text x="32" y="426" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Big voice button for ideas</text>
+<text x="32" y="447" font-size="15" font-weight="400" fill="#16201c" text-anchor="start"></text>
+<text x="32" y="468" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Offline queue: walks and</text>
+<text x="32" y="489" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">notes wait until the Mac</text>
+<text x="32" y="510" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">is reachable</text>
+<text x="32" y="531" font-size="15" font-weight="400" fill="#16201c" text-anchor="start"></text>
+<text x="32" y="552" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Views: Walk, Activity, Badges</text>
+<rect x="330" y="186" width="850" height="760" rx="12" fill="#fafbfa" stroke="#16201c" stroke-width="2.5"/>
+<text x="1164" y="214" font-size="17" font-weight="700" fill="#16201c" text-anchor="end">My Mac (Apple M4 Max): the AI and my data stay here</text>
+<rect x="350" y="232" width="360" height="330" rx="8" fill="#e4f2e7" stroke="#2f7d4a" stroke-width="2"/>
+<text x="362" y="256" font-size="16" font-weight="700" fill="#16201c" text-anchor="start">Tool server (Python stdlib, MIT)</text>
+<text x="362" y="280" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Serves the phone app and its API</text>
+<text x="362" y="305" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Ingest job: audio, transcript,</text>
+<text x="362" y="330" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">   notes, quiz</text>
+<text x="362" y="355" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Quiz checks: every quote verified,</text>
+<text x="362" y="380" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">   answers shuffled in code</text>
+<text x="362" y="405" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Grades answers, keeps the quiz cursor</text>
+<text x="362" y="430" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Walks: distance, tracked time,</text>
+<text x="362" y="455" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">   streaks, 16 badges (code)</text>
+<text x="362" y="480" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Search phrase in a note: one search</text>
+<text x="362" y="505" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Sends Telegram messages itself:</text>
+<text x="362" y="530" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">   after-walk, grades, podcast ready</text>
+<rect x="760" y="232" width="400" height="84" rx="8" fill="#e4f2e7" stroke="#2f7d4a" stroke-width="2"/>
+<text x="772" y="256" font-size="16" font-weight="700" fill="#16201c" text-anchor="start">Ollama + Gemma 4 12B QAT</text>
+<text x="772" y="278" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Gemma weights: Apache 2.0. One alias, 64K</text>
+<text x="772" y="299" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">context. Notes, quiz, grading wording, replies</text>
+<rect x="760" y="328" width="400" height="62" rx="8" fill="#e4f2e7" stroke="#2f7d4a" stroke-width="2"/>
+<text x="772" y="352" font-size="16" font-weight="700" fill="#16201c" text-anchor="start">whisper.cpp large-v3-turbo (MIT)</text>
+<text x="772" y="374" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">voice notes to text</text>
+<rect x="760" y="402" width="400" height="62" rx="8" fill="#e4f2e7" stroke="#2f7d4a" stroke-width="2"/>
+<text x="772" y="426" font-size="16" font-weight="700" fill="#16201c" text-anchor="start">graphify + faster-whisper</text>
+<text x="772" y="448" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">podcast audio to transcript</text>
+<rect x="760" y="476" width="400" height="62" rx="8" fill="#e4f2e7" stroke="#2f7d4a" stroke-width="2"/>
+<text x="772" y="500" font-size="16" font-weight="700" fill="#16201c" text-anchor="start">Piper (GPL-3.0)</text>
+<text x="772" y="522" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">quiz questions as audio, made at ingest</text>
+<rect x="760" y="550" width="400" height="62" rx="8" fill="#ffffff" stroke="#16201c" stroke-width="2"/>
+<text x="772" y="574" font-size="16" font-weight="700" fill="#16201c" text-anchor="start">Wiki vault: OKF markdown files</text>
+<text x="772" y="596" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">second brain: episode notes, voice ideas</text>
+<path d="M710,274 L758,274" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<path d="M710,359 L758,359" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<path d="M710,433 L758,433" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<path d="M710,507 L758,507" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<path d="M710,545 L758,581" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<text x="540" y="640" font-size="15" font-weight="400" fill="#4a5650" text-anchor="start">SSH reverse tunnel from the Mac into the VM: leashctl reaches the tool server,</text>
+<text x="540" y="660" font-size="15" font-weight="400" fill="#4a5650" text-anchor="start">the agent reaches Ollama. launchd keeps the tool server, the tunnel and the VM up.</text>
+<rect x="350" y="676" width="810" height="196" rx="8" fill="#ffffff" stroke="#4a5650" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="540" y="700" font-size="16" font-weight="700" fill="#4a5650" text-anchor="start">macOS VM run by Lume (Lume: MIT; macOS: not open)</text>
+<rect x="370" y="716" width="300" height="140" rx="8" fill="#e4f2e7" stroke="#2f7d4a" stroke-width="2"/>
+<text x="382" y="740" font-size="16" font-weight="700" fill="#16201c" text-anchor="start">leashctl (MIT, this project)</text>
+<text x="382" y="762" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">the one command the agent</text>
+<text x="382" y="783" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">runs to reach the Mac:</text>
+<text x="382" y="804" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">ingest, next question,</text>
+<text x="382" y="825" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">answer, idea, search</text>
+<rect x="720" y="716" width="420" height="140" rx="8" fill="#e4f2e7" stroke="#2f7d4a" stroke-width="2"/>
+<text x="732" y="740" font-size="16" font-weight="700" fill="#16201c" text-anchor="start">Hermes Agent (MIT)</text>
+<text x="732" y="762" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">gateway: a launchd service in the VM</text>
+<text x="732" y="783" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">profile "leash": SOUL rules and skills</text>
+<text x="732" y="804" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">asks quiz questions as buttons</text>
+<text x="732" y="825" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">(clarify tool)</text>
+<path d="M520,716 L520,564" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<path d="M720,786 L672,786" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<path d="M1140,740 L1170,740 L1170,274 L1162,274" fill="none" stroke="#1f3a5f" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#ah)"/>
+<rect x="20" y="966" width="1160" height="70" rx="8" fill="#eceff1" stroke="#6b7b85" stroke-width="2"/>
+<text x="32" y="990" font-size="16" font-weight="700" fill="#16201c" text-anchor="start">Telegram (not open): the chat on my phone</text>
+<text x="32" y="1012" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">carries links, voice notes, quiz buttons and the messages the Mac sends</text>
+<path d="M880,966 L880,858" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<path d="M980,858 L980,964" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<circle cx="858" cy="900" r="13" fill="#1f3a5f"/>
+<text x="858" y="905" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+<circle cx="858" cy="930" r="13" fill="#1f3a5f"/>
+<text x="858" y="935" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">5</text>
+<text x="838" y="905" font-size="14" font-weight="400" fill="#4a5650" text-anchor="end">link</text>
+<text x="838" y="935" font-size="14" font-weight="400" fill="#4a5650" text-anchor="end">"quiz me", answers</text>
+<circle cx="1004" cy="912" r="13" fill="#1f3a5f"/>
+<text x="1004" y="917" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">5</text>
+<text x="1024" y="917" font-size="14" font-weight="400" fill="#4a5650" text-anchor="start">quiz as buttons</text>
+<path d="M350,540 L300,540 L300,964" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<circle cx="300" cy="760" r="13" fill="#1f3a5f"/>
+<text x="300" y="765" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">4</text>
+<circle cx="300" cy="800" r="13" fill="#1f3a5f"/>
+<text x="300" y="805" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">6</text>
+<text x="296" y="262" font-size="13" font-weight="700" fill="#4a5650" text-anchor="middle">Tailscale</text>
+<text x="296" y="280" font-size="13" font-weight="700" fill="#4a5650" text-anchor="middle">HTTPS</text>
+<text x="296" y="296" font-size="12" font-weight="400" fill="#4a5650" text-anchor="middle">(not open)</text>
+<path d="M260,330 L348,330" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<circle cx="290" cy="352" r="13" fill="#1f3a5f"/>
+<text x="290" y="357" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+<path d="M260,400 L348,400" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<circle cx="290" cy="422" r="13" fill="#1f3a5f"/>
+<text x="290" y="427" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+<path d="M348,470 L262,470" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<text x="310" y="492" font-size="13" font-weight="400" fill="#4a5650" text-anchor="middle">app</text>
+<path d="M480,232 L480,152" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<path d="M700,152 L700,180 L620,180 L620,230" fill="none" stroke="#1f3a5f" stroke-width="2.5" marker-end="url(#ah)"/>
+<circle cx="658" cy="180" r="13" fill="#1f3a5f"/>
+<text x="658" y="185" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+<circle cx="500" cy="192" r="13" fill="#1f3a5f"/>
+<text x="500" y="197" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+<circle cx="36" cy="1068" r="13" fill="#1f3a5f"/>
+<text x="36" y="1073" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+<text x="58" y="1073" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">I send an episode link; the agent runs leashctl; the Mac fetches the audio, transcribes it, writes notes to the wiki and makes the quiz.</text>
+<circle cx="36" cy="1093" r="13" fill="#1f3a5f"/>
+<text x="36" y="1098" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+<text x="58" y="1098" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">After the walk the phone uploads the GPS track; code computes distance, time, streaks and badges.</text>
+<circle cx="36" cy="1118" r="13" fill="#1f3a5f"/>
+<text x="36" y="1123" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+<text x="58" y="1123" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Each voice note is transcribed with whisper.cpp and saved as an idea; a note that starts with a search phrase runs one search.</text>
+<circle cx="36" cy="1143" r="13" fill="#1f3a5f"/>
+<text x="36" y="1148" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">4</text>
+<text x="58" y="1148" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">The Mac sends the after-walk message to Telegram.</text>
+<circle cx="36" cy="1168" r="13" fill="#1f3a5f"/>
+<text x="36" y="1173" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">5</text>
+<text x="58" y="1173" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">I say "quiz me"; the agent asks the questions as Telegram buttons.</text>
+<circle cx="36" cy="1193" r="13" fill="#1f3a5f"/>
+<text x="36" y="1198" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">6</text>
+<text x="58" y="1198" font-size="15" font-weight="400" fill="#16201c" text-anchor="start">Each answer goes back through leashctl; the Mac grades it and sends the grade itself.</text>
+</svg>

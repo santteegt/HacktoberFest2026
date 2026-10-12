@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Idea Leash walk test</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #0b0f0d; color: #e6efe9; font: 16px/1.5 system-ui, sans-serif; }
+  main { padding: 18px 16px 40px; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+  h1 { font-size: 22px; margin: 0; }
+  p, li { color: #b9c8bf; margin: 0; }
+  ol { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; margin: 0; }
+  button { font: inherit; font-weight: 600; padding: 16px; border-radius: 12px; border: 0; background: #2fae77; color: #04130c; }
+  button.secondary { background: #25302a; color: #e6efe9; }
+  label { display: flex; align-items: center; gap: 10px; color: #b9c8bf; }
+  input[type=number] { width: 80px; font: inherit; padding: 8px; border-radius: 8px; border: 1px solid #34443a; background: #121a16; color: #e6efe9; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #121a16; border: 1px solid #34443a; border-radius: 10px; padding: 12px; font-size: 13px; margin: 0; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .row > * { flex: 1 1 140px; }
+  .bad { color: #f0a062; }
+  /* walk mode: plain black cover with two controls that stay readable on black. */
+  #cover { position: fixed; inset: 0; background: #000; z-index: 10; display: none; touch-action: none; user-select: none; -webkit-user-select: none; }
+  #cover.on { display: block; }
+  #stopZone { position: absolute; top: 14px; left: 14px; width: 48%; max-width: 230px; padding: 12px 14px; border: 2px solid #8da195; border-radius: 12px; color: #dce7e0; font-size: 16px; font-weight: 700; line-height: 1.25; }
+  #stopZone small { display: block; margin-top: 3px; color: #a9bbb0; font-size: 13px; font-weight: 400; }
+  #stopZone.holding { border-color: #f0a062; color: #f6c9a3; }
+  #recBtn { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); width: min(62vw, 300px); aspect-ratio: 1; border-radius: 50%; border: 3px solid #dce7e0; background: #060908; color: #f1f7f3; font: 700 28px/1.2 system-ui, sans-serif; padding: 0; }
+  #recBtn small { display: block; font-size: 14px; font-weight: 400; color: #a9bbb0; margin-top: 6px; }
+  #recBtn.live { border-color: #ff5a6e; color: #ffb3bd; background: #1a0508; }
+  #recBtn.live small { color: #ff9aa6; }
+  #status { position: absolute; left: 0; right: 0; bottom: 26px; text-align: center; color: #93a69a; font-size: 14px; }
+</style>
+</head>
+<body>
+<main id="setup">
+  <h1>Idea Leash walk test</h1>
+  <p>Checks what a web page can do on a real walk: GPS, screen kept on while black, voice clips saved offline, a beep, and whether your podcast app keeps playing.</p>
+  <ol>
+    <li>Open YouTube Premium (or your podcast app) and start an episode. Then come back to this page.</li>
+    <li>Tap <b>Start walk</b> and allow location and microphone.</li>
+    <li>Screen goes black. Put the phone in your pocket. Walk about 20 minutes.</li>
+    <li>Tap the big <b>Record</b> button in the middle to start a voice idea, tap again to stop. A beep plays on the interval below.</li>
+    <li>To finish, hold the boxed corner at the top left for 3 seconds. Then read the report and copy it.</li>
+  </ol>
+  <label>Beep every <input id="beepMin" type="number" min="1" max="30" value="5"> min</label>
+  <div class="row"><button id="start">Start walk</button></div>
+  <p class="fine" id="env"></p>
+  <pre id="report" hidden></pre>
+  <div class="row" id="reportBtns" hidden>
+    <button class="secondary" id="copy">Copy report</button>
+    <button class="secondary" id="share">Share report</button>
+    <button class="secondary" id="gpx">Download GPX</button>
+  </div>
+</main>
+
+<div id="cover">
+  <div id="stopZone">Hold 3 s to stop<small id="stopHint">this corner, top left</small></div>
+  <button id="recBtn" type="button">Record<small>tap to start, tap to stop</small></button>
+  <div id="status"></div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const S = { on: false, t0: 0, fixes: [], ticks: [], vis: [], wl: [], bat: [], clips: [], beeps: [], wake: null, watchId: null,
+              tickTimer: null, beepTimer: null, saveTimer: null, audioCtx: null, stream: null, rec: null, recStart: 0, chunks: [], errors: [] };
+
+  const log = (arr, v) => arr.push(v);
+  const fmt = ms => { const s = Math.round(ms / 1000); return `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s`; };
+  const hav = (a, b) => { const R = 6371000, r = Math.PI / 180, dLat = (b.lat - a.lat) * r, dLon = (b.lon - a.lon) * r;
+    const x = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLon / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(x)); };
+
+  $('env').textContent = [
+    window.isSecureContext ? 'Secure context: yes' : 'Secure context: NO (location and microphone will be blocked)',
+    'Wake lock API: ' + ('wakeLock' in navigator ? 'yes' : 'no'),
+    'MediaRecorder: ' + (typeof MediaRecorder !== 'undefined' ? 'yes' : 'no'),
+    'Battery API: ' + ('getBattery' in navigator ? 'yes' : 'no'),
+    'Share files: ' + (navigator.canShare ? 'maybe' : 'no')
+  ].join(' · ');
+
+  // ---- IndexedDB queue for voice clips (tests the offline queue idea) ----
+  const dbp = new Promise((res, rej) => { const r = indexedDB.open('leash-walktest', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('clips', { keyPath: 'id', autoIncrement: true });
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+  const saveClip = async rec => { const db = await dbp; return new Promise((res, rej) => { const tx = db.transaction('clips', 'readwrite'); tx.objectStore('clips').add(rec); tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); };
+  const countClips = async () => { const db = await dbp; return new Promise(res => { const q = db.transaction('clips').objectStore('clips').count(); q.onsuccess = () => res(q.result); }); };
+
+  // ---- wake lock ----
+  async function takeWake() {
+    try { S.wake = await navigator.wakeLock.request('screen'); log(S.wl, { t: Date.now(), ev: 'acquired' });
+      S.wake.addEventListener('release', () => log(S.wl, { t: Date.now(), ev: 'released' })); }
+    catch (e) { log(S.errors, 'wakeLock: ' + e.message); }
+  }
+  document.addEventListener('visibilitychange', () => {
+    log(S.vis, { t: Date.now(), state: document.visibilityState });
+    if (S.on && document.visibilityState === 'visible') takeWake();
+  });
+
+  // ---- battery ----
+  async function sampleBattery() { try { const b = await navigator.getBattery(); log(S.bat, { t: Date.now(), level: b.level, charging: b.charging }); } catch (e) {} }
+
+  // ---- beep ----
+  function beep() { try { const c = S.audioCtx; const o = c.createOscillator(), g = c.createGain(); o.frequency.value = 880; o.connect(g); g.connect(c.destination);
+    g.gain.setValueAtTime(0.0001, c.currentTime); g.gain.exponentialRampToValueAtTime(0.4, c.currentTime + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.6);
+    o.start(); o.stop(c.currentTime + 0.65); log(S.beeps, { t: Date.now() }); } catch (e) { log(S.errors, 'beep: ' + e.message); } }
+
+  // ---- voice clip ----
+  let recTimer = null;
+  function setRecUi(live, msg) {
+    const b = $('recBtn');
+    b.classList.toggle('live', live);
+    b.innerHTML = live ? 'Recording<small>tap to stop</small>' : 'Record<small>tap to start, tap to stop</small>';
+    clearInterval(recTimer);
+    if (live) { const t0 = Date.now(); const tick = () => { const s = Math.floor((Date.now() - t0) / 1000); $('status').textContent = 'Recording ' + Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }; tick(); recTimer = setInterval(tick, 500); }
+    else $('status').textContent = msg || '';
+  }
+  async function startRec() {
+    if (S.rec) return;
+    try {
+      S.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const type = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm'].find(t => MediaRecorder.isTypeSupported(t)) || '';
+      S.rec = new MediaRecorder(S.stream, type ? { mimeType: type } : undefined); S.chunks = []; S.recStart = Date.now();
+      S.rec.ondataavailable = e => e.data.size && S.chunks.push(e.data);
+      S.rec.onstop = async () => {
+        const blob = new Blob(S.chunks, { type: S.rec.mimeType || 'audio/webm' });
+        const meta = { t: S.recStart, ms: Date.now() - S.recStart, bytes: blob.size, type: blob.type };
+        log(S.clips, meta); try { await saveClip({ ...meta, blob }); } catch (e) { log(S.errors, 'idb: ' + e.message); }
+        S.stream.getTracks().forEach(t => t.stop()); S.rec = null; S.stream = null; setRecUi(false, 'Saved clip ' + S.clips.length);
+      };
+      S.rec.start(); setRecUi(true);
+    } catch (e) { log(S.errors, 'mic: ' + e.message); S.rec = null; }
+  }
+  function stopRec() { if (S.rec && S.rec.state !== 'inactive') S.rec.stop(); }
+
+  // ---- start / stop ----
+  async function start() {
+    S.audioCtx = new (window.AudioContext || window.webkitAudioContext)(); await S.audioCtx.resume();
+    // ask for mic permission once up front, then release it
+    try { const s = await navigator.mediaDevices.getUserMedia({ audio: true }); s.getTracks().forEach(t => t.stop()); } catch (e) { log(S.errors, 'mic permission: ' + e.message); }
+    S.on = true; S.t0 = Date.now(); S.fixes = []; S.ticks = []; S.vis = []; S.wl = []; S.bat = []; S.clips = []; S.beeps = []; S.errors = [];
+    await takeWake(); await sampleBattery();
+    if ('geolocation' in navigator) {
+      S.watchId = navigator.geolocation.watchPosition(
+        p => log(S.fixes, { t: p.timestamp, rx: Date.now(), lat: p.coords.latitude, lon: p.coords.longitude, acc: p.coords.accuracy, spd: p.coords.speed }),
+        e => log(S.errors, 'gps: ' + e.code + ' ' + e.message), { enableHighAccuracy: true, maximumAge: 0, timeout: 30000 });
+    } else log(S.errors, 'no geolocation');
+    S.tickTimer = setInterval(() => log(S.ticks, Date.now()), 1000);
+    S.beepTimer = setInterval(beep, Math.max(1, +$('beepMin').value || 5) * 60000);
+    S.saveTimer = setInterval(() => { sampleBattery(); try { localStorage.setItem('leash-walktest', JSON.stringify(summary())); } catch (e) {} }, 60000);
+    $('cover').classList.add('on'); beep();
+  }
+
+  async function stop() {
+    if (!S.on) return;
+    S.on = false; stopRec();
+    clearInterval(S.tickTimer); clearInterval(S.beepTimer); clearInterval(S.saveTimer);
+    if (S.watchId != null) navigator.geolocation.clearWatch(S.watchId);
+    try { await S.wake?.release(); } catch (e) {}
+    await sampleBattery(); await new Promise(r => setTimeout(r, 400));
+    $('cover').classList.remove('on');
+    const s = summary(); s.clipsStored = await countClips();
+    try { localStorage.setItem('leash-walktest', JSON.stringify(s)); } catch (e) {}
+    $('report').textContent = reportText(s); $('report').hidden = false; $('reportBtns').hidden = false; window.scrollTo(0, 0);
+  }
+
+  // ---- numbers ----
+  function summary() {
+    const dur = Date.now() - S.t0;
+    const good = S.fixes.filter(f => f.acc <= 30);
+    let dist = 0, prev = null;
+    for (const f of good) { if (!prev || hav(prev, f) >= 3) { if (prev) dist += hav(prev, f); prev = f; } }
+    const gaps = []; for (let i = 1; i < S.fixes.length; i++) gaps.push(S.fixes[i].rx - S.fixes[i - 1].rx);
+    const tickGaps = []; for (let i = 1; i < S.ticks.length; i++) tickGaps.push(S.ticks[i] - S.ticks[i - 1]);
+    const accs = S.fixes.map(f => f.acc).sort((a, b) => a - b);
+    const hiddenMs = (() => { let ms = 0, since = null; for (const v of S.vis) { if (v.state === 'hidden') since = v.t; else if (since) { ms += v.t - since; since = null; } } if (since) ms += Date.now() - since; return ms; })();
+    return {
+      durationMs: dur, fixes: S.fixes.length, goodFixes: good.length, distanceM: Math.round(dist),
+      medianAccM: accs.length ? Math.round(accs[Math.floor(accs.length / 2)]) : null,
+      longestFixGapS: gaps.length ? Math.round(Math.max(...gaps) / 1000) : null,
+      fixGapsOver30s: gaps.filter(g => g > 30000).length,
+      longestTimerGapS: tickGaps.length ? +(Math.max(...tickGaps) / 1000).toFixed(1) : null,
+      timerTicks: S.ticks.length, expectedTicks: Math.round(dur / 1000),
+      visibilityEvents: S.vis.map(v => ({ at: fmt(v.t - S.t0), state: v.state })), hiddenMs,
+      wakeLockEvents: S.wl.map(w => ({ at: fmt(w.t - S.t0), ev: w.ev })),
+      batteryStart: S.bat[0]?.level ?? null, batteryEnd: S.bat[S.bat.length - 1]?.level ?? null,
+      clips: S.clips.map(c => ({ at: fmt(c.t - S.t0), s: +(c.ms / 1000).toFixed(1), kb: Math.round(c.bytes / 1024), type: c.type })),
+      beeps: S.beeps.length, errors: S.errors.slice(), userAgent: navigator.userAgent
+    };
+  }
+  function reportText(s) {
+    const pct = x => x == null ? 'n/a' : Math.round(x * 100) + '%';
+    return [
+      'IDEA LEASH WALK TEST', 'duration: ' + fmt(s.durationMs),
+      `GPS fixes: ${s.fixes} (${s.goodFixes} within 30 m) · median accuracy ${s.medianAccM} m`,
+      `distance (filtered): ${s.distanceM} m`,
+      `longest gap between fixes: ${s.longestFixGapS} s · gaps over 30 s: ${s.fixGapsOver30s}`,
+      `timer ticks: ${s.timerTicks} of ${s.expectedTicks} expected · longest timer gap ${s.longestTimerGapS} s`,
+      `page hidden for: ${fmt(s.hiddenMs)} · visibility events: ${JSON.stringify(s.visibilityEvents)}`,
+      `wake lock: ${JSON.stringify(s.wakeLockEvents)}`,
+      `battery: ${pct(s.batteryStart)} -> ${pct(s.batteryEnd)}`,
+      `voice clips: ${s.clips.length} saved in IndexedDB (${s.clipsStored} stored in total) ${JSON.stringify(s.clips)}`,
+      `beeps played: ${s.beeps}`,
+      `errors: ${s.errors.length ? s.errors.join(' | ') : 'none'}`,
+      'device: ' + s.userAgent,
+      '', 'Tell Claude: did your podcast app keep playing the whole time? Did a beep pause it? Was the phone warm? Any accidental touches?'
+    ].join('\n');
+  }
+  function gpx() {
+    const pts = S.fixes.map(f => `<trkpt lat="${f.lat}" lon="${f.lon}"><time>${new Date(f.t).toISOString()}</time></trkpt>`).join('');
+    return `<?xml version="1.0"?><gpx version="1.1" creator="idea-leash-test" xmlns="http://www.topografix.com/GPX/1/1"><trk><name>walk test</name><trkseg>${pts}</trkseg></trk></gpx>`;
+  }
+
+  // ---- UI wiring ----
+  $('start').onclick = () => start().catch(e => { S.errors.push('start: ' + e.message); alert('Could not start: ' + e.message); });
+  let stopTimer = null;
+  const stopZone = $('stopZone');
+  const holdOn = () => { $('stopZone').classList.add('holding'); $('stopHint').textContent = 'keep holding…'; stopTimer = setTimeout(stop, 3000); };
+  stopZone.addEventListener('touchstart', e => { e.preventDefault(); holdOn(); });
+  const cancelStop = () => { clearTimeout(stopTimer); $('stopZone').classList.remove('holding'); $('stopHint').textContent = 'this corner, top left'; };
+  stopZone.addEventListener('touchend', cancelStop); stopZone.addEventListener('touchcancel', cancelStop);
+  stopZone.addEventListener('mousedown', holdOn); stopZone.addEventListener('mouseup', cancelStop);
+  $('recBtn').addEventListener('click', e => {
+    e.preventDefault();
+    if (S.rec) { if (Date.now() - S.recStart > 800) stopRec(); }  // ignore a bounce right after starting
+    else startRec();
+  });
+  $('cover').addEventListener('contextmenu', e => e.preventDefault());
+
+  $('copy').onclick = async () => { try { await navigator.clipboard.writeText($('report').textContent); $('copy').textContent = 'Copied'; } catch (e) { $('report').focus(); } };
+  $('share').onclick = async () => { try { await navigator.share({ title: 'Walk test', text: $('report').textContent }); } catch (e) {} };
+  $('gpx').onclick = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([gpx()], { type: 'application/gpx+xml' })); a.download = 'walk-test.gpx'; a.click(); };
+
+  if ('serviceWorker' in navigator && window.isSecureContext) navigator.serviceWorker.register('sw.js').catch(() => {});
+  const last = (() => { try { return JSON.parse(localStorage.getItem('leash-walktest')); } catch (e) { return null; } })();
+  if (last) { $('report').textContent = 'Last saved report from a previous run:\n\n' + reportText({ ...last, clipsStored: '?' }); $('report').hidden = false; $('reportBtns').hidden = false; }
+})();
+</script>
+</body>
+</html>

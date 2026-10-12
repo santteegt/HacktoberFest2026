@@ -1,0 +1,14 @@
+.venv/
+vendor/
+models/
+data/
+.env
+__pycache__/
+
+.vercel/
+
+# real walking tracks (start and end near the author's home); tests use tests/fixtures instead
+phone-test/results/*.gpx
+
+# the real vault: private voice ideas and episode transcripts (never committed)
+second-brain/

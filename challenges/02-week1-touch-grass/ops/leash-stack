@@ -1,0 +1,142 @@
+#!/usr/bin/env bash
+# Start, stop and check the Idea Leash stack on the Mac (host side) and in the Lume VM.
+#
+#   ops/leash-stack install [--vault PATH]   write the three launchd agents and start them
+#   ops/leash-stack uninstall                stop and remove them
+#   ops/leash-stack status                   one screen: what is up, what is not
+#   ops/leash-stack restart [server|tunnel|vm]
+#   ops/leash-stack logs [server|tunnel|vm|gateway]
+#   ops/leash-stack gateway-install          (re)install the Hermes gateway service inside the VM
+#   ops/leash-stack phone-serve              publish the app to your tailnet over HTTPS (Tailscale must be on)
+#   ops/leash-stack pair                     show a QR code that opens the app on the phone and hands it the token
+#
+# What runs where is in ops/README.md. Nothing here needs sudo: they are per-user LaunchAgents.
+set -euo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT="$(cd "$HERE/.." && pwd)"
+UID_NUM="$(id -u)"
+DOMAIN="gui/$UID_NUM"
+AGENTS="$HOME/Library/LaunchAgents"
+LOGS="$PROJECT/data/logs"
+VM_NAME="${LEASH_VM:-leash-hermes}"
+SSH_ALIAS="${LEASH_VM_SSH:-leash-hermes}"
+LABELS=(com.leash.vm com.leash.server com.leash.tunnel)
+
+plist() { # label, program args..., (env via PLIST_ENV, extra keys via PLIST_EXTRA)
+  local label="$1"; shift
+  echo '<?xml version="1.0" encoding="UTF-8"?>'
+  echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">'
+  echo '<plist version="1.0"><dict>'
+  echo "  <key>Label</key><string>$label</string>"
+  echo '  <key>ProgramArguments</key><array>'
+  for a in "$@"; do echo "    <string>$a</string>"; done
+  echo '  </array>'
+  echo "  <key>WorkingDirectory</key><string>$PROJECT</string>"
+  echo "  <key>StandardOutPath</key><string>$LOGS/${label#com.leash.}.out</string>"
+  echo "  <key>StandardErrorPath</key><string>$LOGS/${label#com.leash.}.out</string>"
+  echo '  <key>EnvironmentVariables</key><dict>'
+  echo "    <key>PATH</key><string>$PROJECT/.venv/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>"
+  echo "    <key>HOME</key><string>$HOME</string>"
+  echo "${PLIST_ENV:-}"
+  echo '  </dict>'
+  echo "${PLIST_EXTRA:-}"
+  echo '</dict></plist>'
+}
+
+write_agents() {
+  local vault="$1"
+  mkdir -p "$AGENTS" "$LOGS"
+
+  # 1. VM: make sure it is running (a check, not a long-running process; repeats every 2 minutes)
+  PLIST_ENV="" PLIST_EXTRA='  <key>RunAtLoad</key><true/><key>StartInterval</key><integer>120</integer>' \
+    plist com.leash.vm "$HERE/vm-up.sh" > "$AGENTS/com.leash.vm.plist"
+
+  # 2. Tool server: ingest, quiz, ideas, search, transcribe. Kept alive.
+  PLIST_ENV="    <key>LEASH_VAULT</key><string>$vault</string>
+    <key>PYTHONPATH</key><string>$PROJECT/src</string>
+    <key>GRAPHIFY_NO_AUTO_REFRESH</key><string>1</string>" \
+  PLIST_EXTRA='  <key>RunAtLoad</key><true/><key>KeepAlive</key><true/><key>ThrottleInterval</key><integer>10</integer>' \
+    plist com.leash.server "$PROJECT/.venv/bin/python" -m leash.server > "$AGENTS/com.leash.server.plist"
+
+  # 3. Reverse SSH tunnel: lets the VM reach Ollama and the tool server on the Mac. Kept alive.
+  PLIST_ENV="    <key>LEASH_VM_SSH</key><string>$SSH_ALIAS</string>" \
+  PLIST_EXTRA='  <key>RunAtLoad</key><true/><key>KeepAlive</key><true/><key>ThrottleInterval</key><integer>15</integer>' \
+    plist com.leash.tunnel "$HERE/tunnel.sh" > "$AGENTS/com.leash.tunnel.plist"
+}
+
+load() { # launchd needs a moment to let go of the old job; bootstrapping too soon fails with "Input/output error"
+  launchctl bootout "$DOMAIN/$1" 2>/dev/null || true
+  for i in 1 2 3 4 5; do
+    sleep 2
+    launchctl bootstrap "$DOMAIN" "$AGENTS/$1.plist" 2>/dev/null && return 0
+  done
+  echo "could not load $1" >&2; return 1
+}
+
+cmd="${1:-status}"; shift || true
+case "$cmd" in
+  install)
+    vault=""
+    while [ $# -gt 0 ]; do case "$1" in --vault) vault="$2"; shift 2;; *) echo "unknown option $1"; exit 2;; esac; done
+    if [ -z "$vault" ]; then
+      if [ -d "$PROJECT/second-brain" ]; then vault="$PROJECT/second-brain"; else vault="$PROJECT/data/test-vault"; fi
+    fi
+    [ -f "$PROJECT/.env" ] || { echo "missing $PROJECT/.env (needs LEASH_UPLOAD_TOKEN)"; exit 1; }
+    chmod +x "$HERE"/vm-up.sh "$HERE"/tunnel.sh
+    pkill -f "leash.server" 2>/dev/null || true   # a hand-started server would hold port 8787
+    write_agents "$vault"
+    for l in "${LABELS[@]}"; do load "$l"; done
+    echo "installed. vault: $vault"
+    echo "next: ops/leash-stack status"
+    ;;
+  uninstall)
+    for l in "${LABELS[@]}"; do launchctl bootout "$DOMAIN/$l" 2>/dev/null || true; rm -f "$AGENTS/$l.plist"; done
+    echo "removed (the VM and Ollama are left running)"
+    ;;
+  restart)
+    which="${1:-all}"
+    for l in "${LABELS[@]}"; do
+      case "$which" in all|"${l#com.leash.}") launchctl kickstart -k "$DOMAIN/$l" && echo "restarted $l";; esac
+    done
+    ;;
+  logs)
+    which="${1:-server}"
+    if [ "$which" = gateway ]; then "$HERE/vm-run.sh" 'tail -n 40 ~/.hermes/logs/gateway.log | cut -c1-300'
+    else tail -n 40 "$LOGS/$which.out"; fi
+    ;;
+  gateway-install)
+    "$HERE/vm-run.sh" 'hermes gateway stop 2>/dev/null; hermes gateway install && hermes gateway start && sleep 4 && hermes gateway status | head -12'
+    ;;
+  phone-serve)
+    tailscale status >/dev/null 2>&1 || { echo "Tailscale is not running. Turn it on first (menu bar app), then run this again."; exit 1; }
+    tailscale serve --bg --https=443 http://127.0.0.1:8787
+    tailscale serve status
+    ;;
+  pair)
+    "$PROJECT/.venv/bin/python" "$HERE/pair.py" "$@"
+    ;;
+  status)
+    ok() { printf '  %-34s %s\n' "$1" "$2"; }
+    echo "HOST (this Mac)"
+    pgrep -f "ollama serve" >/dev/null && ok "Ollama" "running" || ok "Ollama" "NOT running (open the Ollama app)"
+    curl -s -m 3 http://127.0.0.1:11434/api/tags >/dev/null && ok "Ollama API :11434" "answers" || ok "Ollama API :11434" "no answer"
+    for l in "${LABELS[@]}"; do
+      if launchctl print "$DOMAIN/$l" >/dev/null 2>&1; then
+        st="$(launchctl print "$DOMAIN/$l" | awk -F' = ' '/^\tstate =/{print $2; exit}')"; ok "$l" "loaded (${st:-?})"
+      else ok "$l" "not installed"; fi
+    done
+    curl -s -m 3 http://127.0.0.1:8787/health >/dev/null && ok "Leash server :8787" "answers" || ok "Leash server :8787" "no answer"
+    st="$(lume ls 2>/dev/null | awk -v n="$VM_NAME" '$1==n {print $6, $7}' | head -1)"; ok "VM $VM_NAME" "${st:-unknown}"
+    echo "VM (inside $VM_NAME)"
+    if out="$(ssh -o BatchMode=yes -o ConnectTimeout=6 "$SSH_ALIAS" 'zsh -l -c "
+      curl -s -m 4 http://127.0.0.1:11434/api/tags >/dev/null && echo tunnel-ollama:ok || echo tunnel-ollama:DOWN
+      curl -s -m 4 http://127.0.0.1:8787/health >/dev/null && echo tunnel-server:ok || echo tunnel-server:DOWN
+      hermes gateway list 2>&1 | sed -n 2,4p"' 2>/dev/null)"; then
+      printf '%s\n' "$out" | sed 's/^/  /'
+    else
+      ok "ssh to VM" "FAILED (is the VM up? is Local Network allowed for this terminal?)"
+    fi
+    ;;
+  *) sed -n 2,12p "$0"; exit 2;;
+esac

@@ -1,0 +1,111 @@
+Definition Gemma 4 is a family of open-weight models released from 2026-0331, with text,
+image and on the small models audio input, configurable thinking and function calling,
+under Apache 2.0, key point sizes and date stocks, E2B, E4B, 26BA4B and 31B released 2026-0331,
+12B Unify 2026-0603, Multi-Token Prediction Variance 2026-0416, Context up to 256K 128K on E2B and E4B,
+Runs in Olama, Llama.CPP, MLX, Hugging Face Transformers and Google Cloud, Olama Tags,
+E2B about 4.6 to 7.5 GB, E4B 6.6 to 9.5 GB, 12B, 26B, 31B, plus MLX builds. First hand,
+QAT builds Gemma 4 colon E4B at cat 6.1 GB on an M4 Max and Gemma 4 colon E2B at cat 4.3 GB on a 2019
+Intel Macbook Pro CPU only, about 9.2 tokens slash S writing, 38.7 token slash S reading a prompt.
+First hand, Olama's JSON schema format guarantees valid JSON, but the schema is invisible to the model,
+so labels and meanings must be in the prompt. E2B falls back to one label on input it cannot
+place E4B Refuse 12 slash 12 off topic sentences, E2B 6 slash 12, so gate encode, fits, private or
+offline assistance, structured extraction, tiny prompt classifiers, document photos E4B,
+weak fit, fast generation on old CPUs, likely the busiest category, related concepts,
+Olama Master Partner Tools catalog open source AI prompt sources partner tools feature catalog
+definition Olama serves open weight models on a laptop through a native HTTP API and a CLI
+and was the runtime for the weekend project. He points Intel Macs run CPU only and need
+macOS 14 or newer report, Apple Silicon uses the GPU Olama run tag verbose prints prompt
+eval rate and val rate in tokens per second, the most useful one minute benchmark to ask a friend for
+native slash API slash chat accepts a JSON schema format, none CTX, think colon false and keep
+alive, the schema does not reach the model's context. First hand, no prompt prefix reuse
+when the user text changed between calls, so prompt length sets latency, numb CTX 4096 keeps
+memory down on small machines, first hand, master's model router could not set numb CTX,
+so the project called Olamas native API directly related concepts Gemma master challenge playbook
+sources partner tools feature catalog definition master is a type script framework
+for building agents and workflows with tools defined through create tool inside schemas,
+he points docs docs agent class with provider slash model strings create tool plane object tool
+silently fail integrations with next.js react astro express svelte kit and hono npm create
+master at latest doc state no 22.18 plus package engines declare equals 22.13 also report workflows
+memory rag evals mcp works with any open AI compatible endpoint sentry integration needs
+at master slash observability sentry node SDK v11 plus and master core 1.63.2 plus docs first
+hand core 1.74.0 libskill 1.25.0 a workflow with two suspend points was suspended and resumed
+across three processes using lib SQL snapshots first hand traps a workflow has a dot then method
+so returning it bear from an async function hangs a wait and node exits silently rapid
+telemetry is on by default master telemetry disabled equals one using master means a node
+process fits human in the loop flows and persistent agent workflows and type script
+related concepts along a sentry agent tracing temporal partner tools catalog sources
+partner tools feature catalog definition render deploys apps from git or docker and offers
+managed posters and a readies compatible key value store key points free tier docs 750
+instance hours per month per workspace web services spin down after 15 minutes idle and
+take about a minute to restart free posters expires after 30 days one GB key values in memory only
+no persistent disk or SSH on free web services SMTP ports blocked no GPU offering found report
+promo available fits a public demo link or web book for an open model project week for a privacy
+first story related concepts digital ocean gradient AI partner tools catalog sources
+partner tools feature catalog definition temporal runs long-lived workflows whose
+activities model calls I slash oh retry automatically and are not repeated on replay
+key point signals and human in the loop approvals continue as new streaming mcp integration and
+sandboxes temporaleo open eye agents plugin SDKs for python go java type script local dev server
+docs server is MIT and temporal server start dev runs locally cloud dollar 150 for 90 days report
+gotcha workflow code must be deterministic model calls must be activities fits scheduled
+or multi-day agents that must not lose state related concepts master partner tools catalog
+sources partner tools feature catalog definition tiger cloud is managed to post grsql with time
+scale db hyper tables continuous aggregates columnar compression and retention policies
+key points docs docs hyper tables continuous aggregates compression up to 95%
+pg vector bm25 via pg text search free 30-day trial without a card paid tiers shown from about
+dollar 30 to dollar 36 per month report pg vector scale and p guy or open source a free plan beta
+exists the pages fetch did not mention pg vector scale p guy or an mcp server unverified
+fits time series logs of one person's life sleep symptoms spending sensors pairs with tab pfn
+related concepts tab pfn mongo db atlas partner tools catalog sources partner tools feature catalog
+definition a short list of habits that would have saved time or avoided bugs in the weekend build
+to apply at the ideation and build stages of the next challenges key points day one
+get the user's exact hardware and run the smallest candidate model on it with a real
+prompt choose the model from that evaluate on the target model including off topic and gibberish
+inputs gate refusals encode rather than trusting a small model keep the model's job tiny put numbers
+rules and safety in plain code start the challenge memory in the first hour with a may claim and must
+not claim table and write the post from it freeze features about three hours before the deadline
+use the rest for the clean clone test demo screenshots post and agent session the
+post is judged most heavily record the demo on the real target device with the network
+visibly off if that is the claim sage the dev post early as unpublished check for left over to do
+comments and link every helper doc from the read me and post capture screenshots by script
+against a clean database and label demo data curate the agent session prompts and final
+replies scrubbed instead of uploading a raw multi-megabyte transcript enter partner categories
+only where the code really uses them and say which parts are not open related concepts weekend
+challenge retrospective partner tools catalog dv challenge rules open source a i prompt sources
+retrospective build for friend definition a map of the weekend challenge partners grouped by what
+they do with links to one page per tool recipes that combine them and questions to ask during
+ideation refetch the challenge details for later weeks which may list other partners
+he points models jemma open weights runs locally tinker hosted fine tuning exportable adapters
+tab pfn small tabular data local runtime used in the build alama hosting and inference digital
+ocean gradient ai render agent building blocks master types script agents and workflows temporal
+durable workflows backboard memory and routing api voice search data 11 labs serp api mongo
+dba atlas tiger data hardware arduino uno q observability and process sentry agent tracing
+entire github co-pilot recipes local first assistant jemma plus alama plus master plus
+local database traced agent master plus sentry personalized style tinker adapter served
+locally test serving first small data predictor tab pfn plus tiger data plus small jemma
+weak machine fallback local first digital ocean inference opt in durable agent temporal activities
+calling a model grounded answers local model plus serp api memory heavy companion backboard
+ask during ideation can the demo run on the user's own hardware which claim is the why open answer
+and does each partner support it which partners will the code really use what can be plain
+code instead of a model call which credits are worth claiming ask first what breaks without
+internet unverified items promo amounts atlas m0 victor limits tiger data agent features
+tinker adapter serving arduino ai bricks serp apis dks and others are listed in the source page
+related concepts prize categories and partners challenge playbook weekend challenge
+build for friend sources partner tools feature catalog definition the weekend challenge
+entry our c-pit companion was an offline by design setup coach and vault for one friends
+one slash ten touring car built with jemma for via a llama and a master workflow and published on
+two thousand twenty six ten zero five about one point five h before the deadline outcome not yet
+known key points entered categories jemma and master both really used others skipped on purpose
+worked one real person and a real quote the model only does two small jobs while a reviewed table
+and plain code decide the numbers a frozen credited knowledge snapshot a running challenge
+memory with a may claim table parallel sub agents with file ownership a fresh clone test
+scripted screenshots honest limits in the post failed or surprised the phone spike jemma e2b
+in a phone browser lagged evals only on e4b hid e2b's fallback to one label behavior
+voice input defaulted to off the only speed reading on the friend's laptop was about
+nine point two tokens slash s clock mistakes in agent written times the getting started
+guide was not linked dv update calls failed on first try with large bodies numbers e4b 24
+slash 25 on the symptom test e2b 21 slash 25 alone and 23 slash 25 with the gate friends
+five sentences e2b 5 slash 5 e4b 4 slash 5 61 lever rose with 12 reviewed 113 note chunks
+held out retrieval 9 slash 10 open the app's own speed on the friend's laptop is unmeasured 49
+lever rows are still drafts the friend has not used it at a real practice yet related concepts
+weekend challenge build for a friend challenge playbook jemma along a master sources retrospective
+build for a friend

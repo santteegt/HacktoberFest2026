@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<title>Idea Leash</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #000000; --surface: #0e1411; --surface-2: #17211c; --border: #26332c; --border-strong: #566b5e;
+    --text: #ecf3ee; --text-2: #b7c6bd; --muted: #879a8e;
+    --accent: #2fae77; --accent-text: #4cc890; --accent-soft: #12291e; --on-accent: #03140c; --chart-past: #2a8a5f;
+    --warn: #f0b45a; --dusk: #9db6ff; --ok: #7fd6a8;
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --fs-cap: 14px; --fs-sm: 15px; --fs-body: 17px; --fs-lg: 20px; --fs-xl: 24px; --fs-hero: 40px;
+    --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px;
+    --r-sm: 8px; --r-md: 14px; --r-lg: 20px;
+    --tap: 48px; --tap-primary: 56px; --nav-h: 64px;
+    --dur-1: 160ms; --dur-2: 240ms; --ease: cubic-bezier(.2, .7, .2, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root { --dur-1: 0ms; --dur-2: 0ms; }
+    *, *::before, *::after { transition-duration: 0ms !important; animation: none !important; }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: var(--fs-body)/1.45 var(--font); -webkit-text-size-adjust: 100%; }
+  :focus-visible { outline: 3px solid var(--accent-text); outline-offset: 2px; border-radius: var(--r-sm); }
+  .num { font-variant-numeric: tabular-nums; }
+  [hidden] { display: none !important; }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .icon { width: 24px; height: 24px; flex: none; }
+  .icon--lg { width: 32px; height: 32px; }
+  .icon--sm { width: 18px; height: 18px; }
+  button { font: inherit; color: inherit; }
+  h1, h2, h3, p { margin: 0; }
+
+  /* shell */
+  main { max-width: 560px; margin: 0 auto; padding: var(--s-3) var(--s-4) calc(var(--nav-h) + env(safe-area-inset-bottom) + var(--s-5)); }
+  .view { display: flex; flex-direction: column; gap: var(--s-4); }
+  .head { display: flex; align-items: center; justify-content: space-between; min-height: var(--tap); gap: var(--s-3); }
+  .head h1 { font-size: var(--fs-xl); font-weight: 700; display: flex; align-items: center; gap: var(--s-2); }
+  .head h1 .icon { color: var(--accent-text); }
+  .head .side { font-size: var(--fs-sm); color: var(--text-2); }
+  .chip { min-height: var(--tap); display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 0 var(--s-2); font-size: var(--fs-cap); color: var(--text-2); border-radius: var(--r-md); }
+  .chip .icon { width: 18px; height: 18px; }
+  .chip.ok .icon { color: var(--ok); } .chip.off .icon { color: var(--muted); } .chip.token { color: var(--warn); }
+  .muted { color: var(--muted); } .t2 { color: var(--text-2); } .okc { color: var(--ok); } .warnc { color: var(--warn); }
+  .cap { font-size: var(--fs-cap); } .sm { font-size: var(--fs-sm); }
+  .h2 { font-size: var(--fs-lg); font-weight: 700; }
+  .status { display: flex; gap: var(--s-2); align-items: flex-start; font-size: var(--fs-sm); color: var(--text-2); }
+  .status .icon { color: var(--muted); }
+
+  .tabbar { position: fixed; inset: auto 0 0 0; z-index: 5; display: grid; grid-template-columns: repeat(3, 1fr); background: var(--bg);
+    border-top: 1px solid var(--border); height: calc(var(--nav-h) + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); }
+  .tabbar a { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: var(--nav-h);
+    text-decoration: none; color: var(--muted); font-size: var(--fs-cap); font-weight: 600; }
+  .tabbar a:active { background: var(--surface); }
+  .tabbar a[aria-current=page] { color: var(--accent-text); font-weight: 700; }
+  .tabbar a[aria-current=page]::before { content: ""; position: absolute; top: 0; left: 50%; width: 32px; height: 3px; margin-left: -16px; background: var(--accent); border-radius: 0 0 3px 3px; }
+  body.walking .tabbar { display: none; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: var(--s-3) var(--s-4); display: flex; flex-direction: column; gap: var(--s-2); }
+  .card.warnb { border-color: var(--warn); }
+  .row { display: flex; align-items: center; gap: var(--s-3); }
+  .grow { flex: 1; min-width: 0; }
+  .btn { min-height: var(--tap); padding: 0 var(--s-4); border-radius: var(--r-md); border: 0; background: var(--surface-2); color: var(--text); font-weight: 600; }
+  .btn:active { transform: scale(.98); }
+  .btn.primary { min-height: var(--tap-primary); width: 100%; background: var(--accent); color: var(--on-accent); font-size: 18px; font-weight: 700; }
+  .btn:disabled { opacity: .55; }
+  .btns { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+  .btns .btn { flex: 1 1 140px; }
+
+  /* kind cards */
+  .kinds { display: flex; flex-direction: column; gap: var(--s-2); }
+  .kind { display: block; position: relative; }
+  .kind-body { min-height: 72px; display: flex; align-items: center; gap: 14px; padding: var(--s-3) 14px; background: var(--surface); border: 2px solid var(--border); border-radius: var(--r-md); transition: background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease); }
+  .kind-body .icon { color: var(--text-2); }
+  .kind-title { font-weight: 700; }
+  .kind-line { font-size: var(--fs-sm); color: var(--text-2); }
+  .ring { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border-strong); display: grid; place-items: center; flex: none; }
+  .ring::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); transform: scale(0); transition: transform var(--dur-1) var(--ease); }
+  .kind input:checked + .kind-body { border-color: var(--accent); background: var(--accent-soft); }
+  .kind input:checked + .kind-body .icon { color: var(--accent-text); }
+  .kind input:checked + .kind-body .ring { border-color: var(--accent); }
+  .kind input:checked + .kind-body .ring::after { transform: scale(1); }
+  .kind input:focus-visible + .kind-body { outline: 3px solid var(--accent-text); outline-offset: 2px; }
+  select { width: 100%; min-height: var(--tap-primary); padding: 0 var(--s-4); background: var(--surface); color: var(--text); border: 1px solid var(--border-strong); border-radius: var(--r-md); font: inherit; }
+  details summary { min-height: var(--tap); display: flex; align-items: center; gap: var(--s-2); font-weight: 600; cursor: pointer; list-style: none; }
+  details summary::-webkit-details-marker { display: none; }
+  details summary .icon { transition: transform var(--dur-1) var(--ease); }
+  details[open] summary .icon { transform: rotate(90deg); }
+  details ol { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: var(--s-2); color: var(--text-2); font-size: var(--fs-sm); }
+
+  .big { font-size: var(--fs-hero); font-weight: 700; line-height: 1.2; }
+  .big small { font-size: var(--fs-body); font-weight: 400; color: var(--text-2); margin-left: 2px; margin-right: var(--s-3); }
+  .newcard { flex-direction: row; align-items: center; gap: var(--s-4); animation: rise var(--dur-2) var(--ease); }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .wk-svg text { fill: var(--muted); font: 14px var(--font); }
+  .wk-svg .val { fill: var(--text); }
+  .bar { height: 6px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+  .bar > i { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+  .list { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); }
+  .li { min-height: 64px; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) var(--s-4); border-top: 1px solid var(--border); }
+  .li:first-child { border-top: 0; }
+  .disc { width: 40px; height: 40px; border-radius: 50%; background: var(--surface-2); display: grid; place-items: center; flex: none; color: var(--text-2); }
+
+  .sec { font-size: var(--fs-sm); font-weight: 600; color: var(--text-2); margin-top: var(--s-2); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); }
+  .cell { min-height: 156px; padding: 10px 6px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+  .cell .nm { font-size: var(--fs-sm); font-weight: 600; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .cell.locked .nm { color: var(--text-2); }
+  .badge { width: 64px; height: 64px; display: block; }
+  .badge.lg { width: 96px; height: 96px; }
+  .badge.is-locked { --badge-a: #353f3a; --badge-b: #1c2320; --badge-c: #8a978f; --badge-d: #0c100e; }
+  .bw { position: relative; display: inline-block; line-height: 0; }
+  .lock-chip { position: absolute; right: -2px; bottom: -2px; width: 24px; height: 24px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border-strong); color: var(--text-2); display: grid; place-items: center; }
+  .lock-chip .icon { width: 14px; height: 14px; }
+  .minibar { width: 80%; height: 4px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+  .minibar > i { display: block; height: 100%; background: var(--accent); }
+
+  dialog.sheet { margin: auto 0 0 0; width: 100%; max-width: none; max-height: 88vh; overflow-y: auto; border: 0; border-top: 1px solid var(--border); border-radius: var(--r-lg) var(--r-lg) 0 0;
+    background: var(--surface); color: var(--text); padding: var(--s-5) var(--s-4) calc(var(--s-4) + env(safe-area-inset-bottom)); animation: up var(--dur-2) var(--ease); }
+  dialog.sheet::backdrop { background: rgba(0, 0, 0, .7); }
+  @keyframes up { from { transform: translateY(100%); } to { transform: none; } }
+  .sheet-in:focus { outline: none; }
+  .sheet-in { display: flex; flex-direction: column; gap: var(--s-3); align-items: center; text-align: center; max-width: 560px; margin: 0 auto; }
+  .sheet-in input { width: 100%; min-height: var(--tap); padding: 0 var(--s-3); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--bg); color: var(--text); font: inherit; }
+  .sheet-in .bar { width: 100%; height: 8px; }
+
+  /* walk cover (unchanged behaviour): plain black, two controls readable on black */
+  #cover { position: fixed; inset: 0; background: #000; z-index: 10; display: none; touch-action: none; user-select: none; -webkit-user-select: none; }
+  #cover.on { display: block; }
+  #stopZone { position: absolute; top: 14px; left: 14px; width: 48%; max-width: 230px; padding: 12px 14px; border: 2px solid #8da195; border-radius: 12px; color: #dce7e0; font-size: 16px; font-weight: 700; line-height: 1.25; }
+  #stopZone small { display: block; margin-top: 3px; color: #a9bbb0; font-size: 13px; font-weight: 400; }
+  #stopZone.holding { border-color: #f0a062; color: #f6c9a3; }
+  #recBtn { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); width: min(62vw, 300px); aspect-ratio: 1; border-radius: 50%; border: 3px solid #dce7e0; background: #060908; color: #f1f7f3; font: 700 28px/1.2 system-ui, sans-serif; padding: 0; }
+  #recBtn small { display: block; font-size: 14px; font-weight: 400; color: #a9bbb0; margin-top: 6px; }
+  #recBtn.live { border-color: #ff5a6e; color: #ffb3bd; background: #1a0508; }
+  #recBtn.live small { color: #ff9aa6; }
+  #status { position: absolute; left: 16px; right: 16px; bottom: 26px; text-align: center; color: #93a69a; font-size: 14px; }
+  #notice { position: absolute; left: 16px; right: 16px; top: 96px; text-align: center; color: #f0a062; font-size: 15px; }
+  #retryGps { position: absolute; left: 50%; bottom: 70px; transform: translateX(-50%); background: #3a2410; color: #f6c9a3; border: 0; border-radius: 12px; padding: 14px 18px; font-weight: 600; }
+</style>
+</head>
+<body>
+<main>
+  <!-- WALK -->
+  <section id="v-walk" class="view" aria-label="Walk">
+    <div class="head">
+      <h1><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-leaf"/></svg>Idea Leash</h1>
+      <button class="chip off" id="chip" type="button"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-cloud-off"/></svg><span id="chipText">Checking your Mac…</span></button>
+    </div>
+    <p id="welcome" class="t2" hidden>Pick a walk, press start, put the phone away. Ideas you say out loud go to your Mac.</p>
+
+    <div id="resume" class="card warnb" hidden>
+      <div class="row"><svg class="icon warnc" aria-hidden="true"><use href="assets/icons.svg#i-alert"/></svg><b>A walk was still going</b></div>
+      <span id="resumeInfo" class="sm t2"></span>
+      <div class="btns"><button class="btn primary" id="resumeBtn" type="button" style="flex:1 1 100%">Resume walk</button><button class="btn" id="finishBtn" type="button">Finish and save</button></div>
+    </div>
+
+    <div id="shortNote" class="card" hidden></div>
+    <div id="newBadge" class="card newcard" hidden></div>
+
+    <h2 class="h2" id="startH">Start a walk</h2>
+    <div class="kinds" role="radiogroup" aria-labelledby="startH">
+      <label class="kind"><input class="vh" type="radio" name="kind" value="podcast"><span class="kind-body"><svg class="icon icon--lg" aria-hidden="true"><use href="assets/icons.svg#i-podcast"/></svg><span class="grow"><span class="kind-title">Podcast walk</span><br><span class="kind-line">Listen, then get quizzed</span></span><span class="ring"></span></span></label>
+      <label class="kind"><input class="vh" type="radio" name="kind" value="dog"><span class="kind-body"><svg class="icon icon--lg" aria-hidden="true"><use href="assets/icons.svg#i-dog"/></svg><span class="grow"><span class="kind-title">Dog walk</span><br><span class="kind-line">Time together counts</span></span><span class="ring"></span></span></label>
+      <label class="kind"><input class="vh" type="radio" name="kind" value="walk"><span class="kind-body"><svg class="icon icon--lg" aria-hidden="true"><use href="assets/icons.svg#i-walk"/></svg><span class="grow"><span class="kind-title">Plain walk</span><br><span class="kind-line">Just you and the air</span></span><span class="ring"></span></span></label>
+    </div>
+    <div id="podcastRow" style="display:flex;flex-direction:column;gap:var(--s-2)">
+      <label class="cap t2" for="episode">Episode</label>
+      <select id="episode"></select>
+      <p id="quizLine" class="cap"></p>
+      <p id="noEpisodes" class="sm t2" hidden>No episodes yet. Send a link to your Mac and it will be here next time.</p>
+    </div>
+    <button class="btn primary" id="start" type="button">Start podcast walk</button>
+    <p id="startError" class="sm warnc" role="alert" hidden></p>
+
+    <details id="before">
+      <summary><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg>Before you start</summary>
+      <ol>
+        <li>When Chrome asks for location and microphone, choose <b>Allow while visiting the site</b>. "Only this time" is dropped when the screen turns off, and the walk stops tracking.</li>
+        <li>Keep the screen on. The page goes black; put the phone in your pocket. A hidden page gets no location.</li>
+        <li>To stop, hold the top-left corner for 3 seconds.</li>
+        <li>A walk under 5 minutes is not saved. Voice notes from it are still kept as ideas.</li>
+        <li>Optional: Android screen pinning stops pocket taps from switching apps (untested).</li>
+      </ol>
+    </details>
+
+    <h2 class="h2" id="lastH" hidden>Last walk</h2>
+    <div id="last" class="card" hidden></div>
+    <div id="queue" class="card" hidden></div>
+  </section>
+
+  <!-- ACTIVITY -->
+  <section id="v-activity" class="view" aria-label="Activity" hidden>
+    <div class="head"><h1>Activity</h1></div>
+    <p id="actStatus" class="status" hidden></p>
+    <div id="actBody" class="view"></div>
+  </section>
+
+  <!-- BADGES -->
+  <section id="v-badges" class="view" aria-label="Badges" hidden>
+    <div class="head"><h1>Badges</h1><span class="side num" id="badgeCount"></span></div>
+    <p id="badgeStatus" class="status" hidden></p>
+    <button class="card" id="nextUp" type="button" style="text-align:left" hidden></button>
+    <p id="badgeIntro" class="sm t2" hidden>Badges come from walking, not from the screen. They fill in on their own.</p>
+    <div id="badgeBody" class="view"></div>
+  </section>
+</main>
+
+<nav class="tabbar" aria-label="Main">
+  <a href="#walk" id="t-walk"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-home"/></svg>Walk</a>
+  <a href="#activity" id="t-activity"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-stats"/></svg>Activity</a>
+  <a href="#badges" id="t-badges"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#i-badge"/></svg>Badges</a>
+</nav>
+
+<dialog id="sheet" class="sheet" aria-labelledby="sheetTitle"><div class="sheet-in" id="sheetBody" tabindex="-1"></div></dialog>
+
+<div id="cover">
+  <div id="stopZone">Hold 3 s to stop<small id="stopHint">this corner, top left</small></div>
+  <div id="notice"></div>
+  <button id="recBtn" type="button">Record<small>tap to start, tap to stop</small></button>
+  <button id="retryGps" hidden>Location off. Tap to retry</button>
+  <div id="status"></div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const SERVER = location.origin;
+  const tok = () => { try { return localStorage.getItem('leash.token') || ''; } catch (e) { return ''; } };
+  const ls = { get: (k, d = null) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+               set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+  const api = (path, opts = {}) => fetch(SERVER + path, { ...opts, headers: { Authorization: 'Bearer ' + tok(), ...(opts.headers || {}) } });
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const ICON = (id, cls = '') => `<svg class="icon ${cls}" aria-hidden="true" focusable="false"><use href="assets/icons.svg#${id}"/></svg>`;
+  const KIND = { podcast: { label: 'Podcast walk', icon: 'i-podcast', start: 'Start podcast walk' }, dog: { label: 'Dog walk', icon: 'i-dog', start: 'Start dog walk' }, walk: { label: 'Plain walk', icon: 'i-walk', start: 'Start walk' } };
+  const dur = s => { s = Math.round(s); const m = Math.round(s / 60); return m >= 60 ? `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')} min` : `${m} min`; };
+  // distances shown with up to two decimals (3.15 stays 3.15, 5.0 shows as 5), so figures on one screen add up
+  const k1 = v => String(Math.round(v * 100 + 1e-9) / 100);
+  const km = m => (m / 1000).toFixed(2);
+  const hm = d => d.toTimeString().slice(0, 5);
+  function fdate(iso) {
+    const d = new Date(iso), now = new Date(), t = hm(d);
+    const day0 = x => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+    const diff = Math.round((day0(now) - day0(d)) / 86400000);
+    if (diff === 0) return (d.getHours() < 12 ? 'This morning ' : d.getHours() < 18 ? 'This afternoon ' : 'Tonight ') + t;
+    if (diff === 1) return 'Yesterday ' + t;
+    return d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }) + ' · ' + t;
+  }
+
+  // The 16 medals as the server defines them (ids match src/leash/walks.py; tests/test_walks.py checks this list).
+  // Used only when the Mac has never been reached, so the grid is never empty.
+  const MEDAL_DEFS = [
+    ['first-walk', 'First walk', 'Finish one walk', 'first'], ['km-5', '5 km', 'Walk 5 km in total', 'distance'], ['km-10', '10 km', 'Walk 10 km in total', 'distance'],
+    ['km-25', '25 km', 'Walk 25 km in total', 'distance'], ['km-50', '50 km', 'Walk 50 km in total', 'distance'], ['long-walk', 'Long walk', 'One walk of 3 km or more', 'long'],
+    ['dog-1h', 'An hour with the dog', '60 minutes of dog walks', 'dog'], ['dog-5h', 'Five hours with the dog', '300 minutes of dog walks', 'dog'],
+    ['streak-3', 'Three days running', 'Walk on 3 days in a row', 'streak'], ['streak-7', 'A week running', 'Walk on 7 days in a row', 'streak'],
+    ['ideas-5', 'Five ideas aloud', 'Capture 5 voice ideas on walks', 'ideas'], ['ideas-25', 'Twenty-five ideas aloud', 'Capture 25 voice ideas on walks', 'ideas'],
+    ['quiz-first', 'First quiz', 'Finish a quiz', 'quiz'], ['quiz-perfect', 'Perfect quiz', 'Every answer right in one quiz', 'quiz'],
+    ['right-10', 'Ten right answers', '10 correct quiz points in total', 'answers'], ['right-25', 'Twenty-five right answers', '25 correct quiz points in total', 'answers']
+  ].map(([id, label, how, family]) => ({ id, label, how, family, earned: false, progress: null, target: null, unit: null }));
+  const SECTIONS = [['Walking', ['first', 'distance', 'long']], ['With the dog', ['dog']], ['Habit', ['streak']], ['Ideas', ['ideas']], ['Quiz', ['quiz', 'answers']]];
+
+  // ---------- storage (IndexedDB) ----------
+  const dbp = new Promise((res, rej) => {
+    const r = indexedDB.open('leash-app', 1);
+    r.onupgradeneeded = () => { const d = r.result; d.createObjectStore('walks', { keyPath: 'id' }); d.createObjectStore('clips', { keyPath: 'key' }); d.createObjectStore('live', { keyPath: 'k' }); };
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  });
+  const tx = async (store, mode, fn) => { const db = await dbp; return new Promise((res, rej) => { const t = db.transaction(store, mode); const req = fn(t.objectStore(store)); t.oncomplete = () => res(req ? req.result : undefined); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error); }); };
+  const put = (s, v) => tx(s, 'readwrite', o => o.put(v));
+  const del = (s, k) => tx(s, 'readwrite', o => o.delete(k));
+  const getAll = s => tx(s, 'readonly', o => o.getAll());
+  const getOne = (s, k) => tx(s, 'readonly', o => o.get(k));
+
+  // ---------- state of a running walk ----------
+  let W = null;
+  let watchId = null, wake = null, hiddenSince = null, saveTimer = null, statusTimer = null, stream = null, rec = null, chunks = [], recStart = 0, recTimer = null, noticeTimer = null;
+  let conn = 'checking';   // checking | ok | offline | token
+  let STATS = ls.get('leash.stats');   // { at, data }
+  let EPISODES = ls.get('leash.episodes', []);
+  let recentShown = false;
+  const MIN_WALK_S = 300;   // same rule as src/leash/walks.py: shorter sessions are not saved
+
+  const hav = (a, b) => { const R = 6371000, r = Math.PI / 180, dLat = (b[1] - a[1]) * r, dLon = (b[2] - a[2]) * r;
+    const x = Math.sin(dLat / 2) ** 2 + Math.cos(a[1] * r) * Math.cos(b[1] * r) * Math.sin(dLon / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(x)); };
+  // same rules as src/leash/walks.py (the Mac recomputes from the GPX and wins)
+  function stats(fixes) {
+    const good = fixes.filter(f => f[3] == null || f[3] <= 30);
+    let dist = 0, anchor = null;
+    for (const p of good) {
+      if (!anchor) { anchor = p; continue; }
+      const dt = Math.max((p[0] - anchor[0]) / 1000, 0.001), step = hav(anchor, p);
+      if (dt > 30) { anchor = p; continue; }
+      if (step < 3) continue;
+      if (step / dt > 6) continue;
+      dist += step; anchor = p;
+    }
+    let tracked = 0;
+    for (let i = 1; i < fixes.length; i++) { const d = (fixes[i][0] - fixes[i - 1][0]) / 1000; if (d > 0 && d <= 15) tracked += d; }
+    return { distance_m: Math.round(dist), tracked_s: Math.round(tracked), fixes: fixes.length };
+  }
+  const gpx = (fixes, name) => `<?xml version="1.0"?><gpx version="1.1" creator="idea-leash" xmlns="http://www.topografix.com/GPX/1/1"><trk><name>${name}</name><trkseg>` +
+    fixes.map(f => `<trkpt lat="${f[1]}" lon="${f[2]}"><time>${new Date(f[0]).toISOString()}</time><extensions><acc>${f[3] == null ? '' : f[3]}</acc></extensions></trkpt>`).join('') + '</trkseg></trk></gpx>';
+
+  // ---------- GPS, wake lock, visibility ----------
+  function watchGps() {
+    if (!('geolocation' in navigator)) { W.errors.push('no geolocation'); return; }
+    if (watchId != null) navigator.geolocation.clearWatch(watchId);
+    watchId = navigator.geolocation.watchPosition(
+      p => { $('retryGps').hidden = true; W.fixes.push([p.timestamp, +p.coords.latitude.toFixed(6), +p.coords.longitude.toFixed(6), p.coords.accuracy == null ? null : +k1(p.coords.accuracy)]); },
+      e => { W.errors.push(`gps ${e.code} ${e.message} at ${Math.round((Date.now() - W.t0) / 1000)}s`); if (e.code === 1) $('retryGps').hidden = false; },
+      { enableHighAccuracy: true, maximumAge: 0, timeout: 30000 });
+  }
+  async function takeWake() { try { wake = await navigator.wakeLock.request('screen'); } catch (e) { W && W.errors.push('wakeLock: ' + e.message); } }
+  function notice(msg, ms = 9000) { $('notice').textContent = msg; clearTimeout(noticeTimer); noticeTimer = setTimeout(() => { $('notice').textContent = ''; }, ms); }
+  const buzz = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
+
+  document.addEventListener('visibilitychange', () => {
+    if (!W) { if (document.visibilityState === 'visible') { renderLocal(); loadAll().then(flush); } return; }
+    if (document.visibilityState === 'hidden') { hiddenSince = Date.now(); persist(); return; }
+    // back in front: the phone gave us no GPS while we were hidden. Say so, then pick the walk back up.
+    if (hiddenSince) {
+      const ms = Date.now() - hiddenSince; hiddenSince = null;
+      if (ms > 15000) { W.gaps.push({ from: Date.now() - ms, to: Date.now() }); notice(`Tracking was paused for ${dur(ms / 1000)} (screen off or another app in front).`); buzz([120, 80, 120]); }
+    }
+    takeWake(); watchGps();
+  });
+
+  // ---------- voice notes ----------
+  function setRec(live, msg) {
+    const b = $('recBtn');
+    b.classList.toggle('live', live);
+    b.innerHTML = live ? 'Recording<small>tap to stop</small>' : 'Record<small>tap to start, tap to stop</small>';
+    clearInterval(recTimer);
+    if (live) { const t0 = Date.now(); const tick = () => { const s = Math.floor((Date.now() - t0) / 1000); $('status').textContent = 'Recording ' + Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }; tick(); recTimer = setInterval(tick, 500); }
+    else if (msg) $('status').textContent = msg;
+  }
+  async function startRec() {
+    if (rec) return;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const type = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm'].find(t => MediaRecorder.isTypeSupported(t)) || '';
+      rec = new MediaRecorder(stream, type ? { mimeType: type } : undefined); chunks = []; recStart = Date.now();
+      rec.ondataavailable = e => e.data.size && chunks.push(e.data);
+      rec.onstop = async () => {
+        const blob = new Blob(chunks, { type: rec.mimeType || 'audio/webm' });
+        W.clips = (W.clips || 0) + 1;
+        try { await put('clips', { key: `${W.id}:${W.clips}`, walk: W.id, n: W.clips, ms: Date.now() - recStart, at: recStart, blob, uploaded: false }); }
+        catch (e) { W.errors.push('idb: ' + e.message); }
+        stream.getTracks().forEach(t => t.stop()); rec = null; stream = null; setRec(false, `Saved voice note ${W.clips}`); buzz(60);
+      };
+      rec.start(); setRec(true); buzz(40);
+    } catch (e) { W.errors.push('mic: ' + e.message); rec = null; notice('Microphone not available: ' + e.message); }
+  }
+  const stopRec = () => { if (rec && rec.state !== 'inactive') rec.stop(); };
+
+  // ---------- start, resume, stop ----------
+  const newId = () => 'w' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  async function persist() { if (W) { try { await put('live', { k: 'current', ...W, active: true, hiddenSince }); } catch (e) {} } }
+
+  async function begin(resumed) {
+    document.body.classList.add('walking');
+    $('cover').classList.add('on');
+    await takeWake(); watchGps();
+    saveTimer = setInterval(persist, 10000);
+    statusTimer = setInterval(() => { if (!rec) $('status').textContent = `${dur((Date.now() - W.t0) / 1000)} · ${W.clips || 0} notes`; }, 5000);
+    $('status').textContent = ''; buzz(resumed ? [80, 60, 80] : 200);
+  }
+  async function start() {
+    $('startError').hidden = true;
+    let micNote = '';
+    try { const s = await navigator.mediaDevices.getUserMedia({ audio: true }); s.getTracks().forEach(t => t.stop()); }
+    catch (e) { micNote = "The microphone is blocked. Voice notes won't record. You can still walk."; }
+    const kind = document.querySelector('input[name=kind]:checked').value;
+    let bat = null; try { bat = (await navigator.getBattery()).level; } catch (e) {}
+    W = { id: newId(), kind, podcast: kind === 'podcast' ? ($('episode').value || null) : null, t0: Date.now(), fixes: [], gaps: [], errors: [], clips: 0, bat0: bat };
+    await persist(); await begin(false);
+    if (micNote) notice(micNote, 12000);
+  }
+  async function resume() { const r = await getOne('live', 'current'); if (!r) return; const { k, active, hiddenSince: h, ...rest } = r; W = rest; await begin(true); }
+
+  async function finish() {
+    if (!W) return;
+    stopRec(); await new Promise(r => setTimeout(r, 500));
+    clearInterval(saveTimer); clearInterval(statusTimer);
+    if (watchId != null) navigator.geolocation.clearWatch(watchId); watchId = null;
+    try { await wake?.release(); } catch (e) {}
+    let bat = null; try { bat = (await navigator.getBattery()).level; } catch (e) {}
+    const end = Date.now();
+    if ((end - W.t0) / 1000 < MIN_WALK_S) {
+      // too short to count as a walk: no walk record, no track; its voice notes become plain ideas
+      const mine = (await getAll('clips')).filter(c => c.walk === W.id);
+      for (const c of mine) await put('clips', { ...c, walk: null, orphan: true });
+      ls.set('leash.shortNote', { minutes: Math.max(1, Math.round((end - W.t0) / 60000)), clips: mine.length });
+      await del('live', 'current');
+      W = null; $('cover').classList.remove('on'); document.body.classList.remove('walking');
+      location.hash = '#walk'; window.scrollTo(0, 0);
+      await renderLocal(); await flush();
+      return;
+    }
+    const hiddenS = W.gaps.reduce((a, g) => a + (g.to - g.from), 0) / 1000;
+    const walk = { id: W.id, kind: W.kind, podcast_slug: W.podcast, started_at: new Date(W.t0).toISOString(), ended_at: new Date(end).toISOString(),
+      tz_offset_min: -new Date().getTimezoneOffset(), gpx: gpx(W.fixes, W.kind + ' walk'), hidden_s: Math.round(hiddenS),
+      gaps: W.gaps.length, errors: W.errors.slice(0, 20), battery_start: W.bat0, battery_end: bat, user_agent: navigator.userAgent,
+      local: { ...stats(W.fixes), duration_s: Math.round((end - W.t0) / 1000), clips: W.clips || 0 }, uploaded: false };
+    await put('walks', walk); await del('live', 'current');
+    W = null; $('cover').classList.remove('on'); document.body.classList.remove('walking');
+    location.hash = '#walk'; window.scrollTo(0, 0);
+    await renderLocal(); await flush(); await loadAll();
+  }
+
+  // ---------- upload queue ----------
+  let flushing = false;
+  async function flush() {
+    if (flushing || !tok()) return; flushing = true;
+    try {
+      for (const w of (await getAll('walks')).filter(x => !x.uploaded)) {
+        const r = await api('/walks', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...w, clip_count: w.local.clips, local: undefined, uploaded: undefined }) });
+        if (!r.ok) throw new Error('walk ' + r.status);
+        const j = await r.json();
+        if (j.saved === false) {   // the Mac does not keep walks under the minimum: drop it, keep its notes as ideas
+          for (const c of (await getAll('clips')).filter(x => x.walk === w.id)) await put('clips', { ...c, walk: null, orphan: true });
+          await del('walks', w.id); continue;
+        }
+        w.uploaded = true; w.server = j; await put('walks', w);
+      }
+      for (const c of (await getAll('clips')).filter(x => !x.uploaded)) {
+        if (c.orphan) {
+          const r = await api('/clips', { method: 'POST', headers: { 'Content-Type': c.blob.type || 'audio/webm' }, body: c.blob });
+          if (!r.ok) throw new Error('clip ' + r.status);
+          c.uploaded = true; c.text = (await r.json()).text; await put('clips', c);
+          continue;
+        }
+        const w = await getOne('walks', c.walk); if (!w || !w.uploaded) continue;
+        const r = await api(`/walks/${c.walk}/clips?n=${c.n}`, { method: 'POST', headers: { 'Content-Type': c.blob.type || 'audio/webm' }, body: c.blob });
+        if (!r.ok) throw new Error('clip ' + r.status);
+        c.uploaded = true; c.text = (await r.json()).text; await put('clips', c);
+      }
+    } catch (e) { /* offline or Mac asleep: stays in the queue */ }
+    flushing = false; renderLocal();
+  }
+
+  // ---------- loading from the Mac ----------
+  async function loadAll() {
+    if (!tok()) { conn = 'token'; renderChip(); renderAll(); return; }
+    try {
+      const r = await api('/stats');
+      if (r.status === 401) { conn = 'token'; }
+      else if (!r.ok) { conn = 'offline'; }
+      else { STATS = { at: Date.now(), data: await r.json() }; ls.set('leash.stats', STATS); conn = 'ok'; }
+    } catch (e) { conn = 'offline'; }
+    if (conn === 'ok') {
+      try { const d = await (await api('/episodes')).json(); EPISODES = d.episodes || []; ls.set('leash.episodes', EPISODES); } catch (e) {}
+    }
+    renderChip(); renderAll();
+  }
+
+  // ---------- rendering ----------
+  function renderChip() {
+    const c = $('chip'), t = $('chipText');
+    const map = { checking: ['off', 'i-cloud-off', 'Checking your Mac…'], ok: ['ok', 'i-cloud-ok', 'Mac connected'], offline: ['off', 'i-cloud-off', 'Mac not reachable'], token: ['token', 'i-alert', 'Connect your Mac'] };
+    const [cls, icon, text] = map[conn];
+    c.className = 'chip ' + cls; t.textContent = text;
+    c.querySelector('use').setAttribute('href', `assets/icons.svg#${icon}`);
+  }
+
+  function badgeSvg(id, locked, lg, label) {
+    return `<svg class="badge ${lg ? 'lg' : ''} ${locked ? 'is-locked' : ''}" role="img" aria-label="${esc(label)}"><use href="assets/badges.svg#b-${id}"/></svg>`;
+  }
+  function hint(m) {
+    if (m.progress == null) return '';
+    const p = m.progress, t = m.target;
+    switch (m.unit) {
+      case 'km': return `${k1(p)} of ${t} km`;
+      case 'min': return t >= 120 ? `${dur(p * 60)} of ${Math.round(t / 60)} h` : `${Math.round(p)} of ${t} min`;
+      case 'days': return `${p} of ${t} days`;
+      case 'ideas': return `${p} of ${t} ideas`;
+      case 'points': return `${p} of ${t} right`;
+      default: return p >= t ? '' : 'Not yet';
+    }
+  }
+  function toGo(m) {
+    if (m.progress == null) return '';
+    const left = Math.max(0, m.target - m.progress);
+    switch (m.unit) {
+      case 'km': return `${k1(left)} km to go`;
+      case 'min': return `${Math.round(left)} min to go`;
+      case 'days': return `${left} more day${left === 1 ? '' : 's'} in a row`;
+      case 'ideas': return `${left} more idea${left === 1 ? '' : 's'}`;
+      case 'points': return `${left} more right answer${left === 1 ? '' : 's'}`;
+      default: return 'Not yet';
+    }
+  }
+  const medals = () => (STATS && STATS.data.medals) || MEDAL_DEFS;
+
+  async function renderLocal() {
+    const walks = (await getAll('walks')).sort((a, b) => b.started_at.localeCompare(a.started_at));
+    const clips = await getAll('clips');
+    const pendW = walks.filter(w => !w.uploaded).length, pendC = clips.filter(c => !c.uploaded).length;
+    const nWalks = walks.length + ((STATS && STATS.data.totals.walks) || 0);
+
+    // resume card (first: the only thing that can lose data)
+    const live = await getOne('live', 'current');
+    $('resume').hidden = !live || !!W;
+    if (live && !W) $('resumeInfo').textContent = `${KIND[live.kind].label}, started ${hm(new Date(live.t0))}. ${live.fixes.length} places saved.`;
+    const sn = ls.get('leash.shortNote', null), snBox = $('shortNote');
+    snBox.hidden = !sn || !!W;
+    if (sn && !W) {
+      snBox.innerHTML = `<div class="row">${ICON('i-clock')}<b>That walk was under 5 minutes</b></div>` +
+        `<span class="sm t2">It was not saved as a walk${sn.clips ? `, and its ${sn.clips} voice note${sn.clips === 1 ? ' was' : 's were'} kept as ideas` : ''}.</span>` +
+        `<div class="btns"><button class="btn" id="okShort" type="button">OK</button></div>`;
+      $('okShort').onclick = () => { ls.set('leash.shortNote', null); snBox.hidden = true; };
+    }
+    $('welcome').hidden = nWalks > 0 || !!live;
+    if (nWalks === 0) $('before').open = true;
+
+    // last walk
+    const lw = walks[0];
+    let L = null;
+    if (lw) { const s = lw.server || lw.local; L = { kind: lw.kind, at: lw.started_at, dist: s.distance_m, dur: lw.local.duration_s, tracked: s.tracked_s, clips: lw.local.clips, sent: lw.uploaded }; }
+    else if (STATS && STATS.data.recent && STATS.data.recent[0]) { const r = STATS.data.recent[0]; L = { kind: r.kind, at: r.started_at, dist: r.distance_m, dur: r.duration_s, tracked: r.tracked_s, clips: r.clips, sent: true }; }
+    $('lastH').hidden = !L; $('last').hidden = !L;
+    if (L) {
+      const un = Math.max(0, L.dur - L.tracked);
+      $('last').innerHTML =
+        `<div class="row sm t2">${ICON(KIND[L.kind].icon, 'icon--sm')}<span>${KIND[L.kind].label} · ${esc(fdate(L.at))}</span></div>` +
+        `<div class="big num">${km(L.dist)}<small>km</small>${Math.round(L.dur / 60)}<small>min</small></div>` +
+        (un > 60 ? `<div class="row sm warnc">${ICON('i-alert', 'icon--sm')}<span>${dur(un)} could not be tracked. Distance counts only tracked time.</span></div>`
+                 : `<div class="row sm okc">${ICON('i-check', 'icon--sm')}<span>Tracked the whole walk</span></div>`) +
+        `<div class="row sm t2">${ICON('i-idea', 'icon--sm')}<span>${L.clips} idea${L.clips === 1 ? '' : 's'}</span><span>·</span>` +
+        (L.sent ? `<span class="okc row">${ICON('i-cloud-ok', 'icon--sm')}Saved on your Mac</span>` : `<span class="row">${ICON('i-cloud-off', 'icon--sm')}Not sent yet</span>`) + `</div>`;
+    }
+
+    // queue
+    $('queue').hidden = !(pendW || pendC);
+    if (pendW || pendC) {
+      const parts = [pendW ? `${pendW} walk${pendW === 1 ? '' : 's'}` : '', pendC ? `${pendC} voice note${pendC === 1 ? '' : 's'}` : ''].filter(Boolean).join(', ');
+      $('queue').innerHTML = `<div class="row">${ICON('i-cloud-off')}<b>Waiting to be sent to the Mac</b></div><span class="sm t2">${parts}. Safe on this phone.</span>` +
+        (conn === 'ok' ? `<div class="btns"><button class="btn" id="sendNow" type="button">Send now</button></div>`
+                       : `<span class="sm t2">They go by themselves when your Mac is reachable.</span>`);
+      const b = $('sendNow'); if (b) b.onclick = async () => { b.textContent = 'Sending…'; b.disabled = true; await flush(); await loadAll(); };
+    }
+    renderActivity(walks);
+  }
+
+  function renderAll() {
+    renderLocal();
+    renderBadges();
+    renderNewBadge();
+    const st = $('episode'), cur = st.value;
+    st.innerHTML = '<option value="">No episode chosen</option>' + EPISODES.map(e => `<option value="${esc(e.slug)}" data-ready="${e.quiz_ready ? 1 : 0}">${esc((e.title || e.slug).slice(0, 80))}</option>`).join('');
+    const firstReady = EPISODES.find(e => e.quiz_ready);
+    st.value = cur && EPISODES.some(e => e.slug === cur) ? cur : (firstReady ? firstReady.slug : '');
+    $('noEpisodes').hidden = EPISODES.length > 0; st.hidden = EPISODES.length === 0;
+    quizLine();
+  }
+  function quizLine() {
+    const o = $('episode').selectedOptions[0], q = $('quizLine');
+    if (!o || !o.value) { q.innerHTML = ''; return; }
+    const ready = o.dataset.ready === '1';
+    q.className = 'cap row ' + (ready ? 'okc' : 'muted');
+    q.innerHTML = ICON('i-quiz', 'icon--sm') + (ready ? 'Quiz ready for after the walk' : 'Quiz still being made on your Mac');
+  }
+  function setKind(k, save = true) {
+    document.querySelector(`input[name=kind][value=${k}]`).checked = true;
+    $('podcastRow').hidden = k !== 'podcast';
+    $('start').textContent = KIND[k].start;
+    if (save) ls.set('leash.kind', k);
+  }
+
+  function renderNewBadge() {
+    const ms = (STATS && STATS.data.medals) || null;
+    const box = $('newBadge');
+    if (!ms) { box.hidden = true; return; }
+    const earned = ms.filter(m => m.earned).map(m => m.id);
+    let seen = ls.get('leash.seenBadges', null);
+    if (seen === null) { ls.set('leash.seenBadges', earned); seen = earned; }   // existing user: seed silently
+    const fresh = ms.filter(m => m.earned && !seen.includes(m.id));
+    box.hidden = fresh.length === 0;
+    if (!fresh.length) return;
+    const m = fresh[0];
+    box.innerHTML = badgeSvg(m.id, false, false, m.label + ', earned') +
+      `<div class="grow"><div class="cap" style="color:var(--accent-text)">New badge${fresh.length > 1 ? ` · +${fresh.length - 1} more` : ''}</div>` +
+      `<div class="h2">${esc(m.label)}</div><div class="sm t2">${esc(m.how)}.</div>` +
+      `<div class="btns" style="margin-top:8px"><button class="btn" id="seeBadges" type="button">See all badges</button><button class="btn" id="okBadge" type="button">OK</button></div></div>`;
+    $('seeBadges').onclick = () => { location.hash = '#badges'; };
+    $('okBadge').onclick = () => { markSeen(); renderNewBadge(); };
+  }
+  function markSeen() {
+    const ms = (STATS && STATS.data.medals) || [];
+    if (ms.length) ls.set('leash.seenBadges', ms.filter(m => m.earned).map(m => m.id));
+  }
+
+  function statusLine(el) {
+    if (conn === 'ok' || conn === 'checking') { el.hidden = true; return; }
+    const when = STATS ? hm(new Date(STATS.at)) : null;
+    el.hidden = false;
+    el.innerHTML = ICON('i-cloud-off', 'icon--sm') + `<span>${conn === 'token' ? 'Connect your Mac to see your numbers.' : 'Your Mac is not reachable.'}` +
+      (when ? ` Showing what this phone knows, from ${when}.` : '') + `</span>`;
+  }
+
+  function renderActivity(localWalks) {
+    statusLine($('actStatus'));
+    const d = STATS && STATS.data;
+    const totals = d ? d.totals : { walks: 0, km: 0, minutes: 0, best_streak_days: 0 };
+    const empty = !d || totals.walks === 0;
+    let h = '';
+    if (empty) {
+      h += `<div class="view" style="align-items:flex-start;color:var(--accent-text)">${ICON('i-leaf', 'icon--lg')}<div class="big num muted">0<small>km</small></div><p class="t2" style="color:var(--text-2)">Your first walk will show up here.</p></div>`;
+    } else {
+      h += `<div><div class="big num">${k1(totals.km)}<small>km</small></div><p class="sm t2">outside, in ${totals.walks} walk${totals.walks === 1 ? '' : 's'} · ${dur(totals.minutes * 60)}</p></div>`;
+      const cs = d.current_streak_days;
+      h += `<div class="card"><div class="row"><span style="color:${cs ? 'var(--warn)' : 'var(--muted)'}">${ICON('i-flame')}</span><div><b>${cs >= 2 ? cs + ' days in a row' : cs === 1 ? '1 day so far' : 'No streak right now'}</b>` +
+           `<div class="sm t2">Best: ${totals.best_streak_days} day${totals.best_streak_days === 1 ? '' : 's'}</div></div></div></div>`;
+    }
+    // 8-week chart (plain SVG, no library)
+    const weeks = d ? d.weeks : Array.from({ length: 8 }, () => ({ start: '', km: 0, walks: 0, minutes: 0 }));
+    const maxKm = Math.max(1, ...weeks.map(w => w.km));
+    const lbl = i => weeks[i].start ? new Date(weeks[i].start + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '';
+    const bars = weeks.map((w, i) => {
+      const hgt = Math.max(3, w.km / maxKm * 100), x = i * 41 + 8.5, cur = i === weeks.length - 1;
+      return `<rect x="${x}" y="${118 - hgt}" width="24" height="${hgt}" rx="4" fill="${w.km === 0 ? 'var(--border)' : cur ? 'var(--accent)' : 'var(--chart-past)'}"><title>Week of ${lbl(i) || 'n/a'}: ${k1(w.km)} km, ${w.walks} walk${w.walks === 1 ? '' : 's'}, ${dur(w.minutes * 60)}</title></rect>`;
+    }).join('');
+    const curKm = weeks[weeks.length - 1].km;
+    h += `<h2 class="h2">Last 8 weeks <span class="cap muted" style="font-weight:400">km</span></h2><div class="card" style="padding:12px">` +
+         `<svg class="wk-svg" viewBox="0 0 328 150" width="100%" role="img" aria-label="Distance walked in each of the last 8 weeks. This week: ${k1(curKm)} km.">` +
+         bars + `<line x1="0" x2="328" y1="118.5" y2="118.5" stroke="var(--border)"/>` +
+         (curKm > 0 ? `<text class="val" x="${7 * 41 + 20.5}" y="${118 - Math.max(3, curKm / maxKm * 100) - 6}" text-anchor="middle">${k1(curKm)}</text>` : '') +
+         `<text x="0" y="140">${esc(lbl(0))}</text><text x="${4 * 41 + 20.5}" y="140" text-anchor="middle">${esc(lbl(4))}</text><text x="328" y="140" text-anchor="end">This wk</text></svg></div>`;
+    if (empty) h += `<p class="sm t2">Weeks fill in as you walk.</p>`;
+    if (!empty) {
+      const bk = d.by_kind, totalKm = Math.max(0.01, Object.values(bk).reduce((a, k) => a + k.km, 0));
+      h += `<h2 class="h2">By kind</h2><div class="list">` + ['podcast', 'dog', 'walk'].map(k =>
+        `<div class="li" style="min-height:56px"><span class="t2">${ICON(KIND[k].icon)}</span><div class="grow"><div>${KIND[k].label.replace(' walk', '')}</div><div class="bar" style="margin-top:6px"><i style="width:${Math.round(bk[k].km / totalKm * 100)}%"></i></div></div>` +
+        `<span class="sm t2 num" style="min-width:92px;text-align:right">${bk[k].walks} · ${k1(bk[k].km)} km</span></div>`).join('') + `</div>`;
+    }
+    // recent: the Mac's list plus walks still only on this phone
+    const server = d ? (d.recent || []) : [];
+    const known = new Set(server.map(r => r.id));
+    const mine = (localWalks || []).filter(w => !w.uploaded && !known.has(w.id)).map(w => ({ id: w.id, kind: w.kind, started_at: w.started_at, distance_m: w.local.distance_m, duration_s: w.local.duration_s, clips: w.local.clips, sent: false }));
+    const recent = [...mine, ...server.map(r => ({ ...r, sent: true }))];
+    if (recent.length) {
+      const shown = recentShown ? recent.slice(0, 20) : recent.slice(0, 10);
+      h += `<h2 class="h2">Recent walks</h2><div class="list">` + shown.map(r =>
+        `<div class="li"><span class="disc">${ICON(KIND[r.kind].icon)}</span><div class="grow"><div style="font-weight:600">${esc(fdate(r.started_at))}</div>` +
+        `<div class="sm t2 num">${km(r.distance_m)} km · ${dur(r.duration_s)} · ${r.clips} idea${r.clips === 1 ? '' : 's'}</div></div>` +
+        `<span class="${r.sent ? 'okc' : 'muted'}" role="img" aria-label="${r.sent ? 'Saved on your Mac' : 'Waiting to be sent'}">${ICON(r.sent ? 'i-cloud-ok' : 'i-cloud-off')}</span></div>`).join('') +
+        (recent.length > 10 && !recentShown ? `<button class="li btn" id="showMore" type="button" style="width:100%;border-radius:0 0 var(--r-md) var(--r-md);min-height:48px">Show more</button>` : '') + `</div>`;
+    }
+    $('actBody').innerHTML = h;
+    const sm = $('showMore'); if (sm) sm.onclick = () => { recentShown = true; renderActivity(localWalks); };
+  }
+
+  function renderBadges() {
+    statusLine($('badgeStatus'));
+    const ms = medals(), earned = ms.filter(m => m.earned).length;
+    $('badgeCount').textContent = `${earned} of ${ms.length}`;
+    $('badgeIntro').hidden = earned > 0;
+    const nu = ms.filter(m => !m.earned && m.progress != null).sort((a, b) => b.progress / b.target - a.progress / a.target)[0];
+    const nb = $('nextUp');
+    nb.hidden = false;
+    if (earned === ms.length) { nb.textContent = 'All 16 earned. Go for a walk anyway.'; nb.onclick = null; }
+    else {
+      const t = nu || ms.find(m => !m.earned);
+      nb.innerHTML = `<div class="row"><div class="grow"><span class="cap t2">Next up</span><div style="font-weight:600">${esc(t.label)} · ${esc(nu ? toGo(nu) : t.how)}</div></div>${ICON('i-chevron', 't2')}</div>`;
+      nb.onclick = () => openBadge(t.id, nb);
+    }
+    $('badgeBody').innerHTML = SECTIONS.map(([name, fams]) => {
+      const items = ms.filter(m => fams.includes(m.family));
+      return `<div class="sec">${name}</div><div class="grid">` + items.map(m => {
+        const h = m.earned ? '' : hint(m), pct = m.progress == null ? 0 : Math.round(Math.min(1, m.progress / m.target) * 100);
+        const label = `${m.label}, ${m.earned ? 'earned' : 'locked' + (h ? ', ' + h : '')}`;
+        return `<button class="cell ${m.earned ? '' : 'locked'}" type="button" data-id="${m.id}" aria-label="${esc(label)}">` +
+          (m.earned ? badgeSvg(m.id, false, false, '') : `<span class="bw">${badgeSvg(m.id, true, false, '')}<span class="lock-chip">${ICON('i-lock')}</span></span>`) +
+          `<span class="nm">${esc(m.label)}</span>` +
+          (m.earned ? `<span class="cap okc row" style="gap:4px">${ICON('i-check', 'icon--sm')}Earned</span>`
+                    : `<span class="cap muted num">${esc(h || 'Not yet')}</span>${m.progress != null ? `<span class="minibar"><i style="width:${pct}%"></i></span>` : ''}`) + `</button>`;
+      }).join('') + `</div>`;
+    }).join('');
+    document.querySelectorAll('.cell').forEach(b => b.onclick = () => openBadge(b.dataset.id, b));
+  }
+
+  // ---------- sheets ----------
+  let sheetFrom = null;
+  function openSheet(html, from) {
+    $('sheetBody').innerHTML = html; sheetFrom = from || null;
+    const s = $('sheet'); if (!s.open) s.showModal();
+    s.scrollTop = 0; $('sheetBody').focus({ preventScroll: true });
+    const c = $('sheetClose'); if (c) c.onclick = () => s.close();
+  }
+  $('sheet').addEventListener('click', e => { if (e.target === $('sheet')) $('sheet').close(); });
+  $('sheet').addEventListener('close', () => { if (sheetFrom) { try { sheetFrom.focus(); } catch (e) {} } });
+  function openBadge(id, from) {
+    const m = medals().find(x => x.id === id); if (!m) return;
+    const pct = m.progress == null ? 0 : Math.round(Math.min(1, m.progress / m.target) * 100);
+    openSheet(
+      `<h2 id="sheetTitle" style="font-size:22px">${esc(m.label)}</h2>` +
+      (m.earned ? badgeSvg(m.id, false, true, m.label + ', earned') : `<span class="bw">${badgeSvg(m.id, true, true, m.label + ', locked')}<span class="lock-chip" style="width:32px;height:32px">${ICON('i-lock')}</span></span>`) +
+      (m.earned ? `<div class="row okc">${ICON('i-check')}<b>Earned</b></div>` : `<div class="row t2">${ICON('i-lock')}<b>Not yet</b></div>`) +
+      `<p class="t2">${esc(m.how)}.</p>` +
+      (m.earned || m.progress == null ? '' : `<div class="bar" role="img" aria-label="${esc(hint(m))}"><i style="width:${pct}%"></i></div><div class="sm num">${esc(hint(m))}</div><div class="sm muted">${esc(toGo(m))}</div>`) +
+      `<button class="btn" id="sheetClose" type="button" style="width:100%">Close</button>`, from);
+  }
+  function openConn() {
+    if (conn === 'token') {
+      openSheet(`<h2 id="sheetTitle" style="font-size:22px">Connect your Mac</h2><p class="t2">Scan the pairing code on your Mac, or paste its token here. You only do this once.</p>` +
+        `<input id="tokenIn" type="password" placeholder="Leash token" autocomplete="off" aria-label="Leash token"><p id="tokenErr" class="sm warnc" hidden>That token didn't work. Check it on your Mac and try again.</p>` +
+        `<div class="btns" style="width:100%"><button class="btn primary" id="tokenSave" type="button">Save</button><button class="btn" id="sheetClose" type="button" style="width:100%">Close</button></div>`, $('chip'));
+      $('tokenSave').onclick = async () => {
+        try { localStorage.setItem('leash.token', $('tokenIn').value.trim()); } catch (e) {}
+        await loadAll();
+        if (conn === 'ok') { $('sheet').close(); flush(); } else { $('tokenErr').hidden = false; }
+      };
+    } else if (conn === 'offline' || conn === 'checking') {
+      openSheet(`<h2 id="sheetTitle" style="font-size:22px">Your Mac is not reachable</h2>` +
+        `<p class="t2">That's fine. Walks and voice notes stay on this phone and go to your Mac by themselves next time it answers. Your Mac may be asleep, or this phone may be off your network.</p>` +
+        `<div class="btns" style="width:100%"><button class="btn" id="retryConn" type="button">Try again</button><button class="btn" id="sheetClose" type="button">Close</button></div>`, $('chip'));
+      $('retryConn').onclick = async () => { $('retryConn').textContent = 'Trying…'; await loadAll(); await flush(); $('sheet').close(); };
+    } else {
+      openSheet(`<h2 id="sheetTitle" style="font-size:22px">Mac connected</h2><p class="t2">Walks and voice notes go to your Mac as soon as a walk ends.</p>` +
+        `<button class="btn" id="sheetClose" type="button" style="width:100%">Close</button>`, $('chip'));
+    }
+  }
+
+  // ---------- routing ----------
+  function route() {
+    const h = (location.hash || '#walk').slice(1);
+    const v = ['walk', 'activity', 'badges'].includes(h) ? h : 'walk';
+    for (const n of ['walk', 'activity', 'badges']) {
+      $('v-' + n).hidden = n !== v;
+      const t = $('t-' + n); if (n === v) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current');
+    }
+    if (v === 'badges') { markSeen(); renderNewBadge(); }
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route);
+
+  // ---------- wiring ----------
+  $('chip').onclick = openConn;
+  $('start').onclick = () => start().catch(e => { $('startError').hidden = false; $('startError').textContent = 'Could not start: ' + e.message; });
+  $('resumeBtn').onclick = () => resume();
+  $('finishBtn').onclick = async () => { await resume(); await finish(); };
+  $('retryGps').onclick = () => { $('retryGps').hidden = true; watchGps(); };
+  document.querySelectorAll('input[name=kind]').forEach(r => r.onchange = () => setKind(r.value));
+  $('episode').onchange = quizLine;
+  window.addEventListener('online', () => { flush().then(loadAll); });
+
+  let stopTimer = null, stopTick = null;
+  const zone = $('stopZone');
+  const holdOn = () => {
+    zone.classList.add('holding'); let n = 3; $('stopHint').textContent = 'keep holding… 3';
+    stopTick = setInterval(() => { n--; if (n > 0) $('stopHint').textContent = 'keep holding… ' + n; }, 1000);
+    stopTimer = setTimeout(finish, 3000);
+  };
+  const holdOff = () => { clearTimeout(stopTimer); clearInterval(stopTick); zone.classList.remove('holding'); $('stopHint').textContent = 'this corner, top left'; };
+  zone.addEventListener('touchstart', e => { e.preventDefault(); holdOn(); });
+  zone.addEventListener('touchend', holdOff); zone.addEventListener('touchcancel', holdOff);
+  zone.addEventListener('mousedown', holdOn); zone.addEventListener('mouseup', holdOff);
+  $('recBtn').addEventListener('click', e => { e.preventDefault(); if (rec) { if (Date.now() - recStart > 800) stopRec(); } else startRec(); });
+  $('cover').addEventListener('contextmenu', e => e.preventDefault());
+
+  // pairing: ops/pair.py shows a QR code whose address ends in #token=...; keep the token, drop it from the address bar
+  try {
+    const m = /[#&]token=([^&]+)/.exec(location.hash);
+    if (m) { localStorage.setItem('leash.token', decodeURIComponent(m[1])); history.replaceState(null, '', location.pathname + location.search + '#walk'); }
+  } catch (e) {}
+  if ('serviceWorker' in navigator && window.isSecureContext) navigator.serviceWorker.register('sw.js').catch(() => {});
+
+  setKind(ls.get('leash.kind', 'podcast'), false);
+  renderChip(); route();
+  renderAll();
+  loadAll().then(flush);
+})();
+</script>
+</body>
+</html>

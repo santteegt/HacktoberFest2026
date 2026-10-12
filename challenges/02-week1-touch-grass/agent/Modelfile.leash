@@ -1,0 +1,5 @@
+# Same weights as gemma4:12b-it-qat, but with the 64K context window that Hermes needs for tool calling.
+# Create it on the host with:  ollama create leash-gemma4-12b -f agent/Modelfile.leash
+FROM gemma4:12b-it-qat
+PARAMETER num_ctx 65536
+PARAMETER temperature 0.3

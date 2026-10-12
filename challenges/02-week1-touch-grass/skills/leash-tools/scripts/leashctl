@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# Command-line front end for the Idea Leash tool server on the user's Mac.
+#   leashctl ingest <link>              start preparing a podcast; prints a job id
+#   leashctl job <job_id>               status of that job
+#   leashctl episodes                   prepared episodes, newest first
+#   leashctl quiz <slug>                all questions (no answers)
+#   leashctl next <slug> [restart]      the next unanswered question and how to ask it
+#   leashctl answer <slug> <n> <text>   grade the user's answer to question n
+#   leashctl idea <text>                save a voice idea or note
+#   leashctl search <words>             web search (limited per day)
+#   leashctl resurface                  one concept and one older note
+#   leashctl walks                      recent walks, totals, medals earned and the next ones
+#   leashctl audio <slug> <n> <file>    save question n spoken as an Opus file
+#   leashctl transcribe <file>          speech to text on the Mac; prints the text (used by Hermes STT)
+# Needs LEASH_UPLOAD_TOKEN; LEASH_SERVER defaults to http://127.0.0.1:8787. Prints the server's JSON reply.
+set -euo pipefail
+B="${LEASH_SERVER:-http://127.0.0.1:8787}"
+# Hermes runs the STT command in the gateway's environment, which may not hold the profile's secrets,
+# so fall back to the profile .env (read for this one key only).
+if [ -z "${LEASH_UPLOAD_TOKEN:-}" ]; then
+  for f in "${HERMES_HOME:-$HOME/.hermes}/.env" "$HOME/.hermes/profiles/leash/.env"; do
+    [ -f "$f" ] && LEASH_UPLOAD_TOKEN="$(sed -n 's/^LEASH_UPLOAD_TOKEN=//p' "$f" | head -1 | tr -d '"'"'"' ')" && [ -n "$LEASH_UPLOAD_TOKEN" ] && break
+  done
+  export LEASH_UPLOAD_TOKEN
+fi
+[ -n "${LEASH_UPLOAD_TOKEN:-}" ] || { echo '{"error": "LEASH_UPLOAD_TOKEN is not set in this environment"}'; exit 2; }
+get()  { curl -sS -m 900 -H "Authorization: Bearer $LEASH_UPLOAD_TOKEN" "$B$1" || echo '{"error": "cannot reach the Leash server (is the tunnel up?)"}'; echo; }
+post() { curl -sS -m 900 -H "Authorization: Bearer $LEASH_UPLOAD_TOKEN" -H "Content-Type: application/json" -d "$2" "$B$1" || echo '{"error": "cannot reach the Leash server (is the tunnel up?)"}'; echo; }
+js() { python3 -c 'import json,sys; k=sys.argv[1].split(","); v=sys.argv[2:]; d={}
+for i,key in enumerate(k):
+    val=v[i] if i<len(v) else ""
+    if key.endswith("#"): d[key[:-1]]=int(val)
+    elif i==len(k)-1: d[key]=" ".join(v[i:])
+    else: d[key]=val
+print(json.dumps(d))' "$@"; }
+cmd="${1:-}"; shift || true
+case "$cmd" in
+  ingest)    [ $# -ge 1 ] || { echo "usage: leashctl ingest <link>"; exit 2; }; post /ingest "$(js source "$1")";;
+  job)       get "/jobs/${1:?job id}";;
+  episodes)  get /episodes;;
+  quiz)      get "/episodes/${1:?slug}/quiz";;
+  next)      get "/episodes/${1:?slug}/next$([ "${2:-}" = restart ] && echo '?restart=1')";;
+  answer)    [ $# -ge 3 ] || { echo "usage: leashctl answer <slug> <n> <text>"; exit 2; }; post /answer "$(js 'slug,n#,answer' "$@")";;
+  idea)      [ $# -ge 1 ] || { echo "usage: leashctl idea <text>"; exit 2; }; post /ideas "$(js text "$@")";;
+  search)    [ $# -ge 1 ] || { echo "usage: leashctl search <words>"; exit 2; }; post /search "$(js query "$@")";;
+  resurface) get /resurface;;
+  walks)     get /walks;;
+  transcribe) f="${1:?audio file}"; r="$(curl -sS -m 180 -H "Authorization: Bearer $LEASH_UPLOAD_TOKEN" -H "Content-Type: application/octet-stream" --data-binary @"$f" "$B/transcribe")" || { echo "cannot reach the Leash server (is the tunnel up?)" >&2; exit 1; }
+             printf '%s' "$r" | python3 -c 'import json,sys; d=json.load(sys.stdin); t=d.get("text"); sys.exit(print(t) if t is not None else sys.exit(d.get("error","transcription failed")))';;
+  audio)     curl -sS -m 120 -H "Authorization: Bearer $LEASH_UPLOAD_TOKEN" -o "${3:?output file}" "$B/episodes/${1:?slug}/audio/${2:?n}" && echo "{\"saved\": \"$3\"}";;
+  *) sed -n 2,13p "$0"; exit 2;;
+esac

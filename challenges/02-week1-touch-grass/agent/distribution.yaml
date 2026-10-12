@@ -1,0 +1,29 @@
+name: leash
+version: 0.1.0
+description: "Idea Leash: a walk-and-learn companion. Turns podcast transcripts into spoken quizzes, captures voice ideas and grows a second-brain wiki. Hacktoberfest 2026, Week 1 (Touch Grass)."
+hermes_requires: ">=0.21.0"
+author: "Santiago Gonzalez"
+license: "MIT"
+
+# Values are never shipped. Copy .env.EXAMPLE to .env in the profile, or use agent/setup-profile.sh --env-file.
+env_requires:
+  - name: LEASH_UPLOAD_TOKEN
+    description: "Shared secret for the Leash tool server on the host Mac (generate with: openssl rand -hex 24)"
+    required: true
+  - name: LEASH_SERVER
+    description: "Base address of the tool server as seen from this machine"
+    required: false
+    default: "http://127.0.0.1:8787"
+  - name: TELEGRAM_BOT_TOKEN
+    description: "Telegram bot token from @BotFather (quiz results, nudges, voice notes)"
+    required: false
+  - name: TELEGRAM_ALLOWED_USERS
+    description: "Your numeric Telegram user id; only this user can talk to the bot"
+    required: false
+  - name: SERPAPI_API_KEY
+    description: "SerpApi key for voice-requested web search (free tier is 250 searches a month)"
+    required: false
+  - name: HERMES_API_TIMEOUT
+    description: "Seconds to wait for a local model reply"
+    required: false
+    default: "1800"
