@@ -12,7 +12,9 @@ tags: devchallenge, hf26challenge
 
 Idea Leash is how I take a break from work and touch grass. I go out with my dog, or for an evening walk with a podcast in my ears, and I wanted those walks to leave something behind: what I heard, the ideas that show up while I'm moving, and a small reward for going out. It is for anyone who walks with a podcast and wants to keep some of it.
 
-The AI runs on open models on my Mac: Gemma 4 12B through Ollama, the Hermes agent, and whisper.cpp for speech. The phone only captures the route, my voice and a few taps.
+The AI runs on open models on my Mac: Gemma 4 12B through Ollama, the Hermes agent, and whisper.cpp for speech. On the phone I use two apps. The Leash app records the route and my voice, and Telegram is where I talk to the Leash agent.
+
+The Leash agent is an ambient agent: it speaks first. When a podcast is ready, when a walk has been saved and when I answer a quiz question, the Mac messages me in Telegram without being asked, and I reply there. It can also bring back one concept and one older note from my wiki when I ask. I have not built scheduled nudges, so it speaks when something happened, not on a timer.
 
 The loop:
 
@@ -106,7 +108,22 @@ The stack:
 | Phone to Mac link | Tailscale HTTPS, tailnet only | not open | phone and Mac |
 | The second brain | an OKF markdown wiki | plain files I own | my Mac |
 
-The wiki format comes from my repo's `okf-wiki` skill, committed before the challenge window opened (prior work).
+### The second brain is an OKF wiki
+
+OKF is Google's Open Knowledge Format: a folder of markdown files with YAML front matter, where the one hard rule is that every page declares a `type`. An agent reads each source once and folds it into linked pages, with an index and an append-only log, so the wiki grows instead of searching the raw files again. It is not a database and has no embeddings, so anything that can read a file can read it.
+
+In Idea Leash, each episode becomes a source page and a few concept pages that keep a verbatim quote, and each voice idea becomes a note page linked to the concepts it shares words with. The procedure comes from my repo's `okf-wiki` skill, committed before the challenge window opened (prior work), and the Mac's ingest code writes the same layout.
+
+### Two agent skills
+
+The agent's behavior lives in two skills in the repo's `skills/` folder. A skill is a `SKILL.md` of instructions plus scripts the agent can run.
+
+- `podcast-quiz` turns a transcript into four multiple choice questions and one field-link question, and grades spoken answers afterwards. Its scripts check every question's quote against the transcript, the spoken length and the answer-length bias, and shuffle the answer positions.
+- `leash-tools` tells the agent how to reach the Mac with one command, `leashctl`: `ingest`, `next`, `answer`, `idea`, `search`, `resurface`, `walks` and `audio`.
+
+The method was the skill-creator workflow: write the skill, run it on three test transcripts with the local Gemma model, read the failures, change the skill, run again. It took four rounds. The checking script did more than the prose: with it the skill passed 27 of 27 checks, against 20 of 27 for a plain prompt.
+
+Telegram taught me the second lesson. The 12B model did not follow a paragraph in a skill and wrote a question as plain text instead of calling the buttons tool. So the instruction moved into the tool's reply, in an `action` field the agent only has to follow. `agent/setup-profile.sh` installs the Hermes profile with both skills.
 
 launchd services on the Mac keep the VM, the tool server and the tunnel running, and the Hermes gateway is a launchd service inside the VM. When I killed the server and the tunnel by hand, both were back within 25 seconds.
 
