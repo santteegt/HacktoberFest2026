@@ -31,3 +31,20 @@
 - Hash: `sha256:76bb467d61cceb046c39540da1be4591993aaccd55f861ec5b98e164cac39010`
 - Pages created/updated: 4
 - New concepts: Weekend challenge: Build for a Friend, Open-source AI prompt, Prize categories and partners
+
+## [2026-10-05] ingest | Retrospective: Build for a Friend
+
+- **Ingest**: Retrospective: Build for a Friend processed from `raw/retrospective-weekend-build-for-a-friend.md`
+- Source: `raw/retrospective-weekend-build-for-a-friend.md`
+- Hash: `sha256:fd27250e25a671042726fff6bb7e4cda7919e9ef965556099cb0c501426d8963`
+- Pages created/updated: 7
+- New concepts: Weekend challenge retrospective, Challenge playbook, Ollama (updated: Weekend challenge, DevRelay)
+
+## [2026-10-05] ingest | Partner tools: feature catalog for ideation
+
+- **Ingest**: Partner tools feature catalog processed from `raw/partner-tools-feature-catalog.md`
+- Source: `raw/partner-tools-feature-catalog.md`
+- Hash: `sha256:fa0bdbf747b748274c826a5ecf7526a039ec2cf8ac69850e97dd0c4bc6050e79`
+- Pages created/updated: 23
+- New concepts: Partner tools catalog, Gemma, Mastra, Tinker, TabPFN, DigitalOcean Gradient AI, Render, Arduino UNO Q, Backboard, ElevenLabs, SerpApi, MongoDB Atlas, Tiger Data, Sentry Agent Tracing, Temporal, Entire, GitHub Copilot (updated: Prize categories and partners)
+

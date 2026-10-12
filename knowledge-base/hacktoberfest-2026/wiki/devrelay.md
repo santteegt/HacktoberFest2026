@@ -17,13 +17,16 @@ DevRelay is an MCP gateway plus a set of agent skills that give an agent live ac
 - Key tools: `get_challenges`, `get_challenge_details` (reads `full_details`), `get_knowledge_document`, `create_article` (stage drafts with `published: false`), `list_event_offers`, `claim_promo_code`.
 - Skills in this repo live in `.agents/skills/devrelay-*`. Publishing is the user's call, and claiming offers or installing sponsor skills needs a yes first.
 - Agent sessions can be saved and embedded in DEV posts (`devrelay-sessions`); scrub secrets first.
+- First-hand (2026-10-05): a raw `.jsonl` upload via the presigned URL showed 0 parsed messages; a curated, normalised `curated_data` payload (about 30 KB, prompts plus shortened final replies) parsed and could be embedded with `{% agent_session <id> %}`, but only renders for readers once the session is made public from DEV (no tool for that). `update_article` on a large body sometimes failed with "outcome unknown": check `get_my_articles`, then retry once. See [Weekend challenge retrospective](weekend-challenge-retrospective.md).
 
 ## Related Concepts
 
 - [Hacktoberfest 2026](hacktoberfest-2026.md)
 - [Prize categories and partners](prize-categories-and-partners.md)
 - [Open-source AI prompt](open-source-ai-prompt.md)
+- [Challenge playbook](challenge-playbook.md)
 
 ## Sources
 
 - [DevRelay KB: Hacktoberfest 2026](sources/devrelay-kb-hacktoberfest.md)
+- [Retrospective: Build for a Friend](sources/retrospective-weekend-build-for-a-friend.md)

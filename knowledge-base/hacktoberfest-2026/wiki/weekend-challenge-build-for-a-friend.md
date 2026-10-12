@@ -18,12 +18,15 @@ The Hacktoberfest Weekend Challenge (DEV event 78) runs Oct 2 02:00 to Oct 5 06:
 - Examples from the page: a meal planner for a roommate's allergies, a patient language practice partner, voice memos turned into a family recipe book.
 - Categories and partners: [Prize categories and partners](prize-categories-and-partners.md). The prompt: [Open-source AI prompt](open-source-ai-prompt.md).
 - Local project folder: `challenges/01-weekend-build-for-a-friend/`.
+- **Outcome (2026-10-05):** submitted RC Pit Companion (Gemma via Ollama, Mastra workflow) and published before the deadline; winners not yet announced. Lessons: [Weekend challenge retrospective](weekend-challenge-retrospective.md) and [Challenge playbook](challenge-playbook.md). Partner details: [Partner tools catalog](partner-tools-catalog.md).
 
 ## Related Concepts
 
 - [DEV Challenge rules](dev-challenge-rules.md)
 - [Hacktoberfest 2026 schedule](hacktoberfest-2026-schedule.md)
+- [Weekend challenge retrospective](weekend-challenge-retrospective.md)
 
 ## Sources
 
 - [DEV Challenge 78](sources/dev-challenge-78-weekend-build-for-a-friend.md)
+- [Retrospective: Build for a Friend](sources/retrospective-weekend-build-for-a-friend.md)
