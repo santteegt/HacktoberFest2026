@@ -11,7 +11,7 @@ Each challenge lives in its own folder under [`challenges/`](challenges/README.m
 | # | Challenge | Window (UTC) | Status |
 | --- | --- | --- | --- |
 | 01 | [Weekend: Build for a Friend](challenges/01-weekend-build-for-a-friend): RC Pit Companion | Oct 2 02:00 → Oct 5 06:59 | ✅ [Published](https://dev.to/santteegt/a-setup-coach-for-my-friends-rc-car-that-stays-on-his-laptop-4ahn) |
-| 02 | [Week 1: Touch Grass](challenges/02-week1-touch-grass): Idea Leash | Oct 5 18:00 → Oct 12 06:59 | 🟡 Built and tested on a real phone; demo and post pending (not published) |
+| 02 | [Week 1: Touch Grass](challenges/02-week1-touch-grass): Idea Leash | Oct 5 18:00 → Oct 12 06:59 | ✅ [Published](https://dev.to/santteegt/idea-leash-an-open-source-walk-buddy-with-a-local-model-for-a-brain-499n) 2026-10-11 23:30 local |
 | 03 | Week 2: Open-Source AI | Oct 12 → Oct 19 | 🔵 Upcoming |
 | 04 | Week 3: Open-Source AI | Oct 19 → Oct 26 | 🔵 Upcoming |
 | 05 | Week 4: Open-Source AI | Oct 26 → Nov 1 | 🔵 Upcoming |

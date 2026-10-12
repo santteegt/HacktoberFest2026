@@ -2,7 +2,7 @@
 
 > Listen to a podcast on a walk, say your ideas out loud, and answer a five-question quiz afterwards with one tap. A local open model keeps the notes. The phone stays in your pocket.
 
-**Challenge:** Hacktoberfest Open-Source AI Challenge: Week 1, Touch Grass (DEV event 79) · **Window:** Oct 5 18:00 → Oct 12 06:59 UTC · **Tag:** `#hf26challenge`
+**Challenge:** Hacktoberfest Open-Source AI Challenge: Week 1, Touch Grass (DEV event 79) · **Window:** Oct 5 18:00 → Oct 12 06:59 UTC · **Tag:** `#hf26challenge` · **Post:** [Idea Leash: an open-source walk buddy with a local model for a brain](https://dev.to/santteegt/idea-leash-an-open-source-walk-buddy-with-a-local-model-for-a-brain-499n) (published 2026-10-11 23:30 local)
 
 ## What it does
 

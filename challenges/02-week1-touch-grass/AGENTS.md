@@ -90,8 +90,8 @@ Decided 2026-10-07. The author walks the dog in the morning and does a dark 19:3
 - [x] Prize categories chosen: Gemma and SerpApi only
 - [x] MVP working (ingest, quiz in Telegram, walk app, offline queue, after-walk message, voice search)
 - [x] Outdoor tests done and logged (4 test walks, a 35 minute walk, an offline dog walk)
-- [ ] Demo recorded (dog-walk footage exists; podcast walk and edit pending, by the author)
+- [x] Demo recorded and published by the author: https://youtu.be/ikb7P_XMQAw (3 min 59 s)
 - [x] README, LICENSE, `.env.example` done; audit run on 2026-10-10 (see memory); re-run after the last test walk
-- [ ] Last offline walk with a podcast, then commit and push (author's hold)
-- [ ] DEV draft written and staged (author's hold)
-- [ ] Published by the user before the deadline (Oct 12, 01:59 local)
+- [x] Podcast walk and quiz done (2026-10-10), work committed and pushed to `main` (2026-10-11)
+- [x] DEV draft written and staged (article id 4835517, 2026-10-11)
+- [x] Published by the author before the deadline: 2026-10-11 23:30 local (2026-10-12T04:30:20Z), https://dev.to/santteegt/idea-leash-an-open-source-walk-buddy-with-a-local-model-for-a-brain-499n

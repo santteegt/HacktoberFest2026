@@ -33,6 +33,6 @@ Honest limits
 The phone screen stays on during a walk, hidden behind a black cover, because a web page in Chrome gets no GPS while it is hidden. The AI runs on my Mac, not on the phone, so the Mac has to be awake for the bot to answer; walks and voice notes wait on the phone until it can reach the Mac. Tested by one person with one phone, in English only.
 
 Code: https://github.com/santteegt/HacktoberFest2026/tree/main/challenges/02-week1-touch-grass
-DEV post: (link added when published)
+DEV post: https://dev.to/santteegt/idea-leash-an-open-source-walk-buddy-with-a-local-model-for-a-brain-499n
 
 #hf26challenge #Hacktoberfest #OpenSourceAI #LocalAI #Gemma #TouchGrass

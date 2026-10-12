@@ -1,10 +1,10 @@
 ---
 title: "Idea Leash: an open-source walk buddy with a local model for a brain"
-published: false
+published: true
 tags: devchallenge, hf26challenge
 ---
 
-<!-- DRAFT v6 (v5: author's review applied: template order, architecture, short demo summary; fact-checked by the orchestrator. v6: the author edited the Code section and the Telegram sentence on DEV on 2026-10-11, synced here; architecture diagram redone with less text), 2026-10-11. Every fact checked against docs/CHALLENGE-MEMORY.md and README.md. Not staged, not published; the author decides. -->
+<!-- PUBLISHED by the author on DEV on 2026-10-11 23:30 local (2026-10-12T04:30:20Z), about 2.5 h before the deadline: https://dev.to/santteegt/idea-leash-an-open-source-walk-buddy-with-a-local-model-for-a-brain-499n (article id 4835517). This file is the body as published, synced from DEV after the author's final edits. What the author changed on DEV against the staged draft v8: removed the test-sessions table and its closing sentence, the "second brain is an OKF wiki" subsection, the launchd paragraph, the "What the tests changed" bullets and the closing "I did not use the other partners" line; reworded the skill-creator sentence; added a caffeinate note to the limits. DEV re-hosts the images, so the raw.githubusercontent links below are only the source. -->
 
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 1: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05)*
 
@@ -61,20 +61,6 @@ Searched "libraries for 2D gaming and physics engine":
      https://www.facebook.com/groups/132728896890594/posts/2143324715830992/
 ```
 
-Test walks in Cuenca, on my Redmi Note 11 with Chrome:
-
-| Session (2026) | The number that matters | Result |
-| --- | --- | --- |
-| Four test walks, Oct 8 and 9 | page visible: no gap over 5 s between GPS fixes; page hidden: zero fixes | the screen stays on behind a black cover |
-| First walk with the app, Oct 9, 35 min | 2,116 of 2,117 s tracked, 3.15 km | tracked with no gaps |
-| Offline dog walk, Oct 10, 19 min, 3 voice notes | uploaded about 30 s after the phone was back online | notes transcribed, Telegram message followed |
-| Podcast walk and quiz, Oct 10, 2.86 km | a 57 minute episode ready in 18 min; quiz 3 of 6 | the agent called a wrong answer right, so grades moved to the Mac |
-| Dog walk with an interruption, Oct 11, 24 min | page hidden for 139 s | gap stated, walk saved, nothing lost |
-
-On the podcast walk I listened to that episode, then took the quiz in Telegram when I got back.
-
-<!-- TODO(author): the three screenshots above are the app rendered at phone width in a desktop browser with real data (docs/screens/README.md). Swap in phone screenshots with the same file names if you have them. -->
-
 ## Code
 
 {% github santteegt/HacktoberFest2026 %}
@@ -108,57 +94,42 @@ The stack:
 | Phone to Mac link | Tailscale HTTPS, tailnet only | not open | phone and Mac |
 | The second brain | an OKF markdown wiki | plain files I own | my Mac |
 
-### The second brain is an OKF wiki
-
-OKF is Google's Open Knowledge Format: a folder of markdown files with YAML front matter, where the one hard rule is that every page declares a `type`. An agent reads each source once and folds it into linked pages, with an index and an append-only log, so the wiki grows instead of searching the raw files again. It is not a database and has no embeddings, so anything that can read a file can read it.
-
-In Idea Leash, each episode becomes a source page and a few concept pages that keep a verbatim quote, and each voice idea becomes a note page linked to the concepts it shares words with. The procedure comes from my repo's `okf-wiki` skill, committed before the challenge window opened (prior work), and the Mac's ingest code writes the same layout.
-
 ### Two agent skills
 
-The agent's behavior lives in two skills in the repo's `skills/` folder. A skill is a `SKILL.md` of instructions plus scripts the agent can run.
+The agent's behaviour lives in two skills in the repo's `skills/` folder. A skill is a `SKILL.md` of instructions plus scripts the agent can run.
 
-- `podcast-quiz` turns a transcript into four multiple choice questions and one field-link question, and grades spoken answers afterwards. Its scripts check every question's quote against the transcript, the spoken length and the answer-length bias, and shuffle the answer positions.
+- `podcast-quiz` turns a transcript into four multiple-choice questions and one field-link question, and grades spoken answers afterwards. Its scripts check every question's quote against the transcript, the spoken length and the answer-length bias, and shuffle the answer positions.
 - `leash-tools` tells the agent how to reach the Mac with one command, `leashctl`: `ingest`, `next`, `answer`, `idea`, `search`, `resurface`, `walks` and `audio`.
 
-The method was the skill-creator workflow: write the skill, run it on three test transcripts with the local Gemma model, read the failures, change the skill, run again. It took four rounds. The checking script did more than the prose: with it the skill passed 27 of 27 checks, against 20 of 27 for a plain prompt.
+I used the `skill-creator` skill workflow for implementing them: write the skill, run it on three test transcripts with the local Gemma model, read the failures, change the skill, run again. It took four rounds. The checking script did more than the prose: with it, the skill passed 27 of 27 checks, against 20 of 27 for a plain prompt.
 
-Telegram taught me the second lesson. The 12B model did not follow a paragraph in a skill and wrote a question as plain text instead of calling the buttons tool. So the instruction moved into the tool's reply, in an `action` field the agent only has to follow. `agent/setup-profile.sh` installs the Hermes profile with both skills.
-
-launchd services on the Mac keep the VM, the tool server and the tunnel running, and the Hermes gateway is a launchd service inside the VM. When I killed the server and the tunnel by hand, both were back within 25 seconds.
+Telegram taught me a second lesson. The 12B model did not follow a paragraph in a skill and wrote a question as plain text instead of calling the buttons tool. So the instruction moved into the tool's reply, in an `action` field the agent only has to follow. `agent/setup-profile.sh` installs the Hermes profile with both skills.
 
 The rule I ended up with: the model does language jobs, and code does everything else. Distances, scores, badges, streaks, scheduling, and every message that has to be true.
 
-What the tests changed:
-
-- A hidden page gets no GPS, so the screen stays on behind a black cover, and any gap is stated, not counted as distance.
-- The 12B model praised a wrong answer and called a quiz ready when it was not, so the Mac now sends grades and the "podcast ready" message itself.
-- A quiz that failed its format checks was served with every correct answer in position A, so code now always shuffles, labels such a quiz "partial", and never serves an unverified quote.
-- The agent and the server asked Ollama for two model names and context sizes, which reloaded the model at every hand-off, so both now use one alias with 64K context.
-
 ### Where it ended up
 
-Every part of the loop has run on a real phone and a real walk: the link and the notes, the walk, the offline upload, the after-walk message, the quiz in Telegram and voice search. In one quiz retake after the grades moved to the Mac, the model stayed silent after each multiple choice answer. By Sunday the app had counted four walks: 7.66 km, 112 minutes, nine voice ideas, a three day streak and 7 of 16 badges. That is one person and one phone.
+Every part of the loop has run on a real phone and a real walk: the link and the notes, the walk, the offline upload, the after-walk message, the quiz in Telegram and voice search. In one quiz retake after the grades moved to the Mac, the model stayed silent after each multiple-choice answer. By Sunday, the app had counted four walks: 7.66 km, 112 minutes, nine voice ideas, a three-day streak and 7 of 16 badges. That is one person and one phone.
 
 Limits:
 
-- The 12B model is not a reliable tool user. In my tests it sometimes skipped a command and described it as done.
+- The 12B model is not a reliable tool user. In my tests, it sometimes skipped a command and described it as done.
 - Grading of the open question is unmeasured. I have three data points.
 - English only, and speech recognition mishears names.
-- The Mac has to be awake. While it sleeps the bot is offline and a finished walk waits on the phone.
+- The Mac has to be awake. While it sleeps, the bot is offline, and a finished walk waits on the phone. Used `caffeinate` to keep my laptop awake while going out.
 - The screen stays on during a walk, behind the black cover.
 
 ## Why Does Open Innovation Matter?
 
 Idea Leash asks for a lot of trust. It hears my voice, keeps the routes I walk with my dog, and builds a private memory of what I learn. Open models and an open agent harness made it buildable on those terms, because every part that thinks runs on my own Mac, where I can look inside it and change it.
 
-No hosted model hears my voice or sees my route. Gemma 4 12B answers through Ollama, whisper.cpp transcribes voice notes on the Mac (a 15 second clip in 0.95 s), and the GPS track is stored there. Ollama's log from the agent's first day, tests included, shows 183 chat requests, all to the local model. My reasoning, not a test: with a hosted model, every voice idea and episode transcript would pass through a server I do not control.
+No hosted model hears my voice or sees my route. Gemma 4 12B answers through Ollama, whisper.cpp transcribes voice notes on the Mac (a 15-second clip in 0.95 s), and the GPS track is stored there. Ollama's log from the agent's first day, tests included, shows 183 chat requests, all to the local model. My reasoning, not a test: with a hosted model, every voice idea and episode transcript would pass through a server I do not control.
 
-Free calls shaped the design. The quiz generator checks every quote against the transcript and regenerates up to three times when a check fails. With a bill per call I would have weighed each retry and each test run against the cost, and I suspect I would have tested less.
+Free calls shaped the design. The quiz generator checks every quote against the transcript and regenerates up to three times when a check fails. With a bill per call, I would have weighed each retry and each test run against the cost, and I suspect I would have tested less.
 
 I could open it up. Ollama shows which model is loaded and with what context, which is how I caught it reloading at every hand-off. Hermes keeps its chat history in SQLite, so I read what the model actually did instead of trusting its summary. The agent is a folder of files (persona, allowed tools, two skills), versioned and tested like code, so I decided which jobs the model gets. Grades now come from code. The model is one alias in one file, and the speech model, the voice and the harness can each be swapped.
 
-The second brain is plain OKF markdown, so any tool or agent can read it and nothing I learn is locked in a product. One script installs the agent profile with both skills on a Hermes instance. I have run it in one VM only, so "someone else could run their own Leash on their own Mac" is a design goal, not a result. It is also how one person put this together inside the challenge week, from open parts that each do one job.
+The second brain is plain OKF markdown, so any tool or agent can read it, and nothing I learn is locked in a product. One script installs the agent profile with both skills on a Hermes instance. I have run it in one VM only, so "someone else could run their own Leash on their own Mac" is a design goal, not a result. It is also how one person put this together inside the challenge week, from open parts that each do one job.
 
 Not all of it is open. Telegram carries my messages and voice notes, Tailscale links the phone to the Mac, search words go to SerpApi, the audio comes from the podcast host, and the agent's VM runs macOS.
 
@@ -166,29 +137,9 @@ Not all of it is open. Telegram carries my messages and voice notes, Tailscale l
 
 I built this with Claude Code, with subagents for brainstorming and for the app's icon, badge and layout design. The session below is an abridged transcript of 106 messages: my prompts and the final reply of each turn, shortened, with tool calls and private details removed. The first Telegram tests are the most useful part: a token the shell tool never got, and an old error the model replayed from its chat history.
 
-<!-- TODO(author): make session 786 public on DEV first; unpublished sessions can only be embedded by their author. -->
-
 {% agent_session 786 %}
 
 ## Prize Categories
 
 - Gemma: Gemma 4 12B QAT, served by Ollama on my Mac, writes the notes, the quiz and the grading wording, and is the model behind the Telegram agent.
 - SerpApi: voice-requested web search. A walk note that starts with "search the web for..." runs one search after the walk and puts the top three links in the Telegram message (the example above); a Telegram voice note can ask too. The key stays on the Mac, and a daily cap lives in code.
-
-I did not use the other partners, so I left them out.
-
-<!-- Thanks for participating! -->
-
-<!--
-PRE-SUBMISSION CHECKLIST (delete before publishing)
-- [ ] Demo video embed renders (Demo section)
-- [ ] Video description from docs/demo-video-description.md pasted on the video (DEV post link filled in)
-- [ ] Screenshots in docs/screens are real phone screenshots and are pushed; the three image links and the diagram open
-- [ ] Session 786 made public on DEV; the embed renders
-- [ ] Repo pushed; the Code link opens the folder
-- [ ] Claims re-read against docs/CHALLENGE-MEMORY.md "may claim / must NOT claim"
-- [ ] No YouTube or yt-dlp wording in the post apart from the demo video's own link (the README keeps it)
-- [ ] Numbers re-checked; the abridged-session caveat kept
-- [ ] Posted with the default ai_disclosure_level; tag hf26challenge present
-- [ ] Posted before the deadline: Oct 12, 2026 06:59 UTC (Sun Oct 11, 11:59 PM PDT; Mon Oct 12 01:59 local)
--->
