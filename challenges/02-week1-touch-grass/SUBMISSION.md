@@ -81,7 +81,7 @@ The code, the setup steps and the dated log of everything can be found in the `c
 
 ## How I Built It
 
-![Architecture diagram in three columns. Phone: the Leash app records route, voice notes and taps, with an offline queue, and reaches the Mac over Tailscale. Mac: a tool server that computes km, scores, badges and streaks, calls whisper.cpp, graphify, Piper and Gemma 4 on Ollama, and writes the wiki; a macOS VM run by Lume holds the Hermes agent and leashctl, linked to the Mac by an SSH tunnel. Internet: podcast host, SerpApi and Telegram. Numbered badges 1 to 6 mark the steps listed below](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/02-week1-touch-grass/docs/architecture.png)
+![Architecture diagram in three columns. Phone: the Leash app records route, voice notes and taps, with an offline queue, and reaches the Mac over Tailscale. Mac: a tool server that computes km, scores, badges and streaks, calls whisper.cpp, graphify, Piper and Gemma 4 on Ollama, and writes the wiki; a macOS VM run by Lume holds the Hermes agent and leashctl, linked to the Mac by an SSH tunnel. Internet: podcast host, SerpApi and Telegram. Numbered badges 1 to 6 mark the steps listed below](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/1f5e6422c739032430bd9dd5502d062d37ec205e/challenges/02-week1-touch-grass/docs/architecture.png)
 
 The numbers in the diagram follow one loop:
 
