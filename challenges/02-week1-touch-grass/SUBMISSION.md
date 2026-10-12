@@ -150,17 +150,17 @@ Limits:
 
 ## Why Does Open Innovation Matter?
 
-My voice and my route stay on my machine. Voice notes are transcribed on the Mac, the GPS track is stored there, and the wiki is plain files. Ollama's request log from the agent's first day, tests included, shows 183 chat requests, all to the local model; no hosted model was configured or called.
+Idea Leash asks for a lot of trust. It hears my voice, keeps the routes I walk with my dog, and builds a private memory of what I learn. Open models and an open agent harness made it buildable on those terms, because every part that thinks runs on my own Mac, where I can look inside it and change it.
 
-It costs nothing per use, so the quiz repair loop can spend up to three generations on one quiz. The one metered service is the optional web search, on a free plan and capped at eight a day in my code.
+No hosted model hears my voice or sees my route. Gemma 4 12B answers through Ollama, whisper.cpp transcribes voice notes on the Mac (a 15 second clip in 0.95 s), and the GPS track is stored there. Ollama's log from the agent's first day, tests included, shows 183 chat requests, all to the local model. My reasoning, not a test: with a hosted model, every voice idea and episode transcript would pass through a server I do not control.
 
-I could look inside it. Ollama told me which model was loaded and with what context, which is how I found the reloads, and the agent's chat history in SQLite showed what the model actually did.
+Free calls shaped the design. The quiz generator checks every quote against the transcript and regenerates up to three times when a check fails. With a bill per call I would have weighed each retry and each test run against the cost, and I suspect I would have tested less.
 
-Parts are swappable: the model is one alias in one file, and the speech model, the voice and the agent harness can each be replaced. I stayed with the 12B because bigger models do not run reliably on my Mac, so I cannot say whether a larger one would do better.
+I could open it up. Ollama shows which model is loaded and with what context, which is how I caught it reloading at every hand-off. Hermes keeps its chat history in SQLite, so I read what the model actually did instead of trusting its summary. The agent is a folder of files (persona, allowed tools, two skills), versioned and tested like code, so I decided which jobs the model gets. Grades now come from code. The model is one alias in one file, and the speech model, the voice and the harness can each be swapped.
 
-Where open did not help: tool use. The open model I could run followed a tool's output worse than I wanted, and the fix was to take that job away from it.
+The second brain is plain OKF markdown, so any tool or agent can read it and nothing I learn is locked in a product. One script installs the agent profile with both skills on a Hermes instance. I have run it in one VM only, so "someone else could run their own Leash on their own Mac" is a design goal, not a result. It is also how one person put this together inside the challenge week, from open parts that each do one job.
 
-Not everything is open or local: Telegram carries my messages and voice notes, Tailscale connects the phone to the Mac, search words go to SerpApi, the audio comes from the podcast host, and the agent's VM runs macOS (Lume, which runs the VM, is MIT licensed).
+Not all of it is open. Telegram carries my messages and voice notes, Tailscale links the phone to the Mac, search words go to SerpApi, the audio comes from the podcast host, and the agent's VM runs macOS.
 
 ## My Agent Session
 
