@@ -18,13 +18,15 @@ challenges/                One folder per challenge; see challenges/README.md
   NN-<slug>/               AGENTS.md (challenge brief + instructions), README.md, CHALLENGE.md,
                            SUBMISSION.md, docs/CHALLENGE-MEMORY.md (keep it current) + the project code.
                            Read its AGENTS.md before working there.
+global-hack-week/          Challenges and hands-on sessions exclusive to GHW: Hacktoberfest (Oct 9-15),
+                           one folder per item. Not DEV Challenges. Read its AGENTS.md before working there.
 knowledge-base/hacktoberfest-2026/   OKF wiki (raw/ sources, wiki/ pages)
 STICKERS.md                Sticker tracker toward the 3 / 10 / 15 milestones
 ```
 
 ## Rules for agents
 
-0. **Working inside a challenge folder?** Read that folder's `AGENTS.md` first; it holds the theme, partner list, and submission steps and overrides this file for that challenge.
+0. **Working inside a challenge folder?** Read that folder's `AGENTS.md` first; it holds the theme, partner list, and submission steps and overrides this file for that challenge. The same goes for [`global-hack-week/AGENTS.md`](global-hack-week/AGENTS.md) when working on Global Hack Week: Hacktoberfest challenges or hands-on sessions; those are MLH items, not DEV Challenges, so rules 2 and 3 apply there only as that file says.
 
 1. **Verify live data before stating it.** Challenge prompts, dates, prizes, and rubrics change. Use the DevRelay MCP tools `get_challenges` / `get_challenge_details` (read `full_details`) and the `devrelay-knowledge` skill (`get_knowledge_document`, topic `hacktoberfest`). Never quote a date from memory. Today's date comes from the environment, not from this file.
 2. **One challenge = one folder = one project.** Keep code, README, license, and submission draft together under `challenges/NN-<slug>/`. Do not share code between challenge folders by import; copy or extract to a new folder under `challenges/` if you must.

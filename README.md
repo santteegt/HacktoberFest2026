@@ -15,16 +15,21 @@ Each challenge lives in its own folder under [`challenges/`](challenges/README.m
 | 03 | Week 2: Open-Source AI | Oct 12 → Oct 19 | 🔵 Upcoming |
 | 04 | Week 3: Open-Source AI | Oct 19 → Oct 26 | 🔵 Upcoming |
 | 05 | Week 4: Open-Source AI | Oct 26 → Nov 1 | 🔵 Upcoming |
-| – | Global Hack Week: Hacktoberfest | Oct 9 → Oct 15 | 🔵 Upcoming |
+| – | [Global Hack Week: Hacktoberfest](global-hack-week) (MLH, not a DEV Challenge) | Oct 9 → Oct 15 | 🟡 In progress |
 
 Dates come from live data and have shifted before. Check `challenges/README.md` for the source and discrepancies.
+
+## Global Hack Week: Hacktoberfest
+
+The challenges and hands-on sessions that are exclusive to MLH's Global Hack Week: Hacktoberfest (Oct 9 → Oct 15) live in [`global-hack-week/`](global-hack-week/AGENTS.md), one folder each. They earn GHW points toward stickers (see [STICKERS.md](STICKERS.md)), and none of them are DEV Challenge entries.
 
 ## Repo layout
 
 ```
 AGENTS.md                  Instructions for any AI agent (CLAUDE.md is a symlink)
 STICKERS.md                Sticker tracker toward the 3 / 10 / 15 milestones
-challenges/                One folder per challenge (+ _template/)
+challenges/                One folder per DEV challenge (+ _template/)
+global-hack-week/          GHW: Hacktoberfest challenges and hands-on sessions, one folder each
 knowledge-base/hacktoberfest-2026/
                            OKF wiki: raw/ sources → wiki/ pages (ideas, tools, frameworks)
 .agents/skills/            Agent skills, shared across harnesses
