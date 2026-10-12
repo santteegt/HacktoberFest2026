@@ -4,13 +4,14 @@ okf_version: "0.1"
 
 # Hacktoberfest 2026 — Wiki Index
 
-_Last updated: 2026-10-05 — 36 pages_
+_Last updated: 2026-10-11 — 40 pages_
 
 ## Topics
 - [Hacktoberfest 2026](hacktoberfest-2026.md) — the program: stickers replace PRs, open-source AI theme
 - [Hacktoberfest 2026 schedule](hacktoberfest-2026-schedule.md) — challenge windows, GHW dates, source discrepancies
 - [Weekend challenge: Build for a Friend](weekend-challenge-build-for-a-friend.md) — DEV event 78, due Oct 5 06:59 UTC
 - [Weekend challenge retrospective](weekend-challenge-retrospective.md) — what worked, what failed, numbers
+- [Week 1 challenge: Touch Grass](week1-challenge-touch-grass.md) — DEV event 79, the Idea Leash entry and its outcome
 - [Partner tools catalog](partner-tools-catalog.md) — the 16 weekend partners by role, recipes, ideation questions
 - [Global Hack Week](global-hack-week.md) — MLH's monthly online week, incl. the Hacktoberfest edition
 
@@ -20,12 +21,14 @@ _Last updated: 2026-10-05 — 36 pages_
 - [DEV Challenge rules](dev-challenge-rules.md) — eligibility, teams, originality, AI, judging, payout
 - [Open-source AI prompt](open-source-ai-prompt.md) — the prompt shared by all five challenges
 - [Prize categories and partners](prize-categories-and-partners.md) — sponsor technologies for category prizes
-- [Challenge playbook](challenge-playbook.md) — ten rules for the next challenges, from the weekend build
+- [Challenge playbook](challenge-playbook.md) — rules for the next challenges, from the weekend build and Week 1
+- [Small local model agent patterns](small-local-model-agent-patterns.md) — what made a 12B local model usable in an agent
 
 ## Tools
 - [DevRelay](devrelay.md) — MCP gateway and skills; install is a sticker
-- [Gemma](gemma.md) — open-weight model family; used in the weekend build
+- [Gemma](gemma.md) — open-weight model family; used in the weekend build and Week 1
 - [Ollama](ollama.md) — local runtime; first-hand findings
+- [Hermes Agent](hermes-agent.md) — open agent harness: profiles, skills, Telegram gateway
 - [Tinker](tinker.md) — hosted fine-tuning, exportable adapters
 - [TabPFN](tabpfn.md) — pretrained model for small tabular data
 - [DigitalOcean Gradient AI](digitalocean-gradient-ai.md) — serverless and dedicated inference, agents
@@ -51,3 +54,4 @@ _Last updated: 2026-10-05 — 36 pages_
 - [DEV Challenge 78](sources/dev-challenge-78-weekend-build-for-a-friend.md) — weekend challenge rules snapshot
 - [Retrospective: Build for a Friend](sources/retrospective-weekend-build-for-a-friend.md) — post-publish retrospective
 - [Partner tools feature catalog](sources/partner-tools-feature-catalog.md) — per-partner features, limits, first-hand notes
+- [Retrospective: Week 1 Touch Grass](sources/retrospective-week1-touch-grass.md) — post-publish retrospective of Idea Leash

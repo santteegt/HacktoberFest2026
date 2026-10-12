@@ -3,7 +3,7 @@ type: tool
 title: "DevRelay"
 description: "MCP gateway and skills for DEV Challenges, MLH events, sponsor offers, and DEV publishing; installing it is a Hacktoberfest sticker."
 tags: [tools, program]
-timestamp: "2026-10-04T00:00:00Z"
+timestamp: "2026-10-11T00:00:00Z"
 ---
 
 ## Definition
@@ -18,6 +18,7 @@ DevRelay is an MCP gateway plus a set of agent skills that give an agent live ac
 - Skills in this repo live in `.agents/skills/devrelay-*`. Publishing is the user's call, and claiming offers or installing sponsor skills needs a yes first.
 - Agent sessions can be saved and embedded in DEV posts (`devrelay-sessions`); scrub secrets first.
 - First-hand (2026-10-05): a raw `.jsonl` upload via the presigned URL showed 0 parsed messages; a curated, normalised `curated_data` payload (about 30 KB, prompts plus shortened final replies) parsed and could be embedded with `{% agent_session <id> %}`, but only renders for readers once the session is made public from DEV (no tool for that). `update_article` on a large body sometimes failed with "outcome unknown": check `get_my_articles`, then retry once. See [Weekend challenge retrospective](weekend-challenge-retrospective.md).
+- First-hand (Week 1): a curated agent session (prompts and final replies, scrubbed) uploads and embeds fine, and must be made public before the post can show it to readers; `update_article` replaces the whole body, so fetch the live draft first; DEV re-hosts images when a post is published.
 
 ## Related Concepts
 
@@ -25,8 +26,10 @@ DevRelay is an MCP gateway plus a set of agent skills that give an agent live ac
 - [Prize categories and partners](prize-categories-and-partners.md)
 - [Open-source AI prompt](open-source-ai-prompt.md)
 - [Challenge playbook](challenge-playbook.md)
+- [Week 1 challenge: Touch Grass](week1-challenge-touch-grass.md)
 
 ## Sources
 
 - [DevRelay KB: Hacktoberfest 2026](sources/devrelay-kb-hacktoberfest.md)
 - [Retrospective: Build for a Friend](sources/retrospective-weekend-build-for-a-friend.md)
+- [Retrospective: Week 1 Touch Grass (Idea Leash)](sources/retrospective-week1-touch-grass.md)
