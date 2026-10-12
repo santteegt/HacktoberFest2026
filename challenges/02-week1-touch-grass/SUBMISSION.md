@@ -4,7 +4,7 @@ published: false
 tags: devchallenge, hf26challenge
 ---
 
-<!-- DRAFT v5 (author's review applied: template order, architecture, short demo summary; fact-checked by the orchestrator), 2026-10-11. Every fact checked against docs/CHALLENGE-MEMORY.md and README.md. Not staged, not published; the author decides. -->
+<!-- DRAFT v6 (v5: author's review applied: template order, architecture, short demo summary; fact-checked by the orchestrator. v6: the author edited the Code section and the Telegram sentence on DEV on 2026-10-11, synced here; architecture diagram redone with less text), 2026-10-11. Every fact checked against docs/CHALLENGE-MEMORY.md and README.md. Not staged, not published; the author decides. -->
 
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 1: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05)*
 
@@ -42,9 +42,9 @@ The Badges view shows what I have earned and how far I am from the next badge.
 
 ![The Badges view of the Idea Leash app at phone width, with earned and locked badges](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/02-week1-touch-grass/docs/screens/badges.png)
 
-This is the Telegram message after Sunday morning's offline dog walk, regenerated from the data the Mac stored for it (medal lines left out, because they depend on the day):
+This is the Telegram message I've got from the agent after Sunday morning's offline dog walk:
 
-```
+```plaintext
 Dog walk saved: 921 m in 24 min.
 The phone could not track 2 min of it (screen off or another app in front).
 2 voice ideas saved:
@@ -75,15 +75,13 @@ On the podcast walk I listened to that episode, then took the quiz in Telegram w
 
 ## Code
 
-The code, the setup steps and the dated log of everything I measured and got wrong:
+{% github santteegt/HacktoberFest2026 %}
 
-[github.com/santteegt/HacktoberFest2026, folder challenges/02-week1-touch-grass](https://github.com/santteegt/HacktoberFest2026/tree/main/challenges/02-week1-touch-grass)
-
-MIT licensed. The numbers in this post come from `docs/CHALLENGE-MEMORY.md` in that folder.
+The code, the setup steps and the dated log of everything can be found in the `challenges/02-week1-touch-grass` folder. MIT licensed.
 
 ## How I Built It
 
-![Architecture diagram: the phone web app talks to a tool server on the Mac over Tailscale HTTPS; the tool server uses Ollama with Gemma 4 12B, whisper.cpp, graphify and Piper, writes the markdown wiki, calls SerpApi for searches and sends messages to Telegram; the Hermes agent and leashctl run in a macOS VM and reach the Mac through an SSH reverse tunnel; Telegram talks to the Hermes agent](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/02-week1-touch-grass/docs/architecture.png)
+![Architecture diagram in three columns. Phone: the Leash app records route, voice notes and taps, with an offline queue, and reaches the Mac over Tailscale. Mac: a tool server that computes km, scores, badges and streaks, calls whisper.cpp, graphify, Piper and Gemma 4 on Ollama, and writes the wiki; a macOS VM run by Lume holds the Hermes agent and leashctl, linked to the Mac by an SSH tunnel. Internet: podcast host, SerpApi and Telegram. Numbered badges 1 to 6 mark the steps listed below](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/02-week1-touch-grass/docs/architecture.png)
 
 The numbers in the diagram follow one loop:
 
