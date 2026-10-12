@@ -81,13 +81,13 @@ The code, the setup steps and the dated log of everything can be found in the `c
 
 ## How I Built It
 
-![Architecture diagram in three columns. Phone: the Leash app records route, voice notes and taps, with an offline queue, and reaches the Mac over Tailscale. Mac: a tool server that computes km, scores, badges and streaks, calls whisper.cpp, graphify, Piper and Gemma 4 on Ollama, and writes the wiki; a macOS VM run by Lume holds the Hermes agent and leashctl, linked to the Mac by an SSH tunnel. Internet: podcast host, SerpApi and Telegram. Numbered badges 1 to 6 mark the steps listed below](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/1f5e6422c739032430bd9dd5502d062d37ec205e/challenges/02-week1-touch-grass/docs/architecture.png)
+![Architecture diagram in three columns. Phone: the Leash app records route, voice notes and taps, with an offline queue, and reaches the Mac over Tailscale. Mac: a tool server that computes km, scores, badges and streaks, calls whisper.cpp, graphify, Piper and Gemma 4 on Ollama, and writes the wiki; a macOS VM run by Lume holds the Hermes agent and leashctl, linked to the Mac by an SSH tunnel. Internet: podcast host, SerpApi and Telegram. Numbered badges 1 to 6 mark the steps listed below](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/8c46836e6fd7042e354e2af8eff1d6ed3b0e560e/challenges/02-week1-touch-grass/docs/architecture.png)
 
 The numbers in the diagram follow one loop:
 
-1. A link I send in Telegram reaches the Hermes agent in a macOS VM. The agent runs `leashctl`, which calls the tool server on the Mac through an SSH reverse tunnel. The server fetches the audio from the podcast host, graphify transcribes it, and Gemma writes the notes and the quiz.
+1. A link I send in Telegram reaches the Hermes agent in a macOS VM. The agent runs `leashctl`, which calls the tool server on the Mac through an SSH reverse tunnel. The server fetches the audio from the podcast host, graphify transcribes it, Gemma writes the notes and the quiz, the notes go into the wiki, and Piper makes spoken versions of the questions (not used in the Telegram quiz yet).
 2. The same tool server serves the phone app over Tailscale HTTPS, reachable only from my tailnet. A finished walk uploads its GPS track, and the Mac recomputes distance and time.
-3. whisper.cpp transcribes each voice note (a 15 second clip in 0.95 s) and it is saved as an idea. A note that starts with a search phrase becomes one SerpApi search.
+3. Voice clips travel with the walk. whisper.cpp transcribes each voice note (a 15 second clip in 0.95 s) and it is saved as an idea in the wiki. A note that starts with a search phrase becomes one SerpApi search.
 4. Code builds the after-walk message, and the Mac sends it to Telegram.
 5. "Quiz me" goes to the agent, which asks each multiple choice question as buttons.
 6. Each answer goes back through `leashctl`. The Mac grades it and sends the grade itself.

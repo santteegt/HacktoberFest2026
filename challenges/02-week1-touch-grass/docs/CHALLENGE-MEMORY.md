@@ -372,3 +372,7 @@ Rules: measurements need date, device or machine, model and method, or they don'
 
 ### 2026-10-11 · FINDING · DEV kept showing the old diagram after the file was replaced
 - The new `architecture.png` was pushed to `main` and `raw.githubusercontent.com` served it (same bytes as the local file), but the DEV draft kept showing the old picture, because DEV proxies and caches external images by URL. Fix: the post now references the image by commit hash (`.../1f5e642.../docs/architecture.png`), a URL DEV has never fetched. The three screenshots are unchanged and keep their `main` URLs. Lesson: when replacing an image that a DEV post already shows, change the URL, not just the file.
+
+### 2026-10-11 · PROCESS · Diagram badges and the numbered list under it brought back in line
+- The author noted that the items describing the diagram might be out of date. Compared every badge in the picture with the six list items: items 2, 4, 5 and 6 matched; item 1 did not mention the notes going into the wiki or Piper (Piper had no badge), and item 3 did not say the voice clips travel with the walk or that the idea goes into the wiki.
+- Fixed: Piper now carries badge 1 in the diagram (spoken questions are made at ingest, still not used in the Telegram quiz, and the list says so); items 1 and 3 reworded. The image URL in the post is pinned to the commit that holds the new picture (`8c46836`).
