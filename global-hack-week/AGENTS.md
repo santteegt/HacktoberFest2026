@@ -40,7 +40,7 @@ Rules for a folder:
 
 | Folder | Type | Source | Status |
 | --- | --- | --- | --- |
-| _none yet_ | | | |
+| [`tiger_data`](tiger_data/) | session | Tiger / TimescaleDB IoT sensor simulation tutorial on `tigerdata-demo` | Deployed 2026-10-13; see folder README |
 
 Add a row when you create a folder.
 
