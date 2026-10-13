@@ -1,0 +1,4 @@
+/* Base reset kept minimal; app chrome lives in App.css */
+body {
+  margin: 0;
+}
