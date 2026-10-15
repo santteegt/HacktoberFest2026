@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="420" viewBox="0 0 480 420"><title>1/10 FWD touring hatchback body shell - rear view</title><defs><linearGradient id="rBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d5fd6"/><stop offset="1" stop-color="#0e3079"/></linearGradient><linearGradient id="rGlass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9e0f5"/><stop offset="1" stop-color="#587da8"/></linearGradient></defs><ellipse cx="240.0" cy="352.0" rx="164.2" ry="10" fill="#0b1220" opacity="0.18"/>
+<circle cx="92.4" cy="281.5" r="57.6" fill="#22262d" stroke="#0d1526" stroke-width="2"/>
+<circle cx="387.6" cy="281.5" r="57.6" fill="#22262d" stroke="#0d1526" stroke-width="2"/>
+<circle cx="92.4" cy="281.5" r="34.6" fill="#ccd4e3" stroke="#0d1526" stroke-width="1.5"/>
+<circle cx="387.6" cy="281.5" r="34.6" fill="#ccd4e3" stroke="#0d1526" stroke-width="1.5"/>
+<path d="M 86.1 227.5 L 393.9 227.5 L 400.7 313.0 L 79.3 313.0 Z" fill="url(#rBody)" stroke="#0d1526" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M 72.4 196.0 L 137.4 137.5 Q 240.0 110.5 342.6 137.5 L 407.6 196.0 L 390.5 196.0 L 332.3 142.0 Q 240.0 121.8 147.7 142.0 L 89.5 196.0 Z" fill="#1d5fd6" stroke="#0d1526" stroke-width="2"/>
+<path d="M 151.1 191.5 L 144.2 143.1 Q 240.0 130.8 335.8 143.1 L 328.9 191.5 Z" fill="url(#rGlass)" stroke="#0d1526" stroke-width="2"/>
+<rect x="137.4" y="131.9" width="205.2" height="7" rx="3" fill="#0e3079" stroke="#0d1526" stroke-width="1.5"/>
+<path d="M 159.6 130.8 Q 240.0 108.2 320.4 130.8 L 320.4 137.5 Q 240.0 117.2 159.6 137.5 Z" fill="#f3f6fc" stroke="#0d1526" stroke-width="2"/>
+<path d="M 171.6 214.0 L 212.6 205.0 L 205.8 225.2 Z" fill="#e0244a" stroke="#0d1526" stroke-width="1.5"/>
+<path d="M 127.1 199.4 Q 84.4 203.9 91.2 226.4 L 128.8 224.1 Z" fill="#e0244a" stroke="#0d1526" stroke-width="1.5"/>
+<path d="M 308.4 214.0 L 267.4 205.0 L 274.2 225.2 Z" fill="#e0244a" stroke="#0d1526" stroke-width="1.5"/>
+<path d="M 352.9 199.4 Q 395.6 203.9 388.8 226.4 L 351.1 224.1 Z" fill="#e0244a" stroke="#0d1526" stroke-width="1.5"/>
+<line x1="171.6" y1="227.5" x2="171.6" y2="272.5" stroke="#0d1526" stroke-width="1.2"/>
+<line x1="308.4" y1="227.5" x2="308.4" y2="272.5" stroke="#0d1526" stroke-width="1.2"/>
+<rect x="197.2" y="230.9" width="85.5" height="15.8" rx="3" fill="#f3f6fc" stroke="#0d1526" stroke-width="1.8"/>
+<text x="240.0" y="241.9" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="11" fill="#0d1526">CA-45</text>
+<line x1="89.5" y1="286.0" x2="390.5" y2="286.0" stroke="#0d1526" stroke-width="1.8"/>
+<line x1="188.7" y1="287.1" x2="188.7" y2="310.8" stroke="#0d1526" stroke-width="1.2"/>
+<line x1="240.0" y1="287.1" x2="240.0" y2="310.8" stroke="#0d1526" stroke-width="1.2"/>
+<line x1="291.3" y1="287.1" x2="291.3" y2="310.8" stroke="#0d1526" stroke-width="1.2"/>
+<rect x="86.1" y="286.0" width="10.3" height="27.0" fill="#14171d" stroke="#0d1526" stroke-width="1.5"/>
+<rect x="383.6" y="286.0" width="10.3" height="27.0" fill="#14171d" stroke="#0d1526" stroke-width="1.5"/>
+<rect x="69.0" y="332.0" width="10.3" height="8" fill="#14171d" stroke="#0d1526" stroke-width="1"/>
+<rect x="400.7" y="332.0" width="10.3" height="8" fill="#14171d" stroke="#0d1526" stroke-width="1"/>
+<path d="M 205.8 223.0 L 219.5 223.0 L 200.7 110.5 L 187.0 110.5 Z" fill="#14171d" stroke="#0d1526" stroke-width="1.5"/>
+<path d="M 274.2 223.0 L 260.5 223.0 L 279.3 110.5 L 293.0 110.5 Z" fill="#14171d" stroke="#0d1526" stroke-width="1.5"/>
+<rect x="74.1" y="98.1" width="331.7" height="7.5" fill="#14171d" stroke="#0d1526" stroke-width="1.8"/>
+<rect x="63.9" y="98.1" width="8" height="22.4" fill="#ffd21f" stroke="#0d1526" stroke-width="1.5"/>
+<rect x="408.1" y="98.1" width="8" height="22.4" fill="#ffd21f" stroke="#0d1526" stroke-width="1.5"/>
+<path d="M 157.9 98.1 l 6 -10 l 6 10 Z" fill="#14171d" stroke="#0d1526" stroke-width="1.2"/>
+<path d="M 234.0 98.1 l 6 -10 l 6 10 Z" fill="#14171d" stroke="#0d1526" stroke-width="1.2"/>
+<path d="M 322.1 98.1 l 6 -10 l 6 10 Z" fill="#14171d" stroke="#0d1526" stroke-width="1.2"/></svg>

@@ -1,0 +1,7 @@
+# Pinned runtime dependency for the sprite renderer in this folder.
+# Installed with (writes stay inside the working folder, no venv needed):
+#   python3 -m pip install --break-system-packages --target .deps -r requirements.txt
+# generate.py prepends .deps/ to sys.path itself, so `python3 generate.py`
+# works with no activation step. Without Pillow it falls back to the
+# built-in stdlib scanline renderer (same geometry, flat fills).
+pillow==12.3.0

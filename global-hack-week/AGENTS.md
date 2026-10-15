@@ -41,6 +41,8 @@ Rules for a folder:
 | Folder | Type | Source | Status |
 | --- | --- | --- | --- |
 | [`tiger_data`](tiger_data/) | session | Tiger / TimescaleDB IoT sensor simulation tutorial on `tigerdata-demo` | Deployed 2026-10-13; see folder README |
+| [`challenge-1`](challenge-1/) | challenge | Local weather + 5-day forecast PWA (Open-Meteo); GHW dashboard <https://ghw.mlh.io/challenges> | Scaffolded + working static PWA 2026-10-13 |
+| [`challenge-2`](challenge-2/) | challenge | 1/10 FWD touring-car body-shell sprites from `BASE_PROMPT.md` + CA45 schematics; multi-model entries | Three agent entries + comparison README 2026-10-14 |
 
 Add a row when you create a folder.
 
