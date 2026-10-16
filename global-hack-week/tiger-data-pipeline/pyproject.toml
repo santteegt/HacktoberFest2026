@@ -1,0 +1,11 @@
+[project]
+name = "tiger-data-pipeline"
+version = "0.1.0"
+description = "Twelve Data → Tiger Cloud → Grafana data pipeline tutorial"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "psycopg2-binary>=2.9.13",
+    "twelvedata>=1.4.0",
+    "websocket-client>=1.9.2",
+]
