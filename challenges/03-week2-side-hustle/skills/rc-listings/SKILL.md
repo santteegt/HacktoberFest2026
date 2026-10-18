@@ -15,7 +15,7 @@ metadata:
 
 ## When to use
 
-A member tells the bot they have a spare part, kit or accessory (HAVE), or that they are looking for one (NEED), or asks who in the club has something. Also when a member answers a clarifying question you asked about a listing.
+A member tells the bot they have a spare part, kit or accessory (HAVE), or that they are looking for one (NEED), or asks who in the club has something. Also when a member answers a clarifying question you asked about a listing, and when a member says one of their listings is done: "ya lo vendí", "ya no lo tengo", "ya conseguí el ...", "ya no lo necesito", "sold it", "found one".
 
 ## How it works
 
@@ -45,6 +45,7 @@ Never pass `--phone`: the command reads who wrote the message from the session i
 ### What the command returns (JSON on stdout)
 
 - `ok: true`: the listing is saved. `reply` is the confirmation (it echoes the parsed fields); send it verbatim. `matches` lists any matches; if non-empty, the command already sent direct messages to both members (`notified: true`); in a group, add one line saying there is a match and that both members were written to. Do not post phone numbers in the group.
+- Matches can come from **other clubs in the same city** (the reply says "de <club>"); that is expected, not an error.
 - `ok: false` with `error: missing_fields` and `missing`: ask the member exactly the question in `reply`, wait for the answer, then run the command again with the completed JSON.
 - `ok: false` with `error: not_member`: send `reply` (it tells them how to register) and stop.
 - `ok: false` with `error: bad_json`: fix the JSON you wrote and run it again; do not ask the member.
@@ -53,11 +54,20 @@ Never pass `--phone`: the command reads who wrote the message from the session i
 ### Other commands
 
 ```bash
-uv run rcparts search --club <CLUB_ID> --text "<what they ask for>" --kind HAVE   # who has X? (open HAVE listings, best first)
+uv run rcparts search --text "<what they ask for>" --kind HAVE   # who has X? (open HAVE listings, best first; the sender's club and the clubs in the same city)
 uv run rcparts listing list                       # a member's own listings
-uv run rcparts listing close --id <LISTING_ID>    # when the member says it is sold or no longer needed (owner only)
+uv run rcparts listing close --text "<what the member said>"     # "ya lo vendí", "ya conseguí el ...": closes their own listing
+uv run rcparts listing close --id <LISTING_ID>    # after the member picked one from a numbered list
 uv run rcparts member get                         # club id, name, class, brands
 ```
+
+### Closing a listing ("ya lo vendí", "ya no lo tengo", "ya conseguí el ...")
+
+Pass the member's words as they wrote them: `uv run rcparts listing close --text "ya vendí el alerón delantero del X1"`. The command only looks at the sender's own open listings and works out which one they mean (part number first, then words) and why (sold / found; add `--reason unavailable` only if they say they no longer offer it without selling it).
+
+- `ok: true`: closed. Send `reply`. If someone had a match with that listing, the command already told them by DM.
+- `error: ambiguous`: `reply` is a numbered list; send it and ask which one. When they answer ("el 2", "#14"), run `uv run rcparts listing close --id <LISTING_ID>` with the id from `candidates`.
+- `error: not_found`: send `reply` (it lists their open listings, if any). Do not guess.
 
 For `search`, relay the `reply` (it lists the matching HAVE listings with their owners' first names, never phone numbers in a group).
 

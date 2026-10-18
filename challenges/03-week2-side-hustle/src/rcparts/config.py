@@ -10,6 +10,7 @@ from pathlib import Path
 PROJECT_DIR = Path(__file__).resolve().parents[2]
 WEIGHT_UNITS = {"g": Decimal("1"), "kg": Decimal("1000"), "lb": Decimal("453.59237"), "oz": Decimal("28.349523125")}
 LB_PER_KG = Decimal("2.20462262185")
+MATCH_SCOPES = ("club", "city", "country")
 
 
 def load_dotenv(path: Path) -> None:
@@ -41,6 +42,12 @@ class Settings:
     store_crawl_delay_s: float
     weight_unit: str
     hermes_send_cmd: str
+    match_scope: str = "city"  # club | city | country: which clubs the matcher and `search` look at
+    data_dir: Path = PROJECT_DIR / "data"
+    hermes_document_cache_dir: str = ""  # where Hermes caches inbound documents (fallback for receipts)
+    deposit_account: str = ""  # optional: where members deposit, shown with the deposit instructions
+    group_jid: str = ""  # first WHATSAPP_GROUP_ALLOWED_USERS entry (the demo club's group)
+    allowed_users: tuple[str, ...] = ()
 
     @classmethod
     def from_env(cls, env: dict[str, str] | None = None) -> "Settings":
@@ -48,6 +55,7 @@ class Settings:
             load_dotenv(Path(os.environ.get("RCPARTS_ENV_FILE", PROJECT_DIR / ".env")))
             env = dict(os.environ)
         lang = env.get("REPLY_LANG", "es").strip().lower() or "es"
+        scope = env.get("MATCH_SCOPE", "city").strip().lower() or "city"
         unit = env.get("WEIGHT_UNIT", "g").strip().lower() or "g"
         if unit not in WEIGHT_UNITS:
             raise ValueError(f"WEIGHT_UNIT must be one of {sorted(WEIGHT_UNITS)}, got {unit!r}")
@@ -71,4 +79,12 @@ class Settings:
             store_crawl_delay_s=float(env.get("STORE_CRAWL_DELAY_S", "2") or "2"),
             weight_unit=unit,
             hermes_send_cmd=env.get("HERMES_SEND_CMD", "hermes send").strip() or "hermes send",
+            match_scope=scope if scope in MATCH_SCOPES else "city",
+            data_dir=Path(env.get("RCPARTS_DATA_DIR") or PROJECT_DIR / "data"),
+            hermes_document_cache_dir=env.get("HERMES_DOCUMENT_CACHE_DIR", "").strip(),
+            deposit_account=env.get("DEPOSIT_ACCOUNT", "").strip(),
+            group_jid=next((j.strip() for j in env.get("WHATSAPP_GROUP_ALLOWED_USERS", "").split(",")
+                            if j.strip()), ""),
+            allowed_users=tuple("".join(ch for ch in u if ch.isdigit())
+                                for u in env.get("WHATSAPP_ALLOWED_USERS", "").split(",") if u.strip()),
         )

@@ -98,10 +98,33 @@ def test_end_to_end(capsys, monkeypatch, load_fixture):
     q = run(capsys, "quote", "--phone", b, "--query", "TAM54500")
     assert q["ok"] and q["exact_match"]
     assert "$17.39" in q["reply"] and "$15.83" in q["reply"]
-    acc = run(capsys, "quote", "accept", "--phone", b, "--quote", q["quote"]["id"])
-    assert acc["ok"] and "$17.39" in acc["reply"]
-    again = run(capsys, "quote", "accept", "--phone", b, "--quote", q["quote"]["id"])
+    qid = q["quote"]["id"]
+    acc = run(capsys, "quote", "accept", "--phone", b, "--quote", qid)
+    assert acc["ok"] and "$17.39" in acc["reply"] and f"RC-Q{qid}" in acc["reply"]
+    assert acc["quote"]["status"] == "awaiting_deposit"
+    again = run(capsys, "quote", "accept", "--phone", b, "--quote", qid)
     assert again["ok"] is False
+    assert run(capsys, "orders", "daily", "--dry-run")["orders"] == []  # not paid yet
+
+    # Deposit: a mismatching receipt is accepted but flagged; the maintainer rejects, then a good one is confirmed.
+    bad_pdf = run(capsys, "demo", "receipt", "--quote", qid, "--amount", "15")["file"]
+    stranger_submit = run(capsys, "deposit", "submit", "--phone", a, "--quote", qid, "--file", bad_pdf)
+    assert stranger_submit["error"] == "quote_not_awaiting_deposit"
+    sub = run(capsys, "deposit", "submit", "--phone", b, "--file", bad_pdf)  # --quote inferred
+    assert sub["ok"] and sub["quote_id"] == qid and sub["maintainer_notified"]
+    assert sub["deposit"]["checks"]["amount_ok"] is False and sub["deposit"]["checks"]["reference_ok"] is True
+    assert "MEDIA:/" in sub["maintainer_message"] and "NO coincide" not in sub["maintainer_message"]  # en
+    assert "DOES NOT match" in sub["maintainer_message"]
+    assert run(capsys, "deposit", "confirm", "--phone", b, "--quote", qid)["error"] == "not_maintainer"
+    rej = run(capsys, "deposit", "reject", "--phone", a, "--quote", qid, "--reason", "amount differs")
+    assert rej["ok"] and rej["status"] == "awaiting_deposit" and rej["member_notified"]
+    good_pdf = run(capsys, "demo", "receipt", "--quote", qid)["file"]
+    sub2 = run(capsys, "deposit", "submit", "--phone", b, "--quote", qid, "--file", good_pdf)
+    assert sub2["deposit"]["checks"]["amount_ok"] and sub2["deposit"]["amount_usd"] == "17.39"
+    conf = run(capsys, "deposit", "confirm", "--phone", a, "--quote", qid)
+    assert conf["ok"] and conf["status"] == "paid"
+    listed = run(capsys, "deposit", "list", "--phone", a)
+    assert [d["status"] for d in listed["deposits"]] == ["confirmed", "rejected"]
 
     preview = run(capsys, "orders", "daily", "--dry-run")
     assert preview["orders"][0]["grand_total_usd"] == "17.39"
@@ -112,4 +135,56 @@ def test_end_to_end(capsys, monkeypatch, load_fixture):
 
     closed = run(capsys, "listing", "close", "--id", have["listing"]["id"], "--phone", b)
     assert closed["ok"] is False  # not the owner
-    assert run(capsys, "listing", "close", "--id", have["listing"]["id"], "--phone", a)["ok"]
+    by_id = run(capsys, "listing", "close", "--id", have["listing"]["id"], "--phone", a, "--no-notify")
+    assert by_id["ok"] and by_id["reason"] == "sold"
+    assert [n["listing_id"] for n in by_id["notified"]] == [need["listing"]["id"]]
+
+    # Close by text: one hit (and the matched NEED's owner is told), ambiguous, none.
+    ok = run(capsys, "listing", "close", "--phone", a, "--text", "ya vendí los amortiguadores CVA")
+    assert ok["ok"] and ok["listing_id"] == have2["listing"]["id"] and ok["notified"][0]["sent"]
+    run(capsys, "listing", "add", "--phone", a, "--no-notify", "--json",
+        '{"kind":"HAVE","brand":"tamiya","chassis":"tt02","description":"rear upright"}')
+    run(capsys, "listing", "add", "--phone", a, "--no-notify", "--json",
+        '{"kind":"HAVE","brand":"tamiya","chassis":"tt02","description":"front upright"}')
+    amb = run(capsys, "listing", "close", "--phone", a, "--text", "sold the upright")
+    assert amb["ok"] is False and amb["error"] == "ambiguous" and len(amb["candidates"]) == 2
+    none = run(capsys, "listing", "close", "--phone", a, "--text", "sold the motor")
+    assert none["ok"] is False and none["error"] == "not_found" and len(none["open_listings"]) == 2
+
+
+def test_cross_club_scope(capsys, monkeypatch):
+    monkeypatch.setenv("REPLY_LANG", "es")
+    run(capsys, "db", "init")
+    c1 = run(capsys, "club", "add", "--name", "Club Uno", "--country", "EC", "--city", "Loja")["club"]
+    c2 = run(capsys, "club", "add", "--name", "Club Dos", "--country", "EC", "--city", "loja ")["club"]
+    c3 = run(capsys, "club", "add", "--name", "Club Tres", "--country", "EC", "--city", "Ambato")["club"]
+    x, y, z = "593990000011", "593990000012", "593990000013"
+    run(capsys, "member", "add", "--club", c1["id"], "--phone", x, "--name", "Xavi")
+    run(capsys, "member", "add", "--club", c2["id"], "--phone", y, "--name", "Yola")
+    run(capsys, "member", "add", "--club", c3["id"], "--phone", z, "--name", "Zoe")
+    run(capsys, "listing", "add", "--phone", y, "--no-notify", "--json",
+        '{"kind":"HAVE","part_number":"XRA303187-H","brand":"xray","chassis":"x4","description":"brazo"}')
+    run(capsys, "listing", "add", "--phone", z, "--no-notify", "--json",
+        '{"kind":"HAVE","part_number":"XRA303187-H","brand":"xray","chassis":"x4","description":"brazo"}')
+    need = run(capsys, "listing", "add", "--phone", x, "--json", '{"kind":"NEED","part_number":"XRA303187H"}')
+    assert [m["listing"]["member_name"] for m in need["matches"]] == ["Yola"]  # same city only
+    assert "Yola (de Club Dos)" in need["reply"] and need["matches"][0]["notified"]
+    monkeypatch.setenv("MATCH_SCOPE", "club")
+    assert run(capsys, "search", "--phone", x, "--text", "XRA303187H", "--kind", "HAVE")["results"] == []
+    found = run(capsys, "search", "--phone", x, "--text", "XRA303187H", "--kind", "HAVE", "--scope", "country")
+    assert {r["member_name"] for r in found["results"]} == {"Yola", "Zoe"}
+    assert "(de Club Tres)" in found["reply"]
+    by_club = run(capsys, "search", "--club", c2["id"], "--text", "XRA303187H", "--kind", "HAVE")
+    assert [r["member_name"] for r in by_club["results"]] == ["Yola"]
+
+
+def test_reset_drops_only_rcparts_tables(capsys):
+    url = os.environ["DATABASE_URL"]
+    with db.connect(url) as conn:
+        conn.execute("CREATE TABLE IF NOT EXISTS sensors (id int)")
+        conn.commit()
+    out = run(capsys, "db", "reset", "--yes")
+    assert out["ok"] and all(t.split(".")[1] in db.schema_tables() for t in out["dropped"])
+    with db.connect(url) as conn:
+        assert conn.execute("SELECT to_regclass('sensors') AS r").fetchone()["r"] is not None
+        assert conn.execute("SELECT count(*) AS n FROM clubs").fetchone()["n"] == 0

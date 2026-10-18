@@ -42,6 +42,13 @@ def quote_reply(lang: str, q: dict, us_address: str, exact: bool = True) -> str:
     return "\n".join(lines)
 
 
+def eligible_for_order(q: dict) -> bool:
+    """Into the order batch: paid quotes (deposit confirmed by the maintainer) and accepted self-orders."""
+    if q.get("order_id") is not None:
+        return False
+    return q.get("status") == "paid" or (q.get("status") == "accepted" and q.get("with_processing") is False)
+
+
 def order_summary(lang: str, quotes: list[dict], order_ids: dict[str, int], date: str) -> tuple[str, dict]:
     """Groups accepted quotes by store, then by store code. Returns (text, per-store summary dict)."""
     by_store: OrderedDict[str, list[dict]] = OrderedDict()

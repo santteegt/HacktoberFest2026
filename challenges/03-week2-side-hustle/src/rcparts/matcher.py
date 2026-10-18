@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 
-from .db import LISTING_COLS, has_extension
+from .db import LISTING_COLS, has_extension, scope_club_ids
 from .listing import join_model_codes, normalize_part_number
 
 MAX_RESULTS = 5
@@ -27,24 +27,24 @@ def query_terms(*texts: str | None) -> list[str]:
     return list(seen)
 
 
-def _exact(conn, club_id, part_numbers, kind, exclude_member, exclude_listing) -> list[dict]:
+def _exact(conn, club_ids, part_numbers, kind, exclude_member, exclude_listing) -> list[dict]:
     if not part_numbers:
         return []
     rows = conn.execute(
         f"""SELECT {LISTING_COLS} FROM listings l JOIN members m ON m.id = l.member_id
-            WHERE l.club_id = %(club)s AND l.part_number = ANY(%(parts)s)
+            WHERE l.club_id = ANY(%(clubs)s) AND l.part_number = ANY(%(parts)s)
               AND l.status IN ('open', 'matched')
               AND (%(kind)s::text IS NULL OR l.kind = %(kind)s)
               AND (%(xm)s::bigint IS NULL OR l.member_id <> %(xm)s)
               AND (%(xl)s::bigint IS NULL OR l.id <> %(xl)s)
             ORDER BY l.created_at DESC LIMIT %(lim)s""",
-        {"club": club_id, "parts": part_numbers, "kind": kind, "xm": exclude_member, "xl": exclude_listing,
+        {"clubs": club_ids, "parts": part_numbers, "kind": kind, "xm": exclude_member, "xl": exclude_listing,
          "lim": MAX_RESULTS},
     ).fetchall()
     return [{**r, "method": "part_number", "score": 1.0} for r in rows]
 
 
-def _text(conn, club_id, terms, description, kind, exclude_member, exclude_listing) -> list[dict]:
+def _text(conn, club_ids, terms, description, kind, exclude_member, exclude_listing) -> list[dict]:
     if not terms:
         return []
     sim = "similarity(coalesce(l.description, ''), %(desc)s)" if has_extension(conn, "pg_trgm") else "0.0"
@@ -56,13 +56,13 @@ def _text(conn, club_id, terms, description, kind, exclude_member, exclude_listi
                      WHERE t = ANY(tsvector_to_array(l.search))) AS overlap,
                    {sim} AS sim
             FROM listings l JOIN members m ON m.id = l.member_id, q
-            WHERE l.club_id = %(club)s AND l.status IN ('open', 'matched') AND l.search @@ q.tsq
+            WHERE l.club_id = ANY(%(clubs)s) AND l.status IN ('open', 'matched') AND l.search @@ q.tsq
               AND (%(kind)s::text IS NULL OR l.kind = %(kind)s)
               AND (%(xm)s::bigint IS NULL OR l.member_id <> %(xm)s)
               AND (%(xl)s::bigint IS NULL OR l.id <> %(xl)s)
             ORDER BY overlap DESC, rank DESC, sim DESC, l.created_at DESC
             LIMIT 25""",
-        {"q": " or ".join(terms), "terms": terms, "desc": description or "", "club": club_id, "kind": kind,
+        {"q": " or ".join(terms), "terms": terms, "desc": description or "", "clubs": club_ids, "kind": kind,
          "xm": exclude_member, "xl": exclude_listing},
     ).fetchall()
     # One shared word ("tamiya") is not a match; ask for two, or all of them if the query is a single word.
@@ -77,30 +77,85 @@ def _text(conn, club_id, terms, description, kind, exclude_member, exclude_listi
 
 
 def _conflicts(a: dict, b: dict) -> bool:
-    """Different brand or chassis on both sides means a different part, however similar the words."""
-    return any(a.get(k) and b.get(k) and a[k] != b[k] for k in ("brand", "chassis"))
+    """Different brand, chassis or part number on both sides means a different part, however
+    similar the words (two X4 parts share "xray x4" but are not the same part)."""
+    return any(a.get(k) and b.get(k) and a[k] != b[k] for k in ("brand", "chassis", "part_number"))
 
 
-def find_matches(conn, listing: dict) -> list[dict]:
-    """Opposite-kind open listings in the same club, never the member's own."""
+def _shares_description(listing: dict, hit: dict) -> bool:
+    """A text match needs at least one word of the part itself in common, not only brand and chassis."""
+    desc = set(query_terms(listing.get("description"))) - set(query_terms(listing.get("brand"), listing.get("chassis")))
+    if not desc:
+        return True
+    return bool(desc & set(query_terms(hit.get("brand"), hit.get("chassis"), hit.get("part_number"),
+                                       hit.get("description"))))
+
+
+def text_match_ok(listing: dict, hit: dict) -> bool:
+    return not _conflicts(listing, hit) and _shares_description(listing, hit)
+
+
+def find_matches(conn, listing: dict, scope: str = "club") -> list[dict]:
+    """Opposite-kind open listings in the clubs within `scope` (club | city | country), never the member's own."""
     other = "HAVE" if listing["kind"] == "NEED" else "NEED"
-    args = (listing["club_id"], other, listing["member_id"], listing["id"])
+    clubs = scope_club_ids(conn, listing["club_id"], scope)
+    args = (other, listing["member_id"], listing["id"])
     if listing.get("part_number"):
-        hits = _exact(conn, args[0], [listing["part_number"]], *args[1:])
+        hits = _exact(conn, clubs, [listing["part_number"]], *args)
         if hits:
             return hits
     terms = query_terms(listing.get("brand"), listing.get("chassis"), listing.get("part_number"),
                         listing.get("description"))
-    hits = _text(conn, args[0], terms, listing.get("description"), *args[1:])
-    return [h for h in hits if not _conflicts(listing, h)][:MAX_RESULTS]
+    hits = _text(conn, clubs, terms, listing.get("description"), *args)
+    return [h for h in hits if text_match_ok(listing, h)][:MAX_RESULTS]
 
 
-def search(conn, club_id: int, text: str, kind: str | None = None) -> list[dict]:
-    """Free-text lookup for the agent's "who has X?" questions."""
+def part_numbers_in(text: str) -> list[str]:
     words = re.findall(r"[\w\-]+", text)
     words += [a + b for a, b in zip(words, words[1:])]  # "TAM 54500"
-    parts = sorted({p for p in map(normalize_part_number, words) if _LOOKS_LIKE_PART.fullmatch(p)})
-    exact = _exact(conn, club_id, parts, kind, None, None)
+    return sorted({p for p in map(normalize_part_number, words) if _LOOKS_LIKE_PART.fullmatch(p)})
+
+
+def search(conn, club_id: int, text: str, kind: str | None = None, scope: str = "club") -> list[dict]:
+    """Free-text lookup for the agent's "who has X?" questions, across the clubs within `scope`."""
+    clubs = scope_club_ids(conn, club_id, scope)
+    exact = _exact(conn, clubs, part_numbers_in(text), kind, None, None)
     seen = {r["id"] for r in exact}
-    rest = [r for r in _text(conn, club_id, query_terms(text), text, kind, None, None) if r["id"] not in seen]
+    rest = [r for r in _text(conn, clubs, query_terms(text), text, kind, None, None) if r["id"] not in seen]
     return (exact + rest)[:MAX_RESULTS]
+
+
+# --- closing a listing from what the member said ------------------------------------------
+
+CLOSE_WORDS = set(
+    "ya vendi vendí vendido vendida vendidos lo la le les me se no tengo tenía tenia mas más disponible "
+    "consegui conseguí encontre encontré compre compré necesito busco hace falta sold found got bought "
+    "anymore longer have need it its gone already available".split()
+)
+SOLD_HINT = re.compile(r"vend|sold|ya no (lo |la )?tengo|no longer have|gone", re.I)
+FOUND_HINT = re.compile(r"consegu|encontr|compr[eé]|found|got (it|one)|bought|ya no (lo |la )?(busco|necesito)", re.I)
+
+
+def infer_close_kind(text: str) -> str | None:
+    """HAVE when the member says they sold it, NEED when they say they found it, else None."""
+    sold, found = bool(SOLD_HINT.search(text)), bool(FOUND_HINT.search(text))
+    return "HAVE" if sold and not found else "NEED" if found and not sold else None
+
+
+def pick_listings_to_close(listings: list[dict], text: str, kind: str | None = None) -> list[dict]:
+    """The member's own active listings that best fit what they said. One result = close it;
+    several = ask which one; none = nothing fits. Exact part number wins over words."""
+    pool = [l for l in listings if kind is None or l["kind"] == kind] or listings
+    parts = set(part_numbers_in(text))
+    by_part = [l for l in pool if l.get("part_number") and l["part_number"] in parts]
+    if by_part:
+        return by_part
+    words = set(query_terms(text)) - CLOSE_WORDS
+    if not words:
+        return []
+    scored = []
+    for l in pool:
+        lw = set(query_terms(l.get("brand"), l.get("chassis"), l.get("part_number"), l.get("description")))
+        scored.append((len(words & lw), l))
+    best = max((n for n, _ in scored), default=0)
+    return [l for n, l in scored if n == best] if best else []

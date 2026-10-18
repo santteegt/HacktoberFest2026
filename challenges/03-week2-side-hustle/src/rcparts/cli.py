@@ -12,15 +12,16 @@ import json
 import os
 import re
 import sys
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
+from pathlib import Path
 
-from . import db, matcher
-from .config import Settings
+from . import db, demo, deposit, matcher
+from .config import MATCH_SCOPES, Settings
 from .i18n import STORE_LABEL, describe, money, t
 from .listing import KINDS, normalize_part_number, normalize_phone, validate_listing
 from .notify import send_dm
 from .quote import compute_quote, to_grams
-from .replies import order_summary, quote_reply
+from .replies import eligible_for_order, order_summary, quote_reply
 
 
 def strip_json_fence(text: str) -> str:
@@ -57,7 +58,8 @@ def out(reply: str = "", action: str = ACT_SEND, ok: bool = True, **data) -> dic
 
 def _listing_view(row: dict) -> dict:
     keep = ("id", "club_id", "member_id", "kind", "brand", "chassis", "part_number", "description", "condition",
-            "price_usd", "qty", "status", "created_at", "member_name", "member_phone")
+            "price_usd", "qty", "status", "closed_reason", "created_at", "member_name", "member_phone",
+            "club_name")
     return {k: row[k] for k in keep if k in row}
 
 
@@ -84,12 +86,54 @@ def _member_or_reply(conn, s: Settings, phone: str):
                      action="Send `reply` to the member as-is. Nothing was saved.")
 
 
+def _not_maintainer(s: Settings) -> dict:
+    return out(t(s.reply_lang, "not_maintainer"), ok=False, error="not_maintainer",
+               action="Send `reply` as-is. Only the maintainer can run this; do not retry for this sender.")
+
+
+def _maintainer_check(a, s: Settings) -> dict | None:
+    """Maintainer-only commands: the effective sender (the Hermes session sender, or --phone from the
+    plain CLI) must be MAINTAINER_PHONE. Returns a refusal, or None when allowed."""
+    phone = normalize_phone(getattr(a, "phone", None) or sender_from_env())
+    if not s.maintainer_phone or phone != s.maintainer_phone:
+        return _not_maintainer(s)
+    return None
+
+
+def _session_guard(s: Settings) -> dict | None:
+    """Admin commands without --phone (db reset, demo data): from the plain CLI they run as-is; inside
+    a Hermes turn only the maintainer may trigger them."""
+    sender = sender_from_env()
+    if sender and sender != s.maintainer_phone:
+        return _not_maintainer(s)
+    return None
+
+
+def _club_suffix(lang: str, row: dict, own_club_id) -> str:
+    """" (de Cuenca Touring)" when the other member is in another club, else ""."""
+    if row.get("club_id") is not None and row.get("club_id") != own_club_id and row.get("club_name"):
+        return t(lang, "from_club", club=row["club_name"])
+    return ""
+
+
 # --- db -------------------------------------------------------------------------
 
 def cmd_db_init(a, s):
     with db.connect(s.database_url) as conn:
         trgm = db.init_schema(conn)
     return out(action="Schema is ready. Nothing to send.", **trgm)
+
+
+def cmd_db_reset(a, s):
+    refusal = _session_guard(s)
+    if refusal:
+        return refusal
+    if not a.yes:
+        return out(ok=False, error="confirm_required", tables=db.schema_tables(),
+                   action="This drops every rcparts table (and only those). Re-run with --yes to confirm.")
+    with db.connect(s.database_url) as conn:
+        info = db.reset_schema(conn)
+    return out(action="Schema dropped and recreated. Nothing to send.", **info)
 
 
 def cmd_db_check(a, s):
@@ -162,7 +206,7 @@ def cmd_listing_add(a, s):
                               "listing JSON with the answer and call `rcparts listing add` again.")
         row = db.insert_listing(conn, member, v.listing)
         matches = []
-        for hit in matcher.find_matches(conn, row):
+        for hit in matcher.find_matches(conn, row, s.match_scope):
             need, have = (row, hit) if row["kind"] == "NEED" else (hit, row)
             match_id = db.record_match(conn, need["id"], have["id"], hit["method"], hit["score"])
             if match_id is None:
@@ -177,7 +221,7 @@ def cmd_listing_add(a, s):
             lines.append(t(lang, "matches_found", n=len(matches)))
             for m in matches:
                 lines.append(t(lang, "match_line", item=describe(lang, m["listing"]),
-                               name=m["listing"]["member_name"]))
+                               name=m["listing"]["member_name"] + _club_suffix(lang, m["listing"], row["club_id"])))
         else:
             lines.append(t(lang, f"no_match_{row['kind']}"))
 
@@ -186,8 +230,12 @@ def cmd_listing_add(a, s):
             need_l, have_l = (row, other) if row["kind"] == "NEED" else (other, row)
             need_phone = member["phone"] if row["kind"] == "NEED" else other["member_phone"]
             have_phone = member["phone"] if row["kind"] == "HAVE" else other["member_phone"]
-            need_name = member["display_name"] if row["kind"] == "NEED" else other["member_name"]
-            have_name = member["display_name"] if row["kind"] == "HAVE" else other["member_name"]
+            # Each DM names the other member; across clubs it also says which club they are in.
+            cross = other.get("club_id") != row["club_id"]
+            me = member["display_name"] + (t(lang, "from_club", club=member["club_name"]) if cross else "")
+            them = other["member_name"] + _club_suffix(lang, other, row["club_id"])
+            need_name = me if row["kind"] == "NEED" else them
+            have_name = me if row["kind"] == "HAVE" else them
             if a.no_notify:
                 m["notify_error"] = "skipped (--no-notify)"
                 continue
@@ -205,15 +253,17 @@ def cmd_listing_add(a, s):
 
     if row["kind"] == "NEED" and not matches:
         action = (f"{ACT_SEND} If the member wants an import quote, run "
-                  f"`rcparts quote --phone {member['phone']} --listing {row['id']}`.")
+                  f"`rcparts quote --listing {row['id']}`.")
     elif not matches:
         action = ACT_SEND
+    elif a.no_notify:
+        action = f"{ACT_SEND} Match DMs were skipped (--no-notify)."
     elif any(not m["notified"] for m in matches):
         action = f"{ACT_SEND} Some match DMs were not delivered (see `notify_error`); tell the maintainer."
     else:
         action = f"{ACT_SEND} Match DMs were already sent by code; do not message the other member yourself."
     return out("\n".join(lines), action=action, listing=_listing_view(row), matches=matches,
-               warnings=v.warnings)
+               warnings=v.warnings, match_scope=s.match_scope)
 
 
 def cmd_listing_list(a, s):
@@ -224,31 +274,96 @@ def cmd_listing_list(a, s):
                listings=[_listing_view(r) for r in rows])
 
 
+CLOSE_REASONS = ("sold", "unavailable", "found")
+
+
 def cmd_listing_close(a, s):
+    if (a.id is None) == (a.text is None):
+        raise UsageError("rcparts listing close: needs exactly one of --id or --text")
+    lang = s.reply_lang
     with db.connect(s.database_url) as conn:
-        member_id = None
-        if a.phone:
+        member = None
+        if a.phone or a.text is not None:
             member, refusal = _member_or_reply(conn, s, a.phone)
             if refusal:
                 return refusal
-            member_id = member["id"]
-        closed = db.close_listing(conn, a.id, member_id)
-    if not closed:
-        return out(t(s.reply_lang, "listing_not_found", id=a.id), ok=False, error="not_found")
-    return out(t(s.reply_lang, "listing_closed", id=a.id), listing_id=a.id)
+        if a.text is not None:
+            own = db.active_listings_for_member(conn, member["id"])
+            kind = {"sold": "HAVE", "found": "NEED"}.get(a.reason) or matcher.infer_close_kind(a.text)
+            picked = matcher.pick_listings_to_close(own, a.text, kind)
+            if not picked:
+                lines = [t(lang, "close_none")]
+                if own:
+                    lines.append(t(lang, "close_open_head"))
+                    lines += [t(lang, "close_line", n=i, id=l["id"], item=describe(lang, l)) for i, l in enumerate(own, 1)]
+                else:
+                    lines = [t(lang, "close_none_empty")]
+                return out("\n".join(lines), ok=False, error="not_found",
+                           open_listings=[_listing_view(l) for l in own],
+                           action=f"{ACT_SEND} If the member then names one, run "
+                                  f"`rcparts listing close --id <LISTING_ID>`.")
+            if len(picked) > 1:
+                lines = [t(lang, "close_ambiguous")]
+                lines += [t(lang, "close_line", n=i, id=l["id"], item=describe(lang, l)) for i, l in enumerate(picked, 1)]
+                return out("\n".join(lines), ok=False, error="ambiguous",
+                           candidates=[_listing_view(l) for l in picked],
+                           action="Send `reply` and ask which one. When the member answers (a number from the list "
+                                  "or a #id), run `rcparts listing close --id <LISTING_ID>` with that listing's id.")
+            target = picked[0]
+        else:
+            target = db.get_listing(conn, a.id)
+            if not target or (member and target["member_id"] != member["id"]) or target["status"] == "closed":
+                return out(t(lang, "listing_not_found", id=a.id), ok=False, error="not_found")
+        reason = a.reason or ("sold" if target["kind"] == "HAVE" else "found")
+        counterparts = db.match_counterparts(conn, target["id"])
+        closed = db.close_listing(conn, target["id"], member["id"] if member else None, reason)
+        if not closed:
+            return out(t(lang, "listing_not_found", id=target["id"]), ok=False, error="not_found")
+        db.reopen_unmatched(conn, [c["id"] for c in counterparts])
+
+    notified = []
+    reason_text = t(lang, f"close_reason_{reason}")
+    for c in counterparts:
+        entry = {"listing_id": c["id"], "member_name": c["member_name"], "sent": False, "error": None}
+        if a.no_notify:
+            entry["error"] = "skipped (--no-notify)"
+        else:
+            name = closed["member_name"] + _club_suffix(lang, closed, c["club_id"])
+            text = t(lang, f"dm_closed_{closed['kind']}", name=name, item=describe(lang, closed), reason=reason_text)
+            entry["sent"], entry["error"] = send_dm(s.hermes_send_cmd, c["member_phone"], text)
+        notified.append(entry)
+    lines = [t(lang, "listing_closed_text", id=closed["id"], item=describe(lang, closed), reason=reason_text)]
+    if any(n["sent"] for n in notified):
+        lines.append(t(lang, "close_notified", n=sum(n["sent"] for n in notified)))
+    action = ACT_SEND
+    if any(not n["sent"] and n["error"] and not a.no_notify for n in notified):
+        action += " Some notices to matched members failed (see `notified`); tell the maintainer."
+    return out("\n".join(lines), action=action, listing=_listing_view(closed), listing_id=closed["id"],
+               reason=reason, notified=notified)
 
 
 def cmd_search(a, s):
     lang = s.reply_lang
+    scope = a.scope or s.match_scope
     with db.connect(s.database_url) as conn:
-        rows = matcher.search(conn, a.club, a.text, a.kind)
+        club_id = a.club
+        if club_id is None:
+            member, refusal = _member_or_reply(conn, s, a.phone)
+            if refusal:
+                return refusal
+            club_id = member["club_id"]
+        rows = matcher.search(conn, club_id, a.text, a.kind, scope)
     results = [{**_listing_view(r), "method": r["method"], "score": r["score"]} for r in rows]
     if not results:
-        return out(t(lang, "search_none"), results=[],
+        return out(t(lang, "search_none"), results=[], scope=scope,
                    action=f"{ACT_SEND} You may offer an import quote with `rcparts quote`.")
     lines = [t(lang, "search_some")] + [
-        f"• [{r['kind']}] {describe(lang, r)} — {r['member_name']} (+{r['member_phone']})" for r in results]
-    return out("\n".join(lines), results=results)
+        f"• [{r['kind']}] {describe(lang, r)} — {r['member_name']}{_club_suffix(lang, r, club_id)}" for r in results]
+    # No phone numbers here: search replies can land in the club group. Contact goes through match DMs.
+    for r in results:
+        r.pop("member_phone", None)
+    return out("\n".join(lines), results=results, scope=scope,
+               action=f"{ACT_SEND} To connect with the owner, the member posts a NEED; the match DM shares contacts.")
 
 
 # --- quotes ------------------------------------------------------------------------
@@ -316,7 +431,7 @@ def cmd_quote(a, s):
     row["fee_basis"], row["fee_rate_usd"] = s.fee_basis, s.fee_rate_usd
     reply = quote_reply(lang, row, s.us_address, exact=exact)
     action = (f"{ACT_SEND} If the member answers YES/SÍ, run "
-              f"`rcparts quote accept --phone {member['phone']} --quote {row['id']}`.")
+              f"`rcparts quote accept --quote {row['id']}`.")
     if not exact:
         action += " The store had no exact code match; the member should confirm the title first."
     return out(reply, action=action, quote=row, math=m.as_json(), exact_match=exact,
@@ -334,14 +449,17 @@ def cmd_quote_accept(a, s):
         row = db.accept_quote(conn, a.quote, member["id"], with_processing=not a.self_order)
     if not row:
         return out(t(lang, "quote_accept_bad", id=a.quote), ok=False, error="quote_not_pending",
-                   action=f"{ACT_SEND} Offer `rcparts quote list --phone {member['phone']}` if they are unsure.")
+                   action=f"{ACT_SEND} Offer `rcparts quote list` if they are unsure.")
     if a.self_order:
         reply = t(lang, "quote_accepted_self", title=row["store_title"], address=s.us_address,
                   fee=money(row["fee_usd"]), id=row["id"])
-    else:
-        reply = t(lang, "quote_accepted", title=row["store_title"], total=money(row["total_with_processing_usd"]),
-                  id=row["id"])
-    return out(reply, quote=row)
+        return out(reply, quote=row)
+    account = t(lang, "deposit_account", account=s.deposit_account) if s.deposit_account else ""
+    reply = t(lang, "quote_accepted_deposit", title=row["store_title"], total=money(row["total_with_processing_usd"]),
+              id=row["id"], account=account)
+    return out(reply, quote=row, deposit_reference=f"RC-Q{row['id']}",
+               action=f"{ACT_SEND} When this member sends a PDF receipt, run "
+                      f"`rcparts deposit submit --quote {row['id']} --file <the PDF path from the message>`.")
 
 
 def cmd_quote_list(a, s):
@@ -361,13 +479,221 @@ def cmd_quote_list(a, s):
     return out("\n".join(lines), quotes=rows)
 
 
+# --- deposits ------------------------------------------------------------------------------
+
+def _quote_total(q: dict) -> Decimal:
+    return Decimal(str(q["total_usd"] if q.get("with_processing") is False else q["total_with_processing_usd"]))
+
+
+def cmd_deposit_submit(a, s):
+    lang = s.reply_lang
+    with db.connect(s.database_url) as conn:
+        member, refusal = _member_or_reply(conn, s, a.phone)
+        if refusal:
+            return refusal
+        if a.quote is None:
+            waiting = db.member_quotes_with_status(conn, member["id"], ["awaiting_deposit"])
+            if not waiting:
+                return out(t(lang, "deposit_none_awaiting"), ok=False, error="no_awaiting_quote")
+            if len(waiting) > 1:
+                lines = [t(lang, "deposit_ambiguous")] + [
+                    t(lang, "deposit_quote_line", n=i, id=q["id"], title=q["store_title"], total=money(_quote_total(q)))
+                    for i, q in enumerate(waiting, 1)]
+                return out("\n".join(lines), ok=False, error="ambiguous", quotes=[q["id"] for q in waiting],
+                           action="Send `reply` and ask which quote the receipt is for; then run "
+                                  "`rcparts deposit submit --quote <QUOTE_ID> --file <same path>`.")
+            quote = waiting[0]
+        else:
+            quote = db.get_quote(conn, a.quote)
+            if not quote or quote["member_id"] != member["id"] or quote["status"] != "awaiting_deposit":
+                return out(t(lang, "deposit_bad_quote", id=a.quote), ok=False, error="quote_not_awaiting_deposit",
+                           action=f"{ACT_SEND} `rcparts quote list` shows the member's quotes and their status.")
+
+        source = "argument"
+        src = Path(a.file).expanduser() if a.file else None
+        if src is None or not src.is_file():
+            src = deposit.newest_cached_pdf(deposit.hermes_document_dirs(s.hermes_document_cache_dir))
+            source = "hermes_cache_fallback"
+        if src is None:
+            return out(t(lang, "deposit_no_file"), ok=False, error="no_file",
+                       action=f"{ACT_SEND} Wait for the member to send the PDF, then run this again with --file.")
+        if not deposit.is_pdf(src):
+            return out(t(lang, "deposit_not_pdf"), ok=False, error="not_pdf")
+
+        stored = deposit.store_receipt(src, s.data_dir / "receipts", quote["id"])
+        try:
+            text = deposit.pdf_text(stored)
+        except Exception as exc:  # noqa: BLE001 - an unreadable PDF still goes to the maintainer
+            text = ""
+            read_error = f"{type(exc).__name__}: {exc}"
+        else:
+            read_error = None
+        expected = _quote_total(quote)
+        chk = deposit.check_receipt_text(text, expected, quote["id"])
+        checks = {**chk.checks(), "read_error": read_error}
+        dep = db.insert_deposit(conn, {
+            "quote_id": quote["id"], "member_id": member["id"], "file_path": str(stored),
+            "original_name": src.name, "file_source": source, "expected_usd": expected,
+            "amount_usd": chk.amount_usd, "reference": chk.reference, "receipt_date": chk.receipt_date,
+            "checks": checks,
+        })
+        db.set_quote_status(conn, quote["id"], ["awaiting_deposit"], "deposit_submitted")
+        conn.commit()
+
+    mark = lambda ok: t(lang, "mark_ok" if ok else "mark_bad")  # noqa: E731
+    lines = [
+        t(lang, "deposit_maint_head", name=member["display_name"], id=quote["id"], title=quote["store_title"]),
+        t(lang, "deposit_maint_amount", expected=money(expected),
+          read=money(chk.amount_usd) if chk.amount_usd is not None else t(lang, "not_read"), mark=mark(chk.amount_ok)),
+        t(lang, "deposit_maint_ref", id=quote["id"], found=chk.reference or t(lang, "not_read"),
+          mark=mark(chk.reference_ok)),
+        t(lang, "deposit_maint_date", date=chk.receipt_date or t(lang, "not_read")),
+    ]
+    if source != "argument":
+        lines.append(t(lang, "deposit_maint_fallback"))
+    lines += [t(lang, "deposit_maint_cta", id=quote["id"]), f"MEDIA:{stored}"]
+    maint_text = "\n".join(lines)
+    sent, err = False, None
+    if a.no_notify:
+        err = "skipped (--no-notify)"
+    elif not s.maintainer_phone:
+        err = "MAINTAINER_PHONE is not set"
+    else:
+        sent, err = send_dm(s.hermes_send_cmd, s.maintainer_phone, maint_text)
+    action = ACT_SEND + (" The maintainer was sent the receipt by code." if sent else
+                         f" The maintainer could not be notified ({err}); tell them a receipt is waiting.")
+    return out(t(lang, "deposit_received", id=quote["id"]), action=action, deposit=dep, quote_id=quote["id"],
+               maintainer_notified=sent, notify_error=err, maintainer_message=maint_text)
+
+
+def _review(a, s, confirm: bool):
+    refusal = _maintainer_check(a, s)
+    if refusal:
+        return refusal
+    lang = s.reply_lang
+    with db.connect(s.database_url) as conn:
+        quote = db.get_quote(conn, a.quote)
+        allowed = ["deposit_submitted", "awaiting_deposit"] if confirm else ["deposit_submitted"]
+        if not quote or quote["status"] not in allowed:
+            return out(t(lang, "deposit_review_bad", id=a.quote), ok=False, error="nothing_to_review",
+                       quote_status=quote["status"] if quote else None)
+        dep = db.latest_deposit(conn, quote["id"], "submitted")
+        reason = None if confirm else (a.reason or t(lang, "deposit_reject_default"))
+        if dep:
+            dep = db.review_deposit(conn, dep["id"], "confirmed" if confirm else "rejected", reason)
+        db.set_quote_status(conn, quote["id"], allowed, "paid" if confirm else "awaiting_deposit")
+        conn.commit()
+    if confirm:
+        member_text = t(lang, "deposit_confirmed_member", id=quote["id"], title=quote["store_title"])
+        reply = t(lang, "deposit_confirmed", id=quote["id"], name=quote["member_name"])
+    else:
+        member_text = t(lang, "deposit_rejected_member", id=quote["id"], reason=reason)
+        reply = t(lang, "deposit_rejected", id=quote["id"], name=quote["member_name"])
+    sent, err = (False, "skipped (--no-notify)") if a.no_notify else send_dm(s.hermes_send_cmd,
+                                                                               quote["member_phone"], member_text)
+    action = ACT_SEND + ("" if sent or a.no_notify else f" The member was not notified ({err}).")
+    return out(reply, action=action, quote_id=quote["id"], status="paid" if confirm else "awaiting_deposit",
+               deposit=dep, member_notified=sent, notify_error=err)
+
+
+def cmd_deposit_confirm(a, s):
+    return _review(a, s, confirm=True)
+
+
+def cmd_deposit_reject(a, s):
+    return _review(a, s, confirm=False)
+
+
+def cmd_deposit_list(a, s):
+    refusal = _maintainer_check(a, s)
+    if refusal:
+        return refusal
+    lang = s.reply_lang
+    with db.connect(s.database_url) as conn:
+        rows = db.list_deposits(conn, a.status)
+    if not rows:
+        return out(t(lang, "deposit_list_none"), deposits=[])
+    lines = [t(lang, "deposit_list_head")] + [
+        t(lang, "deposit_list_line", quote=r["quote_id"], name=r["member_name"], expected=money(r["expected_usd"]),
+          read=money(r["amount_usd"]) if r["amount_usd"] is not None else "-", ref=r["reference"] or "-",
+          status=r["status"]) for r in rows]
+    return out("\n".join(lines), deposits=rows, action="Show `reply` to the maintainer only.")
+
+
+# --- demo data -------------------------------------------------------------------------------
+
+def _mask(phone: str) -> str:
+    return f"***{phone[-4:]}" if phone else ""
+
+
+def cmd_demo_seed(a, s):
+    refusal = _session_guard(s)
+    if refusal:
+        return refusal
+    if not s.maintainer_phone:
+        return out(ok=False, error="config", action="Set MAINTAINER_PHONE in .env.")
+    other = next((u for u in s.allowed_users if u and u != s.maintainer_phone), "")
+    if not other:
+        return out(ok=False, error="config",
+                   action="WHATSAPP_ALLOWED_USERS needs a second number besides MAINTAINER_PHONE.")
+    catalog_path = s.data_dir / "demo_catalog.json"
+    catalog, fetched = demo.load_catalog(catalog_path, a.refresh, lambda: StoreClient(s.store_crawl_delay_s))
+    plan = demo.plan_listings(catalog)
+    with db.connect(s.database_url) as conn:
+        club_a = db.add_club(conn, **demo.CLUB_A, jid=s.group_jid or None)
+        club_b = db.add_club(conn, **demo.CLUB_B, jid=None)
+        owners = {}
+        for key, club, phone, name, rc_class in (("A", club_a, s.maintainer_phone, "Santiago", "1/10 touring"),
+                                                 ("B", club_b, other, "Socio", None)):
+            m, created = db.add_member(conn, club["id"], phone, name, rc_class, ["xray"])
+            owners[key] = {**m, "created": created}
+        seeded = []
+        for item in plan:
+            v = validate_listing(item["listing"])
+            row = db.insert_listing(conn, owners[item["owner"]], v.listing)
+            seeded.append({"id": row["id"], "owner": owners[item["owner"]]["display_name"],
+                           "club": club_a["name"] if owners[item["owner"]]["club_id"] == club_a["id"] else club_b["name"],
+                           "kind": row["kind"], "part_number": row["part_number"], "description": row["description"],
+                           "price_usd": row["price_usd"], "store_price_usd": item.get("store_price_usd")})
+        conn.commit()
+    members = [{"name": m["display_name"], "club": m["club_name"], "phone": _mask(m["phone"]),
+                "created": m["created"]} for m in owners.values()]
+    return out(action="Demo data seeded (no DMs sent). Show the summary to the maintainer only.",
+               catalog={"path": str(catalog_path), "fetched_now": fetched, "fetched_at": catalog.get("fetched_at"),
+                        "parts": {k: len(v) for k, v in catalog["chassis"].items()}},
+               clubs=[{"id": c["id"], "name": c["name"], "city": c["city"], "has_group": bool(c["whatsapp_group_jid"])}
+                      for c in (club_a, club_b)],
+               members=members, listings=seeded, match_scope=s.match_scope,
+               demo_script=demo.demo_script(catalog))
+
+
+def cmd_demo_receipt(a, s):
+    refusal = _session_guard(s)
+    if refusal:
+        return refusal
+    with db.connect(s.database_url) as conn:
+        quote = db.get_quote(conn, a.quote)
+    if not quote:
+        return out(ok=False, error="not_found", action="No such quote.")
+    expected = _quote_total(quote)
+    try:
+        amount = Decimal(a.amount) if a.amount is not None else expected
+    except InvalidOperation:
+        raise UsageError("rcparts demo receipt: --amount must be a number like 17.39")
+    path = Path(a.out).expanduser() if a.out else s.data_dir / "receipts" / f"demo-RC-Q{quote['id']}.pdf"
+    made = deposit.make_test_receipt(path, quote["id"], amount)
+    return out(action="Test receipt written (fictional bank, watermarked). Nothing to send.", file=str(made),
+               quote_id=quote["id"], amount_usd=str(amount), expected_usd=str(expected),
+               matches_quote=amount == expected)
+
+
 # --- daily order -----------------------------------------------------------------------
 
 def cmd_orders_daily(a, s):
     lang = s.reply_lang
     today = dt.date.today().isoformat()
     with db.connect(s.database_url) as conn:
-        quotes = db.pending_order_quotes(conn)
+        quotes = [q for q in db.pending_order_quotes(conn) if eligible_for_order(q)]
         if not quotes:
             return out(t(lang, "orders_none"), orders=[], sent=False,
                        action="Nothing to order today. Do not message anyone.")
@@ -440,6 +766,9 @@ def build_parser() -> Parser:
     g = sub.add_parser("db").add_subparsers(dest="sub", required=True, parser_class=Parser)
     g.add_parser("init").set_defaults(fn=cmd_db_init)
     g.add_parser("check").set_defaults(fn=cmd_db_check)
+    c = g.add_parser("reset", help="drop the rcparts tables (only those in sql/schema.sql) and recreate them")
+    c.add_argument("--yes", action="store_true")
+    c.set_defaults(fn=cmd_db_reset)
 
     g = sub.add_parser("club").add_subparsers(dest="sub", required=True, parser_class=Parser)
     c = g.add_parser("add")
@@ -478,15 +807,51 @@ def build_parser() -> Parser:
     c.add_argument("--status", choices=("open", "matched", "closed"))
     c.set_defaults(fn=cmd_listing_list)
     c = g.add_parser("close")
-    c.add_argument("--id", type=int, required=True)
+    c.add_argument("--id", type=int)
+    c.add_argument("--text", help="what the member said, e.g. 'ya vendí el alerón del X1'")
+    c.add_argument("--reason", choices=CLOSE_REASONS, help="default: HAVE -> sold, NEED -> found")
     c.add_argument("--phone", help="only close it if this member owns it")
+    c.add_argument("--no-notify", action="store_true")
     c.set_defaults(fn=cmd_listing_close)
 
     c = sub.add_parser("search")
-    c.add_argument("--club", type=int, required=True)
+    c.add_argument("--club", type=int, help="default: the sender's club")
+    c.add_argument("--phone")
     c.add_argument("--text", required=True)
     c.add_argument("--kind", type=str.upper, choices=KINDS)
+    c.add_argument("--scope", choices=MATCH_SCOPES, help="default: MATCH_SCOPE")
     c.set_defaults(fn=cmd_search)
+
+    g = sub.add_parser("deposit").add_subparsers(dest="sub", required=True, parser_class=Parser)
+    c = g.add_parser("submit")
+    c.add_argument("--phone")
+    c.add_argument("--quote", type=int, help="default: the sender's only quote awaiting a deposit")
+    c.add_argument("--file", help="the PDF path from the message; default: newest PDF in the Hermes cache")
+    c.add_argument("--no-notify", action="store_true")
+    c.set_defaults(fn=cmd_deposit_submit)
+    for name, fn in (("confirm", cmd_deposit_confirm), ("reject", cmd_deposit_reject)):
+        c = g.add_parser(name)
+        c.add_argument("--phone")
+        c.add_argument("--quote", type=int, required=True)
+        if name == "reject":
+            c.add_argument("--reason")
+        c.add_argument("--no-notify", action="store_true")
+        c.set_defaults(fn=fn)
+    c = g.add_parser("list")
+    c.add_argument("--phone")
+    c.add_argument("--status", choices=("submitted", "confirmed", "rejected"))
+    c.set_defaults(fn=cmd_deposit_list)
+
+    g = sub.add_parser("demo").add_subparsers(dest="sub", required=True, parser_class=Parser)
+    c = g.add_parser("seed", help="clubs, the two allowlisted members and Xray listings from the store")
+    c.add_argument("--refresh", action="store_true", help="fetch the store again instead of data/demo_catalog.json")
+    c.add_argument("--no-notify", action="store_true", help="accepted for symmetry; seeding never sends DMs")
+    c.set_defaults(fn=cmd_demo_seed)
+    c = g.add_parser("receipt", help="fake, watermarked test receipt PDF for a quote")
+    c.add_argument("--quote", type=int, required=True)
+    c.add_argument("--amount")
+    c.add_argument("--out")
+    c.set_defaults(fn=cmd_demo_receipt)
 
     # `quote` runs a quote itself; `quote accept` and `quote list` are optional subcommands.
     c = sub.add_parser("quote")

@@ -34,6 +34,8 @@ CREATE TABLE IF NOT EXISTS listings (
     price_usd   numeric(10, 2),
     qty         integer NOT NULL DEFAULT 1 CHECK (qty > 0),
     status      text NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'matched', 'closed')),
+    closed_reason text CHECK (closed_reason IN ('sold', 'unavailable', 'found')),
+    closed_at   timestamptz,
     created_at  timestamptz NOT NULL DEFAULT now(),
     -- 'simple' keeps the index language-neutral (members write in Spanish and English).
     -- Tiger's pg_textsearch (BM25) can replace this tsvector + ts_rank ranking later
@@ -91,7 +93,9 @@ CREATE TABLE IF NOT EXISTS quotes (
     total_with_processing_usd numeric(10, 2) NOT NULL,
     in_stock                  boolean,
     stock_note                text,
-    status                    text NOT NULL DEFAULT 'quoted' CHECK (status IN ('quoted', 'accepted', 'ordered')),
+    -- quoted -> accepted (self-order) | awaiting_deposit -> deposit_submitted -> paid (we order it) -> ordered
+    status                    text NOT NULL DEFAULT 'quoted' CONSTRAINT quotes_status_check CHECK (status IN
+                                  ('quoted', 'accepted', 'awaiting_deposit', 'deposit_submitted', 'paid', 'ordered')),
     with_processing           boolean,
     qty                       integer NOT NULL DEFAULT 1 CHECK (qty > 0),
     accepted_at               timestamptz,
@@ -100,3 +104,31 @@ CREATE TABLE IF NOT EXISTS quotes (
 );
 CREATE INDEX IF NOT EXISTS quotes_member_idx ON quotes (member_id);
 CREATE INDEX IF NOT EXISTS quotes_open_idx ON quotes (status) WHERE order_id IS NULL;
+
+-- Payment receipts (PDF) a member sends for a quote we order for them. Checked by code, confirmed by
+-- the maintainer: a mismatch is flagged, never auto-rejected.
+CREATE TABLE IF NOT EXISTS deposits (
+    id            bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    quote_id      bigint NOT NULL REFERENCES quotes(id),
+    member_id     bigint NOT NULL REFERENCES members(id),
+    file_path     text NOT NULL,                -- copy under data/receipts/
+    original_name text,
+    file_source   text NOT NULL DEFAULT 'argument',   -- argument | hermes_cache_fallback
+    expected_usd  numeric(10, 2) NOT NULL,
+    amount_usd    numeric(10, 2),               -- read from the PDF text (NULL = not found)
+    reference     text,                         -- e.g. RC-Q12 (NULL = not found)
+    receipt_date  text,
+    checks        jsonb NOT NULL,               -- {amount_ok, reference_ok, ...}
+    status        text NOT NULL DEFAULT 'submitted' CHECK (status IN ('submitted', 'confirmed', 'rejected')),
+    reject_reason text,
+    reviewed_at   timestamptz,
+    created_at    timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS deposits_quote_idx ON deposits (quote_id);
+
+-- Migrations for databases created before these columns and states existed (idempotent).
+ALTER TABLE listings ADD COLUMN IF NOT EXISTS closed_reason text;
+ALTER TABLE listings ADD COLUMN IF NOT EXISTS closed_at timestamptz;
+ALTER TABLE quotes DROP CONSTRAINT IF EXISTS quotes_status_check;
+ALTER TABLE quotes ADD CONSTRAINT quotes_status_check CHECK (status IN
+    ('quoted', 'accepted', 'awaiting_deposit', 'deposit_submitted', 'paid', 'ordered'));

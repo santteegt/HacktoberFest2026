@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import psycopg
+from psycopg import sql
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
@@ -38,6 +40,27 @@ def init_schema(conn: psycopg.Connection) -> dict:
         conn.rollback()
         trgm["pg_trgm_error"] = str(exc).strip().splitlines()[0]
     return trgm
+
+
+def schema_tables() -> list[str]:
+    """Tables created by sql/schema.sql, in creation order (the only tables `db reset` may drop)."""
+    return re.findall(r"CREATE TABLE IF NOT EXISTS (\w+)", SCHEMA_FILE.read_text(encoding="utf-8"))
+
+
+def reset_schema(conn: psycopg.Connection) -> dict:
+    """Drop exactly the rcparts tables (reverse creation order, so foreign keys go first), then recreate.
+    No CASCADE: if anything outside rcparts depends on these tables the drop fails loudly instead."""
+    tables = schema_tables()
+    schema = conn.execute("SELECT current_schema() AS s").fetchone()["s"]
+    existing = {r["tablename"] for r in conn.execute(
+        "SELECT tablename FROM pg_tables WHERE schemaname = %s", (schema,)).fetchall()}
+    dropped = []
+    for name in reversed(tables):
+        if name in existing:  # schema-qualified: never resolves to a same-named table elsewhere
+            conn.execute(sql.SQL("DROP TABLE {}").format(sql.Identifier(schema, name)))
+            dropped.append(f"{schema}.{name}")
+    conn.commit()
+    return {"dropped": dropped, **init_schema(conn)}
 
 
 def check(conn: psycopg.Connection) -> dict:
@@ -120,8 +143,22 @@ def insert_listing(conn, member: dict, listing: dict) -> dict:
 
 
 LISTING_COLS = """l.id, l.club_id, l.member_id, l.kind, l.brand, l.chassis, l.part_number, l.description,
-                  l.condition, l.price_usd, l.qty, l.status, l.created_at,
-                  m.display_name AS member_name, m.phone AS member_phone"""
+                  l.condition, l.price_usd, l.qty, l.status, l.closed_reason, l.created_at,
+                  m.display_name AS member_name, m.phone AS member_phone,
+                  (SELECT c.name FROM clubs c WHERE c.id = l.club_id) AS club_name"""
+
+
+def scope_club_ids(conn, club_id: int, scope: str) -> list[int]:
+    """Clubs whose listings a member of `club_id` can match: own club, same city or same country."""
+    if scope == "club":
+        return [club_id]
+    same_city = "AND lower(trim(o.city)) = lower(trim(c.city))" if scope == "city" else ""
+    rows = conn.execute(
+        f"""SELECT o.id FROM clubs c JOIN clubs o ON lower(trim(o.country)) = lower(trim(c.country)) {same_city}
+            WHERE c.id = %s ORDER BY o.id""",
+        (club_id,),
+    ).fetchall()
+    return [r["id"] for r in rows] or [club_id]
 
 
 def get_listing(conn, listing_id: int) -> dict | None:
@@ -151,15 +188,49 @@ def list_listings(conn, phone: str | None, club_id: int | None, kind: str | None
     return conn.execute(sql + " ORDER BY l.id DESC LIMIT 200", params).fetchall()
 
 
-def close_listing(conn, listing_id: int, member_id: int | None) -> bool:
-    sql = "UPDATE listings SET status = 'closed' WHERE id = %s"
-    params: list = [listing_id]
+def close_listing(conn, listing_id: int, member_id: int | None, reason: str | None = None) -> dict | None:
+    """Closes an open or matched listing (owner only when member_id is given); returns it, or None."""
+    sql_ = """UPDATE listings SET status = 'closed', closed_reason = %s, closed_at = now()
+              WHERE id = %s AND status <> 'closed'"""
+    params: list = [reason, listing_id]
     if member_id is not None:
-        sql += " AND member_id = %s"
+        sql_ += " AND member_id = %s"
         params.append(member_id)
-    cur = conn.execute(sql, params)
+    row = conn.execute(sql_ + " RETURNING id", params).fetchone()
     conn.commit()
-    return cur.rowcount > 0
+    return get_listing(conn, listing_id) if row else None
+
+
+def active_listings_for_member(conn, member_id: int) -> list[dict]:
+    return conn.execute(
+        f"""SELECT {LISTING_COLS} FROM listings l JOIN members m ON m.id = l.member_id
+            WHERE l.member_id = %s AND l.status IN ('open', 'matched') ORDER BY l.id""",
+        (member_id,),
+    ).fetchall()
+
+
+def match_counterparts(conn, listing_id: int) -> list[dict]:
+    """The other side of every match this listing is in, while that other listing is still active."""
+    return conn.execute(
+        f"""SELECT {LISTING_COLS}, x.id AS match_id FROM matches x
+            JOIN listings l ON l.id = CASE WHEN x.need_id = %(id)s THEN x.have_id ELSE x.need_id END
+            JOIN members m ON m.id = l.member_id
+            WHERE (x.need_id = %(id)s OR x.have_id = %(id)s) AND l.status IN ('open', 'matched')
+            ORDER BY x.id""",
+        {"id": listing_id},
+    ).fetchall()
+
+
+def reopen_unmatched(conn, listing_ids: list[int]) -> None:
+    """A 'matched' listing whose every counterpart is now closed goes back to 'open'."""
+    conn.execute(
+        """UPDATE listings l SET status = 'open' WHERE l.id = ANY(%s) AND l.status = 'matched'
+           AND NOT EXISTS (SELECT 1 FROM matches x JOIN listings o
+                             ON o.id = CASE WHEN x.need_id = l.id THEN x.have_id ELSE x.need_id END
+                           WHERE (x.need_id = l.id OR x.have_id = l.id) AND o.status <> 'closed')""",
+        (listing_ids,),
+    )
+    conn.commit()
 
 
 def record_match(conn, need_id: int, have_id: int, method: str, score: float) -> int | None:
@@ -197,13 +268,74 @@ def insert_quote(conn, q: dict) -> dict:
 
 
 def accept_quote(conn, quote_id: int, member_id: int, with_processing: bool) -> dict | None:
+    """We order it -> awaiting_deposit (the member pays first); self-order -> accepted (fee only)."""
     row = conn.execute(
-        """UPDATE quotes SET status = 'accepted', with_processing = %s, accepted_at = now()
+        """UPDATE quotes SET status = %s, with_processing = %s, accepted_at = now()
            WHERE id = %s AND member_id = %s AND status = 'quoted' RETURNING *""",
-        (with_processing, quote_id, member_id),
+        ("awaiting_deposit" if with_processing else "accepted", with_processing, quote_id, member_id),
     ).fetchone()
     conn.commit()
     return row
+
+
+QUOTE_COLS = "q.*, m.phone AS member_phone, m.display_name AS member_name, m.club_id AS member_club_id"
+
+
+def get_quote(conn, quote_id: int) -> dict | None:
+    return conn.execute(
+        f"SELECT {QUOTE_COLS} FROM quotes q JOIN members m ON m.id = q.member_id WHERE q.id = %s", (quote_id,)
+    ).fetchone()
+
+
+def member_quotes_with_status(conn, member_id: int, statuses: list[str]) -> list[dict]:
+    return conn.execute(
+        f"""SELECT {QUOTE_COLS} FROM quotes q JOIN members m ON m.id = q.member_id
+            WHERE q.member_id = %s AND q.status = ANY(%s) ORDER BY q.id""",
+        (member_id, statuses),
+    ).fetchall()
+
+
+def set_quote_status(conn, quote_id: int, from_statuses: list[str], to: str) -> dict | None:
+    row = conn.execute(
+        "UPDATE quotes SET status = %s WHERE id = %s AND status = ANY(%s) RETURNING *",
+        (to, quote_id, from_statuses),
+    ).fetchone()
+    return row
+
+
+# --- deposits ---------------------------------------------------------------------
+
+def insert_deposit(conn, d: dict) -> dict:
+    d = {**d, "checks": Jsonb(d["checks"])}
+    cols = list(d)
+    return conn.execute(
+        f"INSERT INTO deposits ({', '.join(cols)}) VALUES ({', '.join('%(' + c + ')s' for c in cols)}) RETURNING *",
+        d,
+    ).fetchone()
+
+
+def latest_deposit(conn, quote_id: int, status: str | None = "submitted") -> dict | None:
+    return conn.execute(
+        """SELECT * FROM deposits WHERE quote_id = %s AND (%s::text IS NULL OR status = %s)
+           ORDER BY id DESC LIMIT 1""",
+        (quote_id, status, status),
+    ).fetchone()
+
+
+def review_deposit(conn, deposit_id: int, status: str, reason: str | None) -> dict:
+    return conn.execute(
+        "UPDATE deposits SET status = %s, reject_reason = %s, reviewed_at = now() WHERE id = %s RETURNING *",
+        (status, reason, deposit_id),
+    ).fetchone()
+
+
+def list_deposits(conn, status: str | None) -> list[dict]:
+    return conn.execute(
+        """SELECT d.*, q.status AS quote_status, q.store_title, m.display_name AS member_name
+           FROM deposits d JOIN quotes q ON q.id = d.quote_id JOIN members m ON m.id = d.member_id
+           WHERE (%s::text IS NULL OR d.status = %s) ORDER BY d.id DESC LIMIT 50""",
+        (status, status),
+    ).fetchall()
 
 
 def list_quotes(conn, member_id: int) -> list[dict]:
@@ -216,7 +348,9 @@ def pending_order_quotes(conn) -> list[dict]:
     return conn.execute(
         """SELECT q.*, m.phone AS member_phone, m.display_name AS member_name
            FROM quotes q JOIN members m ON m.id = q.member_id
-           WHERE q.status = 'accepted' AND q.order_id IS NULL ORDER BY q.store, q.id"""
+           WHERE q.order_id IS NULL
+             AND (q.status = 'paid' OR (q.status = 'accepted' AND q.with_processing IS FALSE))
+           ORDER BY q.store, q.id"""
     ).fetchall()
 
 
