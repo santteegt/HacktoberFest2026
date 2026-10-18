@@ -1,4 +1,6 @@
-# RC Parts Finder
+# PartsPaddock
+
+![PartsPaddock logo: a chat bubble with a friendly bot above a touring car whose wheels are orange gears, next to the name PartsPaddock and the tagline "the parts desk of your RC club"](docs/logo/logo-lockup.png)
 
 > A WhatsApp agent for an RC car club. Members tell it what parts they have in the drawer and what they need; it connects the two sides inside the club, and when nobody has the part it quotes the import from a US hobby shop and batches the accepted quotes into one order for the person who runs the imports.
 
@@ -8,7 +10,7 @@
 
 In our club in Cuenca, Ecuador, most of us run chassis that are not sold locally, so parts come from the US. Everyone ends up with spares in a drawer (a spur gear bought twice, the arms from a kit you converted) while someone else in the club is asking the group chat for exactly that part. The message scrolls away in minutes. When nobody has it, you ask the one person in the club who brings parts in, and they price it by hand: store price, weight, shipping per pound, a fee for placing the order.
 
-RC Parts Finder sits in the club's WhatsApp group and does both jobs:
+PartsPaddock sits in the club's WhatsApp group and does both jobs:
 
 - **Swap and sell inside the club (free).** "Tengo un spur 68T de TT-02 nuevo, $10" becomes a listing. "Busco un TAM54500" becomes a request. When the two meet, the agent writes to both members in private.
 - **Import quotes (paid).** When the club has nothing, the agent looks the part up at [Michael's RC Hobbies](https://www.michaelsrchobbies.com/), reads the store's price, stock and listed weight, and answers with two totals: what it costs if the member orders it and ships it to the forwarding address, and what it costs if we order it for them. If we order it, the member sends a deposit receipt (PDF) that the maintainer checks by hand; if they order it themselves, they send the store's tracking number. Only then does it go into the order batch, and the maintainer gets one summary per batch with links, quantities and what to charge whom.

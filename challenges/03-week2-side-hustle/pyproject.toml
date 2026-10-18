@@ -1,7 +1,7 @@
 [project]
 name = "rcparts"
 version = "0.1.0"
-description = "RC Parts Finder: club stock matching and US import quotes, called by a Hermes Agent skill"
+description = "PartsPaddock: club stock matching and US import quotes, called by a Hermes Agent skill"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"

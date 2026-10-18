@@ -1,4 +1,4 @@
-# RC Parts Finder: project spec
+# PartsPaddock: project spec
 
 **Challenge:** Hacktoberfest Open-Source AI Challenge: Week 2, Side Hustle (DEV event 80) · **Deadline:** 2026-10-19 06:59 UTC (Sun Oct 18, 11:59 PM PDT; Mon Oct 19 1:59 AM at UTC-5). Written 2026-10-18 00:50 UTC with about 30 h left. Decisions and their reasons are in [CHALLENGE-MEMORY.md](CHALLENGE-MEMORY.md); this file is the plan.
 

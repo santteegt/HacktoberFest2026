@@ -55,7 +55,7 @@ What each category asks for is in [CHALLENGE.md](CHALLENGE.md). Credits and prom
 4. Stage with `create_article` (`published: false`; leave `ai_disclosure_level` at the default). Give the user the draft link.
 5. **Publish only after the user explicitly says yes in the current session**, before the deadline. After it's live, update `../README.md`, `../../README.md` and `../../STICKERS.md`, then add a retrospective to the knowledge base `raw/` and run `/okf-wiki`.
 
-## Chosen project: RC Parts Finder agent
+## Chosen project: PartsPaddock
 
 Decided 2026-10-18 00:05 UTC (memory entry of the same time has the rejected options). An agent that lives in an RC club's WhatsApp group and connects members who have spare imported parts with members who need them; when nobody has the part, it quotes an import from a whitelisted US hobby shop. The paying customer is the club member who takes the import quote; the maintainer (the author) runs the import service and charges a weight-based fee plus an optional 12% processing fee.
 
@@ -86,7 +86,7 @@ Decided 2026-10-18 00:05 UTC (memory entry of the same time has the rejected opt
 ## Status
 
 - [x] Folder scaffolded (2026-10-12 21:07 UTC, inside the window)
-- [x] Idea chosen: RC Parts Finder (2026-10-18); paying user = the club member taking an import quote
+- [x] Idea chosen: PartsPaddock (2026-10-18); paying user = the club member taking an import quote
 - [x] Open-source AI core tested (2026-10-18): Gemma 4 26B A4B on OpenRouter through Hermes; free pool was rate-limited, paid id in use
 - [x] Prize categories chosen (2026-10-18): Gemma, Tiger Data; ElevenLabs decided at stage S4
 - [~] MVP: CLI cycle passes on Tiger (S2-S5 code); WhatsApp bridge up and a DM delivered (S1); group test pending

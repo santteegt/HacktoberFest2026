@@ -202,7 +202,7 @@ def make_test_receipt(out: Path, quote_id: int, amount_usd: Decimal, when: dt.da
     c.setFont("Helvetica-Bold", 13)
     c.drawString(36, h - 50, FAKE_BANK)
     c.setFont("Helvetica", 9)
-    c.drawString(36, h - 64, "Documento generado para pruebas del bot RC Parts Finder.")
+    c.drawString(36, h - 64, "Documento generado para pruebas del bot PartsPaddock.")
     c.setFont("Helvetica-Bold", 12)
     c.drawString(36, h - 100, "Comprobante de depósito")
     rows = [

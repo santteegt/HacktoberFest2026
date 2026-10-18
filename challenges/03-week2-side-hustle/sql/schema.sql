@@ -1,4 +1,4 @@
--- RC Parts Finder schema (Postgres on Tiger Cloud). Idempotent: safe to run on every `rcparts db init`.
+-- PartsPaddock schema (Postgres on Tiger Cloud). Idempotent: safe to run on every `rcparts db init`.
 -- pg_trgm is created separately by the CLI inside a try, so a role without CREATE EXTENSION still works.
 
 CREATE TABLE IF NOT EXISTS clubs (

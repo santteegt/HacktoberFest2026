@@ -1,5 +1,5 @@
 ---
-title: "RC Parts Finder: the parts desk for my RC club, in our WhatsApp group"
+title: "PartsPaddock: a WhatsApp parts desk for RC clubs, with open models and a side hustle"
 published: false
 tags: devchallenge, hf26challenge, opensource, ai
 ---
@@ -10,9 +10,11 @@ tags: devchallenge, hf26challenge, opensource, ai
 
 ## What I Built
 
+![PartsPaddock logo: a chat bubble with a friendly bot above a touring car whose wheels are orange gears, next to the name PartsPaddock and the tagline "the parts desk of your RC club"](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/03-week2-side-hustle/docs/logo/logo-lockup.png)
+
 I race 1/10 touring cars in Cuenca, Ecuador. Almost nothing we run is sold here, so parts come from the US, and every club member has a drawer of spares: a spur gear bought twice, the arms left over from a conversion. Meanwhile someone else in the club is asking the WhatsApp group for exactly that part, and the message scrolls away. When nobody has it, the member asks whoever brings parts in, and that person prices the import by hand.
 
-RC Parts Finder is a bot that lives in the club's WhatsApp group and does both jobs.
+PartsPaddock is a bot that lives in the club's WhatsApp group and does both jobs.
 
 - **Swap and sell inside the club, free.** "Tengo un spur 68T de TT-02 nuevo, $10" becomes a listing. "@bot busco un TAM54500" becomes a request. When a request meets a listing, the bot writes to both members in private.
 - **Import quotes, paid.** When the club has nothing, the bot looks the part up at Michael's RC Hobbies and answers with the store price, the weight the store lists, our per-pound fee, and two totals: one if the member orders it and ships it to our forwarding address, one if we order it for them (+12%). The member answers "sí". If we order it, they send a deposit receipt PDF, which I check by hand; if they order it themselves, they send the store's tracking number. Then it goes into the next order batch. The maintainer (me) gets one summary per batch with links, quantities and what to charge whom.

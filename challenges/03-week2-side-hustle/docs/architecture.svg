@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="arch-title arch-desc">
-  <title id="arch-title">RC Parts Finder architecture</title>
+  <title id="arch-title">PartsPaddock architecture</title>
   <desc id="arch-desc">RC club members use WhatsApp: the club group (the bot answers when mentioned), private messages (HAVE, NEED, "sí"), and the maintainer, who receives deposit receipts and replies "confirmar". An unofficial WhatsApp bridge (Baileys) connects them to Hermes Agent, the open-source agent harness (gateway, skills, profile rc-parts). Hermes asks Gemma 4 26B A4B, an open-weight model served by OpenRouter, for language only: turning messages into listing JSON and relaying replies. Through two agent skills (SKILL.md files, drawn as a page with a lightning bolt) written for this project, rc-listings and rc-quote, Hermes runs the rcparts CLI, code written for this project, which decides sender identity, validation, matching, quote math, deposits and the order batch, and sends notifications back through Hermes ("hermes send"). The CLI stores listings, matches, quotes, deposits and orders in Tiger Cloud Postgres and reads price, stock and weight from Michael's RC Hobbies storefront JSON. Hermes also has a read-only MCP connection to the database, and a Hermes cron job (hourly or daily) triggers the order batch. Legend: green is open source or open weights, blue is code written for this project, grey is an external service, amber is people.</desc>
   <defs>
     <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#374151"/></marker>
@@ -97,7 +97,7 @@
 
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
 
-  <text x="40" y="52" class="h">RC Parts Finder</text>
+  <text x="40" y="52" class="h">PartsPaddock</text>
   <text x="40" y="82" class="sub">The model does language; code decides who is writing, what matches, and every number.</text>
 
   <!-- People on WhatsApp -->

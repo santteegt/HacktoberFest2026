@@ -1,6 +1,6 @@
 name: rc-parts
 version: 0.1.0
-description: "RC Parts Finder: a WhatsApp agent for an RC club that matches spare parts between members and quotes imports from a US hobby shop. Hacktoberfest 2026, Week 2 (Side Hustle)."
+description: "PartsPaddock: a WhatsApp agent for an RC club that matches spare parts between members and quotes imports from a US hobby shop. Hacktoberfest 2026, Week 2 (Side Hustle)."
 hermes_requires: ">=0.22.0"
 author: "Santiago Gonzalez"
 license: "MIT"
