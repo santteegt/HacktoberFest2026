@@ -24,14 +24,14 @@ metadata:
 Run with the `terminal` tool from `$RCPARTS_HOME`:
 
 ```bash
-uv run rcparts quote --phone <SENDER_PHONE> --query "<part number or the member's words>"
-uv run rcparts quote --phone <SENDER_PHONE> --listing <LISTING_ID>        # quote an existing NEED listing
-uv run rcparts quote accept --phone <SENDER_PHONE> --quote <QUOTE_ID>     # the member said YES: we order it for them (processing fee)
-uv run rcparts quote accept --phone <SENDER_PHONE> --quote <QUOTE_ID> --self-order   # the member will order it themselves and only ship through us (weight fee only)
-uv run rcparts quote list --phone <SENDER_PHONE>                          # their open quotes
+uv run rcparts quote --query "<part number or the member's words>"
+uv run rcparts quote --listing <LISTING_ID>        # quote an existing NEED listing
+uv run rcparts quote accept --quote <QUOTE_ID>     # the member said YES: we order it for them (processing fee)
+uv run rcparts quote accept --quote <QUOTE_ID> --self-order   # the member will order it themselves and only ship through us (weight fee only)
+uv run rcparts quote list                          # their open quotes
 ```
 
-Prefer `--query` with the part number when the member gave one; otherwise pass their words as they wrote them. `SENDER_PHONE` is the digits before `@s.whatsapp.net` in the session's `user_id`; if you cannot see it, omit `--phone` and the command reads it from the session. Never query the database for it.
+Prefer `--query` with the part number when the member gave one; otherwise pass their words as they wrote them. Never pass `--phone`: the command knows who is writing.
 
 ## What the command returns
 

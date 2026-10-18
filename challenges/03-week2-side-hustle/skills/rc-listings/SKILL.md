@@ -24,10 +24,10 @@ Everything that must be correct is done by the `rcparts` command: validation, no
 Run commands with the `terminal` tool from `$RCPARTS_HOME` (the working directory is already set):
 
 ```bash
-uv run rcparts listing add --phone <SENDER_PHONE> --json '<LISTING_JSON>'
+uv run rcparts listing add --json '<LISTING_JSON>'
 ```
 
-`SENDER_PHONE` is the sender's number: the digits before `@s.whatsapp.net` in the session's `user_id` (country code, no `+`). In a group it is the person who wrote, not the group. If you cannot see it, omit `--phone`: the command reads it from the session and answers `error: unknown_sender` if it cannot. Never query the database for it.
+Never pass `--phone`: the command reads who wrote the message from the session itself (in a group, the person, not the group). Never look up phone numbers or names in the database.
 
 ### The listing JSON you write
 
@@ -54,9 +54,9 @@ uv run rcparts listing add --phone <SENDER_PHONE> --json '<LISTING_JSON>'
 
 ```bash
 uv run rcparts search --club <CLUB_ID> --text "<what they ask for>" --kind HAVE   # who has X? (open HAVE listings, best first)
-uv run rcparts listing list --phone <SENDER_PHONE>                       # a member's own listings
-uv run rcparts listing close --id <LISTING_ID> --phone <SENDER_PHONE>    # when the member says it is sold or no longer needed (owner only)
-uv run rcparts member get --phone <SENDER_PHONE>                         # club id, name, class, brands
+uv run rcparts listing list                       # a member's own listings
+uv run rcparts listing close --id <LISTING_ID>    # when the member says it is sold or no longer needed (owner only)
+uv run rcparts member get                         # club id, name, class, brands
 ```
 
 For `search`, relay the `reply` (it lists the matching HAVE listings with their owners' first names, never phone numbers in a group).

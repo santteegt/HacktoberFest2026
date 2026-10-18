@@ -47,3 +47,16 @@ def test_sender_from_hermes_session_env():
     assert sender_from_env({"HERMES_SESSION_KEY": "agent:rc-parts:whatsapp:dm:593990000002"}) == "593990000002"
     assert sender_from_env({"HERMES_SESSION_KEY": "agent:rc-parts:whatsapp:group:1203@g.us"}) == ""
     assert sender_from_env({}) == ""
+
+
+def test_session_sender_overrides_invented_phone(monkeypatch):
+    import rcparts.cli as cli
+    seen = {}
+    monkeypatch.setenv("HERMES_SESSION_USER_ID", "593990000001@s.whatsapp.net")
+    monkeypatch.setattr(cli, "Settings", type("S", (), {"from_env": staticmethod(lambda: None)}))
+    parser = cli.build_parser()
+    args = parser.parse_args(["member", "get", "--phone", "593000000000"])
+    args.fn = lambda a, s: seen.setdefault("phone", a.phone) and {"ok": True, "reply": "", "action": ""}
+    monkeypatch.setattr(cli, "build_parser", lambda: type("P", (), {"parse_args": lambda self, argv: args})())
+    cli.main(["member", "get", "--phone", "593000000000"])
+    assert seen["phone"] == "593990000001"

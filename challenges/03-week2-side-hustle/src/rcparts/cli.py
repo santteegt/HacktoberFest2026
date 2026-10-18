@@ -527,8 +527,12 @@ def build_parser() -> Parser:
 def main(argv: list[str] | None = None) -> int:
     try:
         args = build_parser().parse_args(argv)
-        if getattr(args, "phone", None) in (None, ""):
-            args.phone = sender_from_env() or None
+        # Inside a Hermes turn the real sender is in the session env and always wins: the model
+        # cannot see phone numbers and has been seen inventing them. --phone is for the maintainer's CLI.
+        if hasattr(args, "phone"):
+            sender = sender_from_env()
+            if sender:
+                args.phone = sender
         result = args.fn(args, Settings.from_env())
     except UsageError as exc:
         emit({"ok": False, "error": "usage", "detail": str(exc), "reply": "",
