@@ -87,9 +87,9 @@ Decided 2026-10-18 00:05 UTC (memory entry of the same time has the rejected opt
 
 - [x] Folder scaffolded (2026-10-12 21:07 UTC, inside the window)
 - [x] Idea chosen: RC Parts Finder (2026-10-18); paying user = the club member taking an import quote
-- [ ] Open-source AI core chosen and tested on the target device
+- [x] Open-source AI core tested (2026-10-18): Gemma 4 26B A4B on OpenRouter through Hermes; free pool was rate-limited, paid id in use
 - [x] Prize categories chosen (2026-10-18): Gemma, Tiger Data; ElevenLabs decided at stage S4
-- [ ] MVP working
+- [~] MVP: CLI cycle passes on Tiger (S2-S5 code); WhatsApp bridge up and a DM delivered (S1); group test pending
 - [ ] First-user session done and logged
 - [ ] Demo recorded or deployed
 - [ ] README, LICENSE, `.env.example` done; audit run
