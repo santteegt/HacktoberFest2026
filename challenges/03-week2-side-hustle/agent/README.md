@@ -16,8 +16,9 @@ The script stages `agent/` plus `../skills/` into a temporary distribution direc
 
 ```bash
 hermes -p rc-parts whatsapp        # scan the QR code from the bot's phone (Linked devices)
-hermes -p rc-parts gateway         # foreground; `gateway install` for a user service
-hermes -p rc-parts gateway status
+hermes gateway                     # ONE host gateway serves every profile (Hermes 0.22); `hermes gateway install` for a service
+scripts/gateway-restart.sh         # restart without tripping over the old WhatsApp bridge (stop, wait, start, retry)
+hermes gateway status
 ```
 
 Group JID: after the bot is in the club group, read it from `~/.hermes/profiles/rc-parts/logs/gateway.log` (or ask the bot in a DM to print the group id) and put it in `WHATSAPP_GROUP_ALLOWED_USERS`.
