@@ -47,5 +47,11 @@ if [ -n "$ENVFILE" ]; then
   done < "$ENVFILE"
   echo "wrote $(grep -c '=' "$PROFILE_DIR/.env") keys to $PROFILE_DIR/.env"
 fi
+# terminal.cwd is not env-expanded by the gateway, so pin the absolute path in the installed copy only.
+home="$(grep '^RCPARTS_HOME=' "$PROFILE_DIR/.env" 2>/dev/null | cut -d= -f2- | tr -d '"' || true)"
+if [ -n "$home" ]; then
+  sed -i '' "s|\${RCPARTS_HOME}|$home|g" "$PROFILE_DIR/config.yaml"
+  echo "terminal.cwd pinned to $home in the installed config"
+fi
 echo "profile '$NAME' installed at $PROFILE_DIR"
 echo "next: hermes -p $NAME whatsapp   (pair the bot's phone), then hermes -p $NAME gateway"
