@@ -21,16 +21,17 @@ Two clubs in Cuenca, two real members. Every listing is a real Xray part sold at
 
 | # | Who, where | Send | What should happen | Shows |
 | --- | --- | --- | --- | --- |
-| 1 | Santiago, **group** | `@bot busco el XRA303187-H, brazo inferior trasero duro izquierdo del X4` | Group: one line, "match, I wrote to both". Both phones: a private match message naming the other member and "(de Cuenca Touring)" / "(de RC Club Cuenca)" | P2P across clubs, exact part number |
+| 1 | Santiago, **group** | `@bot I'm looking for a rear lower arm for the Xray X4` (English on purpose; the listing is in Spanish) | Group: one line, "match, I wrote to both". Both phones: a private match message naming the other member and "(de Cuenca Touring)" / "(de RC Club Cuenca)" | P2P across clubs and languages (glossary) |
 | 2 | Socio, **DM** | `tengo una pletina portacarrocería de aluminio del Xray X1, usada, $15` | Confirmation, then a match with Santiago's NEED #9; both get the private match message | P2P text match (no part number) |
 | 3 | Socio, **DM** | `quién tiene amortiguadores del X4?` | Lists Santiago's XLP2 shock bodies (#2), with no phone number | Search |
-| 4 | Socio, **DM** | `busco la barra estabilizadora trasera XRA303843 del X4` | "Nobody in the club has it; want an import quote?" | No match → B2C |
-| 5 | Socio, **DM** | `sí, cotízala` | Quote: store $12.47, 56 g as listed, 0.12 lb × $7/lb = $0.86, $13.33 if they order it, $14.83 if we order it (+12%, $1.50) | Every number from code |
-| 6 | Socio, **DM** | `sí, pídanla ustedes` | Deposit instructions: $14.83, reference RC-Q<id>, "send the PDF here" | Deposit gate |
+| 4 | Socio, **group** | `@bot busco la barra estabilizadora trasera XRA303843 del X4` | "Nobody in the club has it; want an import quote?" | No match → B2C |
+| 5 | Socio, **group** | `@bot sí, cotízala` | Group: "Te envié la cotización por privado". Socio's DM: quote: store $12.47, 56 g as listed, 0.12 lb × $7/lb = $0.86, $13.33 if they order it, $14.83 if we order it (+12%, $1.50) | Every number from code |
+| 6 | Socio, **DM** | `sí <id>` (the id is in the quote) | Deposit instructions: $14.83, reference RC-Q<id>, "send the PDF here" | Deposit gate |
 | 7 | Socio, **DM** | send the PDF from `uv run rcparts demo receipt --quote <id>` (file `data/receipts/demo-RC-Q<id>.pdf`) as a document | Socio: "received, waiting for confirmation". Santiago: the PDF plus amount and reference checks and "confirmar <id> / rechazar <id>" | Human verification |
 | 8 | Santiago, **DM** | `confirmar <id>` | Santiago: confirmed. Socio: "pago confirmado" | Only the maintainer can confirm |
-| 9 | Santiago, **DM** | `cuánto me sale traer un TAM54500?` then `lo compro yo` | Quote ($13.00, 113 g, $1.74 fee), then self-order instructions asking for the tracking number | Self-order branch |
+| 9 | Santiago, **DM** | `cuánto me sale traer un kit Xray XB2D 2026?` then `lo compro yo <id>` | Quote for XRA320021 (found by name, no part number), then self-order instructions asking for the tracking number | Self-order branch; store search by name |
 | 10 | Santiago, **DM** | `ya lo compré, el tracking es 1Z999AA10123456784` | "Tracking recorded (UPS)"; Santiago also gets the maintainer message with the UPS link | Tracking confirmation |
+| 10b | Socio, **group** | `@bot mis pedidos` | Group one-liner; Socio's DM lists the paid anti-roll bar | "My purchases" |
 | 11 | Socio, **DM** | `ya vendí el alerón delantero del X1` | Listing #6 closed as sold | Close by DM |
 | 12 | (wait for the top of the hour, or run `scripts/install-cron.sh` timing) | — | Santiago gets the order batch: the paid stabiliser bar ($14.83) and the TAM54500 self-order (fee $1.74, tracking shown) | Order batch |
 
