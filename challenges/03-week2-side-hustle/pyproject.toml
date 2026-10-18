@@ -1,0 +1,24 @@
+[project]
+name = "rcparts"
+version = "0.1.0"
+description = "RC Parts Finder: club stock matching and US import quotes, called by a Hermes Agent skill"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.27",
+    "psycopg[binary]>=3.2",
+]
+
+[project.scripts]
+rcparts = "rcparts.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["uv_build>=0.9,<0.10"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,37 @@
+name: rc-parts
+version: 0.1.0
+description: "RC Parts Finder: a WhatsApp agent for an RC club that matches spare parts between members and quotes imports from a US hobby shop. Hacktoberfest 2026, Week 2 (Side Hustle)."
+hermes_requires: ">=0.22.0"
+author: "Santiago Gonzalez"
+license: "MIT"
+
+# Secrets are never shipped. Copy agent/.env.example to the profile's .env (scripts/setup-profile.sh --env-file does it).
+env_requires:
+  - name: OPENROUTER_API_KEY
+    description: "OpenRouter key; the model is google/gemma-4-26b-a4b-it:free (open weights)"
+    required: true
+  - name: RCPARTS_HOME
+    description: "Absolute path of the challenge folder on this machine (where `uv run rcparts` works)"
+    required: true
+  - name: WHATSAPP_ENABLED
+    description: "true to start the Baileys WhatsApp bridge"
+    required: false
+    default: "true"
+  - name: WHATSAPP_MODE
+    description: "bot (dedicated number) or self-chat"
+    required: false
+    default: "bot"
+  - name: WHATSAPP_ALLOWED_USERS
+    description: "Comma-separated member phone numbers allowed to DM the bot (country code, no +)"
+    required: true
+  - name: WHATSAPP_GROUP_POLICY
+    description: "allowlist: only the club groups listed below"
+    required: false
+    default: "allowlist"
+  - name: WHATSAPP_GROUP_ALLOWED_USERS
+    description: "Comma-separated club group JIDs, e.g. 120363001234567890@g.us"
+    required: true
+  - name: WHATSAPP_REQUIRE_MENTION
+    description: "true: in groups, answer only @mentions, replies to the bot and /commands"
+    required: false
+    default: "true"

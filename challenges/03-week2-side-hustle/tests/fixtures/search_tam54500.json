@@ -1,0 +1,44 @@
+{
+ "collection": {
+  "search": false,
+  "count": 1,
+  "page": 1,
+  "pages": 1,
+  "title": "Search results for tam54500",
+  "products": {
+   "71277736": {
+    "id": 71277736,
+    "vid": 120448036,
+    "image": 77795397,
+    "brand": {
+     "id": 114814,
+     "image": 1601469,
+     "url": "brands/tamiya",
+     "title": "Tamiya",
+     "count": 390,
+     "feat": false
+    },
+    "code": "TAM54500",
+    "ean": "4950344545001",
+    "sku": "TAM54500",
+    "score": 0,
+    "price": {
+     "price": 13,
+     "price_incl": 13,
+     "price_excl": 13,
+     "price_old": 0,
+     "price_old_incl": 0,
+     "price_old_excl": 0
+    },
+    "available": true,
+    "unit": false,
+    "url": "tam54500-rc-tt02-high-speed-gear-set-68t-tcs.html",
+    "title": "TAM54500  RC TT02 High Speed Gear Set, 68T  (TCS)",
+    "fulltitle": "Tamiya TAM54500  RC TT02 High Speed Gear Set, 68T  (TCS)",
+    "variant": "Default",
+    "description": "TAM54500  RC TT02 High Speed Gear Set, 68T  (TCS)",
+    "data_01": ""
+   }
+  }
+ }
+}

@@ -1,0 +1,44 @@
+# Hermes profile "rc-parts". Secrets live in the profile's .env, never here.
+
+# One open-weight model for every turn: Gemma 4 26B A4B (MoE, 4B active) on OpenRouter's free tier.
+# Paid fallback: the same id without ":free". Self-host fallback: provider "custom" pointing at Ollama.
+model:
+  default: "google/gemma-4-26b-a4b-it:free"
+  provider: "openrouter"
+
+# The bot lives in WhatsApp. It gets the shell (for the rcparts command), skills and a clarify tool,
+# nothing else: no browser, web, files, code execution, delegation or messaging tools.
+platform_toolsets:
+  whatsapp: ["terminal", "skills", "clarify"]
+  cli: ["terminal", "skills", "clarify", "cronjob"]
+
+# Members' stock and quotes live in Postgres on Tiger Cloud. The agent may read through Tiger MCP
+# (ad-hoc "who has X" questions); every write goes through rcparts, which validates in code.
+mcp_servers:
+  tiger:
+    command: "tiger"
+    args: ["mcp", "start"]
+    tools:
+      include: ["db_query", "db_schema"]
+
+# Voice notes in the group are transcribed with the local open Whisper (faster-whisper); Spanish and
+# English are both common in the club. Switch provider to elevenlabs (ELEVENLABS_API_KEY) if needed.
+stt:
+  enabled: true
+  provider: "local"
+  local:
+    model: "small"
+
+whatsapp:
+  reply_prefix: ""
+  unauthorized_dm_behavior: ignore
+  send_read_receipts: true
+
+approvals:
+  mode: smart
+
+# rcparts reads its own .env from RCPARTS_HOME; the shell tool only needs to know where that is.
+terminal:
+  backend: local
+  cwd: "${RCPARTS_HOME}"
+  env_passthrough: ["RCPARTS_HOME"]
