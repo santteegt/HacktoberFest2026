@@ -27,6 +27,16 @@ def query_terms(*texts: str | None) -> list[str]:
     return list(seen)
 
 
+def stem(word: str) -> str:
+    """Crude plural folding so "amortiguadores", "brazos" and "shocks" find "amortiguador", "brazo",
+    "shock". Used as a prefix in the query, so over-trimming ("bujes" -> "buj") still matches."""
+    if len(word) >= 6 and word.endswith("es"):
+        return word[:-2]
+    if len(word) >= 5 and word.endswith("s"):
+        return word[:-1]
+    return word
+
+
 def _exact(conn, club_ids, part_numbers, kind, exclude_member, exclude_listing) -> list[dict]:
     if not part_numbers:
         return []
@@ -47,13 +57,15 @@ def _exact(conn, club_ids, part_numbers, kind, exclude_member, exclude_listing) 
 def _text(conn, club_ids, terms, description, kind, exclude_member, exclude_listing) -> list[dict]:
     if not terms:
         return []
+    stems = list(dict.fromkeys(stem(t) for t in terms))
     sim = "similarity(coalesce(l.description, ''), %(desc)s)" if has_extension(conn, "pg_trgm") else "0.0"
     rows = conn.execute(
-        f"""WITH q AS (SELECT websearch_to_tsquery('simple', %(q)s) AS tsq)
+        f"""WITH q AS (SELECT to_tsquery('simple', %(q)s) AS tsq)
             SELECT {LISTING_COLS},
                    ts_rank(l.search, q.tsq) AS rank,
                    (SELECT count(*) FROM unnest(%(terms)s::text[]) t
-                     WHERE t = ANY(tsvector_to_array(l.search))) AS overlap,
+                     WHERE EXISTS (SELECT 1 FROM unnest(tsvector_to_array(l.search)) w
+                                   WHERE w LIKE t || '%%')) AS overlap,
                    {sim} AS sim
             FROM listings l JOIN members m ON m.id = l.member_id, q
             WHERE l.club_id = ANY(%(clubs)s) AND l.status IN ('open', 'matched') AND l.search @@ q.tsq
@@ -62,16 +74,16 @@ def _text(conn, club_ids, terms, description, kind, exclude_member, exclude_list
               AND (%(xl)s::bigint IS NULL OR l.id <> %(xl)s)
             ORDER BY overlap DESC, rank DESC, sim DESC, l.created_at DESC
             LIMIT 25""",
-        {"q": " or ".join(terms), "terms": terms, "desc": description or "", "clubs": club_ids, "kind": kind,
+        {"q": " | ".join(f"{t}:*" for t in stems), "terms": stems, "desc": description or "", "clubs": club_ids, "kind": kind,
          "xm": exclude_member, "xl": exclude_listing},
     ).fetchall()
     # One shared word ("tamiya") is not a match; ask for two, or all of them if the query is a single word.
-    need = min(2, len(terms))
+    need = min(2, len(stems))
     out = []
     for r in rows:
         if r["overlap"] < need:
             continue
-        score = round(r["overlap"] / len(terms) + float(r["rank"]) * 0.1 + float(r["sim"]) * 0.01, 4)
+        score = round(r["overlap"] / len(stems) + float(r["rank"]) * 0.1 + float(r["sim"]) * 0.01, 4)
         out.append({**r, "method": "text", "score": score})
     return out
 
