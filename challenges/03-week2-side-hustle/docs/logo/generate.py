@@ -27,7 +27,7 @@ def bot(cx,cy,s,body=CREAM,ink=BLUE):
 def car(x,y,sc,col=INK,hub=CREAM,win=CREAM):
     # Low supercar-style touring silhouette, nose on the left, rear wing on the right; ~740x200 units.
     body=("M26,174 L30,140 Q58,112 120,100 L230,84 Q290,40 340,26 Q420,12 520,22 L640,50 L700,62 "
-          "Q716,96 714,140 L710,174 L668,174 A62,62 0 1 0 552,174 L228,174 A62,62 0 1 0 112,174 Z")
+          "Q716,96 714,140 L710,174 L654.9,174 A50,50 0 1 0 565.1,174 L212.7,174 A48,48 0 1 0 127.3,174 Z")
     wing=(f'<path d="M598,16 L702,6 L706,22 L610,30 Z" fill="{col}"/>'
           f'<path d="M640,28 L654,28 L648,56 L632,56 Z" fill="{col}"/>')
     glass=(f'<path d="M296,82 Q326,50 358,38 L420,33 L414,80 Z" fill="{win}"/>'
