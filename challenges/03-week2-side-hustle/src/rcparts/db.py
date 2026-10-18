@@ -268,11 +268,12 @@ def insert_quote(conn, q: dict) -> dict:
 
 
 def accept_quote(conn, quote_id: int, member_id: int, with_processing: bool) -> dict | None:
-    """We order it -> awaiting_deposit (the member pays first); self-order -> accepted (fee only)."""
+    """We order it -> awaiting_deposit (the member pays first); self-order -> awaiting_tracking (the member
+    buys it and must send the tracking number before it counts)."""
     row = conn.execute(
         """UPDATE quotes SET status = %s, with_processing = %s, accepted_at = now()
            WHERE id = %s AND member_id = %s AND status = 'quoted' RETURNING *""",
-        ("awaiting_deposit" if with_processing else "accepted", with_processing, quote_id, member_id),
+        ("awaiting_deposit" if with_processing else "awaiting_tracking", with_processing, quote_id, member_id),
     ).fetchone()
     conn.commit()
     return row
@@ -293,6 +294,16 @@ def member_quotes_with_status(conn, member_id: int, statuses: list[str]) -> list
             WHERE q.member_id = %s AND q.status = ANY(%s) ORDER BY q.id""",
         (member_id, statuses),
     ).fetchall()
+
+
+def set_tracking(conn, quote_id: int, number: str, carrier: str | None) -> dict | None:
+    row = conn.execute(
+        """UPDATE quotes SET status = 'in_transit', tracking_number = %s, tracking_carrier = %s, tracking_at = now()
+           WHERE id = %s AND status IN ('awaiting_tracking', 'in_transit') RETURNING *""",
+        (number, carrier, quote_id),
+    ).fetchone()
+    conn.commit()
+    return row
 
 
 def set_quote_status(conn, quote_id: int, from_statuses: list[str], to: str) -> dict | None:
@@ -349,7 +360,7 @@ def pending_order_quotes(conn) -> list[dict]:
         """SELECT q.*, m.phone AS member_phone, m.display_name AS member_name
            FROM quotes q JOIN members m ON m.id = q.member_id
            WHERE q.order_id IS NULL
-             AND (q.status = 'paid' OR (q.status = 'accepted' AND q.with_processing IS FALSE))
+             AND (q.status = 'paid' OR (q.status IN ('in_transit', 'accepted') AND q.with_processing IS FALSE))
            ORDER BY q.store, q.id"""
     ).fetchall()
 

@@ -34,6 +34,7 @@ def strip_json_fence(text: str) -> str:
     if t.lower().startswith("json") and not t.startswith("{"):
         t = t[4:].strip()
     return t
+from .tracking import find_tracking
 from .store import STORE_NAME, StoreClient, StoreError, pick_best
 
 ACT_SEND = "Send `reply` to the member as-is. Do not add prices, totals or part details of your own."
@@ -453,7 +454,9 @@ def cmd_quote_accept(a, s):
     if a.self_order:
         reply = t(lang, "quote_accepted_self", title=row["store_title"], address=s.us_address,
                   fee=money(row["fee_usd"]), id=row["id"])
-        return out(reply, quote=row)
+        return out(reply, quote=row,
+                   action=f"{ACT_SEND} When this member sends a tracking number, run "
+                          f"`rcparts tracking submit --text \"<their message>\"`.")
     account = t(lang, "deposit_account", account=s.deposit_account) if s.deposit_account else ""
     reply = t(lang, "quote_accepted_deposit", title=row["store_title"], total=money(row["total_with_processing_usd"]),
               id=row["id"], account=account)
@@ -483,6 +486,44 @@ def cmd_quote_list(a, s):
 
 def _quote_total(q: dict) -> Decimal:
     return Decimal(str(q["total_usd"] if q.get("with_processing") is False else q["total_with_processing_usd"]))
+
+
+def cmd_tracking_submit(a, s):
+    """Self-order: the member bought the part and sends the store's tracking number."""
+    lang = s.reply_lang
+    found = find_tracking(a.text)
+    if not found:
+        return out(t(lang, "tracking_none"), ok=False, error="no_tracking",
+                   action=f"{ACT_SEND} Wait for the member to send the number, then run this again.")
+    with db.connect(s.database_url) as conn:
+        member, refusal = _member_or_reply(conn, s, a.phone)
+        if refusal:
+            return refusal
+        if a.quote is not None:
+            waiting = [q for q in db.member_quotes_with_status(conn, member["id"], ["awaiting_tracking", "in_transit"])
+                       if q["id"] == a.quote]
+        else:
+            waiting = db.member_quotes_with_status(conn, member["id"], ["awaiting_tracking"])
+        if not waiting:
+            return out(t(lang, "tracking_no_quote"), ok=False, error="no_quote_awaiting_tracking")
+        if len(waiting) > 1:
+            lines = [t(lang, "tracking_ambiguous")] + [f"#{q['id']} {q['store_title']}" for q in waiting]
+            return out("\n".join(lines), ok=False, error="ambiguous", candidates=[q["id"] for q in waiting],
+                       action=f"{ACT_SEND} When the member says which one, run "
+                              f"`rcparts tracking submit --quote <id> --text \"{found['number']}\"`.")
+        quote = db.set_tracking(conn, waiting[0]["id"], found["number"], found["carrier"])
+    carrier = f" ({found['carrier']})" if found["carrier"] else ""
+    reply = t(lang, "tracking_ok", number=found["number"], carrier=carrier, title=quote["store_title"],
+              id=quote["id"], fee=money(quote["fee_usd"]))
+    notified, err = False, None
+    if not a.no_notify and s.maintainer_phone:
+        maint = t(lang, "tracking_maint", name=member["display_name"], phone=member["phone"], id=quote["id"],
+                  title=quote["store_title"], carrier_line=f"{found['carrier']}: " if found["carrier"] else
+                  ("Transportista no reconocido: " if lang == "es" else "Carrier not recognized: "),
+                  number=found["number"], link=f"{found['link']}\n" if found["link"] else "",
+                  address=s.us_address, fee=money(quote["fee_usd"]))
+        notified, err = send_dm(s.hermes_send_cmd, s.maintainer_phone, maint)
+    return out(reply, quote_id=quote["id"], tracking=found, maintainer_notified=notified, notify_error=err)
 
 
 def cmd_deposit_submit(a, s):
@@ -821,6 +862,14 @@ def build_parser() -> Parser:
     c.add_argument("--kind", type=str.upper, choices=KINDS)
     c.add_argument("--scope", choices=MATCH_SCOPES, help="default: MATCH_SCOPE")
     c.set_defaults(fn=cmd_search)
+
+    g = sub.add_parser("tracking").add_subparsers(dest="sub", required=True, parser_class=Parser)
+    c = g.add_parser("submit")
+    c.add_argument("--phone")
+    c.add_argument("--quote", type=int, help="default: the sender's only self-order waiting for tracking")
+    c.add_argument("--text", required=True, help="the member's message or the bare number")
+    c.add_argument("--no-notify", action="store_true")
+    c.set_defaults(fn=cmd_tracking_submit)
 
     g = sub.add_parser("deposit").add_subparsers(dest="sub", required=True, parser_class=Parser)
     c = g.add_parser("submit")

@@ -43,10 +43,13 @@ def quote_reply(lang: str, q: dict, us_address: str, exact: bool = True) -> str:
 
 
 def eligible_for_order(q: dict) -> bool:
-    """Into the order batch: paid quotes (deposit confirmed by the maintainer) and accepted self-orders."""
+    """Into the order batch: paid quotes (deposit confirmed by the maintainer) and self-orders whose member
+    sent a tracking number (in_transit). `accepted` self-orders predate the tracking step and still count."""
     if q.get("order_id") is not None:
         return False
-    return q.get("status") == "paid" or (q.get("status") == "accepted" and q.get("with_processing") is False)
+    if q.get("status") == "paid":
+        return True
+    return q.get("status") in ("in_transit", "accepted") and q.get("with_processing") is False
 
 
 def order_summary(lang: str, quotes: list[dict], order_ids: dict[str, int], date: str) -> tuple[str, dict]:
@@ -63,12 +66,14 @@ def order_summary(lang: str, quotes: list[dict], order_ids: dict[str, int], date
             key = f"{q.get('store_code') or q['store_url']}|{self_order}"
             it = items.setdefault(key, {"code": q.get("store_code") or "", "title": q.get("store_title") or "",
                                         "url": q["store_url"], "self_order": self_order, "qty": 0,
-                                        "store_price_usd": Decimal(0), "phones": [], "quote_ids": []})
+                                        "store_price_usd": Decimal(0), "phones": [], "quote_ids": [], "tracking": []})
             it["qty"] += q["qty"]
             it["store_price_usd"] += Decimal(str(q["store_price_usd"]))
             if q["member_phone"] not in it["phones"]:
                 it["phones"].append(q["member_phone"])
             it["quote_ids"].append(q["id"])
+            if q.get("tracking_number"):
+                it["tracking"].append(q["tracking_number"])
         # Self-order quotes: the member buys the part and ships it to the US address,
         # so only the weight fee is collected and the store price is not in the order.
         placed = [q for q in qs if q.get("with_processing") is not False]
@@ -86,7 +91,7 @@ def order_summary(lang: str, quotes: list[dict], order_ids: dict[str, int], date
             line = t(lang, "orders_item", qty=it["qty"], title=title, price=money(it["store_price_usd"]),
                      phone=", +".join(it["phones"]))
             if it["self_order"]:
-                line += " " + t(lang, "orders_self")
+                line += " " + t(lang, "orders_self", tracking=", ".join(it["tracking"]) or "-")
             lines.append(line)
             lines.append(f"  {it['url']}")
         lines.append(t(lang, "orders_totals", subtotal=money(subtotal), fees=money(fees), proc=money(proc),

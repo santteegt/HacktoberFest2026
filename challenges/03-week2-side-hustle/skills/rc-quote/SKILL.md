@@ -73,7 +73,20 @@ uv run rcparts deposit reject --quote <ID> --reason "<motivo>" # "rechazar 3 el 
 uv run rcparts deposit list                                    # "comprobantes pendientes" (add --status submitted)
 ```
 
-Only paid quotes (and self-orders) go into the daily order batch.
+Only paid quotes and self-orders with a tracking number go into the daily order batch.
+
+## Self-order tracking number
+
+After `quote accept --self-order`, the member buys the part themselves and ships it to the US address. The purchase only counts once they send the store's tracking number.
+
+- When a member sends a tracking number (or a message that contains one: "ya lo compré, el tracking es 1Z…", "9400 1000 …", "fedex 1234…"), run:
+  ```bash
+  uv run rcparts tracking submit --text "<the member's message, as written>"
+  ```
+  The command finds the number, recognises the carrier (UPS, USPS, FedEx, DHL, Amazon), records it, moves the quote to in transit and sends the maintainer the number with a tracking link. Send `reply` verbatim.
+- `error: ambiguous`: the member has several self-orders waiting; ask which one (the reply lists them) and run it again with `--quote <id>`.
+- `error: no_tracking`: there was no number in the message; send `reply`.
+- Never invent or correct a tracking number; pass the member's text as written.
 
 ## Rules
 

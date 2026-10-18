@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 960" width="1280" height="960" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="wf-title wf-desc">
   <title id="wf-title">RC Parts Finder: P2P and B2C flows</title>
-  <desc id="wf-desc">Top lane, P2P (free). Two RC clubs in the same city, Club A (for example RC Club Cuenca) and Club B (for example Cuenca Touring), each with a WhatsApp group and members. Step 1: members post HAVE or NEED listings. Step 2: the bot, through its rc-listings agent skill, matches them by part number or text, inside the same club (a member of Club B has a spur gear another Club B member needs) or across clubs in the same city (a Club A member has a shock a Club B member needs). Step 3: the bot DMs both members. Step 4: they meet and swap or sell in person. Step 5: a member tells the bot the item is sold; the listing closes and the other side is told. A Club A member needs a wheel no club has, so that need goes to the bottom lane. Bottom lane, B2C (paid import). Step 6: no match in any club. Step 7: the bot quotes an import, computed in code: store price $13.00, plus 0.25 lb at $7 per lb = $1.74, plus 12% for "we order it" = $1.56, total $16.30. Step 8: the member accepts with "sí". Step 9: the member sends the deposit receipt PDF by DM. Step 10: the bot forwards it to the maintainer, who checks the bank transfer by hand. Step 11: the maintainer replies "confirmar" and the quote is paid. Step 12: a cron job builds the order batch, hourly or daily. Step 13: the maintainer places one order per store. Step 14: parts ship to the US forwarding address. Step 15: they are imported. Step 16: they come back to the club. Self-order branch: after accepting, the member buys the part, ships it to the US forwarding address and pays us only the weight fee, $1.74; with the store price their total is $14.74), joining at step 14.</desc>
+  <desc id="wf-desc">Top lane, P2P (free). Two RC clubs in the same city, Club A (for example RC Club Cuenca) and Club B (for example Cuenca Touring), each with a WhatsApp group and members. Step 1: members post HAVE or NEED listings. Step 2: the bot, through its rc-listings agent skill, matches them by part number or text, inside the same club (a member of Club B has a spur gear another Club B member needs) or across clubs in the same city (a Club A member has a shock a Club B member needs). Step 3: the bot DMs both members. Step 4: they meet and swap or sell in person. Step 5: a member tells the bot the item is sold; the listing closes and the other side is told. A Club A member needs a wheel no club has, so that need goes to the bottom lane. Bottom lane, B2C (paid import). Step 6: no match in any club. Step 7: the bot quotes an import, computed in code: store price $13.00, plus 0.25 lb at $7 per lb = $1.74, plus 12% for "we order it" = $1.56, total $16.30. Step 8: the member accepts with "sí". Step 9: the member sends the deposit receipt PDF by DM. Step 10: the bot forwards it to the maintainer, who checks the bank transfer by hand. Step 11: the maintainer replies "confirmar" and the quote is paid. Step 12: a cron job builds the order batch, hourly or daily. Step 13: the maintainer places one order per store. Step 14: parts ship to the US forwarding address. Step 15: they are imported. Step 16: they come back to the club. Self-order branch: after accepting, the member buys the part, ships it to the US forwarding address, sends the tracking number to confirm the purchase, and pays us only the weight fee, $1.74; with the store price their total is $14.74), joining at step 14.</desc>
   <defs>
     <marker id="mb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072B2"/></marker>
     <marker id="mv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker>
@@ -231,14 +231,18 @@
   <!-- self-order branch -->
   <path d="M455 710 L 455 652 L 1150 652 L 1150 696" class="b2c" stroke-dasharray="9 6" marker-end="url(#mv)"/>
   <text x="466" y="645" style="font-size:13px;font-weight:700;font-style:italic;fill:#A14700">self-order</text>
-  <rect x="552" y="638" width="510" height="28" rx="14" fill="#fff" stroke="#D55E00" stroke-width="1.5"/>
+  <rect x="552" y="638" width="566" height="28" rx="14" fill="#fff" stroke="#D55E00" stroke-width="1.5"/>
   <use href="#i-bag" x="564" y="641" width="22" height="22" color="#475569"/>
   <text x="592" y="657" class="pill" fill="#374151">Member buys it</text>
   <path d="M700 652 L 716 652" stroke="#374151" stroke-width="2" marker-end="url(#mv)"/>
   <use href="#i-box" x="722" y="641" width="22" height="22" color="#475569"/>
-  <text x="750" y="657" class="pill" fill="#374151">ships to US address</text>
-  <path d="M894 644 V 660" stroke="#D55E00" stroke-width="1.5"/>
-  <text x="906" y="657" class="pill" fill="#A14700">fee only: $1.74</text>
+  <text x="750" y="657" class="pill" fill="#374151">ships to US</text>
+  <path d="M836 652 L 852 652" stroke="#374151" stroke-width="2" marker-end="url(#mv)"/>
+  
+  <g transform="translate(-52,0)"><rect x="914" y="645" width="2" height="14" fill="#374151"/><rect x="918" y="645" width="1" height="14" fill="#374151"/><rect x="921" y="645" width="3" height="14" fill="#374151"/><rect x="926" y="645" width="1" height="14" fill="#374151"/><rect x="929" y="645" width="2" height="14" fill="#374151"/><rect x="933" y="645" width="1" height="14" fill="#374151"/><rect x="936" y="645" width="3" height="14" fill="#374151"/></g>
+  <text x="894" y="657" class="pill" fill="#374151">sends tracking #</text>
+  <path d="M1018 644 V 660" stroke="#D55E00" stroke-width="1.5"/>
+  <text x="1028" y="657" class="pill" fill="#A14700">fee: $1.74</text>
 
   <!-- 6 no match -->
   <circle cx="86" cy="702" r="11" fill="#D55E00"/><text x="86" y="707" class="num" text-anchor="middle">6</text>

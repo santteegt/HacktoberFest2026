@@ -202,7 +202,9 @@ def test_db_reset_needs_yes(capsys):
 
 @pytest.mark.parametrize("status,with_processing,order_id,expected", [
     ("paid", True, None, True),
-    ("accepted", False, None, True),          # self-order: fee only, no deposit step
+    ("accepted", False, None, True),          # legacy self-order accepted before the tracking step
+    ("awaiting_tracking", False, None, False),  # self-order without a tracking number yet
+    ("in_transit", False, None, True),        # self-order with tracking: fee only
     ("accepted", True, None, False),          # legacy accepted-with-processing without a deposit
     ("awaiting_deposit", True, None, False),
     ("deposit_submitted", True, None, False),
@@ -211,3 +213,16 @@ def test_db_reset_needs_yes(capsys):
 ])
 def test_order_eligibility(status, with_processing, order_id, expected):
     assert eligible_for_order({"status": status, "with_processing": with_processing, "order_id": order_id}) is expected
+
+
+def test_tracking_carriers_and_free_text():
+    from rcparts.tracking import find_tracking
+    assert find_tracking("ya lo compré, tracking 1Z 999 AA1 01 2345 6784")["carrier"] == "UPS"
+    usps = find_tracking("USPS: 9400 1000 0000 0000 0000 00")
+    assert usps["carrier"] == "USPS" and usps["number"] == "9400100000000000000000"
+    assert find_tracking("fedex 123456789012")["carrier"] == "FedEx"
+    assert find_tracking("TBA123456789012")["carrier"] == "Amazon"
+    odd = find_tracking("el número es LX12345678CN")
+    assert odd["number"] == "LX12345678CN" and odd["carrier"] is None
+    assert find_tracking("ya lo compré") is None
+    assert "ups.com" in find_tracking("1Z999AA10123456784")["link"]

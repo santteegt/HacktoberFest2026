@@ -93,9 +93,9 @@ CREATE TABLE IF NOT EXISTS quotes (
     total_with_processing_usd numeric(10, 2) NOT NULL,
     in_stock                  boolean,
     stock_note                text,
-    -- quoted -> accepted (self-order) | awaiting_deposit -> deposit_submitted -> paid (we order it) -> ordered
+    -- quoted -> awaiting_tracking -> in_transit (self-order) | awaiting_deposit -> deposit_submitted -> paid (we order it) -> ordered
     status                    text NOT NULL DEFAULT 'quoted' CONSTRAINT quotes_status_check CHECK (status IN
-                                  ('quoted', 'accepted', 'awaiting_deposit', 'deposit_submitted', 'paid', 'ordered')),
+                                  ('quoted', 'accepted', 'awaiting_tracking', 'in_transit', 'awaiting_deposit', 'deposit_submitted', 'paid', 'ordered')),
     with_processing           boolean,
     qty                       integer NOT NULL DEFAULT 1 CHECK (qty > 0),
     accepted_at               timestamptz,
@@ -129,6 +129,9 @@ CREATE INDEX IF NOT EXISTS deposits_quote_idx ON deposits (quote_id);
 -- Migrations for databases created before these columns and states existed (idempotent).
 ALTER TABLE listings ADD COLUMN IF NOT EXISTS closed_reason text;
 ALTER TABLE listings ADD COLUMN IF NOT EXISTS closed_at timestamptz;
+ALTER TABLE quotes ADD COLUMN IF NOT EXISTS tracking_number text;
+ALTER TABLE quotes ADD COLUMN IF NOT EXISTS tracking_carrier text;
+ALTER TABLE quotes ADD COLUMN IF NOT EXISTS tracking_at timestamptz;
 ALTER TABLE quotes DROP CONSTRAINT IF EXISTS quotes_status_check;
 ALTER TABLE quotes ADD CONSTRAINT quotes_status_check CHECK (status IN
-    ('quoted', 'accepted', 'awaiting_deposit', 'deposit_submitted', 'paid', 'ordered'));
+    ('quoted', 'accepted', 'awaiting_tracking', 'in_transit', 'awaiting_deposit', 'deposit_submitted', 'paid', 'ordered'));

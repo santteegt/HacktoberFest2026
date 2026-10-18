@@ -135,4 +135,9 @@ def demo_script(catalog: dict) -> list[dict]:
         {"case": "e_confirm_payment", "who": "Santiago (DM, maintainer)",
          "say": "confirmar <quote id>",
          "expect": "Quote becomes paid; Socio gets 'pago confirmado'; it enters the next order batch."},
+        {"case": "f_self_order_tracking", "who": "Santiago (DM)",
+         "say": "cuánto me sale traer un TAM54500? -> \"lo compro yo\" -> \"ya lo compré, tracking 1Z999AA10123456784\"",
+         "expect": "Quote -> self-order accept (fee only) -> asks for the tracking number -> UPS recognised, "
+                   "quote in transit, the maintainer gets the number with a UPS link; it enters the order batch "
+                   "as a fee-only item with its tracking."},
     ]
