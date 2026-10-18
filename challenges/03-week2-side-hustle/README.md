@@ -47,6 +47,12 @@ The model does language only: it turns a member's message into a small JSON list
 
 Members only see final answers: tool progress, reasoning and interim notices are turned off for WhatsApp in the profile.
 
+### Data model
+
+![Data model: seven tables. clubs have members; listings (HAVE or NEED, with a full-text search column) belong to a club and a member; matches link a NEED and a HAVE; quotes belong to a member and optionally a listing and an order; deposits belong to a quote; orders group quotes per store. Quote status goes quoted, awaiting_deposit, deposit_submitted, paid, ordered when we order it, or quoted, awaiting_tracking, in_transit, ordered for a self-order.](docs/db-schema.png)
+
+Source: [docs/db-schema.svg](docs/db-schema.svg); the tables are defined in [sql/schema.sql](sql/schema.sql).
+
 ## Why open matters here
 
 - **The economics.** A listing turn costs well under one cent with Gemma 4 26B A4B on OpenRouter ($0.0675 per million input tokens, about 20k tokens per model call, most of it Hermes's own instructions). A club bot that answers dozens of messages a day has to cost close to nothing, or the fee on a $13 part does not cover it.
