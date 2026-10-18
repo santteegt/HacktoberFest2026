@@ -30,4 +30,4 @@ Group JID: after the bot is in the club group, read it from `~/.hermes/profiles/
 | `config.yaml` | Model (Gemma 4 26B A4B on OpenRouter), restricted toolsets, Tiger MCP (read-only), local Whisper for voice notes |
 | `distribution.yaml` | Manifest and the env vars the installer asks for |
 | `../skills/rc-listings`, `../skills/rc-quote` | The two skills: how to call `rcparts` and what to do with its JSON |
-| `cron/jobs.json` | The daily order batch (created at stage S5 with `hermes cron create`) |
+| `scripts/daily-order.sh` | The daily order batch; no model turn. Install it once per machine (stage S5):<br>`cp agent/scripts/daily-order.sh ~/.hermes/profiles/rc-parts/scripts/` then<br>`hermes -p rc-parts cron create "0 18 * * *" --name daily-order --no-agent --script daily-order.sh --deliver local` |
