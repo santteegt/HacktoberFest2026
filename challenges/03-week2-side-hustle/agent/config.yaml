@@ -44,3 +44,15 @@ terminal:
   backend: local
   cwd: "${RCPARTS_HOME}"
   env_passthrough: ["RCPARTS_HOME"]
+
+# Members only see answers: no "running skill/command" breadcrumbs, no reasoning, no mid-turn
+# narration, no diagnostics in the club group or in DMs. Tool calls still go to the session log.
+display:
+  platforms:
+    whatsapp:
+      tool_progress: log
+      show_reasoning: false
+      interim_assistant_messages: false
+      long_running_notifications: false
+      busy_ack_detail: false
+      suppress_warning_notifications: true
