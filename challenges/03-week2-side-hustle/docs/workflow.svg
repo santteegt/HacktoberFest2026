@@ -180,7 +180,7 @@
   <use href="#i-bot" x="598" y="172" width="84" height="84" color="#007A59"/>
   <circle cx="584" cy="297" r="11" fill="#0072B2"/><text x="584" y="302" class="num" text-anchor="middle">2</text>
   <text x="602" y="302" class="lb" style="font-size:16px">Bot matches</text>
-  <text x="640" y="321" class="sl" text-anchor="middle">part number or text</text>
+  <text x="640" y="321" class="sl" text-anchor="middle">rc-listings skill · part number or text</text>
 
   <!-- post arrows -->
   <path d="M430 236 L 576 222" class="p2p" marker-end="url(#mb)"/>
@@ -255,7 +255,7 @@
   <path d="M204 770 H 378" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="3 3"/>
   <text x="206" y="789" style="font-size:14px;font-weight:800;fill:#111827">Total</text>
   <text x="376" y="789" text-anchor="end" style="font-size:15px;font-weight:800;fill:#A14700">$16.30</text>
-  <text x="290" y="820" class="sl" text-anchor="middle">computed in code</text>
+  <text x="290" y="820" class="sl" text-anchor="middle">computed in code · rc-quote skill</text>
   <path d="M392 736 L 416 736" class="b2c" marker-end="url(#mv)"/>
 
   <!-- 8 si -->

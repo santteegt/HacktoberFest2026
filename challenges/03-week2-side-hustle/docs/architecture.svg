@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="arch-title arch-desc">
   <title id="arch-title">RC Parts Finder architecture</title>
-  <desc id="arch-desc">RC club members use WhatsApp: the club group (the bot answers when mentioned), private messages (HAVE, NEED, "sí"), and the maintainer, who receives deposit receipts and replies "confirmar". An unofficial WhatsApp bridge (Baileys) connects them to Hermes Agent, the open-source agent harness (gateway, skills, profile rc-parts). Hermes asks Gemma 4 26B A4B, an open-weight model served by OpenRouter, for language only: turning messages into listing JSON and relaying replies. Hermes runs the rcparts CLI, code written for this project, which decides sender identity, validation, matching, quote math, deposits and the order batch, and sends notifications back through Hermes ("hermes send"). The CLI stores listings, matches, quotes, deposits and orders in Tiger Cloud Postgres and reads price, stock and weight from Michael's RC Hobbies storefront JSON. Hermes also has a read-only MCP connection to the database, and a Hermes cron job (hourly or daily) triggers the order batch. Legend: green is open source or open weights, blue is code written for this project, grey is an external service, amber is people.</desc>
+  <desc id="arch-desc">RC club members use WhatsApp: the club group (the bot answers when mentioned), private messages (HAVE, NEED, "sí"), and the maintainer, who receives deposit receipts and replies "confirmar". An unofficial WhatsApp bridge (Baileys) connects them to Hermes Agent, the open-source agent harness (gateway, skills, profile rc-parts). Hermes asks Gemma 4 26B A4B, an open-weight model served by OpenRouter, for language only: turning messages into listing JSON and relaying replies. Through two skills written for this project, rc-listings and rc-quote, Hermes runs the rcparts CLI, code written for this project, which decides sender identity, validation, matching, quote math, deposits and the order batch, and sends notifications back through Hermes ("hermes send"). The CLI stores listings, matches, quotes, deposits and orders in Tiger Cloud Postgres and reads price, stock and weight from Michael's RC Hobbies storefront JSON. Hermes also has a read-only MCP connection to the database, and a Hermes cron job (hourly or daily) triggers the order batch. Legend: green is open source or open weights, blue is code written for this project, grey is an external service, amber is people.</desc>
   <defs>
     <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#374151"/></marker>
     <marker id="ahg" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B7280"/></marker>
@@ -152,8 +152,12 @@
   <text x="910" y="141" class="al" text-anchor="middle" style="fill:#4B5563">read-only MCP</text>
 
   <!-- CLI -->
-  <text x="840" y="276" class="lb" text-anchor="middle" style="font-size:17px">rcparts CLI</text>
-  <text x="840" y="295" class="sl" text-anchor="middle">match · quote · notify</text>
+  <text x="840" y="240" class="lb" text-anchor="middle" style="font-size:17px">rcparts CLI</text>
+  <text x="840" y="259" class="sl" text-anchor="middle">match · quote · notify</text>
+  <rect x="760" y="270" width="78" height="22" rx="11" fill="#FFFFFF" stroke="#005A8C" stroke-width="1.5"/>
+  <text x="799" y="285" class="sl" text-anchor="middle" style="fill:#005A8C;font-weight:700">rc-listings</text>
+  <rect x="844" y="270" width="72" height="22" rx="11" fill="#FFFFFF" stroke="#005A8C" stroke-width="1.5"/>
+  <text x="880" y="285" class="sl" text-anchor="middle" style="fill:#005A8C;font-weight:700">rc-quote</text>
   <rect x="780" y="304" width="120" height="120" rx="22" class="ours"/>
   <use href="#i-term" x="796" y="320" width="88" height="88" color="#005A8C"/>
 
