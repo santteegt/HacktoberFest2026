@@ -36,7 +36,7 @@ def car(x,y,sc,col=INK,hub=CREAM,win=CREAM):
           f'<path d="M58,122 Q80,110 108,106 L102,115 Q82,119 62,127 Z" fill="{win}"/>'
           f'<path d="M686,72 L700,74 L702,86 L690,84 Z" fill="{win}"/>')
     return (f'<g transform="translate({x},{y}) scale({sc})"><path d="{body}" fill="{col}"/>{wing}{glass}{trim}'
-            f'{wheel(170,150,52,hub=hub)}{wheel(610,150,52,hub=hub)}</g>')
+            f'{wheel(170,152,44,hub=hub)}{wheel(610,152,44,hub=hub)}</g>')
 def tx(x,y,sc,col=INK):
     body=("M60,40 L150,40 Q170,40 172,60 L176,120 Q178,140 160,146 L120,156 L132,250 Q134,262 120,262 L92,262 "
           "Q80,262 78,250 L66,150 Q40,140 40,110 L44,60 Q46,40 60,40 Z")
