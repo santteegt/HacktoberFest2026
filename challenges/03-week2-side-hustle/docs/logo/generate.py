@@ -25,11 +25,18 @@ def bot(cx,cy,s,body=CREAM,ink=BLUE):
             f'<circle cx="{cx-s*0.2:.1f}" cy="{cy-s*0.05:.1f}" r="{s*0.09:.1f}" fill="{ink}"/><circle cx="{cx+s*0.2:.1f}" cy="{cy-s*0.05:.1f}" r="{s*0.09:.1f}" fill="{ink}"/>'
             f'<path d="M{cx-s*0.16:.1f},{cy+s*0.16:.1f} Q{cx},{cy+s*0.28:.1f} {cx+s*0.16:.1f},{cy+s*0.16:.1f}" stroke="{ink}" stroke-width="{s*0.06:.1f}" fill="none" stroke-linecap="round"/>')
 def car(x,y,sc,col=INK,hub=CREAM,win=CREAM):
-    p=("M0,70 L8,48 Q20,40 52,38 L92,36 Q118,10 160,8 L206,8 Q236,10 252,30 L282,36 Q300,40 304,56 L306,70 "
-       "L276,70 A26,26 0 0 0 224,70 L92,70 A26,26 0 0 0 40,70 Z")
-    wing=f'<path d="M-6,22 L40,22 L44,30 L8,32 Z M14,30 L20,40 L26,40 L22,30 Z" fill="{col}"/>'
-    w=f'<path d="M110,34 Q128,16 160,15 L200,15 Q222,17 234,32 Z" fill="{win}" opacity="0.9"/>'
-    return f'<g transform="translate({x},{y}) scale({sc})"><path d="{p}" fill="{col}"/>{wing}{w}{wheel(66,70,25,hub=hub)}{wheel(250,70,25,hub=hub)}</g>'
+    # Low supercar-style touring silhouette, nose on the left, rear wing on the right; ~740x200 units.
+    body=("M26,174 L30,140 Q58,112 120,100 L230,84 Q290,40 340,26 Q420,12 520,22 L640,50 L700,62 "
+          "Q716,96 714,140 L710,174 L668,174 A62,62 0 1 0 552,174 L228,174 A62,62 0 1 0 112,174 Z")
+    wing=(f'<path d="M598,16 L702,6 L706,22 L610,30 Z" fill="{col}"/>'
+          f'<path d="M640,28 L654,28 L648,56 L632,56 Z" fill="{col}"/>')
+    glass=(f'<path d="M296,82 Q326,50 358,38 L420,33 L414,80 Z" fill="{win}"/>'
+           f'<path d="M428,33 L470,32 Q500,38 522,58 L424,78 Z" fill="{win}"/>')
+    trim=(f'<path d="M292,116 Q380,104 482,98 L472,108 Q384,114 300,124 Z" fill="{win}" opacity="0.85"/>'
+          f'<path d="M58,122 Q80,110 108,106 L102,115 Q82,119 62,127 Z" fill="{win}"/>'
+          f'<path d="M686,72 L700,74 L702,86 L690,84 Z" fill="{win}"/>')
+    return (f'<g transform="translate({x},{y}) scale({sc})"><path d="{body}" fill="{col}"/>{wing}{glass}{trim}'
+            f'{wheel(170,150,52,hub=hub)}{wheel(610,150,52,hub=hub)}</g>')
 def tx(x,y,sc,col=INK):
     body=("M60,40 L150,40 Q170,40 172,60 L176,120 Q178,140 160,146 L120,156 L132,250 Q134,262 120,262 L92,262 "
           "Q80,262 78,250 L66,150 Q40,140 40,110 L44,60 Q46,40 60,40 Z")
@@ -42,9 +49,9 @@ def bubble(x,y,w,h,tail_x,fill=CREAM,r=40):
             f'h-{x+w-r-(tail_x+60)} l-60,50 v-50 h-{tail_x-x-r} a{r},{r} 0 0 1 -{r},-{r} v-{h-2*r} a{r},{r} 0 0 1 {r},-{r} z" fill="{fill}"/>')
 BG=f'<rect width="512" height="512" fill="{BLUE}"/>'
 concepts={
- 'A':('Bot in the bubble, car on the track', lambda: BG+bubble(96,70,320,220,180)+bot(256,182,130)+f'<rect x="80" y="430" width="352" height="6" rx="3" fill="{CREAM}" opacity="0.35"/>'+car(120,360,0.9,col=CREAM,hub=BLUE,win=BLUE)),
+ 'A':('Bot in the bubble, car on the track', lambda: BG+bubble(96,70,320,220,180)+bot(256,182,130)+f'<rect x="80" y="430" width="352" height="6" rx="3" fill="{CREAM}" opacity="0.35"/>'+car(100,338,0.42,col=CREAM,hub=BLUE,win=BLUE)),
  'B':('Bot with the transmitter', lambda: BG+bubble(62,92,388,300,150)+bot(170,236,128)+tx(236,150,0.86)),
- 'C':('Touring car with gear wheels', lambda: BG+bubble(62,104,388,278,150)+bot(256,182,96)+car(102,262,1.0)),
+ 'C':('Touring car with gear wheels', lambda: BG+bubble(62,104,388,278,150)+bot(256,182,96)+car(86,246,0.46)),
 }
 W,H=1280,600
 b=[f'<rect width="{W}" height="{H}" fill="#fff"/>',f'<text x="48" y="64" font-size="26" font-weight="800" fill="{INK}">PartsPaddock: logo directions</text>',f'<text x="48" y="92" font-size="15" fill="#4B5563">Same palette and chat bubble; adds the bot and an RC touring car or a transmitter. Large = profile picture (round crop), small = 40 px.</text>']
