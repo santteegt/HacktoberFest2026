@@ -12,3 +12,4 @@ agent/platforms/
 agent/sessions/
 agent/memories/
 agent/logs/
+.pytest_cache/

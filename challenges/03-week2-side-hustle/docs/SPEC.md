@@ -34,7 +34,7 @@ Freeze features at **Sun Oct 18, 20:00 local (01:00 UTC)**. After that only fixe
 
 ### Out of scope this week (backlog, say so in the post)
 
-Multi-tenancy beyond a `club_id` column · user-level memory beyond a `members` row (self-hosted Cognee evaluated 2026-10-18: workable later as `cognee-mcp` on the same Tiger pgvector, 4-8 h and too many free-tier LLM calls for this window) · AMain Hobbies (no weight, search disallowed by robots) · order placement, payment and tracking-number intake · x402 or any settlement · hosting on Render or DigitalOcean (the maintainer deploys the profile to a home Hermes instance after the challenge) · Temporal for the quote workflow · the official WhatsApp Cloud API.
+Multi-tenancy beyond a `club_id` column · user-level memory beyond a `members` row (self-hosted Cognee evaluated 2026-10-18: workable later as `cognee-mcp` on the same Tiger pgvector, 4-8 h and too many free-tier LLM calls for this window; it is the project's named open-source alternative to Tiger for memory and search, with open embeddings via fastembed or Ollama, or OpenAI embeddings on the author's credits) · AMain Hobbies (no weight, search disallowed by robots) · order placement, payment and tracking-number intake · x402 or any settlement · hosting on Render or DigitalOcean (the maintainer deploys the profile to a home Hermes instance after the challenge) · Temporal for the quote workflow · the official WhatsApp Cloud API.
 
 ## 3. Architecture
 

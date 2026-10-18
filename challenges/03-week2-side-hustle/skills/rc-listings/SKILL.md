@@ -45,16 +45,17 @@ uv run rcparts listing add --phone <SENDER_PHONE> --json '<LISTING_JSON>'
 ### What the command returns (JSON on stdout)
 
 - `ok: true`: the listing is saved. `reply` is the confirmation (it echoes the parsed fields); send it verbatim. `matches` lists any matches; if non-empty, the command already sent direct messages to both members (`notified: true`); in a group, add one line saying there is a match and that both members were written to. Do not post phone numbers in the group.
-- `ok: false` with `missing`: ask the member exactly the question in `reply`, wait for the answer, then run the command again with the completed JSON.
-- `ok: false` with `error: not_a_member`: send `reply` (it tells them how to register) and stop.
+- `ok: false` with `error: missing_fields` and `missing`: ask the member exactly the question in `reply`, wait for the answer, then run the command again with the completed JSON.
+- `ok: false` with `error: not_member`: send `reply` (it tells them how to register) and stop.
+- `ok: false` with `error: bad_json`: fix the JSON you wrote and run it again; do not ask the member.
 - `action`: the next step. Follow it.
 
 ### Other commands
 
 ```bash
-uv run rcparts search --club <CLUB_ID> --text "<what they ask for>"      # who has X? (open HAVE listings, best first)
+uv run rcparts search --club <CLUB_ID> --text "<what they ask for>" --kind HAVE   # who has X? (open HAVE listings, best first)
 uv run rcparts listing list --phone <SENDER_PHONE>                       # a member's own listings
-uv run rcparts listing close --id <LISTING_ID>                           # when the member says it is sold or no longer needed
+uv run rcparts listing close --id <LISTING_ID> --phone <SENDER_PHONE>    # when the member says it is sold or no longer needed (owner only)
 uv run rcparts member get --phone <SENDER_PHONE>                         # club id, name, class, brands
 ```
 
