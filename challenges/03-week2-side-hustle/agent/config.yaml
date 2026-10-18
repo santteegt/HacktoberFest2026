@@ -21,7 +21,7 @@ mcp_servers:
     command: "tiger"
     args: ["mcp", "start"]
     tools:
-      include: ["db_query", "db_schema"]
+      include: ["db_query"]
 
 # Voice notes in the group are transcribed with the local open Whisper (faster-whisper); Spanish and
 # English are both common in the club. Switch provider to elevenlabs (ELEVENLABS_API_KEY) if needed.

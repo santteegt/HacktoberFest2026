@@ -53,5 +53,7 @@ if [ -n "$home" ]; then
   sed -i '' "s|\${RCPARTS_HOME}|$home|g" "$PROFILE_DIR/config.yaml"
   echo "terminal.cwd pinned to $home in the installed config"
 fi
+svc="$(grep '^TIGER_SERVICE_ID=' "$PROFILE_DIR/.env" 2>/dev/null | cut -d= -f2- | tr -d '"' || true)"
+[ -n "$svc" ] && sed -i '' "s|\${TIGER_SERVICE_ID}|$svc|g" "$PROFILE_DIR/SOUL.md" && echo "Tiger service id written into the installed SOUL.md"
 echo "profile '$NAME' installed at $PROFILE_DIR"
 echo "next: hermes -p $NAME whatsapp   (pair the bot's phone), then hermes -p $NAME gateway"

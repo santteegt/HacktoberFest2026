@@ -39,3 +39,11 @@ def test_send_dm_success_and_failure():
     ok, err = send_dm("/nonexistent/hermes send", "593990000001", "hola")
     assert not ok and "FileNotFoundError" in err
     assert send_dm("true", "", "x") == (False, "no phone number")
+
+
+def test_sender_from_hermes_session_env():
+    from rcparts.cli import sender_from_env
+    assert sender_from_env({"HERMES_SESSION_USER_ID": "593990000001@s.whatsapp.net"}) == "593990000001"
+    assert sender_from_env({"HERMES_SESSION_KEY": "agent:rc-parts:whatsapp:dm:593990000002"}) == "593990000002"
+    assert sender_from_env({"HERMES_SESSION_KEY": "agent:rc-parts:whatsapp:group:1203@g.us"}) == ""
+    assert sender_from_env({}) == ""

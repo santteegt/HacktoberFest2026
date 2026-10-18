@@ -35,3 +35,7 @@ env_requires:
     description: "true: in groups, answer only @mentions, replies to the bot and /commands"
     required: false
     default: "true"
+  - name: TIGER_SERVICE_ID
+    description: "Tiger Cloud service id (10 chars) for the agent's read-only db_query; written into SOUL.md at install"
+    required: false
+    default: ""

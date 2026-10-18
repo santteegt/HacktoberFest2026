@@ -9,6 +9,8 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import os
+import re
 import sys
 from decimal import Decimal
 
@@ -59,7 +61,22 @@ def _listing_view(row: dict) -> dict:
     return {k: row[k] for k in keep if k in row}
 
 
+def sender_from_env(env=None) -> str:
+    """Hermes sets HERMES_SESSION_USER_ID (e.g. 5939...@s.whatsapp.net) and HERMES_SESSION_KEY
+    (agent:<profile>:whatsapp:dm:<phone>) for the turn; use them when the model omits --phone."""
+    env = os.environ if env is None else env
+    uid = env.get("HERMES_SESSION_USER_ID", "")
+    if "@" in uid:
+        return normalize_phone(uid.split("@", 1)[0])
+    m = re.search(r":dm:(\d{6,16})$", env.get("HERMES_SESSION_KEY", ""))
+    return m.group(1) if m else ""
+
+
 def _member_or_reply(conn, s: Settings, phone: str):
+    if not normalize_phone(phone):
+        return None, out(t(s.reply_lang, "unknown_sender"), ok=False, error="unknown_sender",
+                         action="Call again with --phone <digits>: the sender's number is the digits before "
+                                "@s.whatsapp.net in the session's user_id. Never look it up in the database.")
     member = db.get_member(conn, normalize_phone(phone))
     if member:
         return member, None
@@ -241,7 +258,7 @@ def cmd_quote(a, s):
         return cmd_quote_accept(a, s)
     if a.quote_cmd == "list":
         return cmd_quote_list(a, s)
-    if not a.phone or (a.listing is None) == (a.query is None):
+    if (a.listing is None) == (a.query is None):
         raise UsageError("rcparts quote: needs --phone and exactly one of --listing or --query")
     lang = s.reply_lang
     with db.connect(s.database_url) as conn:
@@ -307,7 +324,7 @@ def cmd_quote(a, s):
 
 
 def cmd_quote_accept(a, s):
-    if not a.phone or a.quote is None:
+    if a.quote is None:
         raise UsageError("rcparts quote accept: needs --phone and --quote")
     lang = s.reply_lang
     with db.connect(s.database_url) as conn:
@@ -328,8 +345,6 @@ def cmd_quote_accept(a, s):
 
 
 def cmd_quote_list(a, s):
-    if not a.phone:
-        raise UsageError("rcparts quote list: needs --phone")
     lang = s.reply_lang
     with db.connect(s.database_url) as conn:
         member, refusal = _member_or_reply(conn, s, a.phone)
@@ -438,13 +453,13 @@ def build_parser() -> Parser:
     g = sub.add_parser("member").add_subparsers(dest="sub", required=True, parser_class=Parser)
     c = g.add_parser("add")
     c.add_argument("--club", type=int, required=True)
-    c.add_argument("--phone", required=True)
+    c.add_argument("--phone")
     c.add_argument("--name", required=True)
     c.add_argument("--rc-class")
     c.add_argument("--brands", help="comma-separated")
     c.set_defaults(fn=cmd_member_add)
     c = g.add_parser("get")
-    c.add_argument("--phone", required=True)
+    c.add_argument("--phone")
     c.set_defaults(fn=cmd_member_get)
     c = g.add_parser("list")
     c.add_argument("--club", type=int, required=True)
@@ -452,7 +467,7 @@ def build_parser() -> Parser:
 
     g = sub.add_parser("listing").add_subparsers(dest="sub", required=True, parser_class=Parser)
     c = g.add_parser("add")
-    c.add_argument("--phone", required=True)
+    c.add_argument("--phone")
     c.add_argument("--json", required=True)
     c.add_argument("--no-notify", action="store_true")
     c.set_defaults(fn=cmd_listing_add)
@@ -481,12 +496,12 @@ def build_parser() -> Parser:
     c.add_argument("--qty", type=int)
     qs = c.add_subparsers(dest="quote_cmd", parser_class=Parser)
     q = qs.add_parser("accept")
-    q.add_argument("--phone", required=True)
+    q.add_argument("--phone")
     q.add_argument("--quote", type=int, required=True)
     q.add_argument("--self-order", action="store_true",
                    help="member buys it and ships to US_ADDRESS: no processing fee")
     q = qs.add_parser("list")
-    q.add_argument("--phone", required=True)
+    q.add_argument("--phone")
     c.set_defaults(fn=cmd_quote)
 
     g = sub.add_parser("orders").add_subparsers(dest="sub", required=True, parser_class=Parser)
@@ -512,6 +527,8 @@ def build_parser() -> Parser:
 def main(argv: list[str] | None = None) -> int:
     try:
         args = build_parser().parse_args(argv)
+        if getattr(args, "phone", None) in (None, ""):
+            args.phone = sender_from_env() or None
         result = args.fn(args, Settings.from_env())
     except UsageError as exc:
         emit({"ok": False, "error": "usage", "detail": str(exc), "reply": "",

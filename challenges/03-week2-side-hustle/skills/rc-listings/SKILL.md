@@ -27,7 +27,7 @@ Run commands with the `terminal` tool from `$RCPARTS_HOME` (the working director
 uv run rcparts listing add --phone <SENDER_PHONE> --json '<LISTING_JSON>'
 ```
 
-`SENDER_PHONE` is the sender's phone number as the gateway gives it (digits with country code, no `+`). Group messages: the sender, not the group.
+`SENDER_PHONE` is the sender's number: the digits before `@s.whatsapp.net` in the session's `user_id` (country code, no `+`). In a group it is the person who wrote, not the group. If you cannot see it, omit `--phone`: the command reads it from the session and answers `error: unknown_sender` if it cannot. Never query the database for it.
 
 ### The listing JSON you write
 

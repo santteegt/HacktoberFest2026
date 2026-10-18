@@ -31,7 +31,7 @@ uv run rcparts quote accept --phone <SENDER_PHONE> --quote <QUOTE_ID> --self-ord
 uv run rcparts quote list --phone <SENDER_PHONE>                          # their open quotes
 ```
 
-Prefer `--query` with the part number when the member gave one; otherwise pass their words as they wrote them.
+Prefer `--query` with the part number when the member gave one; otherwise pass their words as they wrote them. `SENDER_PHONE` is the digits before `@s.whatsapp.net` in the session's `user_id`; if you cannot see it, omit `--phone` and the command reads it from the session. Never query the database for it.
 
 ## What the command returns
 
