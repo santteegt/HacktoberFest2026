@@ -16,13 +16,13 @@ Start from [`_template/`](_template) or the `hf26-challenge` skill.
 
 ## Index
 
-Dates are in UTC. **Source: DEV Events API (`get_challenges`) and `hacktoberfest-api.mlh.com/api/schedule`, fetched 2026-10-04.**
+Dates are in UTC. **Source: DEV Events API (`get_challenges`) and `hacktoberfest-api.mlh.com/api/schedule`, fetched 2026-10-04; Week 2 row re-fetched 2026-10-12.**
 
 | # | Folder | Challenge | DEV ID | Tag | Window | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 01 | [`01-weekend-build-for-a-friend`](01-weekend-build-for-a-friend) | Hacktoberfest Weekend Challenge: Build for a Friend (project: **RC Pit Companion**) | 78 | `#hf26challenge` | Oct 2 02:00 → Oct 5 06:59 | ✅ [Published](https://dev.to/santteegt/a-setup-coach-for-my-friends-rc-car-that-stays-on-his-laptop-4ahn) |
 | 02 | [`02-week1-touch-grass`](02-week1-touch-grass) | Open-Source AI Challenge: Week 1, Touch Grass (project: **Idea Leash**) | 79 | `#hf26challenge` | Oct 5 18:00 → Oct 12 06:59 | ✅ [Published](https://dev.to/santteegt/idea-leash-an-open-source-walk-buddy-with-a-local-model-for-a-brain-499n) 2026-10-11 23:30 local |
-| 03 | _not created yet_ | Open-Source AI Challenge: Week 2 | 80 | confirm | Oct 12 → Oct 19 | 🔵 |
+| 03 | [`03-week2-side-hustle`](03-week2-side-hustle) | Open-Source AI Challenge: Week 2, Side Hustle (project: _not chosen yet_) | 80 | `#hf26challenge` | Oct 12 19:00 → Oct 19 06:59 | 🟡 In progress (scaffolded 2026-10-12) |
 | 04 | _not created yet_ | Open-Source AI Challenge: Week 3 | 81 | confirm | Oct 19 → Oct 26 | 🔵 |
 | 05 | _not created yet_ | Open-Source AI Challenge: Week 4 | 82 | confirm | Oct 26 → Nov 1 | 🔵 |
 | – | _no code expected_ | Global Hack Week: Hacktoberfest | n/a (MLH event) | n/a | Oct 9 → Oct 15 | 🔵 |
