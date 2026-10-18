@@ -11,7 +11,8 @@ from urllib.parse import quote_plus, urlparse
 
 import httpx
 
-from .listing import normalize_part_number
+from . import glossary
+from .listing import join_model_codes, normalize_part_number
 
 STORE_NAME = "michaelsrchobbies"
 BASE_URL = "https://www.michaelsrchobbies.com/"
@@ -129,16 +130,85 @@ def parse_product(data: dict) -> StoreProduct:
     )
 
 
-def pick_best(hits: list[StoreHit], query: str) -> StoreHit | None:
-    """Exact code/sku/ean match on the whole query or any word of it, else the store's top hit."""
+def _hit_codes(hit: StoreHit) -> set[str]:
+    return {normalize_part_number(hit.code), normalize_part_number(hit.sku), hit.ean} - {""}
+
+
+def pick_best(hits: list[StoreHit], query: str, words: list[str] | None = None) -> StoreHit | None:
+    """Exact code/sku/ean match on the whole query or any word of it; else the hit whose title has the
+    most query words (accent-folded); else (a tie or no words in common) the store's first hit."""
     if not hits:
         return None
     wanted = {normalize_part_number(query)} | {normalize_part_number(w) for w in query.split()}
     wanted.discard("")
     for hit in hits:
-        if {normalize_part_number(hit.code), normalize_part_number(hit.sku), hit.ean} & wanted:
+        if _hit_codes(hit) & wanted:
             return hit
-    return hits[0]
+    qwords = set(words if words is not None else content_words(query))
+    if not qwords:
+        return hits[0]
+    best, best_n = hits[0], 0
+    for hit in hits:
+        n = len(qwords & set(glossary.words(join_model_codes(hit.title))))
+        if n > best_n:
+            best, best_n = hit, n
+    return best
+
+
+# Words a member wraps around the part ("cotízame el kit ...", "how much for the ...") that the store's
+# search does not index, so a literal search for them returns nothing.
+FILLER = frozenset(glossary.fold(w) for w in (
+    "kit set de del la el los las lo para por for the a an un una unos unas of to my me mi "
+    "busco buscando quiero necesito cotiza cotizame cotízame cotizar cotización cotizacion cuanto cuánto cuesta "
+    "sale vale precio traer trae traeme tráeme hay tienes tienen puedes please porfa favor "
+    "price quote how much need want looking get can you i im "
+    "pieza piezas repuesto repuestos parte partes part parts spare original nuevo nueva new").split())
+
+
+def content_words(query: str) -> list[str]:
+    return [w for w in glossary.words(join_model_codes(query)) if w not in FILLER]
+
+
+def _has_code(word: str) -> bool:
+    """Model / part codes: letters and digits together ("xb2d", "xra303843") or a number of 3+ digits ("2026")."""
+    return any(c.isdigit() for c in word) and (any(c.isalpha() for c in word) or len(word) >= 3)
+
+
+def query_variants(query: str) -> list[str]:
+    """Store queries to try in order: (1) as given, (2) without filler words, (3) codes plus the brand,
+    (4) the words with the brand first. Duplicates (ignoring case and accents) are dropped."""
+    raw = " ".join(query.split())
+    content = content_words(raw)
+    brands = [w for w in content if w in glossary.BRANDS]
+    codes = [w for w in content if _has_code(w)]
+    others = [w for w in content if w not in brands]
+    variants = [raw, " ".join(content), " ".join(brands + codes) if codes else "", " ".join(brands + others)]
+    out: dict[str, str] = {}
+    for v in variants:
+        key = " ".join(glossary.words(v))
+        if key and key not in out:
+            out[key] = v
+    return list(out.values())
+
+
+def search_with_fallbacks(client, queries: list[str], max_requests: int = 4):
+    """Tries each query and its variants until the store returns hits, at most `max_requests` searches.
+    Returns (hits, query_used, queries_tried)."""
+    tried: list[str] = []
+    seen: set[str] = set()
+    for q in queries:
+        for v in query_variants(q):
+            key = " ".join(glossary.words(v))
+            if key in seen:
+                continue
+            if len(tried) >= max_requests:
+                return [], None, tried
+            seen.add(key)
+            tried.append(v)
+            hits = client.search(v)
+            if hits:
+                return hits, v, tried
+    return [], None, tried
 
 
 class StoreClient:

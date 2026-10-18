@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 
+from . import glossary
 from .db import LISTING_COLS, has_extension, scope_club_ids
 from .listing import join_model_codes, normalize_part_number
 
@@ -12,7 +13,7 @@ MAX_RESULTS = 5
 STOPWORDS = set(
     "a an and the for of to with in on my i have has need want looking any some who anyone someone does is "
     "de del la el los las un una unos unas para por con en y o mi mis tengo busco necesito quiero algun alguien "
-    "alguno quien tiene hay".split()
+    "alguno quien tiene hay im looking for pieza piezas repuesto repuestos part parts spare".split()
 )
 _WORD = re.compile(r"\w+", re.UNICODE)
 _LOOKS_LIKE_PART = re.compile(r"(?=.*[A-Z])(?=.*\d)[A-Z0-9]{5,}")
@@ -28,13 +29,60 @@ def query_terms(*texts: str | None) -> list[str]:
 
 
 def stem(word: str) -> str:
-    """Crude plural folding so "amortiguadores", "brazos" and "shocks" find "amortiguador", "brazo",
-    "shock". Used as a prefix in the query, so over-trimming ("bujes" -> "buj") still matches."""
-    if len(word) >= 6 and word.endswith("es"):
-        return word[:-2]
-    if len(word) >= 5 and word.endswith("s"):
-        return word[:-1]
-    return word
+    return glossary.stem(word)
+
+
+_FOLDED_STOPWORDS = {glossary.fold(w) for w in STOPWORDS}
+
+
+def _folded_words(*texts: str | None) -> list[str]:
+    out = []
+    for text in texts:
+        out += [w for w in glossary.words(join_model_codes(text or ""))
+                if len(w) >= 2 and w not in _FOLDED_STOPWORDS]
+    return out
+
+
+def query_concepts(*texts: str | None) -> list[str]:
+    """Concepts of the query words: glossary synonyms collapse to one concept ("shocks" and
+    "amortiguadores" are both `shock`); any other word is its own concept (its stem)."""
+    return glossary.concepts(_folded_words(*texts))
+
+
+class Profile:
+    """A listing's words (folded) and concepts, to count which query concepts it covers."""
+
+    def __init__(self, row: dict):
+        self.words = _folded_words(row.get("brand"), row.get("chassis"), row.get("part_number"),
+                                   row.get("description"))
+        self.concepts = set(glossary.concepts(self.words))
+
+    def covers(self, concept: str) -> bool:
+        if glossary.is_glossary(concept):
+            return concept in self.concepts
+        # A word outside the glossary matches as a prefix, so "amortig" style stems still find plurals.
+        return any(w.startswith(concept) for w in self.words)
+
+    def overlap(self, concepts: list[str]) -> int:
+        return sum(1 for c in concepts if self.covers(c))
+
+
+def _tsquery(concepts: list[str], raw_text: str) -> str:
+    """OR over every synonym of every concept, as prefixes; phrases are ANDed. The index keeps accents as
+    written, so glossary synonyms go in both accented and folded, and so do the member's own words."""
+    alts: dict[str, None] = {}
+    for c in concepts:
+        for form in glossary.synonym_prefixes(c):
+            alts.setdefault(" & ".join(f"{w}:*" for w in form) if len(form) == 1 else
+                            "(" + " & ".join(f"{w}:*" for w in form) + ")", None)
+    for w in re.findall(r"[^\W_]+", join_model_codes(raw_text or "").lower()):
+        if len(w) >= 2 and glossary.fold(w) not in _FOLDED_STOPWORDS:
+            alts.setdefault(f"{stem(w)}:*", None)
+    return " | ".join(alts)
+
+
+_FOLDED_VECTOR = ("to_tsvector('simple', unaccent(coalesce(l.brand, '') || ' ' || coalesce(l.chassis, '') || ' ' || "
+                  "coalesce(l.part_number, '') || ' ' || coalesce(l.description, '')))")
 
 
 def _exact(conn, club_ids, part_numbers, kind, exclude_member, exclude_listing) -> list[dict]:
@@ -54,38 +102,49 @@ def _exact(conn, club_ids, part_numbers, kind, exclude_member, exclude_listing) 
     return [{**r, "method": "part_number", "score": 1.0} for r in rows]
 
 
-def _text(conn, club_ids, terms, description, kind, exclude_member, exclude_listing) -> list[dict]:
-    if not terms:
+def rank_text_hits(concepts: list[str], rows: list[dict]) -> list[dict]:
+    """Concept overlap in code: at least two concepts in common (or all, for a one-concept query), and
+    never opposite positions (front vs rear, left vs right, upper vs lower)."""
+    need = min(2, len(concepts))
+    qset = set(concepts)
+    out = []
+    for r in rows:
+        prof = Profile(r)
+        if glossary.opposite_conflict(qset, prof.concepts):
+            continue
+        overlap = prof.overlap(concepts)
+        if overlap < need:
+            continue
+        # The query names a part ("arm"): the listing must be that part, not just share "front" and "x4".
+        named = glossary.part_concepts(concepts)
+        if named and not any(prof.covers(c) for c in named):
+            continue
+        score = round(overlap / len(concepts) + float(r.get("rank") or 0) * 0.1 + float(r.get("sim") or 0) * 0.01, 4)
+        out.append({**r, "overlap": overlap, "method": "text", "score": score})
+    out.sort(key=lambda h: (-h["overlap"], -h["score"]))
+    return out
+
+
+def _text(conn, club_ids, concepts, raw_text, description, kind, exclude_member, exclude_listing) -> list[dict]:
+    if not concepts:
         return []
-    stems = list(dict.fromkeys(stem(t) for t in terms))
     sim = "similarity(coalesce(l.description, ''), %(desc)s)" if has_extension(conn, "pg_trgm") else "0.0"
+    folded = f" OR {_FOLDED_VECTOR} @@ q.tsq" if has_extension(conn, "unaccent") else ""
     rows = conn.execute(
         f"""WITH q AS (SELECT to_tsquery('simple', %(q)s) AS tsq)
-            SELECT {LISTING_COLS},
-                   ts_rank(l.search, q.tsq) AS rank,
-                   (SELECT count(*) FROM unnest(%(terms)s::text[]) t
-                     WHERE EXISTS (SELECT 1 FROM unnest(tsvector_to_array(l.search)) w
-                                   WHERE w LIKE t || '%%')) AS overlap,
-                   {sim} AS sim
+            SELECT {LISTING_COLS}, ts_rank(l.search, q.tsq) AS rank, {sim} AS sim
             FROM listings l JOIN members m ON m.id = l.member_id, q
-            WHERE l.club_id = ANY(%(clubs)s) AND l.status IN ('open', 'matched') AND l.search @@ q.tsq
+            WHERE l.club_id = ANY(%(clubs)s) AND l.status IN ('open', 'matched')
+              AND (l.search @@ q.tsq{folded})
               AND (%(kind)s::text IS NULL OR l.kind = %(kind)s)
               AND (%(xm)s::bigint IS NULL OR l.member_id <> %(xm)s)
               AND (%(xl)s::bigint IS NULL OR l.id <> %(xl)s)
-            ORDER BY overlap DESC, rank DESC, sim DESC, l.created_at DESC
-            LIMIT 25""",
-        {"q": " | ".join(f"{t}:*" for t in stems), "terms": stems, "desc": description or "", "clubs": club_ids, "kind": kind,
+            ORDER BY rank DESC, sim DESC, l.created_at DESC
+            LIMIT 200""",
+        {"q": _tsquery(concepts, raw_text), "desc": description or "", "clubs": club_ids, "kind": kind,
          "xm": exclude_member, "xl": exclude_listing},
     ).fetchall()
-    # One shared word ("tamiya") is not a match; ask for two, or all of them if the query is a single word.
-    need = min(2, len(stems))
-    out = []
-    for r in rows:
-        if r["overlap"] < need:
-            continue
-        score = round(r["overlap"] / len(stems) + float(r["rank"]) * 0.1 + float(r["sim"]) * 0.01, 4)
-        out.append({**r, "method": "text", "score": score})
-    return out
+    return rank_text_hits(concepts, rows)
 
 
 def _conflicts(a: dict, b: dict) -> bool:
@@ -95,16 +154,22 @@ def _conflicts(a: dict, b: dict) -> bool:
 
 
 def _shares_description(listing: dict, hit: dict) -> bool:
-    """A text match needs at least one word of the part itself in common, not only brand and chassis."""
-    desc = set(query_terms(listing.get("description"))) - set(query_terms(listing.get("brand"), listing.get("chassis")))
+    """A text match needs at least one concept of the part itself in common, not only brand and chassis."""
+    desc = [c for c in query_concepts(listing.get("description"))
+            if c not in set(query_concepts(listing.get("brand"), listing.get("chassis")))]
+    # Modifiers alone ("front", "aluminio") are not the part; they count only if nothing else is said.
+    desc = [c for c in desc if c not in glossary.MODIFIERS] or desc
     if not desc:
         return True
-    return bool(desc & set(query_terms(hit.get("brand"), hit.get("chassis"), hit.get("part_number"),
-                                       hit.get("description"))))
+    return Profile(hit).overlap(desc) > 0
 
 
 def text_match_ok(listing: dict, hit: dict) -> bool:
-    return not _conflicts(listing, hit) and _shares_description(listing, hit)
+    if _conflicts(listing, hit):
+        return False
+    if glossary.opposite_conflict(set(query_concepts(listing.get("description"))), Profile(hit).concepts):
+        return False
+    return _shares_description(listing, hit)
 
 
 def find_matches(conn, listing: dict, scope: str = "club") -> list[dict]:
@@ -116,9 +181,9 @@ def find_matches(conn, listing: dict, scope: str = "club") -> list[dict]:
         hits = _exact(conn, clubs, [listing["part_number"]], *args)
         if hits:
             return hits
-    terms = query_terms(listing.get("brand"), listing.get("chassis"), listing.get("part_number"),
-                        listing.get("description"))
-    hits = _text(conn, clubs, terms, listing.get("description"), *args)
+    fields = (listing.get("brand"), listing.get("chassis"), listing.get("part_number"), listing.get("description"))
+    hits = _text(conn, clubs, query_concepts(*fields), " ".join(f for f in fields if f), listing.get("description"),
+                 *args)
     return [h for h in hits if text_match_ok(listing, h)][:MAX_RESULTS]
 
 
@@ -133,7 +198,7 @@ def search(conn, club_id: int, text: str, kind: str | None = None, scope: str = 
     clubs = scope_club_ids(conn, club_id, scope)
     exact = _exact(conn, clubs, part_numbers_in(text), kind, None, None)
     seen = {r["id"] for r in exact}
-    rest = [r for r in _text(conn, clubs, query_terms(text), text, kind, None, None) if r["id"] not in seen]
+    rest = [r for r in _text(conn, clubs, query_concepts(text), text, text, kind, None, None) if r["id"] not in seen]
     return (exact + rest)[:MAX_RESULTS]
 
 

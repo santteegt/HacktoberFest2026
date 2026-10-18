@@ -1,7 +1,7 @@
 ---
 name: rc-quote
 description: "Quote an import of an RC part from a whitelisted US hobby shop (price + weight-based fee) and record accepted quotes for the daily order."
-version: 0.1.0
+version: 0.2.0
 author: Santiago Gonzalez
 license: MIT
 platforms: [linux, macos]
@@ -17,7 +17,8 @@ metadata:
 
 - A NEED listing was saved and the command reported no match (`matches` empty) and the member wants to buy it.
 - A member asks directly how much it would cost to bring a part ("cuánto sale traer un TAM54500", "can you quote a BD12 front bumper").
-- A member answers YES (sí, dale, ok, listo) to a quote you sent.
+- A member answers YES to a quote ("sí", "sí 5", "dale", "ok 5", "yes 7") or says they will buy it themselves ("lo compro yo 5", "I'll buy it 7"). This usually arrives in a **direct message**, because quotes asked in the group are sent by DM.
+- A member asks about their purchases: "mis pedidos", "mis compras", "qué tengo confirmado", "en qué va mi pedido", "my orders", "my purchases".
 - A member sends a **PDF** in a direct message after accepting a quote (the deposit receipt).
 - The maintainer writes "confirmar <id>" or "rechazar <id> <motivo>".
 
@@ -28,20 +29,35 @@ Run with the `terminal` tool from `$RCPARTS_HOME`:
 ```bash
 uv run rcparts quote --query "<part number or the member's words>"
 uv run rcparts quote --listing <LISTING_ID>        # quote an existing NEED listing
-uv run rcparts quote accept --quote <QUOTE_ID>     # the member said YES: we order it for them (processing fee)
+uv run rcparts quote accept --text "<the member's message, as written>"   # "sí", "sí 5", "dale", "lo compro yo 5"
+uv run rcparts quote accept --quote <QUOTE_ID>     # only when you already know the id: we order it for them (processing fee)
 uv run rcparts quote accept --quote <QUOTE_ID> --self-order   # the member will order it themselves and only ship through us (weight fee only)
-uv run rcparts quote list                          # their open quotes
+uv run rcparts orders mine                         # "mis pedidos", "mis compras", "my orders": their active purchases
+uv run rcparts quote list                          # all their quotes, including pending ones
 ```
 
-Prefer `--query` with the part number when the member gave one; otherwise pass their words as they wrote them. Never pass `--phone`: the command knows who is writing.
+Prefer `--query` with the part number when the member gave one; otherwise pass their words as they wrote them (the command retries the store with shorter variants on its own). Never pass `--phone`: the command knows who is writing.
+
+### Group or direct message
+
+- **In the group**, run `rcparts quote …` (and `rcparts orders mine`) exactly as in a DM. The command itself sends the full quote to the member by direct message and returns a one-line `reply` for the group ("Te envié la cotización por privado, Ana."). Send only that line in the group. If `sent_by_dm` is false, the DM failed and `reply` is the full quote; send it.
+- **In a DM**, when the member answers a quote ("sí", "sí 5", "dale", "ok", "lo compro yo 5", "yes 7", "I'll buy it 7"), run `uv run rcparts quote accept --text "<their message>"`. The command finds the quote number in the text (or their only recent pending quote) and whether they buy it themselves. If it returns `error: ambiguous`, send `reply` (it lists their pending quotes by number) and, when they answer, run `quote accept --text` again with the answer.
 
 ## What the command returns
 
-- `ok: true`: `reply` contains the store item, price, weight as listed by the store, the import fee, the optional processing fee, both totals, stock status, the store link and the instruction to answer YES. Send it verbatim, in a direct message when the request came from the group (say in the group that you sent the quote by DM).
+- `ok: true`: `reply` contains the store item, price, weight as listed by the store, the import fee, the optional processing fee, both totals, stock status, the store link and the instruction to answer «sí <id>» or «lo compro yo <id>». Send it verbatim. In a group session `reply` is the one-line "sent you the quote privately" notice instead (`sent_by_dm: true`); send only that.
 - `ok: false` with `error: not_found`: send `reply` (it suggests sending the exact part number). `no_weight`: the store lists no weight, so no quote; send `reply`. `store_unavailable`: the shop did not answer; send `reply` and suggest trying later.
-- Every quote has **two totals**: "we order it for you" (store price + weight fee + processing fee) and "self-order" (the member buys it and ships it to our US address; weight fee only). A plain YES means the first; if the member says they will buy it themselves, use `--self-order`.
+- Every quote has **two totals**: "we order it for you" (store price + weight fee + processing fee) and "self-order" (the member buys it and ships it to our US address; weight fee only). A plain YES means the first; "lo compro yo" / "I'll buy it" means self-order (`--text` detects it; `--self-order` forces it).
 - `quote accept` (we order it) returns `ok: true` and a `reply` with the amount to deposit, the reference `RC-Q<id>` and "envía el comprobante en PDF aquí"; send it verbatim. The item is **not** ordered until the maintainer confirms the deposit. `--self-order` keeps the old behavior: accepted, weight fee only.
 - `action`: the next step. Follow it.
+
+## My purchases ("mis pedidos", "mis compras", "qué tengo confirmado", "my orders")
+
+```bash
+uv run rcparts orders mine
+```
+
+Lists the member's accepted quotes still in progress (awaiting deposit, receipt under review, paid, awaiting tracking, in transit, in an order), newest first, with the amount to pay (or the fee only for self-orders) and the tracking number if any. Send `reply` verbatim. In a group the command sends the list by DM and `reply` is a one-line notice; send only that. `rcparts quote list --active` is the same command.
 
 ## Deposit receipt (PDF)
 

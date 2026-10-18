@@ -24,7 +24,7 @@ def test_languages_have_same_keys():
     assert set(T["es"]) == set(T["en"])
 
 
-@pytest.mark.parametrize("lang,cta", [("es", "SÍ"), ("en", "YES")])
+@pytest.mark.parametrize("lang,cta", [("es", "«sí 7»"), ("en", "«yes 7»")])
 def test_quote_reply_has_all_numbers(lang, cta):
     text = quote_reply(lang, _quote_row(), "Miami FL 33101")
     for needle in ("$13.00", "113 g", "$25.00/kg", "$2.83", "$15.83", "12%", "$1.56", "$17.39",

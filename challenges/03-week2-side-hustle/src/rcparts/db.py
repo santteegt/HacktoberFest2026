@@ -11,7 +11,7 @@ from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
 SCHEMA_FILE = Path(__file__).resolve().parents[2] / "sql" / "schema.sql"
-EXTENSIONS = ("vector", "pg_trgm", "pg_textsearch", "timescaledb")
+EXTENSIONS = ("vector", "pg_trgm", "pg_textsearch", "timescaledb", "unaccent")
 
 
 class ConfigError(RuntimeError):
@@ -39,6 +39,15 @@ def init_schema(conn: psycopg.Connection) -> dict:
     except psycopg.Error as exc:
         conn.rollback()
         trgm["pg_trgm_error"] = str(exc).strip().splitlines()[0]
+    # unaccent lets the matcher compare "aleron" with "alerón" for any word, not only glossary words.
+    trgm.update({"unaccent": False, "unaccent_error": None})
+    try:
+        conn.execute("CREATE EXTENSION IF NOT EXISTS unaccent")
+        conn.commit()
+        trgm["unaccent"] = True
+    except psycopg.Error as exc:
+        conn.rollback()
+        trgm["unaccent_error"] = str(exc).strip().splitlines()[0]
     return trgm
 
 

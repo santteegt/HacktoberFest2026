@@ -34,7 +34,9 @@ def test_pick_best_prefers_exact_code(load_fixture):
     hits = parse_search(load_fixture("search_tt02_gear.json"))
     assert pick_best(hits, "tam 54500").code == "TAM54500"
     assert pick_best(hits, "spur TAM-54500 please").code == "TAM54500"
-    assert pick_best(hits, "tt02 gear").code == "YEA-TT02-013BU"  # top result fallback
+    assert pick_best(hits, "tt02 gear").code == "TAM54500"  # most query words in the title
+    assert pick_best(hits, "tt02").code == "YEA-TT02-013BU"  # tie: the store's first hit
+    assert pick_best(hits, "zzz").code == "YEA-TT02-013BU"  # no words in common: the store's first hit
     assert pick_best([], "anything") is None
 
 

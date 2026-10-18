@@ -35,7 +35,7 @@ def strip_json_fence(text: str) -> str:
         t = t[4:].strip()
     return t
 from .tracking import find_tracking
-from .store import STORE_NAME, StoreClient, StoreError, pick_best
+from .store import STORE_NAME, StoreClient, StoreError, content_words, pick_best, search_with_fallbacks
 
 ACT_SEND = "Send `reply` to the member as-is. Do not add prices, totals or part details of your own."
 
@@ -73,6 +73,31 @@ def sender_from_env(env=None) -> str:
         return normalize_phone(uid.split("@", 1)[0])
     m = re.search(r":dm:(\d{6,16})$", env.get("HERMES_SESSION_KEY", ""))
     return m.group(1) if m else ""
+
+
+def in_group_session(env=None) -> bool:
+    """Hermes' WhatsApp adapter sets HERMES_SESSION_CHAT_TYPE to "group" for @g.us chats and "dm" otherwise."""
+    env = os.environ if env is None else env
+    chat_type = env.get("HERMES_SESSION_CHAT_TYPE", "").strip().lower()
+    if chat_type:
+        return chat_type == "group"
+    return env.get("HERMES_SESSION_CHAT_ID", "").endswith("@g.us") or ":group:" in env.get("HERMES_SESSION_KEY", "")
+
+
+ACT_SENT_DM = ("Send `reply` in the group as-is: that one line only. The full text was already sent to the member "
+               "by direct message; do not repeat it, summarize it or add prices.")
+
+
+def _deliver_private(a, s: Settings, member: dict, text: str, short_key: str) -> tuple[str, bool, str | None]:
+    """In a group session (or with --deliver dm), DM `text` to the member and return a one-line group reply.
+    Returns (reply, sent_by_dm, dm_error); if the DM fails the full text comes back as the reply."""
+    mode = getattr(a, "deliver", None) or "auto"
+    if mode == "inline" or (mode == "auto" and not in_group_session()):
+        return text, False, None
+    sent, err = send_dm(s.hermes_send_cmd, member["phone"], text)
+    if sent:
+        return t(s.reply_lang, short_key, name=member["display_name"]), True, None
+    return text, False, err
 
 
 def _member_or_reply(conn, s: Settings, phone: str):
@@ -276,6 +301,7 @@ def cmd_listing_list(a, s):
 
 
 CLOSE_REASONS = ("sold", "unavailable", "found")
+DELIVER_MODES = ("auto", "dm", "inline")
 
 
 def cmd_listing_close(a, s):
@@ -373,7 +399,7 @@ def cmd_quote(a, s):
     if a.quote_cmd == "accept":
         return cmd_quote_accept(a, s)
     if a.quote_cmd == "list":
-        return cmd_quote_list(a, s)
+        return cmd_orders_mine(a, s) if a.active else cmd_quote_list(a, s)
     if (a.listing is None) == (a.query is None):
         raise UsageError("rcparts quote: needs --phone and exactly one of --listing or --query")
     lang = s.reply_lang
@@ -388,7 +414,8 @@ def cmd_quote(a, s):
                 return out(t(lang, "listing_not_found", id=a.listing), ok=False, error="listing_not_found")
             qty = a.qty or listing["qty"] or 1
             queries = [listing.get("part_number"),
-                       " ".join(x for x in (listing.get("chassis"), listing.get("description")) if x)]
+                       " ".join(x for x in (listing.get("brand"), listing.get("chassis"), listing.get("description"))
+                                if x)]
         else:
             queries = [a.query]
         queries = list(dict.fromkeys(q.strip() for q in queries if q and q.strip()))[:2]
@@ -396,22 +423,21 @@ def cmd_quote(a, s):
         client = StoreClient(s.store_crawl_delay_s)
         store_label = STORE_LABEL[STORE_NAME]
         try:
-            hit, used = None, queries[0] if queries else ""
-            for q in queries:
-                hits = client.search(q)
-                if hits:
-                    hit, used = pick_best(hits, q), q
-                    break
-            if hit is None:
-                return out(t(lang, "quote_not_found", query=used, store=store_label), ok=False, error="not_found",
-                           queries=queries, action="Send `reply` as-is and wait for a part number.")
+            # The store search is literal: "kit Xray XB2D 2026" finds nothing where "xray xb2d 2026" does.
+            hits, used, tried = search_with_fallbacks(client, queries, max_requests=4)
+            if not hits:
+                return out(t(lang, "quote_not_found", query=queries[0] if queries else "", store=store_label),
+                           ok=False, error="not_found", queries=queries, queries_tried=tried,
+                           action="Send `reply` as-is and wait for a part number.")
+            hit = pick_best(hits, used, content_words(" ".join(queries)))
             product = client.product(hit.url)
         except StoreError as exc:
             return out(t(lang, "quote_store_down"), ok=False, error="store_unavailable", detail=str(exc))
 
         title = product.fulltitle or product.title or hit.title
+        said = " ".join([*queries, used])
         exact = bool(normalize_part_number(product.code or hit.code) in
-                     {normalize_part_number(w) for w in used.split()} | {normalize_part_number(used)})
+                     {normalize_part_number(w) for w in said.split()} | {normalize_part_number(q) for q in queries})
         if product.weight is None:
             return out(t(lang, "quote_no_weight", title=title, price=money(product.price_usd)), ok=False,
                        error="no_weight", product=product.as_json(),
@@ -430,28 +456,81 @@ def cmd_quote(a, s):
         })
     row["weight_store"] = product.weight  # the reply shows the per-unit weight as the store lists it
     row["fee_basis"], row["fee_rate_usd"] = s.fee_basis, s.fee_rate_usd
-    reply = quote_reply(lang, row, s.us_address, exact=exact)
-    action = (f"{ACT_SEND} If the member answers YES/SÍ, run "
-              f"`rcparts quote accept --quote {row['id']}`.")
+    quote_text = quote_reply(lang, row, s.us_address, exact=exact)
+    reply, by_dm, dm_error = _deliver_private(a, s, member, quote_text, "quote_sent_dm")
+    accept = (f"When the member answers (\"sí {row['id']}\", \"dale\", \"lo compro yo {row['id']}\"), run "
+              f"`rcparts quote accept --text \"<their message>\"`.")
+    if by_dm:
+        action = f"{ACT_SENT_DM} {accept}"
+    else:
+        action = f"{ACT_SEND} {accept}"
+        if dm_error:
+            action += f" The DM failed ({dm_error}), so `reply` is the full quote: send it."
     if not exact:
         action += " The store had no exact code match; the member should confirm the title first."
-    return out(reply, action=action, quote=row, math=m.as_json(), exact_match=exact,
+    return out(reply, action=action, quote=row, math=m.as_json(), exact_match=exact, query_used=used,
+               queries_tried=tried, sent_by_dm=by_dm, dm_error=dm_error, quote_text=quote_text,
                store_product=product.as_json(), weight_unit_assumed=s.weight_unit)
 
 
+_SELF_ORDER = re.compile(
+    r"\b(?:l[oa]\s+compro\s+yo|yo\s+l[oa]\s+compro|compro\s+yo|me\s+l[oa]\s+compro\s+yo|por\s+mi\s+cuenta|"
+    r"i'?ll\s+buy\s+it|i\s+will\s+buy\s+it|buy\s+it\s+myself|myself|self[\s-]?order)\b", re.I)
+_QUOTE_ID = re.compile(r"(?:#|\bcotizaci[oó]n\s*#?|\bquote\s*#?|\bn[uú]mero\s*)\s*(\d{1,7})\b", re.I)
+_BARE_NUMBER = re.compile(r"(?<![\d.,$])\b(\d{1,7})\b(?![.,]\d)")
+QUOTE_FRESH_HOURS = 48
+
+
+def parse_accept_text(text: str | None) -> tuple[int | None, bool]:
+    """(quote id, self-order?) from what the member wrote: "sí 5", "#5", "cotización 5", "lo compro yo 5"."""
+    text = text or ""
+    m = _QUOTE_ID.search(text) or _BARE_NUMBER.search(text)
+    return (int(m.group(1)) if m else None), bool(_SELF_ORDER.search(text))
+
+
+def pick_pending_quote(pending: list[dict], now: dt.datetime | None = None) -> tuple[dict | None, list[dict]]:
+    """The quote a bare "sí" refers to: the only one quoted in the last 48 h, or the only one at all.
+    Returns (quote, []) or (None, candidates newest first) when the member must say which."""
+    now = now or dt.datetime.now(dt.timezone.utc)
+    newest = sorted(pending, key=lambda q: q["id"], reverse=True)
+    fresh = [q for q in newest if q.get("created_at") and now - q["created_at"] < dt.timedelta(hours=QUOTE_FRESH_HOURS)]
+    if len(fresh) == 1:
+        return fresh[0], []
+    if len(newest) == 1:
+        return newest[0], []
+    return None, (fresh or newest)[:5]
+
+
 def cmd_quote_accept(a, s):
-    if a.quote is None:
-        raise UsageError("rcparts quote accept: needs --phone and --quote")
     lang = s.reply_lang
+    quote_id, self_order = a.quote, a.self_order
+    if a.text:
+        said_id, said_self = parse_accept_text(a.text)
+        quote_id = quote_id if quote_id is not None else said_id
+        self_order = self_order or said_self
     with db.connect(s.database_url) as conn:
         member, refusal = _member_or_reply(conn, s, a.phone)
         if refusal:
             return refusal
-        row = db.accept_quote(conn, a.quote, member["id"], with_processing=not a.self_order)
+        if quote_id is None:
+            pending = db.member_quotes_with_status(conn, member["id"], ["quoted"])
+            if not pending:
+                return out(t(lang, "quote_accept_none"), ok=False, error="no_pending_quote")
+            picked, candidates = pick_pending_quote(pending)
+            if picked is None:
+                lines = [t(lang, "quote_accept_ambiguous")] + [
+                    t(lang, "quote_pick_line", id=q["id"], title=q["store_title"],
+                      total=money(q["total_with_processing_usd"])) for q in candidates]
+                return out("\n".join(lines), ok=False, error="ambiguous", candidates=[q["id"] for q in candidates],
+                           self_order=self_order,
+                           action=f"{ACT_SEND} When the member answers with a quote number, run "
+                                  f"`rcparts quote accept --text \"<their message>\"`.")
+            quote_id = picked["id"]
+        row = db.accept_quote(conn, quote_id, member["id"], with_processing=not self_order)
     if not row:
-        return out(t(lang, "quote_accept_bad", id=a.quote), ok=False, error="quote_not_pending",
-                   action=f"{ACT_SEND} Offer `rcparts quote list` if they are unsure.")
-    if a.self_order:
+        return out(t(lang, "quote_accept_bad", id=quote_id), ok=False, error="quote_not_pending",
+                   action=f"{ACT_SEND} Offer `rcparts orders mine` or `rcparts quote list` if they are unsure.")
+    if self_order:
         reply = t(lang, "quote_accepted_self", title=row["store_title"], address=s.us_address,
                   fee=money(row["fee_usd"]), id=row["id"])
         return out(reply, quote=row,
@@ -480,6 +559,43 @@ def cmd_quote_list(a, s):
         lines.append(t(lang, "quote_list_line", id=r["id"], title=r["store_title"], total=money(total),
                        status=t(lang, f"status_{r['status']}")))
     return out("\n".join(lines), quotes=rows)
+
+
+ACTIVE_STATUSES = ["awaiting_deposit", "deposit_submitted", "paid", "awaiting_tracking", "in_transit", "accepted",
+                   "ordered"]
+
+
+def orders_mine_text(lang: str, rows: list[dict]) -> str:
+    if not rows:
+        return t(lang, "orders_mine_none")
+    lines = [t(lang, "orders_mine_head")]
+    for r in rows:
+        amount = (t(lang, "orders_mine_fee", fee=money(r["fee_usd"])) if r.get("with_processing") is False
+                  else t(lang, "orders_mine_total", total=money(_quote_total(r))))
+        tracking = t(lang, "orders_mine_tracking", number=r["tracking_number"]) if r.get("tracking_number") else ""
+        lines.append(t(lang, "orders_mine_line", id=r["id"], title=r["store_title"],
+                       status=t(lang, f"status_{r['status']}"), amount=amount, tracking=tracking))
+    return "\n".join(lines)
+
+
+def cmd_orders_mine(a, s):
+    """The sender's quotes in an active status (accepted onwards), newest first."""
+    lang = s.reply_lang
+    with db.connect(s.database_url) as conn:
+        member, refusal = _member_or_reply(conn, s, a.phone)
+        if refusal:
+            return refusal
+        rows = sorted(db.member_quotes_with_status(conn, member["id"], ACTIVE_STATUSES), key=lambda q: q["id"],
+                      reverse=True)
+    text = orders_mine_text(lang, rows)
+    reply, by_dm, dm_error = _deliver_private(a, s, member, text, "orders_sent_dm")
+    action = ACT_SENT_DM if by_dm else ACT_SEND
+    if dm_error:
+        action += f" The DM failed ({dm_error}), so `reply` is the full list: send it."
+    return out(reply, action=action, orders=[{k: r.get(k) for k in (
+        "id", "store_title", "status", "with_processing", "total_usd", "total_with_processing_usd", "fee_usd",
+        "tracking_number", "tracking_carrier", "created_at")} for r in rows],
+        sent_by_dm=by_dm, dm_error=dm_error, orders_text=text)
 
 
 # --- deposits ------------------------------------------------------------------------------
@@ -766,10 +882,14 @@ def cmd_orders_daily(a, s):
 # --- store debugging -------------------------------------------------------------------------
 
 def cmd_store_search(a, s):
-    hits = StoreClient(s.store_crawl_delay_s).search(a.query)
-    best = pick_best(hits, a.query)
+    client = StoreClient(s.store_crawl_delay_s)
+    if a.literal:
+        hits, used, tried = client.search(a.query), a.query, [a.query]
+    else:
+        hits, used, tried = search_with_fallbacks(client, [a.query], max_requests=4)
+    best = pick_best(hits, used or a.query, content_words(a.query))
     return out(action="Debug output; nothing to send.", hits=[h.as_json() for h in hits],
-               best=best.as_json() if best else None)
+               best=best.as_json() if best else None, query_used=used, queries_tried=tried)
 
 
 def cmd_store_product(a, s):
@@ -908,14 +1028,19 @@ def build_parser() -> Parser:
     c.add_argument("--listing", type=int)
     c.add_argument("--query")
     c.add_argument("--qty", type=int)
+    c.add_argument("--deliver", choices=DELIVER_MODES,
+                   help="auto (default): DM the quote when the session is a group; dm: always; inline: never")
     qs = c.add_subparsers(dest="quote_cmd", parser_class=Parser)
     q = qs.add_parser("accept")
     q.add_argument("--phone")
-    q.add_argument("--quote", type=int, required=True)
+    q.add_argument("--quote", type=int, help="default: from --text, else the sender's pending quote")
+    q.add_argument("--text", help="the member's words: 'sí 5', '#5', 'lo compro yo 5'")
     q.add_argument("--self-order", action="store_true",
                    help="member buys it and ships to US_ADDRESS: no processing fee")
     q = qs.add_parser("list")
     q.add_argument("--phone")
+    q.add_argument("--active", action="store_true", help="only accepted / in-progress quotes (= orders mine)")
+    q.add_argument("--deliver", choices=DELIVER_MODES)
     c.set_defaults(fn=cmd_quote)
 
     g = sub.add_parser("orders").add_subparsers(dest="sub", required=True, parser_class=Parser)
@@ -923,10 +1048,15 @@ def build_parser() -> Parser:
     c.add_argument("--send", action="store_true", help="DM the summary to MAINTAINER_PHONE")
     c.add_argument("--dry-run", action="store_true", help="preview without creating orders")
     c.set_defaults(fn=cmd_orders_daily)
+    c = g.add_parser("mine", help="the sender's active purchases (accepted, paid, in transit, ordered)")
+    c.add_argument("--phone")
+    c.add_argument("--deliver", choices=DELIVER_MODES)
+    c.set_defaults(fn=cmd_orders_mine)
 
     g = sub.add_parser("store").add_subparsers(dest="sub", required=True, parser_class=Parser)
     c = g.add_parser("search")
     c.add_argument("--query", required=True)
+    c.add_argument("--literal", action="store_true", help="one request, no fallback variants")
     c.set_defaults(fn=cmd_store_search)
     c = g.add_parser("product")
     c.add_argument("--url", required=True)
