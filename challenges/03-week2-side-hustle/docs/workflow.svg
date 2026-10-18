@@ -1,9 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 960" width="1280" height="960" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="wf-title wf-desc">
   <title id="wf-title">RC Parts Finder: P2P and B2C flows</title>
-  <desc id="wf-desc">Top lane, P2P (free). Two RC clubs in the same city, Club A (for example RC Club Cuenca) and Club B (for example Cuenca Touring), each with a WhatsApp group and members. Step 1: members post HAVE or NEED listings. Step 2: the bot matches them by part number or text, inside the same club (a member of Club B has a spur gear another Club B member needs) or across clubs in the same city (a Club A member has a shock a Club B member needs). Step 3: the bot DMs both members. Step 4: they meet and swap or sell in person. Step 5: a member tells the bot the item is sold; the listing closes and the other side is told. A Club A member needs a wheel no club has, so that need goes to the bottom lane. Bottom lane, B2C (paid import). Step 6: no match in any club. Step 7: the bot quotes an import, computed in code: store price $13.00, plus 0.25 lb at $7 per lb = $1.74, plus 12% for "we order it" = $1.56, total $16.30. Step 8: the member accepts with "sí". Step 9: the member sends the deposit receipt PDF by DM. Step 10: the bot forwards it to the maintainer, who checks the bank transfer by hand. Step 11: the maintainer replies "confirmar" and the quote is paid. Step 12: a cron job builds the order batch, hourly or daily. Step 13: the maintainer places one order per store. Step 14: parts ship to the US forwarding address. Step 15: they are imported. Step 16: they come back to the club. Self-order branch: after accepting, the member buys the part, ships it to the US forwarding address and pays us only the weight fee, $1.74; with the store price their total is $14.74), joining at step 14.</desc>
+  <desc id="wf-desc">Top lane, P2P (free). Two RC clubs in the same city, Club A (for example RC Club Cuenca) and Club B (for example Cuenca Touring), each with a WhatsApp group and members. Step 1: members post HAVE or NEED listings. Step 2: the bot, through its rc-listings agent skill, matches them by part number or text, inside the same club (a member of Club B has a spur gear another Club B member needs) or across clubs in the same city (a Club A member has a shock a Club B member needs). Step 3: the bot DMs both members. Step 4: they meet and swap or sell in person. Step 5: a member tells the bot the item is sold; the listing closes and the other side is told. A Club A member needs a wheel no club has, so that need goes to the bottom lane. Bottom lane, B2C (paid import). Step 6: no match in any club. Step 7: the bot quotes an import, computed in code: store price $13.00, plus 0.25 lb at $7 per lb = $1.74, plus 12% for "we order it" = $1.56, total $16.30. Step 8: the member accepts with "sí". Step 9: the member sends the deposit receipt PDF by DM. Step 10: the bot forwards it to the maintainer, who checks the bank transfer by hand. Step 11: the maintainer replies "confirmar" and the quote is paid. Step 12: a cron job builds the order batch, hourly or daily. Step 13: the maintainer places one order per store. Step 14: parts ship to the US forwarding address. Step 15: they are imported. Step 16: they come back to the club. Self-order branch: after accepting, the member buys the part, ships it to the US forwarding address and pays us only the weight fee, $1.74; with the store price their total is $14.74), joining at step 14.</desc>
   <defs>
     <marker id="mb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072B2"/></marker>
     <marker id="mv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker>
+    <symbol id="i-skill" viewBox="0 0 64 64">
+      <path d="M14 4h26l12 12v44H14z" fill="#fff" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M40 4v12h12" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M35 22L24 38h9l-4 14 12-18h-9z" fill="currentColor"/>
+    </symbol>
     <symbol id="i-group" viewBox="0 0 64 64">
       <path d="M30 26h26a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4h-3v8l-9-8H30a4 4 0 0 1-4-4V30a4 4 0 0 1 4-4z" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
       <path d="M8 8h30a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H20l-9 8v-8H8a4 4 0 0 1-4-4V12a4 4 0 0 1 4-4z" fill="#fff" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
@@ -180,7 +185,7 @@
   <use href="#i-bot" x="598" y="172" width="84" height="84" color="#007A59"/>
   <circle cx="584" cy="297" r="11" fill="#0072B2"/><text x="584" y="302" class="num" text-anchor="middle">2</text>
   <text x="602" y="302" class="lb" style="font-size:16px">Bot matches</text>
-  <text x="640" y="321" class="sl" text-anchor="middle">rc-listings skill · part number or text</text>
+  <use href="#i-skill" x="500" y="306" width="18" height="18" color="#005A8C"/><text x="522" y="321" class="sl"><tspan style="fill:#005A8C;font-weight:700">rc-listings</tspan> · part number or text</text>
 
   <!-- post arrows -->
   <path d="M430 236 L 576 222" class="p2p" marker-end="url(#mb)"/>
@@ -255,7 +260,7 @@
   <path d="M204 770 H 378" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="3 3"/>
   <text x="206" y="789" style="font-size:14px;font-weight:800;fill:#111827">Total</text>
   <text x="376" y="789" text-anchor="end" style="font-size:15px;font-weight:800;fill:#A14700">$16.30</text>
-  <text x="290" y="820" class="sl" text-anchor="middle">computed in code · rc-quote skill</text>
+  <use href="#i-skill" x="196" y="805" width="18" height="18" color="#A14700"/><text x="218" y="820" class="sl"><tspan style="fill:#A14700;font-weight:700">rc-quote</tspan> · computed in code</text>
   <path d="M392 736 L 416 736" class="b2c" marker-end="url(#mv)"/>
 
   <!-- 8 si -->
@@ -327,5 +332,6 @@
     <path d="M268 900 H 308" class="b2c" stroke-dasharray="9 6"/><text x="318" y="905">self-order branch</text>
     <path d="M520 866 H 560" stroke="#D55E00" stroke-width="3" stroke-dasharray="1 7" stroke-linecap="round"/><text x="570" y="871">no match, so import</text>
     <circle cx="540" cy="900" r="11" fill="#475569"/><text x="540" y="905" class="num" text-anchor="middle">1</text><text x="570" y="905">step order</text>
+    <use href="#i-skill" x="724" y="855" width="20" height="20" color="#475569"/><text x="752" y="871">agent skill</text>
   </g>
 </svg>
