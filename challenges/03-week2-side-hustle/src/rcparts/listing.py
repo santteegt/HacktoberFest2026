@@ -44,12 +44,32 @@ class Validation:
     warnings: list[str] = field(default_factory=list)
 
 
+# The model drifts from the documented field names now and then ("type" for "kind", "price" for
+# "price_usd"); accept the common variants in code instead of re-prompting the member.
+_ALIASES = {"type": "kind", "price": "price_usd", "price_us": "price_usd", "cost": "price_usd",
+            "part": "part_number", "sku": "part_number", "code": "part_number", "model": "chassis",
+            "car": "chassis", "quantity": "qty", "desc": "description", "item": "description"}
+
+
+def normalize_keys(raw: dict) -> dict:
+    out = {}
+    for key, value in raw.items():
+        k = str(key).strip().lower()
+        k = _ALIASES.get(k, k)
+        if value is None or k in out:
+            continue
+        out[k] = value
+    return out
+
+
 def validate_listing(raw) -> Validation:
     """Unknown keys are ignored. `missing` is ordered: the first entry is the one question to ask."""
     if not isinstance(raw, dict):
         return Validation(ok=False, missing=["listing"])
+    raw = normalize_keys(raw)
     warnings: list[str] = []
     kind = str(raw.get("kind") or "").strip().upper()
+    kind = {"TENGO": "HAVE", "BUSCO": "NEED", "WANT": "NEED", "SELL": "HAVE", "OFFER": "HAVE"}.get(kind, kind)
     listing = {
         "kind": kind if kind in KINDS else None,
         "brand": _text(raw.get("brand"), lower=True, limit=60),

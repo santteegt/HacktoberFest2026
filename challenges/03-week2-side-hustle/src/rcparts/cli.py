@@ -19,6 +19,18 @@ from .listing import KINDS, normalize_part_number, normalize_phone, validate_lis
 from .notify import send_dm
 from .quote import compute_quote, to_grams
 from .replies import order_summary, quote_reply
+
+
+def strip_json_fence(text: str) -> str:
+    """Models often wrap JSON in ```json fences or prefix a bare "json" word."""
+    t = text.strip()
+    if t.startswith("```"):
+        t = t.split("\n", 1)[1] if "\n" in t else t[3:]
+        t = t.rsplit("```", 1)[0]
+    t = t.strip()
+    if t.lower().startswith("json") and not t.startswith("{"):
+        t = t[4:].strip()
+    return t
 from .store import STORE_NAME, StoreClient, StoreError, pick_best
 
 ACT_SEND = "Send `reply` to the member as-is. Do not add prices, totals or part details of your own."
@@ -116,7 +128,7 @@ def cmd_member_list(a, s):
 def cmd_listing_add(a, s):
     lang = s.reply_lang
     try:
-        raw = json.loads(a.json)
+        raw = json.loads(strip_json_fence(a.json))
     except json.JSONDecodeError as exc:
         return out(t(lang, "ask_listing"), ok=False, error="bad_json", missing=["listing"], detail=str(exc),
                    action="Your listing JSON was invalid. Rebuild it from the member's message and call again; "

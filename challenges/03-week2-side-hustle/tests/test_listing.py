@@ -58,3 +58,18 @@ def test_condition_unknown_default_and_need_has_no_condition():
 
 def test_not_an_object():
     assert validate_listing(["HAVE"]).missing == ["listing"]
+
+
+def test_model_field_name_drift_is_accepted():
+    from rcparts.listing import validate_listing
+    v = validate_listing({"type": "HAVE", "brand": None, "chassis": "TT-02", "part_number": None,
+                          "description": "spur 68T", "condition": "new", "price": 10, "qty": 1})
+    assert v.ok and v.listing["kind"] == "HAVE" and str(v.listing["price_usd"]) == "10.00"
+    assert v.listing["chassis"] == "tt02" and v.listing["brand"] is None
+
+
+def test_json_fence_is_stripped():
+    from rcparts.cli import strip_json_fence
+    assert strip_json_fence('```json\n{"a": 1}\n```') == '{"a": 1}'
+    assert strip_json_fence('json\n{"a": 1}') == '{"a": 1}'
+    assert strip_json_fence('{"a": 1}') == '{"a": 1}'
