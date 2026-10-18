@@ -17,6 +17,10 @@ The import service is the side hustle: a per-pound fee on everything that ships 
 
 ## How it works
 
+![Architecture: club members on WhatsApp talk to the Hermes Agent gateway; the rc-parts profile sends model turns to Gemma 4 26B A4B on OpenRouter and runs the rcparts CLI, which reads the sender from the session, matches and quotes in code, stores data in Postgres on Tiger Cloud, reads Michael's RC Hobbies storefront JSON and sends private messages and the order batch with hermes send](docs/architecture.png)
+
+Source: [docs/architecture.svg](docs/architecture.svg). In text form:
+
 ```
 club WhatsApp group / DMs ──(Baileys bridge)──> Hermes Agent gateway ──> profile "rc-parts"
                                                    │  SOUL.md + 2 skills (rc-listings, rc-quote)

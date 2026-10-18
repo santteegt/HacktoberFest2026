@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" width="1280" height="820" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>RC Parts Finder architecture</title>
+  <desc>Club members talk to the bot in a WhatsApp group and in private messages. The Hermes Agent gateway (open source) runs the rc-parts profile; Gemma 4 26B A4B (open weights, served by OpenRouter) only turns messages into listing JSON and relays replies. The rcparts CLI does identity, validation, matching, quotes and notifications, stores everything in Postgres on Tiger Cloud, and reads prices, stock and weight from Michael's RC Hobbies' storefront JSON. A Hermes cron job sends the maintainer the order batch.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+  </defs>
+  <style>
+    .t { font-size: 15px; font-weight: 700; fill: #0f172a; }
+    .s { font-size: 13px; fill: #334155; }
+    .m { font-size: 12px; fill: #475569; }
+    .lbl { font-size: 12px; fill: #334155; }
+    .h { font-size: 24px; font-weight: 700; fill: #0f172a; }
+    .sub { font-size: 14px; fill: #475569; }
+    .open { fill: #ecfdf5; stroke: #059669; stroke-width: 2; }
+    .ours { fill: #eff6ff; stroke: #2563eb; stroke-width: 2; }
+    .ext { fill: #f8fafc; stroke: #64748b; stroke-width: 1.5; }
+    .club { fill: #fefce8; stroke: #ca8a04; stroke-width: 2; }
+    .back { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; stroke-dasharray: 6 5; }
+    .inner { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1; }
+    .ln { stroke: #475569; stroke-width: 2; fill: none; }
+    .lnd { stroke: #94a3b8; stroke-width: 1.8; fill: none; stroke-dasharray: 6 5; }
+  </style>
+
+  <rect width="1280" height="820" fill="#ffffff"/>
+  <text x="40" y="46" class="h">RC Parts Finder</text>
+  <text x="40" y="70" class="sub">The model does language. Code decides who is writing, what matches, and every number a member sees.</text>
+
+  <!-- Club -->
+  <rect x="40" y="110" width="250" height="300" rx="12" class="club"/>
+  <text x="60" y="140" class="t">RC club on WhatsApp</text>
+  <rect x="58" y="158" width="214" height="70" rx="8" class="inner"/>
+  <text x="72" y="182" class="s">Club group</text>
+  <text x="72" y="202" class="m">"@bot busco un TAM54500"</text>
+  <text x="72" y="219" class="m">answers only when mentioned</text>
+  <rect x="58" y="240" width="214" height="70" rx="8" class="inner"/>
+  <text x="72" y="264" class="s">Private messages</text>
+  <text x="72" y="284" class="m">"tengo un spur 68T, $10"</text>
+  <text x="72" y="301" class="m">quotes, "sí", match intros</text>
+  <rect x="58" y="322" width="214" height="70" rx="8" class="inner"/>
+  <text x="72" y="346" class="s">Maintainer (side hustle)</text>
+  <text x="72" y="366" class="m">gets the order batch,</text>
+  <text x="72" y="383" class="m">places orders, charges fees</text>
+
+  <!-- Hermes -->
+  <rect x="360" y="110" width="400" height="300" rx="12" class="open"/>
+  <text x="380" y="140" class="t">Hermes Agent (open source, Nous Research)</text>
+  <rect x="378" y="156" width="364" height="56" rx="8" class="inner"/>
+  <text x="392" y="179" class="s">Gateway + WhatsApp bridge (Baileys)</text>
+  <text x="392" y="199" class="m">allowlisted group and numbers; answers only, no tool chatter</text>
+  <rect x="378" y="222" width="364" height="112" rx="8" class="inner"/>
+  <text x="392" y="245" class="s">Profile "rc-parts" (a versioned distribution)</text>
+  <text x="392" y="267" class="m">SOUL.md: persona and rules</text>
+  <text x="392" y="286" class="m">skills: rc-listings, rc-quote → run the rcparts CLI</text>
+  <text x="392" y="305" class="m">tools: terminal, skills, clarify, Tiger MCP db_query</text>
+  <text x="392" y="324" class="m">sender of each turn set in the session environment</text>
+  <rect x="378" y="344" width="364" height="50" rx="8" class="inner"/>
+  <text x="392" y="366" class="s">Cron: order batch (no model turn)</text>
+  <text x="392" y="384" class="m">ORDER_BATCH_SCHEDULE, daily 18:00 or hourly for tests</text>
+
+  <!-- Gemma -->
+  <rect x="360" y="460" width="400" height="120" rx="12" class="open"/>
+  <text x="380" y="490" class="t">Gemma 4 26B A4B (open weights)</text>
+  <text x="380" y="512" class="s">served by OpenRouter · ~$0.0014 per call</text>
+  <text x="380" y="536" class="m">message → listing JSON, pick the skill, relay the reply</text>
+  <text x="380" y="556" class="m">never: who is writing, prices, totals, who to message</text>
+
+  <!-- rcparts -->
+  <rect x="830" y="110" width="410" height="300" rx="12" class="ours"/>
+  <text x="850" y="140" class="t">rcparts CLI (Python, MIT, this repo)</text>
+  <text x="850" y="168" class="s">1. Sender from the session, never from the model</text>
+  <text x="850" y="194" class="s">2. Validate and normalize (TAM 54500 → TAM54500)</text>
+  <text x="850" y="220" class="s">3. Match: part number, then full-text + pg_trgm</text>
+  <text x="850" y="246" class="s">4. Quote: store price + lb × fee (+12% if we order)</text>
+  <text x="850" y="272" class="s">5. Notify matched members with hermes send</text>
+  <text x="850" y="298" class="s">6. Order batch grouped by store</text>
+  <text x="850" y="332" class="m">Every command prints one JSON: ok, reply (sent verbatim),</text>
+  <text x="850" y="350" class="m">action (the next step for the model).</text>
+  <text x="850" y="384" class="m">39 offline tests</text>
+
+  <!-- Tiger -->
+  <rect x="830" y="460" width="200" height="160" rx="12" class="ext"/>
+  <text x="848" y="490" class="t">Tiger Cloud</text>
+  <text x="848" y="510" class="s">Postgres 18</text>
+  <text x="848" y="534" class="m">clubs, members,</text>
+  <text x="848" y="552" class="m">listings, matches,</text>
+  <text x="848" y="570" class="m">quotes, orders</text>
+  <text x="848" y="594" class="m">pg_trgm · MCP read-only</text>
+
+  <!-- Store -->
+  <rect x="1050" y="460" width="190" height="160" rx="12" class="ext"/>
+  <text x="1066" y="490" class="t">Michael's RC</text>
+  <text x="1066" y="510" class="t">Hobbies</text>
+  <text x="1066" y="534" class="m">storefront JSON:</text>
+  <text x="1066" y="552" class="m">price, stock,</text>
+  <text x="1066" y="570" class="m">listed weight</text>
+  <text x="1066" y="594" class="m">2 s crawl delay</text>
+
+  <!-- arrows -->
+  <path d="M290 230 H360" class="ln" marker-end="url(#a)" marker-start="url(#a)"/>
+  <text x="296" y="222" class="lbl">messages</text>
+  <path d="M560 410 V460" class="ln" marker-end="url(#a)" marker-start="url(#a)"/>
+  <text x="570" y="440" class="lbl">model turns</text>
+  <path d="M760 280 H830" class="ln" marker-end="url(#a)"/>
+  <text x="764" y="270" class="lbl">terminal</text>
+  <path d="M930 410 V460" class="ln" marker-end="url(#a)" marker-start="url(#a)"/>
+  <text x="940" y="440" class="lbl">SQL</text>
+  <path d="M1145 410 V460" class="ln" marker-end="url(#a)"/>
+  <text x="1155" y="440" class="lbl">HTTP</text>
+  <path d="M742 300 C 790 330, 790 430, 850 460" class="lnd" marker-end="url(#ag)"/>
+  <text x="700" y="452" class="lbl">MCP db_query (read-only)</text>
+  <path d="M830 380 C 650 430, 330 430, 250 392" class="ln" marker-end="url(#a)"/>
+  <text x="300" y="440" class="lbl">hermes send: match intros, order batch</text>
+
+  <!-- backlog + legend -->
+  <rect x="40" y="650" width="690" height="130" rx="12" class="back"/>
+  <text x="60" y="680" class="t">Next (not in this build)</text>
+  <text x="60" y="706" class="s">Self-hosted Cognee memory on the same Postgres, open embeddings (open alternative for memory/search)</text>
+  <text x="60" y="730" class="s">Same Gemma weights on Ollama on the maintainer's server · deposit receipts before ordering</text>
+  <text x="60" y="754" class="s">Official WhatsApp Business API for many clubs · pgvector for Spanish ↔ English matching</text>
+
+  <rect x="770" y="650" width="470" height="130" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="790" y="680" class="t">Legend</text>
+  <rect x="790" y="694" width="22" height="16" rx="3" class="open"/><text x="822" y="707" class="s">open source / open weights</text>
+  <rect x="790" y="718" width="22" height="16" rx="3" class="ours"/><text x="822" y="731" class="s">code written for this project</text>
+  <rect x="790" y="742" width="22" height="16" rx="3" class="ext"/><text x="822" y="755" class="s">external service</text>
+  <rect x="1080" y="694" width="22" height="16" rx="3" class="club"/><text x="1112" y="707" class="s">people</text>
+  <rect x="1080" y="718" width="22" height="16" rx="3" class="back"/><text x="1112" y="731" class="s">backlog</text>
+</svg>
