@@ -13,11 +13,15 @@ RC Parts Finder sits in the club's WhatsApp group and does both jobs:
 - **Swap and sell inside the club (free).** "Tengo un spur 68T de TT-02 nuevo, $10" becomes a listing. "Busco un TAM54500" becomes a request. When the two meet, the agent writes to both members in private.
 - **Import quotes (paid).** When the club has nothing, the agent looks the part up at [Michael's RC Hobbies](https://www.michaelsrchobbies.com/), reads the store's price, stock and listed weight, and answers with two totals: what it costs if the member orders it and ships it to the forwarding address, and what it costs if we order it for them. "Sí" puts it in the order batch, and the maintainer gets one summary per batch with links, quantities and what to charge whom.
 
+![Workflow. P2P, free: members of two clubs in the same city post HAVE or NEED; the bot matches parts inside a club or across clubs, DMs both, they meet and swap, and a sold listing is closed. B2C, paid: no match leads to a quote computed in code ($16.30), the member says sí and sends a deposit receipt PDF, the maintainer confirms the transfer, the order batch goes to the store and the US forwarding address, and the part is imported to the club. Self-order branch: the member buys it and pays only the $1.74 fee.](docs/workflow.png)
+
+Source: [docs/workflow.svg](docs/workflow.svg).
+
 The import service is the side hustle: a per-pound fee on everything that ships through the forwarding address, plus 12% on orders we place. The matching is free, and it is the reason members keep the bot in the group.
 
 ## How it works
 
-![Architecture: club members on WhatsApp talk to the Hermes Agent gateway; the rc-parts profile sends model turns to Gemma 4 26B A4B on OpenRouter and runs the rcparts CLI, which reads the sender from the session, matches and quotes in code, stores data in Postgres on Tiger Cloud, reads Michael's RC Hobbies storefront JSON and sends private messages and the order batch with hermes send](docs/architecture.png)
+![Architecture: club members, the club group and the maintainer on WhatsApp connect through an unofficial Baileys bridge to Hermes Agent (open source). Hermes uses Gemma 4 26B A4B (open weights, via OpenRouter) for language only and runs the rcparts CLI, which reads and writes Tiger Postgres and reads Michael's RC Hobbies store JSON. A cron job triggers the order batch.](docs/architecture.png)
 
 Source: [docs/architecture.svg](docs/architecture.svg). In text form:
 

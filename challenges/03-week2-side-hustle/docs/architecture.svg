@@ -1,129 +1,195 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" width="1280" height="820" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
-  <title>RC Parts Finder architecture</title>
-  <desc>Club members talk to the bot in a WhatsApp group and in private messages. The Hermes Agent gateway (open source) runs the rc-parts profile; Gemma 4 26B A4B (open weights, served by OpenRouter) only turns messages into listing JSON and relays replies. The rcparts CLI does identity, validation, matching, quotes and notifications, stores everything in Postgres on Tiger Cloud, and reads prices, stock and weight from Michael's RC Hobbies' storefront JSON. A Hermes cron job sends the maintainer the order batch.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="arch-title arch-desc">
+  <title id="arch-title">RC Parts Finder architecture</title>
+  <desc id="arch-desc">RC club members use WhatsApp: the club group (the bot answers when mentioned), private messages (HAVE, NEED, "sí"), and the maintainer, who receives deposit receipts and replies "confirmar". An unofficial WhatsApp bridge (Baileys) connects them to Hermes Agent, the open-source agent harness (gateway, skills, profile rc-parts). Hermes asks Gemma 4 26B A4B, an open-weight model served by OpenRouter, for language only: turning messages into listing JSON and relaying replies. Hermes runs the rcparts CLI, code written for this project, which decides sender identity, validation, matching, quote math, deposits and the order batch, and sends notifications back through Hermes ("hermes send"). The CLI stores listings, matches, quotes, deposits and orders in Tiger Cloud Postgres and reads price, stock and weight from Michael's RC Hobbies storefront JSON. Hermes also has a read-only MCP connection to the database, and a Hermes cron job (hourly or daily) triggers the order batch. Legend: green is open source or open weights, blue is code written for this project, grey is an external service, amber is people.</desc>
   <defs>
-    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
-    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+    <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#374151"/></marker>
+    <marker id="ahg" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B7280"/></marker>
+    <symbol id="i-group" viewBox="0 0 64 64">
+      <path d="M30 26h26a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4h-3v8l-9-8H30a4 4 0 0 1-4-4V30a4 4 0 0 1 4-4z" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M8 8h30a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H20l-9 8v-8H8a4 4 0 0 1-4-4V12a4 4 0 0 1 4-4z" fill="#fff" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="15" cy="20" r="2.6" fill="currentColor"/><circle cx="23" cy="20" r="2.6" fill="currentColor"/><circle cx="31" cy="20" r="2.6" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-phone" viewBox="0 0 64 64">
+      <rect x="17" y="3" width="30" height="58" rx="6" fill="#fff" stroke="currentColor" stroke-width="3"/>
+      <path d="M28 9h8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M22 17h20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H30l-5 4v-4h-3a2 2 0 0 1-2-2V19a2 2 0 0 1 2-2z" fill="currentColor" fill-opacity=".3"/>
+      <path d="M24 38h16M24 44h11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="32" cy="54" r="2.5" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-maint" viewBox="0 0 64 64">
+      <circle cx="21" cy="18" r="9" fill="currentColor"/>
+      <path d="M4 56c0-12 8-19 17-19s17 7 17 19z" fill="currentColor"/>
+      <rect x="33" y="21" width="26" height="36" rx="3" fill="#fff" stroke="currentColor" stroke-width="3"/>
+      <rect x="40" y="17" width="12" height="7" rx="2" fill="currentColor"/>
+      <path d="M39 39l5 5 10-11" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-link" viewBox="0 0 64 64">
+      <g fill="none" stroke="currentColor" stroke-width="4">
+        <rect x="5" y="24" width="30" height="16" rx="8" transform="rotate(-35 20 32)"/>
+        <rect x="29" y="24" width="30" height="16" rx="8" transform="rotate(-35 44 32)"/>
+      </g>
+    </symbol>
+    <symbol id="i-bot" viewBox="0 0 64 64">
+      <path d="M17 22 L3 15 L7 21 L1 24 L8 27 L3 32 L17 33z" fill="currentColor" fill-opacity=".45" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M47 22 L61 15 L57 21 L63 24 L56 27 L61 32 L47 33z" fill="currentColor" fill-opacity=".45" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M32 9v7" stroke="currentColor" stroke-width="3"/><circle cx="32" cy="7" r="3.5" fill="currentColor"/>
+      <rect x="16" y="16" width="32" height="28" rx="8" fill="#fff" stroke="currentColor" stroke-width="3"/>
+      <circle cx="25" cy="29" r="3.8" fill="currentColor"/><circle cx="39" cy="29" r="3.8" fill="currentColor"/>
+      <path d="M26 37h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M22 44v8h20v-8" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M16 58h32" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-chip" viewBox="0 0 64 64">
+      <g stroke="currentColor" stroke-width="3" stroke-linecap="round">
+        <path d="M22 5v8M32 5v8M42 5v8M22 51v8M32 51v8M42 51v8M5 22h8M5 32h8M5 42h8M51 22h8M51 32h8M51 42h8"/>
+      </g>
+      <rect x="13" y="13" width="38" height="38" rx="6" fill="#fff" stroke="currentColor" stroke-width="3"/>
+      <path d="M32 19C33 29 35 31 45 32C35 33 33 35 32 45C31 35 29 33 19 32C29 31 31 29 32 19z" fill="currentColor"/>
+      <path d="M43 17C43.4 20 44 20.6 47 21C44 21.4 43.4 22 43 25C42.6 22 42 21.4 39 21C42 20.6 42.6 20 43 17z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-term" viewBox="0 0 64 64">
+      <rect x="4" y="9" width="56" height="46" rx="6" fill="#fff" stroke="currentColor" stroke-width="3"/>
+      <path d="M4 19h56" stroke="currentColor" stroke-width="3"/>
+      <circle cx="11" cy="14" r="2" fill="currentColor"/><circle cx="17" cy="14" r="2" fill="currentColor"/><circle cx="23" cy="14" r="2" fill="currentColor"/>
+      <path d="M14 28l9 7-9 7" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28 44h16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-db" viewBox="0 0 64 64">
+      <g fill="none" stroke="currentColor" stroke-width="3">
+        <path d="M10 14v36c0 4.4 9.8 8 22 8s22-3.6 22-8V14" fill="#fff"/>
+        <path d="M10 26c0 4.4 9.8 8 22 8s22-3.6 22-8M10 38c0 4.4 9.8 8 22 8s22-3.6 22-8"/>
+        <ellipse cx="32" cy="14" rx="22" ry="8" fill="currentColor" fill-opacity=".25"/>
+      </g>
+    </symbol>
+    <symbol id="i-store" viewBox="0 0 64 64">
+      <path d="M10 28v28h44V28" fill="#fff" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="18" y="38" width="12" height="18" fill="currentColor" fill-opacity=".3" stroke="currentColor" stroke-width="2.5"/>
+      <rect x="36" y="36" width="12" height="10" fill="none" stroke="currentColor" stroke-width="2.5"/>
+      <path d="M12 8h40l6 14H6z" fill="currentColor" fill-opacity=".3" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M6 22a6.5 6.5 0 0 0 13 0a6.5 6.5 0 0 0 13 0a6.5 6.5 0 0 0 13 0a6.5 6.5 0 0 0 13 0" fill="#fff" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M22 8l-3 14M32 8v14M42 8l3 14" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    <symbol id="i-clock" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="25" fill="#fff" stroke="currentColor" stroke-width="3.5"/>
+      <path d="M32 11v4M32 49v4M11 32h4M49 32h4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M32 19v13l10 7" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
   </defs>
   <style>
-    .t { font-size: 15px; font-weight: 700; fill: #0f172a; }
-    .s { font-size: 13px; fill: #334155; }
-    .m { font-size: 12px; fill: #475569; }
-    .lbl { font-size: 12px; fill: #334155; }
-    .h { font-size: 24px; font-weight: 700; fill: #0f172a; }
-    .sub { font-size: 14px; fill: #475569; }
-    .open { fill: #ecfdf5; stroke: #059669; stroke-width: 2; }
-    .ours { fill: #eff6ff; stroke: #2563eb; stroke-width: 2; }
-    .ext { fill: #f8fafc; stroke: #64748b; stroke-width: 1.5; }
-    .club { fill: #fefce8; stroke: #ca8a04; stroke-width: 2; }
-    .back { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; stroke-dasharray: 6 5; }
-    .inner { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1; }
-    .ln { stroke: #475569; stroke-width: 2; fill: none; }
-    .lnd { stroke: #94a3b8; stroke-width: 1.8; fill: none; stroke-dasharray: 6 5; }
+    .h { font-size: 30px; font-weight: 700; fill: #111827; }
+    .sub { font-size: 16px; fill: #4B5563; }
+    .lb { font-size: 16px; font-weight: 700; fill: #111827; }
+    .sl { font-size: 13px; fill: #4B5563; }
+    .al { font-size: 13px; fill: #374151; font-weight: 600; }
+    .lg { font-size: 13px; fill: #374151; }
+    .ln { stroke: #374151; stroke-width: 2.2; fill: none; }
+    .lnd { stroke: #6B7280; stroke-width: 2; fill: none; stroke-dasharray: 7 5; }
+    .open { fill: #E3F5EF; stroke: #009E73; stroke-width: 2.5; }
+    .ours { fill: #E4F0F8; stroke: #0072B2; stroke-width: 2.5; }
+    .ext { fill: #F1F4F7; stroke: #5B6B7F; stroke-width: 2.5; }
+    .ppl { fill: #FFFFFF; stroke: #D08C00; stroke-width: 2.5; }
   </style>
 
-  <rect width="1280" height="820" fill="#ffffff"/>
-  <text x="40" y="46" class="h">RC Parts Finder</text>
-  <text x="40" y="70" class="sub">The model does language. Code decides who is writing, what matches, and every number a member sees.</text>
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
 
-  <!-- Club -->
-  <rect x="40" y="110" width="250" height="300" rx="12" class="club"/>
-  <text x="60" y="140" class="t">RC club on WhatsApp</text>
-  <rect x="58" y="158" width="214" height="70" rx="8" class="inner"/>
-  <text x="72" y="182" class="s">Club group</text>
-  <text x="72" y="202" class="m">"@bot busco un TAM54500"</text>
-  <text x="72" y="219" class="m">answers only when mentioned</text>
-  <rect x="58" y="240" width="214" height="70" rx="8" class="inner"/>
-  <text x="72" y="264" class="s">Private messages</text>
-  <text x="72" y="284" class="m">"tengo un spur 68T, $10"</text>
-  <text x="72" y="301" class="m">quotes, "sí", match intros</text>
-  <rect x="58" y="322" width="214" height="70" rx="8" class="inner"/>
-  <text x="72" y="346" class="s">Maintainer (side hustle)</text>
-  <text x="72" y="366" class="m">gets the order batch,</text>
-  <text x="72" y="383" class="m">places orders, charges fees</text>
+  <text x="40" y="52" class="h">RC Parts Finder</text>
+  <text x="40" y="82" class="sub">The model does language; code decides who is writing, what matches, and every number.</text>
 
-  <!-- Hermes -->
-  <rect x="360" y="110" width="400" height="300" rx="12" class="open"/>
-  <text x="380" y="140" class="t">Hermes Agent (open source, Nous Research)</text>
-  <rect x="378" y="156" width="364" height="56" rx="8" class="inner"/>
-  <text x="392" y="179" class="s">Gateway + WhatsApp bridge (Baileys)</text>
-  <text x="392" y="199" class="m">allowlisted group and numbers; answers only, no tool chatter</text>
-  <rect x="378" y="222" width="364" height="112" rx="8" class="inner"/>
-  <text x="392" y="245" class="s">Profile "rc-parts" (a versioned distribution)</text>
-  <text x="392" y="267" class="m">SOUL.md: persona and rules</text>
-  <text x="392" y="286" class="m">skills: rc-listings, rc-quote → run the rcparts CLI</text>
-  <text x="392" y="305" class="m">tools: terminal, skills, clarify, Tiger MCP db_query</text>
-  <text x="392" y="324" class="m">sender of each turn set in the session environment</text>
-  <rect x="378" y="344" width="364" height="50" rx="8" class="inner"/>
-  <text x="392" y="366" class="s">Cron: order batch (no model turn)</text>
-  <text x="392" y="384" class="m">ORDER_BATCH_SCHEDULE, daily 18:00 or hourly for tests</text>
+  <!-- People on WhatsApp -->
+  <rect x="28" y="108" width="224" height="548" rx="18" fill="#FFF6DD" stroke="#E69F00" stroke-width="1.5"/>
+  <text x="140" y="138" class="al" text-anchor="middle" style="fill:#7A4F00">WhatsApp</text>
+
+  <rect x="98" y="156" width="84" height="84" rx="16" class="ppl"/>
+  <use href="#i-group" x="110" y="168" width="60" height="60" color="#B26F00"/>
+  <text x="140" y="264" class="lb" text-anchor="middle">Club group</text>
+  <text x="140" y="282" class="sl" text-anchor="middle">@mention the bot</text>
+
+  <rect x="98" y="322" width="84" height="84" rx="16" class="ppl"/>
+  <use href="#i-phone" x="110" y="334" width="60" height="60" color="#B26F00"/>
+  <text x="140" y="430" class="lb" text-anchor="middle">Member DMs</text>
+  <text x="140" y="448" class="sl" text-anchor="middle">HAVE · NEED · "sí"</text>
+
+  <rect x="98" y="488" width="84" height="84" rx="16" class="ppl"/>
+  <use href="#i-maint" x="110" y="500" width="60" height="60" color="#B26F00"/>
+  <text x="140" y="596" class="lb" text-anchor="middle">Maintainer</text>
+  <text x="140" y="614" class="sl" text-anchor="middle">receipts · "confirmar"</text>
+
+  <!-- arrows people <-> bridge -->
+  <path d="M184 198 C 250 198, 262 352, 318 352" class="ln" marker-start="url(#ah)" marker-end="url(#ah)"/>
+  <path d="M184 364 L 318 364" class="ln" marker-start="url(#ah)" marker-end="url(#ah)"/>
+  <path d="M184 530 C 250 530, 262 376, 318 376" class="ln" marker-start="url(#ah)" marker-end="url(#ah)"/>
+
+  <!-- Bridge -->
+  <rect x="322" y="326" width="76" height="76" rx="16" class="open"/>
+  <use href="#i-link" x="332" y="336" width="56" height="56" color="#007A59"/>
+  <text x="360" y="426" class="lb" text-anchor="middle">WhatsApp bridge</text>
+  <text x="360" y="444" class="sl" text-anchor="middle">Baileys, unofficial</text>
+
+  <path d="M400 364 L 516 364" class="ln" marker-start="url(#ah)" marker-end="url(#ah)"/>
 
   <!-- Gemma -->
-  <rect x="360" y="460" width="400" height="120" rx="12" class="open"/>
-  <text x="380" y="490" class="t">Gemma 4 26B A4B (open weights)</text>
-  <text x="380" y="512" class="s">served by OpenRouter · ~$0.0014 per call</text>
-  <text x="380" y="536" class="m">message → listing JSON, pick the skill, relay the reply</text>
-  <text x="380" y="556" class="m">never: who is writing, prices, totals, who to message</text>
+  <rect x="532" y="118" width="96" height="96" rx="18" class="open"/>
+  <use href="#i-chip" x="544" y="130" width="72" height="72" color="#007A59"/>
+  <text x="516" y="158" class="lb" text-anchor="end">Gemma 4 26B A4B</text>
+  <text x="516" y="177" class="sl" text-anchor="end">open weights · OpenRouter</text>
+  <path d="M580 216 L 580 300" class="ln" marker-start="url(#ah)" marker-end="url(#ah)"/>
+  <text x="592" y="262" class="al">language only</text>
 
-  <!-- rcparts -->
-  <rect x="830" y="110" width="410" height="300" rx="12" class="ours"/>
-  <text x="850" y="140" class="t">rcparts CLI (Python, MIT, this repo)</text>
-  <text x="850" y="168" class="s">1. Sender from the session, never from the model</text>
-  <text x="850" y="194" class="s">2. Validate and normalize (TAM 54500 → TAM54500)</text>
-  <text x="850" y="220" class="s">3. Match: part number, then full-text + pg_trgm</text>
-  <text x="850" y="246" class="s">4. Quote: store price + lb × fee (+12% if we order)</text>
-  <text x="850" y="272" class="s">5. Notify matched members with hermes send</text>
-  <text x="850" y="298" class="s">6. Order batch grouped by store</text>
-  <text x="850" y="332" class="m">Every command prints one JSON: ok, reply (sent verbatim),</text>
-  <text x="850" y="350" class="m">action (the next step for the model).</text>
-  <text x="850" y="384" class="m">39 offline tests</text>
+  <!-- Hermes -->
+  <rect x="520" y="304" width="120" height="120" rx="22" class="open"/>
+  <use href="#i-bot" x="536" y="320" width="88" height="88" color="#007A59"/>
+  <text x="580" y="450" class="lb" text-anchor="middle" style="font-size:17px">Hermes Agent</text>
+  <text x="580" y="469" class="sl" text-anchor="middle">gateway · skills</text>
 
-  <!-- Tiger -->
-  <rect x="830" y="460" width="200" height="160" rx="12" class="ext"/>
-  <text x="848" y="490" class="t">Tiger Cloud</text>
-  <text x="848" y="510" class="s">Postgres 18</text>
-  <text x="848" y="534" class="m">clubs, members,</text>
-  <text x="848" y="552" class="m">listings, matches,</text>
-  <text x="848" y="570" class="m">quotes, orders</text>
-  <text x="848" y="594" class="m">pg_trgm · MCP read-only</text>
+  <!-- Hermes <-> CLI -->
+  <path d="M642 346 L 776 346" class="ln" marker-end="url(#ah)"/>
+  <text x="709" y="336" class="al" text-anchor="middle">runs rcparts</text>
+  <path d="M776 384 L 642 384" class="ln" marker-end="url(#ah)"/>
+  <text x="709" y="406" class="al" text-anchor="middle">hermes send</text>
+
+  <!-- read-only MCP (dashed) -->
+  <path d="M640 318 L 700 318 L 700 150 L 1120 150 L 1120 196" class="lnd" marker-end="url(#ahg)"/>
+  <text x="910" y="141" class="al" text-anchor="middle" style="fill:#4B5563">read-only MCP</text>
+
+  <!-- CLI -->
+  <text x="840" y="276" class="lb" text-anchor="middle" style="font-size:17px">rcparts CLI</text>
+  <text x="840" y="295" class="sl" text-anchor="middle">match · quote · notify</text>
+  <rect x="780" y="304" width="120" height="120" rx="22" class="ours"/>
+  <use href="#i-term" x="796" y="320" width="88" height="88" color="#005A8C"/>
+
+  <!-- Cron -->
+  <rect x="540" y="546" width="80" height="80" rx="16" class="open"/>
+  <use href="#i-clock" x="552" y="558" width="56" height="56" color="#007A59"/>
+  <text x="580" y="650" class="lb" text-anchor="middle">Cron</text>
+  <text x="580" y="668" class="sl" text-anchor="middle">hourly or daily</text>
+  <path d="M622 586 L 840 586 L 840 428" class="ln" marker-end="url(#ah)"/>
+  <text x="732" y="576" class="al" text-anchor="middle">order batch</text>
+
+  <!-- Postgres -->
+  <rect x="1072" y="200" width="96" height="96" rx="18" class="ext"/>
+  <use href="#i-db" x="1084" y="212" width="72" height="72" color="#3F4D5E"/>
+  <text x="1120" y="320" class="lb" text-anchor="middle">Tiger Postgres</text>
+  <text x="1120" y="338" class="sl" text-anchor="middle">listings · quotes · orders</text>
+  <path d="M902 336 L 1068 262" class="ln" marker-start="url(#ah)" marker-end="url(#ah)"/>
+  <text x="985" y="292" class="al" text-anchor="middle" transform="rotate(-24 985 299)">SQL</text>
 
   <!-- Store -->
-  <rect x="1050" y="460" width="190" height="160" rx="12" class="ext"/>
-  <text x="1066" y="490" class="t">Michael's RC</text>
-  <text x="1066" y="510" class="t">Hobbies</text>
-  <text x="1066" y="534" class="m">storefront JSON:</text>
-  <text x="1066" y="552" class="m">price, stock,</text>
-  <text x="1066" y="570" class="m">listed weight</text>
-  <text x="1066" y="594" class="m">2 s crawl delay</text>
+  <rect x="1072" y="436" width="96" height="96" rx="18" class="ext"/>
+  <use href="#i-store" x="1084" y="448" width="72" height="72" color="#3F4D5E"/>
+  <text x="1120" y="556" class="lb" text-anchor="middle">Michael's RC Hobbies</text>
+  <text x="1120" y="574" class="sl" text-anchor="middle">price · stock · weight</text>
+  <path d="M902 396 L 1068 474" class="ln" marker-end="url(#ah)"/>
+  <text x="985" y="428" class="al" text-anchor="middle" transform="rotate(25.2 985 435)">store JSON</text>
 
-  <!-- arrows -->
-  <path d="M290 230 H360" class="ln" marker-end="url(#a)" marker-start="url(#a)"/>
-  <text x="296" y="222" class="lbl">messages</text>
-  <path d="M560 410 V460" class="ln" marker-end="url(#a)" marker-start="url(#a)"/>
-  <text x="570" y="440" class="lbl">model turns</text>
-  <path d="M760 280 H830" class="ln" marker-end="url(#a)"/>
-  <text x="764" y="270" class="lbl">terminal</text>
-  <path d="M930 410 V460" class="ln" marker-end="url(#a)" marker-start="url(#a)"/>
-  <text x="940" y="440" class="lbl">SQL</text>
-  <path d="M1145 410 V460" class="ln" marker-end="url(#a)"/>
-  <text x="1155" y="440" class="lbl">HTTP</text>
-  <path d="M742 300 C 790 330, 790 430, 850 460" class="lnd" marker-end="url(#ag)"/>
-  <text x="700" y="452" class="lbl">MCP db_query (read-only)</text>
-  <path d="M830 380 C 650 430, 330 430, 250 392" class="ln" marker-end="url(#a)"/>
-  <text x="300" y="440" class="lbl">hermes send: match intros, order batch</text>
-
-  <!-- backlog + legend -->
-  <rect x="40" y="650" width="690" height="130" rx="12" class="back"/>
-  <text x="60" y="680" class="t">Next (not in this build)</text>
-  <text x="60" y="706" class="s">Self-hosted Cognee memory on the same Postgres, open embeddings (open alternative for memory/search)</text>
-  <text x="60" y="730" class="s">Same Gemma weights on Ollama on the maintainer's server · deposit receipts before ordering</text>
-  <text x="60" y="754" class="s">Official WhatsApp Business API for many clubs · pgvector for Spanish ↔ English matching</text>
-
-  <rect x="770" y="650" width="470" height="130" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
-  <text x="790" y="680" class="t">Legend</text>
-  <rect x="790" y="694" width="22" height="16" rx="3" class="open"/><text x="822" y="707" class="s">open source / open weights</text>
-  <rect x="790" y="718" width="22" height="16" rx="3" class="ours"/><text x="822" y="731" class="s">code written for this project</text>
-  <rect x="790" y="742" width="22" height="16" rx="3" class="ext"/><text x="822" y="755" class="s">external service</text>
-  <rect x="1080" y="694" width="22" height="16" rx="3" class="club"/><text x="1112" y="707" class="s">people</text>
-  <rect x="1080" y="718" width="22" height="16" rx="3" class="back"/><text x="1112" y="731" class="s">backlog</text>
+  <!-- Legend -->
+  <g transform="translate(0,692)">
+    <rect x="652" y="-12" width="24" height="16" rx="4" class="open" style="stroke-width:2"/>
+    <text x="684" y="1" class="lg">Open source / open weights</text>
+    <rect x="874" y="-12" width="24" height="16" rx="4" class="ours" style="stroke-width:2"/>
+    <text x="906" y="1" class="lg">Code we wrote</text>
+    <rect x="1010" y="-12" width="24" height="16" rx="4" class="ext" style="stroke-width:2"/>
+    <text x="1042" y="1" class="lg">External service</text>
+    <rect x="1160" y="-12" width="24" height="16" rx="4" fill="#FFF6DD" stroke="#E69F00" stroke-width="2"/>
+    <text x="1192" y="1" class="lg">People</text>
+  </g>
 </svg>

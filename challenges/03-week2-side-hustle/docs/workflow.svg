@@ -1,0 +1,331 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 960" width="1280" height="960" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="wf-title wf-desc">
+  <title id="wf-title">RC Parts Finder: P2P and B2C flows</title>
+  <desc id="wf-desc">Top lane, P2P (free). Two RC clubs in the same city, Club A (for example RC Club Cuenca) and Club B (for example Cuenca Touring), each with a WhatsApp group and members. Step 1: members post HAVE or NEED listings. Step 2: the bot matches them by part number or text, inside the same club (a member of Club B has a spur gear another Club B member needs) or across clubs in the same city (a Club A member has a shock a Club B member needs). Step 3: the bot DMs both members. Step 4: they meet and swap or sell in person. Step 5: a member tells the bot the item is sold; the listing closes and the other side is told. A Club A member needs a wheel no club has, so that need goes to the bottom lane. Bottom lane, B2C (paid import). Step 6: no match in any club. Step 7: the bot quotes an import, computed in code: store price $13.00, plus 0.25 lb at $7 per lb = $1.74, plus 12% for "we order it" = $1.56, total $16.30. Step 8: the member accepts with "sí". Step 9: the member sends the deposit receipt PDF by DM. Step 10: the bot forwards it to the maintainer, who checks the bank transfer by hand. Step 11: the maintainer replies "confirmar" and the quote is paid. Step 12: a cron job builds the order batch, hourly or daily. Step 13: the maintainer places one order per store. Step 14: parts ship to the US forwarding address. Step 15: they are imported. Step 16: they come back to the club. Self-order branch: after accepting, the member buys the part, ships it to the US forwarding address and pays us only the weight fee, $1.74; with the store price their total is $14.74), joining at step 14.</desc>
+  <defs>
+    <marker id="mb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072B2"/></marker>
+    <marker id="mv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker>
+    <symbol id="i-group" viewBox="0 0 64 64">
+      <path d="M30 26h26a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4h-3v8l-9-8H30a4 4 0 0 1-4-4V30a4 4 0 0 1 4-4z" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M8 8h30a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H20l-9 8v-8H8a4 4 0 0 1-4-4V12a4 4 0 0 1 4-4z" fill="#fff" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="15" cy="20" r="2.6" fill="currentColor"/><circle cx="23" cy="20" r="2.6" fill="currentColor"/><circle cx="31" cy="20" r="2.6" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-phone" viewBox="0 0 64 64">
+      <rect x="17" y="3" width="30" height="58" rx="6" fill="#fff" stroke="currentColor" stroke-width="3.5"/>
+      <path d="M28 9h8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M22 17h20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H30l-5 4v-4h-3a2 2 0 0 1-2-2V19a2 2 0 0 1 2-2z" fill="currentColor"/>
+      <path d="M24 39h16M24 45h11" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="32" cy="54" r="2.5" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-person" viewBox="0 0 64 64">
+      <circle cx="32" cy="19" r="12" fill="currentColor"/>
+      <path d="M8 60c0-15 11-23 24-23s24 8 24 23z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-maint" viewBox="0 0 64 64">
+      <circle cx="21" cy="18" r="9" fill="currentColor"/>
+      <path d="M4 56c0-12 8-19 17-19s17 7 17 19z" fill="currentColor"/>
+      <rect x="33" y="21" width="26" height="36" rx="3" fill="#fff" stroke="currentColor" stroke-width="3"/>
+      <rect x="40" y="17" width="12" height="7" rx="2" fill="currentColor"/>
+      <path d="M39 39l5 5 10-11" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-bot" viewBox="0 0 64 64">
+      <path d="M17 22 L3 15 L7 21 L1 24 L8 27 L3 32 L17 33z" fill="currentColor" fill-opacity=".45" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M47 22 L61 15 L57 21 L63 24 L56 27 L61 32 L47 33z" fill="currentColor" fill-opacity=".45" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M32 9v7" stroke="currentColor" stroke-width="3"/><circle cx="32" cy="7" r="3.5" fill="currentColor"/>
+      <rect x="16" y="16" width="32" height="28" rx="8" fill="#fff" stroke="currentColor" stroke-width="3"/>
+      <circle cx="25" cy="29" r="3.8" fill="currentColor"/><circle cx="39" cy="29" r="3.8" fill="currentColor"/>
+      <path d="M26 37h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M22 44v8h20v-8" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M16 58h32" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-gear" viewBox="0 0 64 64">
+      <g fill="currentColor">
+        <rect x="27" y="4" width="10" height="14" rx="2"/>
+        <rect x="27" y="4" width="10" height="14" rx="2" transform="rotate(45 32 32)"/>
+        <rect x="27" y="4" width="10" height="14" rx="2" transform="rotate(90 32 32)"/>
+        <rect x="27" y="4" width="10" height="14" rx="2" transform="rotate(135 32 32)"/>
+        <rect x="27" y="4" width="10" height="14" rx="2" transform="rotate(180 32 32)"/>
+        <rect x="27" y="4" width="10" height="14" rx="2" transform="rotate(225 32 32)"/>
+        <rect x="27" y="4" width="10" height="14" rx="2" transform="rotate(270 32 32)"/>
+        <rect x="27" y="4" width="10" height="14" rx="2" transform="rotate(315 32 32)"/>
+        <path fill-rule="evenodd" d="M13 32a19 19 0 1 0 38 0a19 19 0 1 0-38 0z M25 32a7 7 0 1 0 14 0a7 7 0 1 0-14 0z"/>
+      </g>
+    </symbol>
+    <symbol id="i-shock" viewBox="0 0 64 64">
+      <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="32" cy="7" r="4.5" stroke-width="4"/>
+        <path d="M32 12v5" stroke-width="4"/>
+        <path d="M19 18 L45 22 L19 27 L45 31 L19 36 L45 40" stroke-width="4.5"/>
+        <path d="M32 54v2" stroke-width="4"/>
+        <circle cx="32" cy="59" r="3.5" stroke-width="3.5"/>
+      </g>
+      <rect x="24" y="40" width="16" height="15" rx="2" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-wheel" viewBox="0 0 64 64">
+      <path fill="currentColor" fill-rule="evenodd" d="M2 32a30 30 0 1 0 60 0a30 30 0 1 0-60 0z M14 32a18 18 0 1 0 36 0a18 18 0 1 0-36 0z"/>
+      <circle cx="32" cy="32" r="6" fill="currentColor"/>
+      <path d="M32.0 26.0L32.0 14.0 M37.7 30.1L49.1 26.4 M35.5 36.9L42.6 46.6 M28.5 36.9L21.4 46.6 M26.3 30.1L14.9 26.4" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-swap" viewBox="0 0 64 64">
+      <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 28 A20 20 0 0 1 52 28"/>
+        <path d="M45 22 L52 29 L59 22"/>
+        <path d="M52 36 A20 20 0 0 1 12 36"/>
+        <path d="M5 42 L12 35 L19 42"/>
+      </g>
+    </symbol>
+    <symbol id="i-pdf" viewBox="0 0 64 64">
+      <path d="M16 4h24l14 14v42H16z" fill="#fff" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M40 4v14h14" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M26 52h20M26 46h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="6" y="24" width="38" height="17" rx="3" fill="currentColor"/>
+      <text x="25" y="37.5" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">PDF</text>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="27" fill="currentColor"/>
+      <path d="M19 33l9 9 17-18" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-clock" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="25" fill="#fff" stroke="currentColor" stroke-width="3.5"/>
+      <path d="M32 11v4M32 49v4M11 32h4M49 32h4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M32 19v13l10 7" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-bag" viewBox="0 0 64 64">
+      <path d="M23 26V17a9 9 0 0 1 18 0v9" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M10 22h44l-4 36H14z" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+      <circle cx="23" cy="30" r="2.5" fill="currentColor"/><circle cx="41" cy="30" r="2.5" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-box" viewBox="0 0 64 64">
+      <path d="M32 6 L58 18 V46 L32 58 L6 46 V18z" fill="#fff" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M32 6 L58 18 L32 30 L6 18z" fill="currentColor" fill-opacity=".25"/>
+      <path d="M6 18 L32 30 L58 18 M32 30 V58 M19 12 L45 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <text x="19" y="47" font-size="12" font-weight="800" fill="currentColor" text-anchor="middle">US</text>
+    </symbol>
+    <symbol id="i-plane" viewBox="0 0 64 64">
+      <path d="M58 29 H38 L25 8 H18 L26 29 H13 L8 22 H3 L6 32 L3 42 H8 L13 35 H26 L18 56 H25 L38 35 H58 C62 35 62 29 58 29z" fill="currentColor"/>
+    </symbol>
+  </defs>
+  <style>
+    .h { font-size: 30px; font-weight: 700; fill: #111827; }
+    .sub { font-size: 16px; fill: #4B5563; }
+    .lb { font-size: 15px; font-weight: 700; fill: #111827; }
+    .sl { font-size: 13px; fill: #4B5563; }
+    .club { font-size: 18px; font-weight: 700; fill: #111827; }
+    .pill { font-size: 13px; font-weight: 700; }
+    .num { font-size: 13px; font-weight: 700; fill: #FFFFFF; }
+    .p2p { stroke: #0072B2; stroke-width: 2.5; fill: none; }
+    .b2c { stroke: #D55E00; stroke-width: 2.5; fill: none; }
+    .q { font-size: 13px; fill: #374151; }
+  </style>
+
+  <rect x="0" y="0" width="1280" height="960" fill="#FFFFFF"/>
+
+  <text x="40" y="46" class="h">How a part reaches a member</text>
+  <text x="40" y="76" class="sub">Free swaps inside and across clubs first; a paid import only when no club has the part.</text>
+
+  <!-- ================= P2P lane ================= -->
+  <rect x="20" y="96" width="1240" height="468" rx="20" fill="#EEF5FB" stroke="#0072B2" stroke-width="1.5"/>
+  <rect x="40" y="112" width="150" height="30" rx="15" fill="#0072B2"/>
+  <text x="115" y="132" text-anchor="middle" style="font-size:15px;font-weight:700;fill:#fff">P2P · free</text>
+
+  <!-- Club A -->
+  <rect x="48" y="156" width="380" height="300" rx="28" fill="#FFF6DD" stroke="#E69F00" stroke-width="2"/>
+  <use href="#i-group" x="66" y="166" width="46" height="46" color="#B26F00"/>
+  <text x="124" y="188" class="club">Club A</text>
+  <text x="124" y="207" class="sl">e.g. RC Club Cuenca</text>
+
+  <use href="#i-person" x="92" y="236" width="56" height="56" color="#475569"/>
+  <circle cx="148" cy="242" r="11" fill="#D55E00"/>
+  <path d="M143 237l10 10M153 237l-10 10" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+  <rect x="68" y="304" width="104" height="30" rx="15" fill="#fff" stroke="#334155" stroke-width="2"/>
+  <text x="80" y="324" class="pill" fill="#334155">NEED</text>
+  <use href="#i-wheel" x="133" y="307" width="24" height="24" color="#334155"/>
+
+  <use href="#i-person" x="302" y="236" width="56" height="56" color="#475569"/>
+  <rect x="278" y="304" width="104" height="30" rx="15" fill="#334155"/>
+  <text x="290" y="324" class="pill" fill="#fff">HAVE</text>
+  <use href="#i-shock" x="344" y="308" width="22" height="22" color="#fff"/>
+
+  <!-- Club B -->
+  <rect x="852" y="156" width="380" height="300" rx="28" fill="#FFF6DD" stroke="#E69F00" stroke-width="2"/>
+  <use href="#i-group" x="870" y="166" width="46" height="46" color="#B26F00"/>
+  <text x="928" y="188" class="club">Club B</text>
+  <text x="928" y="207" class="sl">e.g. Cuenca Touring</text>
+
+  <use href="#i-person" x="902" y="236" width="56" height="56" color="#475569"/>
+  <rect x="878" y="304" width="104" height="30" rx="15" fill="#fff" stroke="#334155" stroke-width="2"/>
+  <text x="890" y="324" class="pill" fill="#334155">NEED</text>
+  <use href="#i-shock" x="944" y="308" width="22" height="22" color="#334155"/>
+
+  <use href="#i-person" x="1017" y="236" width="56" height="56" color="#475569"/>
+  <rect x="993" y="304" width="104" height="30" rx="15" fill="#334155"/>
+  <text x="1005" y="324" class="pill" fill="#fff">HAVE</text>
+  <use href="#i-gear" x="1059" y="308" width="22" height="22" color="#fff"/>
+
+  <use href="#i-person" x="1132" y="236" width="56" height="56" color="#475569"/>
+  <rect x="1108" y="304" width="104" height="30" rx="15" fill="#fff" stroke="#334155" stroke-width="2"/>
+  <text x="1120" y="324" class="pill" fill="#334155">NEED</text>
+  <use href="#i-gear" x="1174" y="308" width="22" height="22" color="#334155"/>
+
+  <!-- in-club match (Club B) -->
+  <path d="M1045 338 Q 1102.5 392 1160 338" class="p2p" marker-start="url(#mb)" marker-end="url(#mb)"/>
+  <text x="1102" y="392" text-anchor="middle" style="font-size:13px;font-weight:700;fill:#005A8C">same club</text>
+
+  <!-- cross-club match -->
+  <path d="M330 338 C 330 430, 930 430, 930 338" class="p2p" stroke-dasharray="9 6" marker-start="url(#mb)" marker-end="url(#mb)"/>
+  <rect x="580" y="393" width="120" height="28" rx="14" fill="#fff" stroke="#0072B2" stroke-width="2"/>
+  <text x="640" y="412" text-anchor="middle" style="font-size:14px;font-weight:700;fill:#005A8C">same city</text>
+
+  <!-- Bot -->
+  <circle cx="640" cy="214" r="58" fill="#fff" stroke="#009E73" stroke-width="2.5"/>
+  <use href="#i-bot" x="598" y="172" width="84" height="84" color="#007A59"/>
+  <circle cx="584" cy="297" r="11" fill="#0072B2"/><text x="584" y="302" class="num" text-anchor="middle">2</text>
+  <text x="602" y="302" class="lb" style="font-size:16px">Bot matches</text>
+  <text x="640" y="321" class="sl" text-anchor="middle">part number or text</text>
+
+  <!-- post arrows -->
+  <path d="M430 236 L 576 222" class="p2p" marker-end="url(#mb)"/>
+  <circle cx="455" cy="207" r="11" fill="#0072B2"/><text x="455" y="212" class="num" text-anchor="middle">1</text>
+  <text x="472" y="212" class="pill" fill="#005A8C">HAVE / NEED</text>
+  <path d="M850 236 L 704 222" class="p2p" marker-end="url(#mb)"/>
+  <circle cx="725" cy="207" r="11" fill="#0072B2"/><text x="725" y="212" class="num" text-anchor="middle">1</text>
+  <text x="742" y="212" class="pill" fill="#005A8C">HAVE / NEED</text>
+
+  <!-- P2P steps 3-5 -->
+  <circle cx="342" cy="512" r="11" fill="#0072B2"/><text x="342" y="517" class="num" text-anchor="middle">3</text>
+  <use href="#i-phone" x="358" y="488" width="46" height="46" color="#0072B2"/>
+  <use href="#i-phone" x="394" y="488" width="46" height="46" color="#0072B2"/>
+  <text x="448" y="517" class="lb">Bot DMs both</text>
+  <path d="M556 512 L 578 512" class="p2p" marker-end="url(#mb)"/>
+
+  <circle cx="594" cy="512" r="11" fill="#0072B2"/><text x="594" y="517" class="num" text-anchor="middle">4</text>
+  <use href="#i-swap" x="612" y="489" width="46" height="46" color="#0072B2"/>
+  <text x="666" y="508" class="lb">Meet &amp; swap</text>
+  <text x="666" y="526" class="sl">or sell in person</text>
+  <path d="M780 512 L 804 512" class="p2p" marker-end="url(#mb)"/>
+
+  <circle cx="820" cy="512" r="11" fill="#0072B2"/><text x="820" y="517" class="num" text-anchor="middle">5</text>
+  <g transform="rotate(-8 878 512)">
+    <rect x="840" y="498" width="76" height="28" rx="5" fill="#fff" stroke="#0072B2" stroke-width="3"/>
+    <text x="878" y="518" text-anchor="middle" style="font-size:16px;font-weight:800;fill:#0072B2;letter-spacing:1px">SOLD</text>
+  </g>
+  <text x="930" y="508" class="lb">Listing closed</text>
+  <text x="930" y="526" class="sl">other side told</text>
+
+  <!-- no match: label (line drawn after the B2C lane) -->
+  <text x="134" y="508" style="font-size:13px;font-weight:700;fill:#A14700">no club</text>
+  <text x="134" y="525" style="font-size:13px;font-weight:700;fill:#A14700">has it</text>
+
+  <!-- ================= B2C lane ================= -->
+  <rect x="20" y="584" width="1240" height="356" rx="20" fill="#FDF1E7" stroke="#D55E00" stroke-width="1.5"/>
+  <rect x="160" y="600" width="190" height="30" rx="15" fill="#D55E00"/>
+  <text x="255" y="620" text-anchor="middle" style="font-size:15px;font-weight:700;fill:#fff">B2C · paid import</text>
+
+  <!-- no match: down to B2C -->
+  <path d="M120 338 L 120 692" stroke="#D55E00" stroke-width="3" stroke-dasharray="1 7" stroke-linecap="round" fill="none" marker-end="url(#mv)"/>
+
+  <!-- self-order branch -->
+  <path d="M455 710 L 455 652 L 1150 652 L 1150 696" class="b2c" stroke-dasharray="9 6" marker-end="url(#mv)"/>
+  <text x="466" y="645" style="font-size:13px;font-weight:700;font-style:italic;fill:#A14700">self-order</text>
+  <rect x="552" y="638" width="510" height="28" rx="14" fill="#fff" stroke="#D55E00" stroke-width="1.5"/>
+  <use href="#i-bag" x="564" y="641" width="22" height="22" color="#475569"/>
+  <text x="592" y="657" class="pill" fill="#374151">Member buys it</text>
+  <path d="M700 652 L 716 652" stroke="#374151" stroke-width="2" marker-end="url(#mv)"/>
+  <use href="#i-box" x="722" y="641" width="22" height="22" color="#475569"/>
+  <text x="750" y="657" class="pill" fill="#374151">ships to US address</text>
+  <path d="M894 644 V 660" stroke="#D55E00" stroke-width="1.5"/>
+  <text x="906" y="657" class="pill" fill="#A14700">fee only: $1.74</text>
+
+  <!-- 6 no match -->
+  <circle cx="86" cy="702" r="11" fill="#D55E00"/><text x="86" y="707" class="num" text-anchor="middle">6</text>
+  <use href="#i-person" x="92" y="708" width="56" height="56" color="#475569"/>
+  <circle cx="148" cy="714" r="11" fill="#D55E00"/>
+  <path d="M143 709l10 10M153 709l-10 10" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="120" y="792" class="lb" text-anchor="middle">No match</text>
+  <text x="120" y="809" class="sl" text-anchor="middle">in any club</text>
+  <path d="M162 736 L 186 736" class="b2c" marker-end="url(#mv)"/>
+
+  <!-- 7 quote card -->
+  <rect x="190" y="676" width="200" height="124" rx="10" fill="#fff" stroke="#D55E00" stroke-width="2"/>
+  <circle cx="190" cy="676" r="11" fill="#D55E00"/><text x="190" y="681" class="num" text-anchor="middle">7</text>
+  <text x="206" y="699" style="font-size:14px;font-weight:800;fill:#A14700">Quote</text>
+  <text x="376" y="699" class="sl" text-anchor="end">TAM54500</text>
+  <text x="206" y="721" class="q">Store price</text><text x="376" y="721" class="q" text-anchor="end">$13.00</text>
+  <text x="206" y="741" class="q">0.25 lb × $7/lb</text><text x="376" y="741" class="q" text-anchor="end">+ $1.74</text>
+  <text x="206" y="761" class="q">12% we order it</text><text x="376" y="761" class="q" text-anchor="end">+ $1.56</text>
+  <path d="M204 770 H 378" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <text x="206" y="789" style="font-size:14px;font-weight:800;fill:#111827">Total</text>
+  <text x="376" y="789" text-anchor="end" style="font-size:15px;font-weight:800;fill:#A14700">$16.30</text>
+  <text x="290" y="820" class="sl" text-anchor="middle">computed in code</text>
+  <path d="M392 736 L 416 736" class="b2c" marker-end="url(#mv)"/>
+
+  <!-- 8 si -->
+  <circle cx="421" cy="702" r="11" fill="#D55E00"/><text x="421" y="707" class="num" text-anchor="middle">8</text>
+  <path d="M436 712 h38 a12 12 0 0 1 12 12 v20 a12 12 0 0 1 -12 12 h-26 l-12 10 v-10 a12 12 0 0 1 -12 -12 v-20 a12 12 0 0 1 12 -12z" fill="#D55E00"/>
+  <text x="455" y="742" text-anchor="middle" style="font-size:20px;font-weight:800;fill:#fff">sí</text>
+  <text x="455" y="792" class="lb" text-anchor="middle">Accepts</text>
+  <text x="455" y="809" class="sl" text-anchor="middle">we order it</text>
+  <path d="M490 736 L 528 736" class="b2c" marker-end="url(#mv)"/>
+
+  <!-- 9 pdf -->
+  <circle cx="531" cy="702" r="11" fill="#D55E00"/><text x="531" y="707" class="num" text-anchor="middle">9</text>
+  <use href="#i-pdf" x="535" y="706" width="60" height="60" color="#D55E00"/>
+  <text x="565" y="792" class="lb" text-anchor="middle">Deposit receipt</text>
+  <text x="565" y="809" class="sl" text-anchor="middle">PDF by DM</text>
+  <path d="M600 736 L 638 736" class="b2c" marker-end="url(#mv)"/>
+
+  <!-- 10 maintainer -->
+  <circle cx="641" cy="702" r="11" fill="#D55E00"/><text x="641" y="707" class="num" text-anchor="middle">10</text>
+  <use href="#i-maint" x="645" y="706" width="60" height="60" color="#B26F00"/>
+  <text x="675" y="792" class="lb" text-anchor="middle">Maintainer</text>
+  <text x="675" y="809" class="sl" text-anchor="middle">checks transfer</text>
+  <path d="M710 736 L 752 736" class="b2c" marker-end="url(#mv)"/>
+
+  <!-- 11 paid -->
+  <circle cx="753" cy="702" r="11" fill="#D55E00"/><text x="753" y="707" class="num" text-anchor="middle">11</text>
+  <use href="#i-check" x="759" y="710" width="52" height="52" color="#D55E00"/>
+  <text x="785" y="792" class="lb" text-anchor="middle">Paid</text>
+  <text x="785" y="809" class="sl" text-anchor="middle">"confirmar"</text>
+  <path d="M816 736 L 860 736" class="b2c" marker-end="url(#mv)"/>
+
+  <!-- 12 cron -->
+  <circle cx="861" cy="702" r="11" fill="#D55E00"/><text x="861" y="707" class="num" text-anchor="middle">12</text>
+  <use href="#i-clock" x="865" y="706" width="60" height="60" color="#007A59"/>
+  <text x="895" y="792" class="lb" text-anchor="middle">Order batch</text>
+  <text x="895" y="809" class="sl" text-anchor="middle">hourly or daily</text>
+  <path d="M930 736 L 970 736" class="b2c" marker-end="url(#mv)"/>
+
+  <!-- 13 store -->
+  <circle cx="971" cy="702" r="11" fill="#D55E00"/><text x="971" y="707" class="num" text-anchor="middle">13</text>
+  <use href="#i-bag" x="975" y="706" width="60" height="60" color="#3F4D5E"/>
+  <text x="1005" y="792" class="lb" text-anchor="middle">One order</text>
+  <text x="1005" y="809" class="sl" text-anchor="middle">per store</text>
+  <path d="M1040 736 L 1112 736" class="b2c" marker-end="url(#mv)"/>
+
+  <!-- 14 US address -->
+  <circle cx="1116" cy="704" r="11" fill="#D55E00"/><text x="1116" y="709" class="num" text-anchor="middle">14</text>
+  <use href="#i-box" x="1118" y="704" width="64" height="64" color="#3F4D5E"/>
+  <text x="1150" y="792" class="lb" text-anchor="middle">US forwarding</text>
+  <text x="1150" y="809" class="sl" text-anchor="middle">address</text>
+
+  <!-- return trip -->
+  <path d="M1186 736 L 1236 736 L 1236 872 L 1186 872" class="b2c" marker-end="url(#mv)"/>
+  <circle cx="1116" cy="846" r="11" fill="#D55E00"/><text x="1116" y="851" class="num" text-anchor="middle">15</text>
+  <use href="#i-plane" x="1122" y="844" width="56" height="56" color="#D55E00"/>
+  <text x="1150" y="924" class="lb" text-anchor="middle">Imported</text>
+  <path d="M1114 872 L 960 872" class="b2c" marker-end="url(#mv)"/>
+
+  <circle cx="886" cy="842" r="11" fill="#D55E00"/><text x="886" y="847" class="num" text-anchor="middle">16</text>
+  <rect x="890" y="842" width="60" height="60" rx="14" fill="#FFF6DD" stroke="#E69F00" stroke-width="2"/>
+  <use href="#i-group" x="898" y="850" width="44" height="44" color="#B26F00"/>
+  <text x="920" y="924" class="lb" text-anchor="middle">Back to the club</text>
+
+  <!-- key -->
+  <g class="sl">
+    <path d="M48 866 H 88" class="p2p"/><text x="98" y="871">P2P match, free</text>
+    <path d="M268 866 H 308" class="p2p" stroke-dasharray="9 6"/><text x="318" y="871">across clubs, same city</text>
+    <path d="M48 900 H 88" class="b2c"/><text x="98" y="905">B2C import, paid</text>
+    <path d="M268 900 H 308" class="b2c" stroke-dasharray="9 6"/><text x="318" y="905">self-order branch</text>
+    <path d="M520 866 H 560" stroke="#D55E00" stroke-width="3" stroke-dasharray="1 7" stroke-linecap="round"/><text x="570" y="871">no match, so import</text>
+    <circle cx="540" cy="900" r="11" fill="#475569"/><text x="540" y="905" class="num" text-anchor="middle">1</text><text x="570" y="905">step order</text>
+  </g>
+</svg>
