@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="arch-title arch-desc">
   <title id="arch-title">RC Parts Finder architecture</title>
-  <desc id="arch-desc">RC club members use WhatsApp: the club group (the bot answers when mentioned), private messages (HAVE, NEED, "sí"), and the maintainer, who receives deposit receipts and replies "confirmar". An unofficial WhatsApp bridge (Baileys) connects them to Hermes Agent, the open-source agent harness (gateway, skills, profile rc-parts). Hermes asks Gemma 4 26B A4B, an open-weight model served by OpenRouter, for language only: turning messages into listing JSON and relaying replies. Through two skills written for this project, rc-listings and rc-quote, Hermes runs the rcparts CLI, code written for this project, which decides sender identity, validation, matching, quote math, deposits and the order batch, and sends notifications back through Hermes ("hermes send"). The CLI stores listings, matches, quotes, deposits and orders in Tiger Cloud Postgres and reads price, stock and weight from Michael's RC Hobbies storefront JSON. Hermes also has a read-only MCP connection to the database, and a Hermes cron job (hourly or daily) triggers the order batch. Legend: green is open source or open weights, blue is code written for this project, grey is an external service, amber is people.</desc>
+  <desc id="arch-desc">RC club members use WhatsApp: the club group (the bot answers when mentioned), private messages (HAVE, NEED, "sí"), and the maintainer, who receives deposit receipts and replies "confirmar". An unofficial WhatsApp bridge (Baileys) connects them to Hermes Agent, the open-source agent harness (gateway, skills, profile rc-parts). Hermes asks Gemma 4 26B A4B, an open-weight model served by OpenRouter, for language only: turning messages into listing JSON and relaying replies. Through two agent skills (SKILL.md files, drawn as a page with a lightning bolt) written for this project, rc-listings and rc-quote, Hermes runs the rcparts CLI, code written for this project, which decides sender identity, validation, matching, quote math, deposits and the order batch, and sends notifications back through Hermes ("hermes send"). The CLI stores listings, matches, quotes, deposits and orders in Tiger Cloud Postgres and reads price, stock and weight from Michael's RC Hobbies storefront JSON. Hermes also has a read-only MCP connection to the database, and a Hermes cron job (hourly or daily) triggers the order batch. Legend: green is open source or open weights, blue is code written for this project, grey is an external service, amber is people.</desc>
   <defs>
     <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#374151"/></marker>
     <marker id="ahg" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B7280"/></marker>
@@ -68,6 +68,11 @@
       <path d="M12 8h40l6 14H6z" fill="currentColor" fill-opacity=".3" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
       <path d="M6 22a6.5 6.5 0 0 0 13 0a6.5 6.5 0 0 0 13 0a6.5 6.5 0 0 0 13 0a6.5 6.5 0 0 0 13 0" fill="#fff" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
       <path d="M22 8l-3 14M32 8v14M42 8l3 14" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    <symbol id="i-skill" viewBox="0 0 64 64">
+      <path d="M14 4h26l12 12v44H14z" fill="#fff" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M40 4v12h12" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M35 22L24 38h9l-4 14 12-18h-9z" fill="currentColor"/>
     </symbol>
     <symbol id="i-clock" viewBox="0 0 64 64">
       <circle cx="32" cy="32" r="25" fill="#fff" stroke="currentColor" stroke-width="3.5"/>
@@ -154,10 +159,12 @@
   <!-- CLI -->
   <text x="840" y="240" class="lb" text-anchor="middle" style="font-size:17px">rcparts CLI</text>
   <text x="840" y="259" class="sl" text-anchor="middle">match · quote · notify</text>
-  <rect x="760" y="270" width="78" height="22" rx="11" fill="#FFFFFF" stroke="#005A8C" stroke-width="1.5"/>
-  <text x="799" y="285" class="sl" text-anchor="middle" style="fill:#005A8C;font-weight:700">rc-listings</text>
-  <rect x="844" y="270" width="72" height="22" rx="11" fill="#FFFFFF" stroke="#005A8C" stroke-width="1.5"/>
-  <text x="880" y="285" class="sl" text-anchor="middle" style="fill:#005A8C;font-weight:700">rc-quote</text>
+  <rect x="740" y="268" width="104" height="26" rx="13" fill="#FFFFFF" stroke="#005A8C" stroke-width="1.5"/>
+  <use href="#i-skill" x="746" y="271" width="20" height="20" color="#005A8C"/>
+  <text x="770" y="286" class="sl" style="fill:#005A8C;font-weight:700">rc-listings</text>
+  <rect x="850" y="268" width="94" height="26" rx="13" fill="#FFFFFF" stroke="#005A8C" stroke-width="1.5"/>
+  <use href="#i-skill" x="856" y="271" width="20" height="20" color="#005A8C"/>
+  <text x="880" y="286" class="sl" style="fill:#005A8C;font-weight:700">rc-quote</text>
   <rect x="780" y="304" width="120" height="120" rx="22" class="ours"/>
   <use href="#i-term" x="796" y="320" width="88" height="88" color="#005A8C"/>
 
@@ -187,6 +194,8 @@
 
   <!-- Legend -->
   <g transform="translate(0,692)">
+    <use href="#i-skill" x="470" y="-14" width="20" height="20" color="#005A8C"/>
+    <text x="496" y="1" class="lg">Agent skill (SKILL.md)</text>
     <rect x="652" y="-12" width="24" height="16" rx="4" class="open" style="stroke-width:2"/>
     <text x="684" y="1" class="lg">Open source / open weights</text>
     <rect x="874" y="-12" width="24" height="16" rx="4" class="ours" style="stroke-width:2"/>
