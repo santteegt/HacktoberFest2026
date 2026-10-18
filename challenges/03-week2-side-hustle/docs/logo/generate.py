@@ -1,4 +1,4 @@
-# Generates the PartsPaddock logo directions (concept-A/B/C.svg and directions.svg) in this folder.
+# Generates the PartsPaddock logo (logo.svg) and the horizontal lockup (logo-lockup.svg) in this folder.
 # Render to PNG with headless Chrome, as in docs: run from docs/logo with `python3 generate.py`.
 import math, sys
 BLUE='#0B5C8E'; ORANGE='#E8590C'; CREAM='#FFF7EC'; INK='#0F2A3D'
@@ -48,21 +48,27 @@ def bubble(x,y,w,h,tail_x,fill=CREAM,r=40):
     return (f'<path d="M{x+r},{y} h{w-2*r} a{r},{r} 0 0 1 {r},{r} v{h-2*r} a{r},{r} 0 0 1 -{r},{r} '
             f'h-{x+w-r-(tail_x+60)} l-60,50 v-50 h-{tail_x-x-r} a{r},{r} 0 0 1 -{r},-{r} v-{h-2*r} a{r},{r} 0 0 1 {r},-{r} z" fill="{fill}"/>')
 BG=f'<rect width="512" height="512" fill="{BLUE}"/>'
-concepts={
- 'A':('Bot in the bubble, car on the track', lambda: BG+bubble(96,70,320,220,180)+bot(256,182,130)+f'<rect x="80" y="430" width="352" height="6" rx="3" fill="{CREAM}" opacity="0.35"/>'+car(100,338,0.42,col=CREAM,hub=BLUE,win=BLUE)),
- 'B':('Bot with the transmitter', lambda: BG+bubble(62,92,388,300,150)+bot(170,236,128)+tx(236,150,0.86)),
- 'C':('Touring car with gear wheels', lambda: BG+bubble(62,104,388,278,150)+bot(256,182,96)+car(86,246,0.46)),
-}
-W,H=1280,600
-b=[f'<rect width="{W}" height="{H}" fill="#fff"/>',f'<text x="48" y="64" font-size="26" font-weight="800" fill="{INK}">PartsPaddock: logo directions</text>',f'<text x="48" y="92" font-size="15" fill="#4B5563">Same palette and chat bubble; adds the bot and an RC touring car or a transmitter. Large = profile picture (round crop), small = 40 px.</text>']
-for i,(k,(t,f)) in enumerate(concepts.items()):
-    open(f'concept-{k}.svg','w').write(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><title>PartsPaddock concept {k}</title><desc>{t}</desc>{f()}</svg>')
-    x=48+i*410; y=124
-    b.append(f'<rect x="{x}" y="{y}" width="380" height="440" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>')
-    b.append(f'<clipPath id="k{i}"><circle cx="256" cy="256" r="256"/></clipPath><g transform="translate({x+90},{y+24}) scale(0.390625)"><g clip-path="url(#k{i})">{f()}</g></g>')
-    b.append(f'<text x="{x+190}" y="{y+260}" font-size="20" font-weight="800" text-anchor="middle" fill="{INK}">{k}. {t}</text>')
-    b.append(f'<g transform="translate({x+40},{y+300})"><clipPath id="s{i}"><rect width="512" height="512" rx="110"/></clipPath><g transform="scale(0.12)"><g clip-path="url(#s{i})">{f()}</g></g></g>')
-    b.append(f'<text x="{x+112}" y="{y+342}" font-size="30" font-weight="800" fill="{INK}">Parts<tspan fill="{ORANGE}">Paddock</tspan></text>')
-    b.append(f'<g transform="translate({x+40},{y+384})"><clipPath id="t{i}"><circle cx="256" cy="256" r="256"/></clipPath><g transform="scale(0.078)"><g clip-path="url(#t{i})">{f()}</g></g></g>')
-    b.append(f'<text x="{x+90}" y="{y+410}" font-size="13" fill="#4B5563">40 px: WhatsApp chat list size</text>')
-open('directions.svg','w').write(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" font-family="-apple-system, \'Segoe UI\', Helvetica, Arial, sans-serif"><title>PartsPaddock logo directions</title><desc>Three logo directions on a blue square with a cream chat bubble: A, a friendly bot head in the bubble with a cream touring-car silhouette on a track line below; B, the bot next to a pistol-grip RC transmitter whose steering wheel is an orange gear; C, a dark touring-car silhouette with orange gear wheels under a smaller bot head.</desc>'+''.join(b)+'</svg>')
+DESC = ("PartsPaddock logo: a cream chat bubble on a blue square with a friendly bot head above a low "
+        "touring-car silhouette with a rear wing, whose wheels are orange spur gears.")
+MARK = BG + bubble(62, 104, 388, 278, 150) + bot(256, 182, 96) + car(86, 246, 0.46)
+
+open("logo.svg", "w").write(
+    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">'
+    f'<title>PartsPaddock</title><desc>{DESC}</desc>{MARK}</svg>')
+
+inner = MARK.replace(BG, "")
+open("logo-lockup.svg", "w").write(
+    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 200" width="860" height="200" '
+    f'font-family="-apple-system, \'Segoe UI\', Helvetica, Arial, sans-serif">'
+    f'<title>PartsPaddock</title><desc>{DESC} Next to it, the word PartsPaddock, with Paddock in orange, '
+    f'and the tagline "the parts desk of your RC club".</desc>'
+    f'<rect width="860" height="200" fill="#FFFFFF"/>'
+    f'<clipPath id="r"><rect x="20" y="20" width="160" height="160" rx="36"/></clipPath>'
+    f'<g clip-path="url(#r)"><g transform="translate(20,20) scale(0.3125)">'
+    f'<rect width="512" height="512" fill="{BLUE}"/>{inner}</g></g>'
+    f'<text x="210" y="112" font-size="70" font-weight="800" fill="{INK}">Parts<tspan fill="{ORANGE}">Paddock</tspan></text>'
+    f'<text x="214" y="152" font-size="24" fill="#4B5563">the parts desk of your RC club</text></svg>')
+
+# PNGs: render with headless Chrome at 2x (logo.png 1024, logo-lockup.png 1720x400) and 1.25x
+# (whatsapp-profile-640.png), e.g.
+#   chrome --headless=new --force-device-scale-factor=2 --window-size=512,512 --screenshot=logo.png logo.html
