@@ -14,19 +14,27 @@ Rules: measurements need date, device or machine, model and method, or they don'
 
 | Heading | Entries to draw on |
 | --- | --- |
-| What I Built (and who would pay for it) | |
-| How I Built It | |
-| Why Does Open Innovation Matter? | |
-| My Agent Session | |
-| My First User | |
-| Prize Categories | |
+| What I Built (and who would pay for it) | 00:05Z decision (problem, revenue), 03:10Z per-pound fee |
+| How I Built It | 01:30Z, 02:05Z, 04:45Z gateway, 05:30Z/05:35Z phone-number failure and fix, 03:10Z field drift, 05:45Z quiet display |
+| Why Does Open Innovation Matter? | 03:10Z free pool vs paid id pricing, 05:35Z per-turn tokens, 01:45Z Cognee, 17-Oct 23:30Z serving decision |
+| My Agent Session | not curated yet |
+| My First User | 05:45Z: second member's quote and acceptance; words and permission still needed |
+| Prize Categories | 00:50Z decision; 04:45Z Tiger extensions; 05:35Z/05:45Z real turns on Gemma |
 
 ## Claims the post may make / must not make
 
 | May claim (with evidence) | Must NOT claim |
 | --- | --- |
+| Gemma 4 26B A4B (open weights) via OpenRouter handled real WhatsApp turns in a group and DMs (05:35Z, 05:45Z) | Local or offline inference; that the Ollama swap was tested |
+| Match by part number in the real group, DMs to both members delivered (05:35Z) | That Spanish-only vs English-only listings match (text search, no embeddings) |
+| Quote numbers come from store JSON and code; TAM54500 quote $13.00 / $1.74 / $14.74 / $16.30 (04:45Z, 05:45Z) | That 113 is grams (until weighed); any other store |
+| The model invented phone numbers; the code now takes the sender from the session (05:35Z) | That the model is reliable at following skills without code guards |
+| Per-call cost about $0.0014 at ~20k prompt tokens (05:35Z) | A measured monthly cost |
+| Tiger Cloud Postgres 18.6 with pg_trgm, Tiger MCP db_query read-only (04:45Z, 05:30Z) | pgvector or BM25 (pg_textsearch) in use; Cognee in use |
+| The second member asked for and accepted a quote from their own phone (05:45Z) | A payment, a willingness to pay, or their words, unless the author records them with permission |
+| Hermes profile distribution installs with one script (01:30Z) | That it runs on the home server (not done before the deadline unless logged) |
 | | A user, a payment or a willingness to pay that did not happen |
-| | A partner technology the code does not use |
+| | A partner technology the code does not use (ElevenLabs, Render, DigitalOcean, Temporal, Sentry, .tech) |
 
 ## Log
 
@@ -66,7 +74,7 @@ Rules: measurements need date, device or machine, model and method, or they don'
 - 2026-10-18 04:50Z [FAILED] Closing the terminal tab that ran the gateway killed it uncleanly and left its bridge process on port 3001; the next gateway refused the foreign bridge ("whatsapp failed to connect", "external bridge left running") and started with no platforms. Fix: make sure no bridge is listening on 3001 before restarting; stop the gateway with Ctrl-C, not by killing the tab. Evidence: gateway log 2026-10-18 04:42Z.
 - 2026-10-18 04:50Z [FINDING] `terminal.cwd: "${RCPARTS_HOME}"` is not expanded by the gateway (warning "TERMINAL_CWD does not exist: ${RCPARTS_HOME}"), unlike provider keys; `scripts/setup-profile.sh` now pins the absolute path into the installed config only, so the repo copy stays portable. Evidence: commit `0406f45`.
 - 2026-10-18 04:50Z [PROCESS] Daily order cron installed on the author's Mac: `hermes -p rc-parts cron create "0 18 * * *" --name daily-order --no-agent --script daily-order.sh --deliver local` (no model turn; the script DMs the maintainer through `rcparts orders daily --send`). First real run is Sun 2026-10-18 18:00 local.
-- 2026-10-18 05:30Z [FAILED] First real WhatsApp DM ("Tengo un spur 68T nuevo para un TT-02. Lo vendo en $10"): the model read the `rc-listings` skill, then spent 10 tool calls looking for the sender's phone number in the database by display name (`SELECT phone FROM members WHERE display_name = '<WhatsApp name>'`) through Tiger MCP, because the skill asked for `--phone <SENDER_PHONE>` and the model did not connect that to the session's `user_id`. The turn was interrupted by a gateway restart before any reply; 20,487 prompt tokens per turn. Evidence: session `20261018_000908_27ba6dfa` exported with `hermes sessions export`.
+- 2026-10-18 05:30Z [FAILED] First real WhatsApp DM ("Tengo un spur 68T nuevo para un TT-02. Lo vendo en $10"): the model read the `rc-listings` skill, then spent 10 tool calls looking for the sender's phone number in the database by display name (`SELECT phone FROM members WHERE display_name = '<the author'\''s WhatsApp name>'`) through Tiger MCP, because the skill asked for `--phone <SENDER_PHONE>` and the model did not connect that to the session's `user_id`. The turn was interrupted by a gateway restart before any reply; 20,487 prompt tokens per turn. Evidence: session `20261018_000908_27ba6dfa` exported with `hermes sessions export`.
 - 2026-10-18 05:30Z [DECISION] Sender identity is resolved in code: `rcparts` reads `HERMES_SESSION_USER_ID` / `HERMES_SESSION_KEY` when `--phone` is missing and otherwise returns `error: unknown_sender` with the instruction to pass the digits before `@s.whatsapp.net`; SOUL and skills say never to look up phones in the database; Tiger MCP is reduced to `db_query` (no `db_schema`) and the SOUL carries the service id (written at install from `TIGER_SERVICE_ID`). Whether Hermes exports the session vars into the shell is still unverified; the next DM will show which path fired. Evidence: commit after this entry.
 - 2026-10-18 05:35Z [MEASURE] Second WhatsApp round, 2026-10-18 05:21-05:23Z, author's phone and the bot's spare SIM, Gemma 4 26B A4B (paid id) through Hermes 0.22.2: **group** `@bot busco un TAM54500` (new session, current SOUL) → `skill_view rc-listings` → `rcparts listing add --json '{"kind":"NEED","part_number":"TAM54500"}'` with no `--phone`; the code took the sender from the Hermes session env, saved listing #5, matched Socio's HAVE #1 by part number and DMed both (`matches.notified_at` set 05:23:11Z); the group got "Anotado: buscas TAM54500. ¡Hay una coincidencia! Les escribí por privado a ambos." End to end about 66 s, most of it model latency (four model calls). Evidence: sessions `20261018_002222_7888895b`, Tiger `matches` row 3.
 - 2026-10-18 05:35Z [FAILED] **DM** in the session created before the fix (Hermes keeps a session's creation-time prompt): the model ran `--phone <SENDER_PHONE>` literally, then queried `members` through Tiger MCP and **invented** phone numbers (`1234567890`, `593000000000`), got `not_member` and told the author he was not registered. Evidence: session `20261018_000908_27ba6dfa`.
@@ -76,3 +84,4 @@ Rules: measurements need date, device or machine, model and method, or they don'
 - 2026-10-18 05:45Z [DECISION] Author feedback: members should not see processing messages (skill names, commands, tool breadcrumbs) in the group or DMs. Set `display.platforms.whatsapp` in the profile: `tool_progress: log` (calls go to the log only), no reasoning, no interim narration, no long-running or warning notices. Evidence: author's message 2026-10-18; `agent/config.yaml`.
 - 2026-10-18 05:50Z [FINDING] Restarting the gateway right after a clean SIGINT stop fails about half the time: the old bridge still holds the WhatsApp session for a few seconds after its port closes, the new gateway sees a bridge it did not start, refuses it and runs with no platforms. `scripts/gateway-restart.sh` stops, waits for the port and 5 more seconds, starts, and retries up to three times; first try succeeded at 05:50Z. Evidence: gateway logs 05:16Z and 05:34Z.
 - 2026-10-18 06:00Z [DECISION] Order-batch schedule is configurable (`ORDER_BATCH_SCHEDULE` in `.env`, applied by `scripts/install-cron.sh`; cron expression or "every 1h"). Production default daily 18:00; set to hourly (`0 * * * *`) for testing at the author's request. Evidence: author's message 2026-10-18; `hermes -p rc-parts cron list`.
+- 2026-10-18 06:30Z [PROCESS] README and post draft v1 written from this memory (`README.md`, `SUBMISSION.md`); post-material and may/must-not tables filled. Open TODOs for the author: demo video and screenshots (numbers blurred), weight check on a scale, first-user words and permission. Real phone numbers in tests were replaced with placeholders and the author's WhatsApp display name removed from this file; earlier local commits still contain them (not pushed).
