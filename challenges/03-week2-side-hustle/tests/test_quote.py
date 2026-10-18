@@ -48,3 +48,16 @@ def test_to_grams_units():
     assert to_grams("0.25", "lb") == D("113.4")
     assert to_grams(4, "oz") == D("113.4")
     assert to_grams("0.113", "kg") == D("113.0")
+
+
+def test_per_pound_rate_converts_to_per_kg(monkeypatch):
+    from rcparts.config import Settings
+    s = Settings.from_env({"FEE_PER_POUND_USD": "10"})
+    assert s.fee_basis == "lb" and s.fee_rate_usd == D("10")
+    m = compute_quote(13, 113, s.fee_per_kg_usd, D("12"))
+    assert m.fee_usd == D("2.49")  # 113 g = 0.249 lb x 10 USD/lb
+
+
+def test_db_url_alias():
+    from rcparts.config import Settings
+    assert Settings.from_env({"TIGER_DATA_DB_URL": "postgresql://x"}).database_url == "postgresql://x"

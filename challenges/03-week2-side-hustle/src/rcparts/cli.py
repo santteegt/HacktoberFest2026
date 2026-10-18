@@ -284,6 +284,7 @@ def cmd_quote(a, s):
             "qty": qty,
         })
     row["weight_store"] = product.weight  # the reply shows the per-unit weight as the store lists it
+    row["fee_basis"], row["fee_rate_usd"] = s.fee_basis, s.fee_rate_usd
     reply = quote_reply(lang, row, s.us_address, exact=exact)
     action = (f"{ACT_SEND} If the member answers YES/SÍ, run "
               f"`rcparts quote accept --phone {member['phone']} --quote {row['id']}`.")

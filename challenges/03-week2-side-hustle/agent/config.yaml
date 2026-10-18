@@ -1,9 +1,11 @@
 # Hermes profile "rc-parts". Secrets live in the profile's .env, never here.
 
-# One open-weight model for every turn: Gemma 4 26B A4B (MoE, 4B active) on OpenRouter's free tier.
-# Paid fallback: the same id without ":free". Self-host fallback: provider "custom" pointing at Ollama.
+# One open-weight model for every turn: Gemma 4 26B A4B (MoE, 4B active) on OpenRouter.
+# The ":free" id shares an upstream pool and was rate-limited during the build (2026-10-18), so the
+# paid id is the default: $0.0675 / $0.225 per 1M tokens, a few cents a day for a club.
+# Self-host fallback: provider "custom" pointing at Ollama with the same model family.
 model:
-  default: "google/gemma-4-26b-a4b-it:free"
+  default: "google/gemma-4-26b-a4b-it"
   provider: "openrouter"
 
 # The bot lives in WhatsApp. It gets the shell (for the rcparts command), skills and a clarify tool,

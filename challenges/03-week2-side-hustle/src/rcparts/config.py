@@ -9,6 +9,7 @@ from pathlib import Path
 
 PROJECT_DIR = Path(__file__).resolve().parents[2]
 WEIGHT_UNITS = {"g": Decimal("1"), "kg": Decimal("1000"), "lb": Decimal("453.59237"), "oz": Decimal("28.349523125")}
+LB_PER_KG = Decimal("2.20462262185")
 
 
 def load_dotenv(path: Path) -> None:
@@ -31,6 +32,8 @@ def load_dotenv(path: Path) -> None:
 class Settings:
     database_url: str | None
     fee_per_kg_usd: Decimal
+    fee_basis: str  # "kg" or "lb": the unit the maintainer prices by; the math always runs per kg
+    fee_rate_usd: Decimal  # the configured rate in that unit, for display
     processing_pct: Decimal
     us_address: str
     maintainer_phone: str
@@ -48,9 +51,19 @@ class Settings:
         unit = env.get("WEIGHT_UNIT", "g").strip().lower() or "g"
         if unit not in WEIGHT_UNITS:
             raise ValueError(f"WEIGHT_UNIT must be one of {sorted(WEIGHT_UNITS)}, got {unit!r}")
+        # The maintainer prices imports per pound (US carriers do); accept either unit.
+        per_lb = env.get("FEE_PER_LB_USD") or env.get("FEE_PER_POUND_USD")
+        if per_lb:
+            fee_basis, fee_rate = "lb", Decimal(per_lb)
+            fee_per_kg = fee_rate * LB_PER_KG
+        else:
+            fee_basis, fee_rate = "kg", Decimal(env.get("FEE_PER_KG_USD", "25") or "25")
+            fee_per_kg = fee_rate
         return cls(
-            database_url=env.get("DATABASE_URL") or None,
-            fee_per_kg_usd=Decimal(env.get("FEE_PER_KG_USD", "25") or "25"),
+            database_url=env.get("DATABASE_URL") or env.get("TIGER_DATA_DB_URL") or None,
+            fee_per_kg_usd=fee_per_kg,
+            fee_basis=fee_basis,
+            fee_rate_usd=fee_rate,
             processing_pct=Decimal(env.get("PROCESSING_PCT", "12") or "12"),
             us_address=env.get("US_ADDRESS", "").strip(),
             maintainer_phone="".join(ch for ch in env.get("MAINTAINER_PHONE", "") if ch.isdigit()),

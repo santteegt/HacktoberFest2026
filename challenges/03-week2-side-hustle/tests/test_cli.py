@@ -25,6 +25,7 @@ def test_quote_needs_one_source(capsys, monkeypatch):
 def test_missing_database_url_is_json(capsys, monkeypatch):
     monkeypatch.setenv("RCPARTS_ENV_FILE", "/nonexistent/.env")
     monkeypatch.delenv("DATABASE_URL", raising=False)
+    monkeypatch.delenv("TIGER_DATA_DB_URL", raising=False)
     code, out = run(capsys, "club", "list")
     assert code == 1 and out["error"] == "config" and "action" in out
 

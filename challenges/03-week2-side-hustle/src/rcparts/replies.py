@@ -6,6 +6,7 @@ from collections import OrderedDict
 from decimal import Decimal
 
 from .i18n import STORE_LABEL, grams, money, t
+from .config import WEIGHT_UNITS
 
 
 def quote_reply(lang: str, q: dict, us_address: str, exact: bool = True) -> str:
@@ -25,7 +26,10 @@ def quote_reply(lang: str, q: dict, us_address: str, exact: bool = True) -> str:
     lines += [
         t(lang, "quote_price", price=money(q["store_price_usd"])),
         t(lang, "quote_weight", weight=weight),
-        t(lang, "quote_fee", grams=grams(q["weight_g"]), per_kg=money(q["fee_per_kg_usd"]), fee=money(q["fee_usd"])),
+        (t(lang, "quote_fee_lb", lbs=f"{Decimal(str(q['weight_g'])) / WEIGHT_UNITS['lb']:.2f}",
+           per_lb=money(q["fee_rate_usd"]), fee=money(q["fee_usd"]))
+         if q.get("fee_basis") == "lb" else
+         t(lang, "quote_fee", grams=grams(q["weight_g"]), per_kg=money(q["fee_per_kg_usd"]), fee=money(q["fee_usd"]))),
         t(lang, "quote_total_self", address=us_address, total=money(q["total_usd"])) if us_address
         else t(lang, "quote_total_plain", total=money(q["total_usd"])),
         t(lang, "quote_total_proc", pct=grams(q["processing_pct"]), proc=money(q["processing_usd"]),
