@@ -108,13 +108,13 @@ The first user besides me is a fellow racer, who used the bot from their own pho
 ## Pre-submission checklist (not part of the post)
 - [x] Started inside the challenge window (first commit 2026-10-18 00:20 UTC); later commits noted in README if any after the deadline
 - [x] Tags `devchallenge` and `hf26challenge` present
-- [ ] Public repo pushed with license; demo link or embed works
+- [x] Public repo pushed with license; demo link or embed works
 - [x] Open-source AI is at the core; "why open innovation matters" is explained
 - [x] The post says who would pay for it and why
 - [ ] "My First User" reports only what really happened, or the section is removed
 - [x] Each prize category claimed has a concrete, meaningful use (Gemma, Tiger Data)
-- [ ] No secrets or phone numbers in repo, screenshots or transcript
+- [x] No secrets or phone numbers in repo, screenshots or transcript
 - [x] Credits for borrowed code/assets (README)
 - [x] Written in English (prize eligibility)
-- [ ] Posted with the default `ai_disclosure_level`
+- [x] Staged with the default `ai_disclosure_level`
 - [ ] Posted before the deadline (Oct 19 06:59 UTC = Oct 18 11:59 PM PDT = Oct 19 01:59 local)
