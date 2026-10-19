@@ -49,4 +49,4 @@ tags: devchallenge, hf26challenge
 - [ ] Credits for borrowed code/assets
 - [ ] Written in English (prize eligibility)
 - [ ] Posted with the correct `ai_disclosure_level`
-- [ ] Posted before Oct 25 06:59 UTC (earlier of the API and page deadlines)
+- [ ] Posted before Oct 26 06:59 UTC (Sun Oct 25, 11:59 PM PDT, per the challenge page)

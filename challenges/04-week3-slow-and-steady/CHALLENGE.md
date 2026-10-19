@@ -2,10 +2,10 @@
 
 - **DEV event ID:** 81 · **Page:** https://dev.to/challenges/hacktoberfest-week3-2026-10-19
 - **Fetched:** 2026-10-19 (20:42 UTC) via `get_challenge_details` (`full_details`); submission template and partner category blurbs fetched from the challenge page the same day. Re-fetch before submitting.
-- **Window (UTC):** Oct 19, 2026 19:00 (DEV Events API) → deadline disputed, see below
+- **Window (UTC):** Oct 19, 2026 19:00 (DEV Events API) → **Oct 26, 2026 06:59** (= Sun Oct 25, 11:59 PM PDT; Oct 26 1:59 AM at UTC-5, the author's local time), per the challenge page
 - **Required tags:** `#hf26challenge` and `devchallenge` (both in the official template's front matter)
 - **Winners:** announced the week of Oct 26
-- **Deadline discrepancy:** the DEV Events API `ends_at` is **Oct 25 06:59 UTC** (= Sat Oct 24, 11:59 PM PDT). `full_details`, the challenge page and the contest rules all say submissions are due **Oct 25, 11:59 PM PDT** (= **Oct 26 06:59 UTC**; Oct 26 1:59 AM at UTC-5, the author's local time). The page wins, but **plan to publish by the earlier API time (Sat Oct 24, 11:59 PM PDT)** so neither reading can rule the entry out.
+- **Deadline discrepancy:** the DEV Events API `ends_at` is **Oct 25 06:59 UTC** (= Sat Oct 24, 11:59 PM PDT). `full_details`, the challenge page and the contest rules all say submissions are due **Oct 25, 11:59 PM PDT** (= **Oct 26 06:59 UTC**; Oct 26 1:59 AM at UTC-5, the author's local time). **We follow the challenge page** (author's decision, 2026-10-19).
 - **Other notes:** the page calls this "Challenge 4 of 5". It now lists **20** partner categories (Week 2 had 17): **Auth0 for AI Agents**, **Browserbase** and **Ultramarine (Paper Instruments)** are new this week.
 
 ## Prompt and theme

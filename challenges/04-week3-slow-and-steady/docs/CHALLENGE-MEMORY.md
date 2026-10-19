@@ -30,6 +30,7 @@ Rules: measurements need date, device or machine, model and method, or they don'
 ## Log
 
 - 2026-10-19 20:45Z [PROCESS] Folder scaffolded from `_template/` after the window opened (19:00Z), with `AGENTS.md`, rules snapshot, official Week 3 template and MIT `LICENSE`. No project code yet. Evidence: `get_challenge_details` id 81 and the challenge page, fetched 2026-10-19 20:42Z.
-- 2026-10-19 20:45Z [FINDING] Deadline mismatch: DEV API `ends_at` is Oct 25 06:59Z (Sat Oct 24, 11:59 PM PDT); `full_details`, the page and the contest rules say Oct 25, 11:59 PM PDT (Oct 26 06:59Z). Plan to publish by the earlier time. Evidence: CHALLENGE.md header.
+- 2026-10-19 20:45Z [FINDING] Deadline mismatch: DEV API `ends_at` is Oct 25 06:59Z (Sat Oct 24, 11:59 PM PDT); `full_details`, the page and the contest rules say Oct 25, 11:59 PM PDT (Oct 26 06:59Z). Plan to publish by the earlier time. Evidence: CHALLENGE.md header. (Plan part SUPERSEDED by 2026-10-19, see the DECISION entry below.)
 - 2026-10-19 20:45Z [FINDING] Template changed from Week 2: "My First User" is replaced by an optional "The Lazy Payoff" section (time or effort saved, used this week). Three new partner categories: Auth0 for AI Agents, Browserbase, Ultramarine (Paper Instruments); 20 categories, $2,850 over 21 winners. Evidence: challenge page, 2026-10-19.
 - 2026-10-19 20:45Z [TODO-REPORT] Measure the lazy payoff (before/after time or effort, with date, machine, model, method) so the post has a backed number.
+- 2026-10-19 21:05Z [DECISION] Deadline follows the challenge page: Oct 26 06:59Z (Sun Oct 25, 11:59 PM PDT), not the DEV API `ends_at` (Oct 25 06:59Z). Author's call; rejected the safer earlier target. Evidence: challenge page and contest rules, fetched 2026-10-19.

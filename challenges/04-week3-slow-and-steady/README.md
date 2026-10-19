@@ -2,7 +2,7 @@
 
 > One-line pitch: what it does and who it's for.
 
-**Challenge:** [Hacktoberfest Open-Source AI Challenge: Week 3, Slow and Steady](https://dev.to/challenges/hacktoberfest-week3-2026-10-19) (DEV event 81) · **Window:** Oct 19 19:00 → Oct 25 06:59 UTC (API; the page says Oct 26 06:59 UTC) · **Tags:** `#hf26challenge` `#devchallenge`
+**Challenge:** [Hacktoberfest Open-Source AI Challenge: Week 3, Slow and Steady](https://dev.to/challenges/hacktoberfest-week3-2026-10-19) (DEV event 81) · **Window:** Oct 19 19:00 → Oct 26 06:59 UTC (Sun Oct 25, 11:59 PM PDT, per the challenge page) · **Tags:** `#hf26challenge` `#devchallenge`
 
 ## Why open matters here
 

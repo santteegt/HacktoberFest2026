@@ -3,7 +3,7 @@
 Challenge-specific instructions. They add to the repo-level `../../AGENTS.md`, which still applies. `CLAUDE.md` here is a symlink to this file.
 
 - **DEV event:** 81 · **Page:** https://dev.to/challenges/hacktoberfest-week3-2026-10-19
-- **Window (UTC):** Oct 19, 2026 19:00 (DEV API) → **deadline disputed**: the API says Oct 25 06:59 UTC (Sat Oct 24, 11:59 PM PDT); the page and rules say Oct 25, 11:59 PM PDT (Oct 26 06:59 UTC). **Target the earlier one: publish by Oct 25 06:59 UTC** (Oct 25 1:59 AM at UTC-5, the author's local time).
+- **Window (UTC):** Oct 19, 2026 19:00 (DEV API) → **Oct 26, 2026 06:59** (= Sun Oct 25, 11:59 PM PDT; Oct 26 1:59 AM at UTC-5, the author's local time), per the challenge page and contest rules. The DEV API `ends_at` says Oct 25 06:59 UTC; the author chose to follow the page.
 - **Required tags:** `#hf26challenge` and `devchallenge` (both in the official template's front matter)
 - **Winners:** announced the week of Oct 26
 - Full rules snapshot and official template: [CHALLENGE.md](CHALLENGE.md) · Post draft: [SUBMISSION.md](SUBMISSION.md) · Memory: [docs/CHALLENGE-MEMORY.md](docs/CHALLENGE-MEMORY.md)
