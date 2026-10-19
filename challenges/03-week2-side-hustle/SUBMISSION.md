@@ -79,7 +79,7 @@ What is not open: WhatsApp itself, and the bridge is unofficial. A version for m
 
 ## My First User
 
-The first user besides me is another member of my club, who used the bot from their own phone in the test group and in a private chat. They asked for an import quote for a rear anti-roll bar, chose "we order it", sent the deposit receipt as a PDF in the chat, and the order went into the batch after I confirmed it. The receipt was a generated test PDF from a fictional bank, so no money moved in this test. They also posted parts from their own drawer, and one matched a request from me in a different club.
+The first user besides me is a fellow racer, who used the bot from their own phone in the test group and in a private chat. They asked for an import quote for a rear anti-roll bar, chose "we order it", sent the deposit receipt as a PDF in the chat, and the order went into the batch after I confirmed it. The receipt was a generated test PDF from a fictional bank, so no money moved in this test. In the demo they belong to the second club, so one of their parts matched my request across clubs.
 
 <!-- TODO(author): add their reaction, whether they would pay, and what they asked for next, only with their permission. Remove this comment before publishing. -->
 
