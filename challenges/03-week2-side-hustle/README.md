@@ -8,7 +8,7 @@
 
 ## The problem and who pays
 
-In our club in Cuenca, Ecuador, most of us run chassis that are not sold locally, so parts come from the US. Everyone ends up with spares in a drawer (a spur gear bought twice, the arms from a kit you converted) while someone else in the club is asking the group chat for exactly that part. The message scrolls away in minutes. When nobody has it, you ask the one person in the club who brings parts in, and they price it by hand: store price, weight, shipping per pound, a fee for placing the order.
+In our club, most of us run chassis that are not sold locally, so parts come from the US. Everyone ends up with spares in a drawer (a spur gear bought twice, the arms from a kit you converted) while someone else in the club is asking the group chat for exactly that part. The message scrolls away in minutes. When nobody has it, you ask the one person in the club who brings parts in, and they price it by hand: store price, weight, shipping per pound, a fee for placing the order.
 
 PartsPaddock sits in the club's WhatsApp group and does both jobs:
 
@@ -75,7 +75,7 @@ uv sync
 uv run pytest -q                  # offline tests (DB and live-store tests skip without credentials)
 uv run rcparts db check           # server version and available extensions
 uv run rcparts db init
-uv run rcparts club add --name "My RC Club" --country EC --city Cuenca
+uv run rcparts club add --name "My RC Club" --country EC --city "My City"
 uv run rcparts member add --club 1 --phone 5939XXXXXXXX --name Ana --rc-class "1/10 touring"
 
 scripts/setup-profile.sh --env-file .env   # installs the Hermes profile "rc-parts" from agent/ + skills/
