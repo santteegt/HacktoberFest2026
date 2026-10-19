@@ -4,7 +4,7 @@ okf_version: "0.1"
 
 # Hacktoberfest 2026 — Wiki Index
 
-_Last updated: 2026-10-11 — 40 pages_
+_Last updated: 2026-10-18 — 45 pages_
 
 ## Topics
 - [Hacktoberfest 2026](hacktoberfest-2026.md) — the program: stickers replace PRs, open-source AI theme
@@ -12,6 +12,7 @@ _Last updated: 2026-10-11 — 40 pages_
 - [Weekend challenge: Build for a Friend](weekend-challenge-build-for-a-friend.md) — DEV event 78, due Oct 5 06:59 UTC
 - [Weekend challenge retrospective](weekend-challenge-retrospective.md) — what worked, what failed, numbers
 - [Week 1 challenge: Touch Grass](week1-challenge-touch-grass.md) — DEV event 79, the Idea Leash entry and its outcome
+- [Week 2 challenge: Side Hustle](week2-challenge-side-hustle.md) — DEV event 80, the PartsPaddock entry and its outcome
 - [Partner tools catalog](partner-tools-catalog.md) — the 16 weekend partners by role, recipes, ideation questions
 - [Global Hack Week](global-hack-week.md) — MLH's monthly online week, incl. the Hacktoberfest edition
 
@@ -23,12 +24,14 @@ _Last updated: 2026-10-11 — 40 pages_
 - [Prize categories and partners](prize-categories-and-partners.md) — sponsor technologies for category prizes
 - [Challenge playbook](challenge-playbook.md) — rules for the next challenges, from the weekend build and Week 1
 - [Small local model agent patterns](small-local-model-agent-patterns.md) — what made a 12B local model usable in an agent
+- [Messaging agent patterns](messaging-agent-patterns.md) — identity in code, money behind a person, bilingual matching, group etiquette
 
 ## Tools
 - [DevRelay](devrelay.md) — MCP gateway and skills; install is a sticker
 - [Gemma](gemma.md) — open-weight model family; used in the weekend build and Week 1
 - [Ollama](ollama.md) — local runtime; first-hand findings
 - [Hermes Agent](hermes-agent.md) — open agent harness: profiles, skills, Telegram gateway
+- [OpenRouter](openrouter.md) — hosted API for open-weight models; free pool rate-limited, paid id cheap
 - [Tinker](tinker.md) — hosted fine-tuning, exportable adapters
 - [TabPFN](tabpfn.md) — pretrained model for small tabular data
 - [DigitalOcean Gradient AI](digitalocean-gradient-ai.md) — serverless and dedicated inference, agents
@@ -39,6 +42,7 @@ _Last updated: 2026-10-11 — 40 pages_
 - [SerpApi](serpapi.md) — search results as JSON
 - [MongoDB Atlas](mongodb-atlas.md) — documents plus vector search
 - [Tiger Data](tiger-data.md) — Postgres with TimescaleDB and vectors
+- [Cognee](cognee.md) — open agent memory layer; evaluated, kept as backlog
 - [Sentry Agent Tracing](sentry-agent-tracing.md) — traces for agent runs
 - [Entire](entire.md) — agent sessions linked to commits
 - [GitHub Copilot](github-copilot.md) — coding assistant with BYOK and local models
@@ -55,3 +59,4 @@ _Last updated: 2026-10-11 — 40 pages_
 - [Retrospective: Build for a Friend](sources/retrospective-weekend-build-for-a-friend.md) — post-publish retrospective
 - [Partner tools feature catalog](sources/partner-tools-feature-catalog.md) — per-partner features, limits, first-hand notes
 - [Retrospective: Week 1 Touch Grass](sources/retrospective-week1-touch-grass.md) — post-publish retrospective of Idea Leash
+- [Retrospective: Week 2 Side Hustle](sources/retrospective-week2-side-hustle.md) — post-publish retrospective of PartsPaddock

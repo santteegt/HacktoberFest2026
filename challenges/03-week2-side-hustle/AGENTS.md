@@ -89,9 +89,9 @@ Decided 2026-10-18 00:05 UTC (memory entry of the same time has the rejected opt
 - [x] Idea chosen: PartsPaddock (2026-10-18); paying user = the club member taking an import quote
 - [x] Open-source AI core tested (2026-10-18): Gemma 4 26B A4B on OpenRouter through Hermes; free pool was rate-limited, paid id in use
 - [x] Prize categories chosen (2026-10-18): Gemma, Tiger Data; ElevenLabs decided at stage S4
-- [~] MVP: CLI cycle passes on Tiger (S2-S5 code); WhatsApp bridge up and a DM delivered (S1); group test pending
-- [ ] First-user session done and logged
+- [x] MVP working on real WhatsApp with Tiger (S1-S5) plus deposits, tracking, cross-club and bilingual matching
+- [x] First-user session done and logged (a fellow ACRO racer: quote, deposit PDF, confirmation; reaction in the post)
 - [x] Demo recorded and published by the author: https://youtu.be/q_8uofEnFSc
-- [ ] README, LICENSE, `.env.example` done; audit run
+- [x] README, LICENSE, `.env.example` done; audit run 2026-10-19
 - [x] DEV draft staged unpublished (article id 4875102, 2026-10-19 ~03:55Z)
-- [ ] Published by the author before the deadline
+- [x] Published by the author before the deadline: 2026-10-18 23:21 local (2026-10-19T04:21:18Z), https://dev.to/santteegt/partspaddock-a-whatsapp-parts-desk-agent-for-rc-clubs-p2p-b2c-market-connecting-hobbyists-14oa

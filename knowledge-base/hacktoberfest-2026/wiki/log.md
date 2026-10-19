@@ -55,3 +55,11 @@
 - Hash: `sha256:a959ef4f302a4006f65f0dcd91ece19921a934b7e8b17243bb7edcb3308a690b`
 - Pages created/updated: 9
 - New concepts: Week 1 challenge: Touch Grass, Small local model agent patterns, Hermes Agent (updated: Challenge playbook, Gemma, Ollama, SerpApi, DevRelay)
+
+## [2026-10-18] ingest | Retrospective: Week 2 Side Hustle (PartsPaddock)
+
+- **Ingest**: Retrospective: Week 2 Side Hustle processed from `raw/retrospective-week2-side-hustle.md`
+- Source: `raw/retrospective-week2-side-hustle.md`
+- Hash: `sha256:c2db7afae8042c5d70e7c037d64c45b28c6d0c3f7c113f488e2cf68bd838d640`
+- Pages created/updated: 11
+- New concepts: Week 2 challenge: Side Hustle, Messaging agent patterns, OpenRouter, Cognee (updated: Hermes Agent, Gemma, Tiger Data, Challenge playbook, Small local model agent patterns)

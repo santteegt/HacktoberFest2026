@@ -3,7 +3,7 @@ type: concept
 title: "Challenge playbook"
 description: "Ten practical rules for the next Hacktoberfest challenges, learned from the weekend build."
 tags: [challenges, ideas]
-timestamp: "2026-10-11T00:00:00Z"
+timestamp: "2026-10-18T00:00:00Z"
 ---
 
 ## Definition
@@ -26,6 +26,8 @@ A short list of habits that would have saved time or avoided bugs in the weekend
 - Put the next-step instruction in the tool's reply for small models, and write a verifier for anything the model generates.
 - Fetch the live DEV draft before every update (the API replaces the whole body) and change the image URL when replacing an image DEV already shows.
 - Publish with a margin: Week 1 went live about 2.5 h before the deadline, which left room for the author's last edits.
+- Week 2 additions: brainstorm the day the challenge opens; run feasibility checks as parallel subagents in the first hour; never let the model pass identity; test bilingual input and plurals early; use placeholder phone numbers in tests from the start; push the repo before staging the post and point images at a commit SHA if DEV ever fetched them while missing; start a new agent session after changing skills; keep a restart script for long-running gateways.
+- Week 2 published 2 h 38 min before the deadline after a late start; the author did the last edits directly on DEV, so sync the local post from the live draft before any API update.
 
 ## Related Concepts
 
@@ -35,8 +37,11 @@ A short list of habits that would have saved time or avoided bugs in the weekend
 - [Open-source AI prompt](open-source-ai-prompt.md)
 - [Small local model agent patterns](small-local-model-agent-patterns.md)
 - [Week 1 challenge: Touch Grass](week1-challenge-touch-grass.md)
+- [Messaging agent patterns](messaging-agent-patterns.md)
+- [Week 2 challenge: Side Hustle](week2-challenge-side-hustle.md)
 
 ## Sources
 
 - [Retrospective: Build for a Friend](sources/retrospective-weekend-build-for-a-friend.md)
 - [Retrospective: Week 1 Touch Grass (Idea Leash)](sources/retrospective-week1-touch-grass.md)
+- [Retrospective: Week 2 Side Hustle (PartsPaddock)](sources/retrospective-week2-side-hustle.md)

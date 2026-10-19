@@ -1,7 +1,7 @@
 ---
 title: "PartsPaddock: a WhatsApp parts desk agent for RC clubs - P2P / B2C market connecting hobbyists"
-published: false
-# staged on DEV as article 4875102 (unpublished); synced from DEV 2026-10-19 ~04:30Z (author's edits), images pinned to commit e72dd30
+published: true
+# PUBLISHED by the author 2026-10-19T04:21:18Z (23:21 local), about 2 h 38 min before the deadline: https://dev.to/santteegt/partspaddock-a-whatsapp-parts-desk-agent-for-rc-clubs-p2p-b2c-market-connecting-hobbyists-14oa (article 4875102). Body as published.
 tags: devchallenge, hf26challenge, opensource, ai
 ---
 
@@ -117,4 +117,4 @@ He was amazed at how the club chatroom history can be leveraged to connect peopl
 - [x] Credits for borrowed code/assets (README)
 - [x] Written in English (prize eligibility)
 - [x] Staged with the default `ai_disclosure_level`
-- [ ] Posted before the deadline (Oct 19 06:59 UTC = Oct 18 11:59 PM PDT = Oct 19 01:59 local)
+- [x] Posted before the deadline (published 04:21 UTC; deadline 06:59 UTC)

@@ -3,7 +3,7 @@ type: tool
 title: "Gemma"
 description: "Google's open-weight model family (Gemma 4: E2B, E4B, 12B, 26B A4B, 31B), Apache 2.0, runnable locally; a Featured prize category."
 tags: [models, tools]
-timestamp: "2026-10-11T00:00:00Z"
+timestamp: "2026-10-18T00:00:00Z"
 ---
 
 ## Definition
@@ -18,6 +18,7 @@ Gemma 4 is a family of open-weight models released from 2026-03-31, with text, i
 - First-hand: Ollama's JSON-schema `format` guarantees valid JSON but the schema is invisible to the model, so labels and meanings must be in the prompt; E2B falls back to one label on input it cannot place (E4B refused 12/12 off-topic sentences, E2B 6/12), so gate in code.
 - Fits: private or offline assistants, structured extraction, tiny-prompt classifiers, document photos (E4B). Weak fit: fast generation on old CPUs. Likely the busiest category.
 - First-hand (Week 1): Gemma 4 12B QAT through Ollama wrote notes, quizzes and grading wording on a 64 GB Mac, fast enough for chat turns (most 0.7 to 7 s), but it is an unreliable tool user: it skipped commands and described them as done, and praised a wrong answer.
+- First-hand (Week 2): Gemma 4 26B A4B (MoE, about 4B active) through OpenRouter ran a WhatsApp agent in Spanish and English; it produced correct listing values but drifted field names (`type` for `kind`, `price` for `price_usd`) and invented phone numbers when asked to pass identity. The free `:free` pool was rate-limited; the paid id cost about $0.0014 per 20k-token call.
 
 ## Related Concepts
 
@@ -26,8 +27,11 @@ Gemma 4 is a family of open-weight models released from 2026-03-31, with text, i
 - [Partner tools catalog](partner-tools-catalog.md)
 - [Open-source AI prompt](open-source-ai-prompt.md)
 - [Small local model agent patterns](small-local-model-agent-patterns.md)
+- [OpenRouter](openrouter.md)
+- [Week 2 challenge: Side Hustle](week2-challenge-side-hustle.md)
 
 ## Sources
 
 - [Partner tools feature catalog](sources/partner-tools-feature-catalog.md)
 - [Retrospective: Week 1 Touch Grass (Idea Leash)](sources/retrospective-week1-touch-grass.md)
+- [Retrospective: Week 2 Side Hustle (PartsPaddock)](sources/retrospective-week2-side-hustle.md)

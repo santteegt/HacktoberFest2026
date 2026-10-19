@@ -20,7 +20,7 @@ The two **Required** stickers must be earned first. Signing in alone does not qu
 - [ ] Connect your DEV account
 - [x] Submit to Launch Weekend (`challenges/01-weekend-build-for-a-friend`): [post](https://dev.to/santteegt/a-setup-coach-for-my-friends-rc-car-that-stays-on-his-laptop-4ahn), published 2026-10-05 05:26 UTC
 - [x] Submit to Week 1 (`challenges/02-week1-touch-grass`): [post](https://dev.to/santteegt/idea-leash-an-open-source-walk-buddy-with-a-local-model-for-a-brain-499n), published 2026-10-12 04:30 UTC
-- [ ] Submit to Week 2
+- [x] Submit to Week 2 (`challenges/03-week2-side-hustle`): [post](https://dev.to/santteegt/partspaddock-a-whatsapp-parts-desk-agent-for-rc-clubs-p2p-b2c-market-connecting-hobbyists-14oa), published 2026-10-19 04:21 UTC
 - [ ] Submit to Week 3
 - [ ] Submit to Week 4
 
