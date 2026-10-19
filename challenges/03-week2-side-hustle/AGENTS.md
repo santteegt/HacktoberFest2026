@@ -91,7 +91,7 @@ Decided 2026-10-18 00:05 UTC (memory entry of the same time has the rejected opt
 - [x] Prize categories chosen (2026-10-18): Gemma, Tiger Data; ElevenLabs decided at stage S4
 - [~] MVP: CLI cycle passes on Tiger (S2-S5 code); WhatsApp bridge up and a DM delivered (S1); group test pending
 - [ ] First-user session done and logged
-- [ ] Demo recorded or deployed
+- [x] Demo recorded and published by the author: https://youtu.be/q_8uofEnFSc
 - [ ] README, LICENSE, `.env.example` done; audit run
-- [ ] DEV draft written and staged
+- [x] DEV draft staged unpublished (article id 4875102, 2026-10-19 ~03:55Z)
 - [ ] Published by the author before the deadline

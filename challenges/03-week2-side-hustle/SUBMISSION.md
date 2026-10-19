@@ -1,6 +1,7 @@
 ---
 title: "PartsPaddock: a WhatsApp parts desk agent for RC clubs - P2P / B2C market connecting hobbyists"
 published: false
+# staged on DEV as article 4875102 (unpublished), 2026-10-19 ~03:55Z
 tags: devchallenge, hf26challenge, opensource, ai
 ---
 
