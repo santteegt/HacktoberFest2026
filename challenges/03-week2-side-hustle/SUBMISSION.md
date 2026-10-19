@@ -1,7 +1,7 @@
 ---
 title: "PartsPaddock: a WhatsApp parts desk agent for RC clubs - P2P / B2C market connecting hobbyists"
 published: false
-# staged on DEV as article 4875102 (unpublished), 2026-10-19 ~03:55Z
+# staged on DEV as article 4875102 (unpublished); synced from DEV 2026-10-19 ~04:30Z (author's edits), images pinned to commit e72dd30
 tags: devchallenge, hf26challenge, opensource, ai
 ---
 
@@ -9,24 +9,22 @@ tags: devchallenge, hf26challenge, opensource, ai
 
 ## What I Built
 
-![PartsPaddock logo: a chat bubble with a friendly bot above a touring car whose wheels are orange gears, next to the name PartsPaddock and the tagline "the parts desk of your RC club"](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/03-week2-side-hustle/docs/logo/logo-lockup.png)
+![PartsPaddock logo: a chat bubble with a friendly bot above a touring car whose wheels are orange gears, next to the name PartsPaddock and the tagline "the parts desk of your RC club"](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/e72dd30a2b24f6722be1bdc7cefc9b8c5cd50bc1/challenges/03-week2-side-hustle/docs/logo/logo-lockup.png)
 
-I race 1/10 touring cars in my home country. Almost nothing we run is sold here, so parts come from the US, and every club member has a drawer of spares: a spur gear bought twice, the arms left over from a conversion. Meanwhile someone else in the club is asking the WhatsApp group for exactly that part, and the message scrolls away. When nobody has it, the member asks whoever brings parts in, and that person prices the import by hand.
+I race 1/10 touring cars in my home country. Almost nothing we run is sold here, so parts come mostly from the US, and every club member has a drawer of spares: a spur gear bought twice, the arms left over from a conversion, an old chassis kit. Meanwhile someone else in the club is asking the WhatsApp group for exactly that part, and the message scrolls away. When nobody has it, the member asks whoever brings parts in, and that person prices the import by hand.
 
 PartsPaddock is an agent that lives in the club's WhatsApp group and does both jobs.
 
 - **Swap and sell inside the club (free, P2P).** "Tengo un spur 68T de TT-02 nuevo, $10" becomes a listing. "@bot busco un TAM54500" becomes a request. When a request meets a listing, the bot writes to both members in private.
 - **Import quotes (paid, B2C).** When the club has nothing, the bot looks the part up at an online hobby shop and answers with the store price, the weight the store lists, our per-pound fee, and two totals: one if the member orders it and ships it to our forwarding address, one if we order it for them (+12%). Once the member wants to confirm the purchase, if we order it, they need to send a deposit receipt PDF, which the agent forwards to the manager DMs to confirm the deposit; if they order it themselves, they send the store's tracking number. Confirmed import requests then go into the next order batch (e.g. daily batches). The manager gets one summary per batch with links, quantities and what to charge whom.
 
-![Workflow. P2P, free: members of two clubs in the same city post HAVE or NEED; the bot matches parts inside a club or across clubs, DMs both, they meet and swap, and a sold listing is closed. B2C, paid: no match leads to a quote computed in code ($16.30), the member says sí and sends a deposit receipt PDF, the maintainer confirms the transfer, the order batch goes to the store and the US forwarding address, and the part is imported to the club. Self-order branch: the member buys it and pays only the $1.74 fee.](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/03-week2-side-hustle/docs/workflow.png)
+![Workflow. P2P, free: members of two clubs in the same city post HAVE or NEED; the bot matches parts inside a club or across clubs, DMs both, they meet and swap, and a sold listing is closed. B2C, paid: no match leads to a quote computed in code ($16.30), the member says sí and sends a deposit receipt PDF, the maintainer confirms the transfer, the order batch goes to the store and the US forwarding address, and the part is imported to the club. Self-order branch: the member buys it and pays only the $1.74 fee.](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/e72dd30a2b24f6722be1bdc7cefc9b8c5cd50bc1/challenges/03-week2-side-hustle/docs/workflow.png)
 
 **Who pays:** the club member who wants a part brought in. The fee per pound and the 12% for placing the order are the side hustle; the free matching is what keeps the bot in the group. It is small and specific on purpose: one club, one store, one person running imports.
 
 ## Demo
 
 {% embed https://youtu.be/q_8uofEnFSc %}
-
-Recorded in our real test group with two club members. The listings are demo data: real Xray X4 and X1 parts from the hobby shop's catalogue, seeded with a script so the scenes are repeatable. Phone numbers and the forwarding address are blurred.
 
 ## Code
 
@@ -38,7 +36,7 @@ The project is in [`challenges/03-week2-side-hustle`](https://github.com/santtee
 
 Three pieces, and a strict line between what the model does and what code does.
 
-![Architecture: club members, the club group and the maintainer on WhatsApp connect through an unofficial Baileys bridge to Hermes Agent (open source). Hermes uses Gemma 4 26B A4B (open weights, via OpenRouter) for language only and runs the rcparts CLI, which reads and writes Tiger Postgres and reads Michael's RC Hobbies store JSON. A cron job triggers the order batch.](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/03-week2-side-hustle/docs/architecture.png)
+![Architecture: club members, the club group and the maintainer on WhatsApp connect through an unofficial Baileys bridge to Hermes Agent (open source). Hermes uses Gemma 4 26B A4B (open weights, via OpenRouter) for language only and runs the rcparts CLI, which reads and writes Tiger Postgres and reads Michael's RC Hobbies store JSON. A cron job triggers the order batch.](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/e72dd30a2b24f6722be1bdc7cefc9b8c5cd50bc1/challenges/03-week2-side-hustle/docs/architecture.png)
 
 **The agent: Hermes Agent with Gemma 4.** [Hermes Agent](https://hermes-agent.nousresearch.com) is an open-source agent harness from Nous Research. It already has a WhatsApp gateway (a Baileys bridge that links a number like WhatsApp Web), skills, cron jobs and per-profile configuration. The bot is a Hermes **profile distribution**: a persona file, a config, two skills (`rc-listings` and `rc-quote`) and a manifest, so the whole agent installs on another Hermes machine with one script. The model is **Gemma 4 26B A4B**, an open-weight mixture-of-experts model with about 4B active parameters, served by OpenRouter. The bot has a dedicated prepaid SIM, answers in the group only when mentioned, and only allowlisted numbers can talk to it.
 
@@ -53,9 +51,11 @@ Around the skills, `SOUL.md` holds the persona and the rules that apply everywhe
 
 **The data: Postgres on Tiger Cloud.** Clubs, members, listings, matches, quotes, deposits and orders live in a Tiger Cloud service. Matching is an exact part-number match first, then Postgres full-text search over the glossary concepts (with `unaccent` and a `pg_trgm` similarity tiebreak). A different brand, chassis or part number on both sides vetoes a text match, and so do opposite positions such as front and rear. The agent can also read the database through Tiger's MCP server for questions the CLI does not cover, with only the read-only `db_query` tool enabled.
 
-![Data model: seven tables. clubs have members; listings (HAVE or NEED, with a full-text search column) belong to a club and a member; matches link a NEED and a HAVE; quotes belong to a member and optionally a listing and an order; deposits belong to a quote; orders group quotes per store. Quote status goes quoted, awaiting_deposit, deposit_submitted, paid, ordered when we order it, or quoted, awaiting_tracking, in_transit, ordered for a self-order.](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/03-week2-side-hustle/docs/db-schema.png)
+![Data model: seven tables. clubs have members; listings (HAVE or NEED, with a full-text search column) belong to a club and a member; matches link a NEED and a HAVE; quotes belong to a member and optionally a listing and an order; deposits belong to a quote; orders group quotes per store. Quote status goes quoted, awaiting_deposit, deposit_submitted, paid, ordered when we order it, or quoted, awaiting_tracking, in_transit, ordered for a self-order.](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/e72dd30a2b24f6722be1bdc7cefc9b8c5cd50bc1/challenges/03-week2-side-hustle/docs/db-schema.png)
 
 What the model does: turn "tengo un spur 68T de TT-02 nuevo, lo doy en 10 dólares" into `{"kind":"HAVE","chassis":"TT-02","description":"spur 68T","condition":"new","price_usd":10}`, choose the skill, and relay the reply. What it never does: decide who is writing, compute a price, or message someone on its own.
+
+### Lessons learned
 
 Four things the real tests changed:
 
@@ -80,9 +80,9 @@ What is not open: WhatsApp itself, and the bridge is unofficial. A version for m
 
 ## My First User
 
-The first user besides me is a fellow racer, who used the bot from their own phone in the test group and in a private chat. They asked for an import quote for a rear anti-roll bar, chose "we order it", sent the deposit receipt as a PDF in the chat, and the order went into the batch after I confirmed it. The receipt was a generated test PDF from a fictional bank, so no money moved in this test. In the demo they belong to the second club, so one of their parts matched my request across clubs.
+The first user besides me is a fellow racer and member of ACRO (the local RC racing club), who used the bot from their own phone in the test group and in a private chat. They asked for an import quote for a rear anti-roll bar, chose "we order it", sent the deposit receipt as a PDF in the chat, and the order went into the batch after I confirmed it. The receipt was a generated test PDF from a fictional bank, so no money moved in this test.
 
-<!-- TODO(author): add their reaction, whether they would pay, and what they asked for next, only with their permission. Remove this comment before publishing. -->
+He was amazed at how the club chatroom history can be leveraged to connect people's spare parts HAVE/NEEDS through an agent that automates this process. The imports service also caught his interest, as club members often opt to make individual imports to cover their needs and end up paying extra fees. If a club starts batching orders and sharing fees, the hobby becomes more accessible.
 
 ## Prize Categories
 
@@ -96,8 +96,8 @@ The first user besides me is a fellow racer, who used the bot from their own pho
 - Inference is at OpenRouter, not local. The self-hosted path is described, not tested.
 - The demo club and its listings are seeded test data, and the deposit receipt in the demo is a generated test PDF.
 - The store does not say what unit its weight is in. 113 for the spur set is consistent with grams, and the quotes say "weight as listed by the store"; I have not checked it against a scale yet.
-- One store. AMain Hobbies lists no weights and disallows search in robots.txt.
-- No payments: quotes and orders are records, and I collect and place orders by hand.
+- One online hobby shop I tried to include in the prototype disallows search in robots.txt.
+- No payments: quotes and orders are records, and I collect and place orders by hand. ACP, UCP, x402 protocols can be explored in the future.
 - A turn takes 20 to 60 seconds, mostly model calls on a 20,000-token prompt.
 - Matching is words, not meaning. Spanish and English meet through a 42-concept RC glossary; words outside it will not match across languages until embeddings are added.
 
