@@ -63,3 +63,11 @@
 - Hash: `sha256:c2db7afae8042c5d70e7c037d64c45b28c6d0c3f7c113f488e2cf68bd838d640`
 - Pages created/updated: 11
 - New concepts: Week 2 challenge: Side Hustle, Messaging agent patterns, OpenRouter, Cognee (updated: Hermes Agent, Gemma, Tiger Data, Challenge playbook, Small local model agent patterns)
+
+## [2026-10-20] ingest | Week 3 new partners: Auth0, Browserbase, Ultramarine
+
+- **Ingest**: Week 3 new partners: Auth0, Browserbase, Ultramarine processed from `raw/week3-new-partners-auth0-browserbase-ultramarine.md`
+- Source: `raw/week3-new-partners-auth0-browserbase-ultramarine.md`
+- Hash: `sha256:fb24ff3cc185f13cfae8ceb966effeb71e17cf54f1700a920acad8b0169aee14`
+- Pages created/updated: 6
+- New concepts: Auth0 for AI Agents, Browserbase, Ultramarine (updated: Prize categories and partners, Partner tools catalog)

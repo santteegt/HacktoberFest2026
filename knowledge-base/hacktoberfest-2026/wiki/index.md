@@ -4,7 +4,7 @@ okf_version: "0.1"
 
 # Hacktoberfest 2026 — Wiki Index
 
-_Last updated: 2026-10-18 — 45 pages_
+_Last updated: 2026-10-20 — 49 pages_
 
 ## Topics
 - [Hacktoberfest 2026](hacktoberfest-2026.md) — the program: stickers replace PRs, open-source AI theme
@@ -13,7 +13,7 @@ _Last updated: 2026-10-18 — 45 pages_
 - [Weekend challenge retrospective](weekend-challenge-retrospective.md) — what worked, what failed, numbers
 - [Week 1 challenge: Touch Grass](week1-challenge-touch-grass.md) — DEV event 79, the Idea Leash entry and its outcome
 - [Week 2 challenge: Side Hustle](week2-challenge-side-hustle.md) — DEV event 80, the PartsPaddock entry and its outcome
-- [Partner tools catalog](partner-tools-catalog.md) — the 16 weekend partners by role, recipes, ideation questions
+- [Partner tools catalog](partner-tools-catalog.md) — the challenge partners by role (16 weekend + 3 Week 3), recipes, ideation questions
 - [Global Hack Week](global-hack-week.md) — MLH's monthly online week, incl. the Hacktoberfest edition
 
 ## Concepts
@@ -46,6 +46,9 @@ _Last updated: 2026-10-18 — 45 pages_
 - [Sentry Agent Tracing](sentry-agent-tracing.md) — traces for agent runs
 - [Entire](entire.md) — agent sessions linked to commits
 - [GitHub Copilot](github-copilot.md) — coding assistant with BYOK and local models
+- [Auth0 for AI Agents](auth0-for-ai-agents.md) — login, Token Vault, CIBA approval, FGA for RAG; Week 3 category
+- [Browserbase](browserbase.md) — Stagehand browser SDK, local Chrome or cloud; Week 3 category
+- [Ultramarine](ultramarine.md) — Paper Instruments' document-reasoning model, weights pending; Week 3 category
 
 ## Frameworks
 - [Mastra](mastra.md) — TypeScript agents and workflows; used in the weekend build
@@ -60,3 +63,4 @@ _Last updated: 2026-10-18 — 45 pages_
 - [Partner tools feature catalog](sources/partner-tools-feature-catalog.md) — per-partner features, limits, first-hand notes
 - [Retrospective: Week 1 Touch Grass](sources/retrospective-week1-touch-grass.md) — post-publish retrospective of Idea Leash
 - [Retrospective: Week 2 Side Hustle](sources/retrospective-week2-side-hustle.md) — post-publish retrospective of PartsPaddock
+- [Week 3 new partners: Auth0, Browserbase, Ultramarine](sources/week3-new-partners-auth0-browserbase-ultramarine.md) — what the three new categories ask for and how they fit
