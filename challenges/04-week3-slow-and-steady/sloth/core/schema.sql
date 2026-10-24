@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS links (
     folder_path     TEXT,
     saved_at        TIMESTAMPTZ,
     source          TEXT NOT NULL DEFAULT 'reading-list',   -- reading-list | x | gmail
-    status          TEXT NOT NULL DEFAULT 'new',            -- new | enriched | triaged | valhalla | kept
+    status          TEXT NOT NULL DEFAULT 'new',            -- new | enriched | kept (build candidate, buildable >= 2) | reading (relevant, nothing to build) | valhalla | unsure
     batch_id        TEXT,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );

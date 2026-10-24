@@ -26,6 +26,7 @@ class LLMResult[M]:
     tokens_in: int
     tokens_out: int
     ms: int
+    compute_ms: int = 0   # Ollama prompt_eval + eval time, excludes queueing behind other callers
 
 
 def local_json(prompt: str, schema: type[T], *, system: str | None = None,
@@ -51,6 +52,8 @@ def local_json(prompt: str, schema: type[T], *, system: str | None = None,
                 {"role": "user", "content": f"That JSON was invalid: {e.errors()[:3]}. Answer again, valid JSON only."},
             ]
             continue
+        compute_ns = body.get("prompt_eval_duration", 0) + body.get("eval_duration", 0)
         return LLMResult(value, s.ollama_model, body.get("prompt_eval_count", 0),
-                         body.get("eval_count", 0), int((time.monotonic() - t0) * 1000))
+                         body.get("eval_count", 0), int((time.monotonic() - t0) * 1000),
+                         compute_ms=compute_ns // 1_000_000)
     raise ValueError(f"model output failed validation after {retries + 1} tries: {last_error}")
