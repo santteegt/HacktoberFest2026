@@ -30,13 +30,42 @@ SKILL = ROOT / "profiles" / "worker" / "skills" / "prototype-box" / "SKILL.md"
 GRACE_S = 120          # after the box: time for the wrap-up answer before the process is killed
 TEST_TIMEOUT_S = 300
 RENDERED = {".md", ".toml", ".py", ""}  # template files whose {{placeholders}} are filled
+OPEN_PROVIDERS = {"openrouter"}          # open-weight models; anything else is a closed test run
+# USD per million tokens, from https://platform.claude.com/docs/en/about-claude/pricing (read
+# 2026-10-24): base input, output, 5-minute cache write (Hermes' default TTL), cache hit.
+PRICES = {
+    "claude-sonnet-5-5": {"input": 2.00, "output": 10.00, "cache_write": 2.50, "cache_read": 0.10},
+}
+
+
+def resolve_model(provider: str | None = None, model: str | None = None) -> tuple[str, str, str]:
+    """(provider, model, model_id) from flags or config; model_id is what `runs.model_id` records."""
+    s = settings()
+    provider = provider or s.worker_provider or "openrouter"
+    model = model or s.worker_model or s.openrouter_model
+    if not model:
+        raise RuntimeError("no Worker model: set llm.worker_model / llm.openrouter_model or pass --model")
+    model_id = model if provider == "openrouter" else f"{provider}/{model}"
+    return provider, model, model_id
+
+
+def is_closed(provider: str) -> bool:
+    return provider not in OPEN_PROVIDERS
+
+
+def token_cost(model: str, tokens: dict) -> float | None:
+    """List-price cost from Hermes' token totals (input excludes cache reads and writes)."""
+    price = PRICES.get(model)
+    if not price or not tokens:
+        return None
+    return round(sum(tokens.get(k, 0) * price[k] for k in price) / 1_000_000, 4)
 
 
 @dataclass
 class BoxResult:
     card_id: str
     repo_dir: str
-    model: str
+    model: str              # model_id: bare OpenRouter id, or "<provider>/<model>" for other providers
     outcome: Outcome
     tests_passed: bool
     test_output: str
@@ -50,6 +79,7 @@ class BoxResult:
     session_id: str | None = None
     log_path: str | None = None
     timed_out: bool = False
+    provider: str = "openrouter"
     extra: dict = field(default_factory=dict)
 
     def to_json(self) -> str:
@@ -219,7 +249,8 @@ def finish_notes(repo: Path, r: BoxResult) -> Path:
     text = text.rstrip() + (
         "\n\n## Run (written by the runner)\n\n"
         f"- Outcome: **{r.outcome}** · tests {'pass' if r.tests_passed else 'fail'} (checked by `make test` after the box)\n"
-        f"- Model: `{r.model}` on OpenRouter · cost {cost} · tokens in/out {r.tokens_in}/{r.tokens_out}\n"
+        f"- Model: `{r.model}` via {r.provider}{' (closed model, test run)' if is_closed(r.provider) else ''}"
+        f" · cost {cost} · tokens in/out {r.tokens_in}/{r.tokens_out}\n"
         f"- Wall time: {r.minutes:.1f} min of a {r.extra.get('box_minutes')}-minute box"
         f"{' (stopped by the timer)' if r.timed_out else ''}\n"
     )
@@ -231,23 +262,21 @@ def finish_notes(repo: Path, r: BoxResult) -> Path:
 
 
 def run_box(card: Card, *, links: list[dict] | None = None, model: str | None = None,
-            box_minutes: int | None = None, base_dir: Path | None = None,
+            provider: str | None = None, box_minutes: int | None = None, base_dir: Path | None = None,
             suffix: str = "", hermes: str = "hermes") -> BoxResult:
     """Prepare the repo, run the Worker under the box timer, verify, write NOTES.md."""
-    model = model or settings().openrouter_model
-    if not model:
-        raise RuntimeError("llm.openrouter_model is not set in .sloth/config.toml (and no --model given)")
+    provider, model, model_id = resolve_model(provider, model)
     box = box_minutes if box_minutes is not None else (card.box_minutes or settings().box_minutes)
-    repo = prepare_repo(card, model=model, links=links or [], base_dir=base_dir, suffix=suffix)
+    repo = prepare_repo(card, model=model_id, links=links or [], base_dir=base_dir, suffix=suffix)
     runs_dir = repo.parent / ".runs"
     runs_dir.mkdir(exist_ok=True)
     log_path = runs_dir / f"{repo.name}.jsonl"
     prompt_path = runs_dir / f"{repo.name}.prompt.md"
     prompt_path.write_text(build_prompt(card, repo, box))
 
-    usage_before = openrouter_usage()
+    usage_before = openrouter_usage() if provider == "openrouter" else None
     cmd = [hermes, "-p", PROFILE, "chat", "--query-file", str(prompt_path), "--format", "stream-json",
-           "--source", "tool", "--in", str(repo), "--provider", "openrouter", "-m", model]
+           "--source", "tool", "--in", str(repo), "--provider", provider, "-m", model]
     # The box is enforced here (kill at box + grace). Hermes' 80% wrap-up notice needs
     # agent.run_budget_seconds in the profile config; `chat --run-budget` is refused here.
     t0 = time.monotonic()
@@ -266,11 +295,15 @@ def run_box(card: Card, *, links: list[dict] | None = None, model: str | None = 
                 os.killpg(proc.pid, signal.SIGKILL)
                 proc.wait()
     minutes = (time.monotonic() - t0) / 60
-    usage_after = settled_usage(usage_before)
-    cost = (round(usage_after - usage_before, 4)
-            if usage_before is not None and usage_after is not None else None)
-
     result_ev = _parse_stream(log_path)
+    tokens = result_ev.get("tokens") or {}
+    if provider == "openrouter":  # the key's settled usage is OpenRouter's own bill
+        usage_after = settled_usage(usage_before)
+        cost = (round(usage_after - usage_before, 4)
+                if usage_before is not None and usage_after is not None else None)
+    else:  # no usage endpoint we hold a key for: list price × Hermes' token totals
+        cost = token_cost(model, tokens)
+
     answer = _parse_answer(result_ev.get("text", ""))
     tests_passed, test_output = run_tests(repo)
     if timed_out:
@@ -279,14 +312,16 @@ def run_box(card: Card, *, links: list[dict] | None = None, model: str | None = 
         outcome = Outcome.done
     else:
         outcome = Outcome.killed
-    tokens = result_ev.get("tokens") or {}
     r = BoxResult(
-        card_id=card.id, repo_dir=str(repo), model=model, outcome=outcome, tests_passed=tests_passed,
+        card_id=card.id, repo_dir=str(repo), model=model_id, outcome=outcome, tests_passed=tests_passed,
         test_output=test_output, minutes=round(minutes, 1), cost_usd=cost,
-        tokens_in=tokens.get("input"), tokens_out=tokens.get("output"),
+        tokens_in=(tokens.get("input", 0) + tokens.get("cache_read", 0) + tokens.get("cache_write", 0)) if tokens else None,
+        tokens_out=tokens.get("output"), provider=provider,
         agent_status=answer.get("status"), summary=answer.get("summary") or (result_ev.get("text") or "")[:300] or None,
         learned=answer.get("learned"), session_id=result_ev.get("session_id"), log_path=str(log_path),
-        timed_out=timed_out, extra={"box_minutes": box, "exit_code": proc.returncode},
+        timed_out=timed_out, extra={"box_minutes": box, "exit_code": proc.returncode, "tokens": tokens,
+                                    "cost_method": "openrouter key usage" if provider == "openrouter"
+                                    else "list price x Hermes tokens"},
     )
     finish_notes(repo, r)
     return r
@@ -302,7 +337,8 @@ def summary_text(r: BoxResult, card: Card, run_id: int | None = None) -> str:
     }[r.outcome]
     lines = [
         f"🦥 **{card.title}** (card `{card.id}`{f', run {run_id}' if run_id else ''})",
-        f"{verdict} · {r.minutes:.0f} min · {cost} · `{r.model}`",
+        f"{verdict} · {r.minutes:.0f} min · {cost} · `{r.model}`"
+        f"{' (closed model, test run)' if is_closed(r.provider) else ''}",
     ]
     if r.summary:
         lines.append(f"**Built:** {r.summary}")
