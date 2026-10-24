@@ -54,6 +54,7 @@ def test_seed_build_pick_run_brain(conn, tmp_path):
     assert result["ok"] and result["card_id"] == payload["options"][1]["card_id"]
     picked = result["card_id"]
     assert (tmp_path / "board" / "today" / f"{picked}.md").exists()
+    assert pick.show_payload(conn)["card"]["id"] == picked
     # picking another card sends the unstarted one back
     again = pick.choose(conn, top["card_id"], today=date(2026, 10, 24))
     assert again["returned_to_backlog"] == [picked]
@@ -62,6 +63,7 @@ def test_seed_build_pick_run_brain(conn, tmp_path):
     conn.commit()
     out = cards.refresh(conn)
     assert out["moves_from_runs"] == [(top["card_id"], "today", "building")]
+    assert pick.show_payload(conn)["card"] is None
     conn.execute("UPDATE runs SET outcome = 'done', approved = true, cost_usd = 0.05, ended_at = now(), "
                  "repo_url = 'https://github.com/u/r' WHERE card_id = %s", (top["card_id"],))
     conn.commit()

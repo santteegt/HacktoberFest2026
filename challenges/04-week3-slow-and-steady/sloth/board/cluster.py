@@ -49,21 +49,17 @@ def _rank(link: KeptLink) -> tuple:
     return (-link.buildable, -saved.timestamp(), link.link_id)
 
 
-def _bags(links: list[KeptLink]) -> dict[int, set[str]]:
-    """Topic/title words minus the ones a quarter of all kept links share ("agent", "ai").
-
-    Frequency is across every vertical, so a project name that dominates one vertical
-    ("aztec" in blockchain) still holds its cluster together.
+def _common_words(links: list[KeptLink]) -> set[str]:
+    """Words a quarter of all kept links share ("agent", "ai"). Counted across verticals, so a
+    project name that dominates one vertical ("aztec" in blockchain) still holds its cluster.
     """
-    bags = {link.link_id: topic_words(link) for link in links}
-    if len(links) >= 10:
-        df: dict[str, int] = defaultdict(int)
-        for bag in bags.values():
-            for w in bag:
-                df[w] += 1
-        common = {w for w, n in df.items() if n > COMMON_SHARE * len(links)}
-        bags = {k: (v - common) or v for k, v in bags.items()}
-    return bags
+    if len(links) < 10:
+        return set()
+    df: dict[str, int] = defaultdict(int)
+    for link in links:
+        for w in topic_words(link):
+            df[w] += 1
+    return {w for w, n in df.items() if n > COMMON_SHARE * len(links)}
 
 
 def _greedy(pool: list[KeptLink], bags: dict[int, set[str]], threshold: float,
@@ -82,18 +78,22 @@ def _greedy(pool: list[KeptLink], bags: dict[int, set[str]], threshold: float,
     return groups, alone
 
 
-def cluster(links: list[KeptLink]) -> list[list[KeptLink]]:
+def cluster(links: list[KeptLink], corpus: list[KeptLink] | None = None) -> list[list[KeptLink]]:
     """Return clusters of 2-5 links, deterministic for the same input.
 
     Pass 1 groups links whose topic/title words overlap (Jaccard >= SIMILAR). Pass 2 pairs the
     leftovers that share any word, at most LEFTOVER_MAX per card. A link that shares nothing
     with the rest of its vertical waits for the next batch instead of padding an unrelated card.
+    `corpus` (every kept link, carded or not) fixes which words count as common, so a rebuild
+    with no new links finds nothing new.
     """
     by_vertical: dict[str, list[KeptLink]] = defaultdict(list)
     for link in links:
         if link.buildable >= MIN_BUILDABLE:
             by_vertical[link.vertical].append(link)
-    bags = _bags([link for pool in by_vertical.values() for link in pool])
+    pooled = [link for pool in by_vertical.values() for link in pool]
+    common = _common_words(corpus if corpus is not None else pooled)
+    bags = {link.link_id: (topic_words(link) - common) or topic_words(link) for link in pooled}
     out: list[list[KeptLink]] = []
     for vertical in sorted(by_vertical):
         pool = sorted(by_vertical[vertical], key=_rank)

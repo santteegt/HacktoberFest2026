@@ -75,7 +75,7 @@ def test_discord_texts():
     assert "1. **Build a ledger** (`ka`): Fresh links." in text and pick.QUESTION in text
     c = card("ka", "rust", "Ledger")
     assert "120-minute box" in pick.picked_text(c)
-    assert "sloth work ka" in pick.worker_ping_text(c)
+    assert pick.worker_ping_text(c) == "Card `ka` is today's pick. Reply `go` here to start the 120-minute box."
     saved = focus.focus_saved_text({"weights": {"rust": 1.0}})
     assert "Rust" in saved
     assert "no focus" in focus.focus_saved_text({"weights": {}})

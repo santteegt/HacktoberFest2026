@@ -35,7 +35,7 @@ def current_schema(conn) -> str:
     return conn.execute("SELECT current_schema() AS s").fetchone()["s"]
 
 
-def kept_links(conn) -> list[KeptLink]:
+def kept_links(conn, *, include_carded: bool = False) -> list[KeptLink]:
     rows = conn.execute(
         """
         WITH latest AS (
@@ -46,11 +46,11 @@ def kept_links(conn) -> list[KeptLink]:
         FROM latest t JOIN links l ON l.id = t.link_id
         LEFT JOIN valhalla v ON v.link_id = l.id AND v.status <> 'restored'
         WHERE l.status = 'kept' AND t.buildable >= 2 AND v.link_id IS NULL
-          AND NOT EXISTS (
-              SELECT 1 FROM cards c WHERE c."column" = ANY(%s) AND l.id = ANY(c.link_ids))
+          AND (%s OR NOT EXISTS (
+              SELECT 1 FROM cards c WHERE c."column" = ANY(%s) AND l.id = ANY(c.link_ids)))
         ORDER BY l.id
         """,
-        (list(LIVE_COLUMNS),),
+        (include_carded, list(LIVE_COLUMNS)),
     ).fetchall()
     return [KeptLink(**r) for r in rows]
 
