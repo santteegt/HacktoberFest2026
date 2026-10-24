@@ -11,7 +11,8 @@ browser_app = typer.Typer(no_args_is_help=True, help="Stagehand on a local Chrom
 
 
 def work(
-    card_id: str = typer.Argument(..., help="Card to build (its column should be 'today')."),
+    card_id: str = typer.Argument(None, help="Card to build (its column should be 'today')."),
+    status: bool = typer.Option(False, "--status", help="Show today's card and the latest runs, then exit."),
     model: str = typer.Option(None, help="OpenRouter model id; default llm.openrouter_model."),
     box_minutes: int = typer.Option(None, help="Override the card's box (minutes)."),
     card_file: Path = typer.Option(None, help="Load the card from JSON and upsert it (fixtures, tests)."),
@@ -23,6 +24,12 @@ def work(
     from ..core.config import settings
     from ..core.models import Card
 
+    if status:
+        st = runs.status()
+        print(json.dumps(st, default=str, indent=1) if as_json else runs.status_text(st))
+        return
+    if not card_id:
+        raise typer.BadParameter("give a card id (or --status)")
     if card_file:
         card = Card.model_validate_json(card_file.read_text())
         if card.id != card_id:
@@ -49,8 +56,7 @@ def work(
     text = worker.summary_text(r, card, run_id)
     notify.post("worker", text)
     req = approval.approval_request(run_id, card.title, r.repo_dir, tests_passed=r.tests_passed)
-    notify.post("worker", req["text"] + "\n" + " · ".join(
-        f"[{b['label']}]" + (f" → `{b['command']}`" if b["command"] else "") for b in req["buttons"]))
+    notify.post("worker", req["text"])  # the Worker desk skill maps `approve <run_id>` to `sloth approve`
     cost = f"${r.cost_usd:.4f}" if r.cost_usd is not None else "cost unknown"
     notify.log("worker", "box_end", f"card {card.id} run {run_id} {r.outcome}, tests "
                f"{'pass' if r.tests_passed else 'fail'}, {r.minutes:.0f} min, {cost}, {r.model}",
