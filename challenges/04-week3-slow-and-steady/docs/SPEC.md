@@ -1,6 +1,6 @@
 # Skunkworks Sloth: spec and milestones
 
-Written 2026-10-24 05:30 UTC (Fri Oct 24, 00:30 local). Deadline Oct 26 06:59 UTC; publish target Sat Oct 25 22:00 local. About 49 hours remain, two of them nights. This spec is the build contract; [PLAN.md](PLAN.md) holds the clock and the kill rules; the memory file holds every measurement.
+Written 2026-10-24 05:30 UTC (Sat Oct 24, 00:30 local; first version mislabelled it Friday). Deadline Mon Oct 26 06:59 UTC (Mon 01:59 local); publish target **Sun Oct 25 22:00 local**. This spec is the product contract; [LANES.md](LANES.md) splits the build across a coordinator and three parallel lanes; [PLAN.md](PLAN.md) holds the clock and the kill rules; the memory file holds every measurement.
 
 ## One paragraph
 
@@ -75,6 +75,8 @@ A GitHub Project (v2) owned by the author's account mirrors the skunkworks board
 7. **Second brain**: a script renders `brain/` from `cards`, `runs` and `NOTES.md`; the Coordinator posts the new page link in `#skunkworks-log`.
 
 ## Milestones
+
+> **Superseded for scheduling by [LANES.md](LANES.md) and [PLAN.md](PLAN.md) (2026-10-24 16:40 UTC).** The milestone content below still defines what each piece must do; the times and the sequential order do not apply. Lane mapping: M0.1 and M0.5 → coordinator C0; M0.2 + M1 → Lane 1 Curator; M2 + GitHub Project → Lane 2 Board; M0.3 + M0.4 + M3 → Lane 3 Builder; M4/M5 → everyone at freeze, coordinator for the story.
 
 Each milestone has a clock, an owner (Claude builds, the author tests and taps), and a done-means. A milestone that overruns its clock by 30 minutes triggers its fallback, not an extension.
 
