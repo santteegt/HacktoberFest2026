@@ -15,7 +15,7 @@ Owned paths: `sloth/board/`, `sloth/cli/board.py`, `profiles/coordinator/`, `boa
 
 <!-- At CP1 (Sat 16:00), CP2 (Sat 20:00), CP3 (Sun 12:00) local: done, measurements (with method), failures, requests. -->
 
-### CP1 (written early, 2026-10-24 17:12Z = Sat 12:12 local): green
+### CP1 (written early, 2026-10-24 17:06Z = Sat 12:06 local): green
 
 - **Done (all on fixtures, schema `lane_board`):** `sloth board seed-fixtures`; card builder (`sloth board build`: code clustering, Gemma wording with verifier and fallback, code box and kill criteria); `board/<column>/<id>.md` files; `sloth board init` (private Project #2, Status options, 8 fields, Board view by API) and `sloth board sync` (one-way, idempotent by Card ID, batched GraphQL, README status block, `--prune`). Also already built for CP2/CP3 on fixtures: `sloth focus`, `sloth pick options|choose`, the Discord texts, `sloth brain`, the Coordinator skill, and one `refresh` after every move that applies the Builder's `runs` rows.
 - **Measurements:** 4 cards worded in 2.8-2.9 s each; Project box used about 4 of 45 minutes; first sync 4 calls / 17.2 s, idempotent re-sync 1 call / 2.8 s; pick wording 23 s and focus mapping 27 s under shared-model load (details and method in the log below).
