@@ -47,7 +47,17 @@ def test_clusters_are_deterministic_and_split_by_topic():
     assert [[x.link_id for x in g] for g in a] == [[x.link_id for x in g] for g in b]
     sets = [{x.link_id for x in g} for g in a]
     assert {1, 2} <= sets[0] or {1, 2} <= sets[1]
-    assert sum(len(s) for s in sets) == 5  # the singleton joined a group, not dropped
+    assert 5 not in set().union(*sets)  # a link sharing no word with its vertical waits
+
+
+def test_leftovers_pair_only_on_shared_words():
+    def mk(i, topic, title):
+        return KeptLink(i, f"https://e.x/{i}", title, datetime(2026, 1, i, tzinfo=UTC), None,
+                        topic, "hardware", "tool", 3, None)
+    links = [mk(1, "SDR quick start", "RTL-SDR guide"), mk(2, "odor detection", "Smell sensor"),
+             mk(3, "lap timing", "openstint: DIY lap timing using RTL-SDR")]
+    groups = cluster.cluster(links)
+    assert [{x.link_id for x in g} for g in groups] == [{1, 3}]
 
 
 def test_single_link_vertical_waits():
