@@ -223,3 +223,27 @@ def run_browse(conn, *, limit: int | None = None, batch_id: str | None = None, r
             "median_s_per_extract": secs[len(secs) // 2] if secs else None,
             "median_s_per_success": ok_secs[len(ok_secs) // 2] if ok_secs else None,
             "browse_seconds": browse_s, "seconds": round(time.monotonic() - t0, 1)}
+
+
+def recheck_code_verdicts(conn) -> dict:
+    """Re-run the code rules over proposed code verdicts after a rule change: withdraw the ones the
+    rules no longer support (links go back to `enriched` for the next batch) and refresh the reason
+    of the ones that now fire a different rule. The author's restores and confirms are untouched."""
+    from .rules import DupeIndex, judge
+    rows = conn.execute(
+        """SELECT l.*, v.reason AS v_reason FROM valhalla v JOIN links l ON l.id = v.link_id
+           WHERE v.status = 'proposed' AND v.decided_by = 'code'""").fetchall()
+    enr = store.enrichment_for(conn, [r["id"] for r in rows])
+    dupes = DupeIndex(store.all_links_with_final_url(conn))
+    withdrawn, updated = [], []
+    for r in rows:
+        v = judge(r, enr.get(r["id"]), dupes)
+        if v is None:
+            withdrawn.append(r["id"])
+        elif v.reason != r["v_reason"]:
+            conn.execute("UPDATE valhalla SET reason = %s WHERE link_id = %s", (v.reason, r["id"]))
+            updated.append(r["id"])
+    if withdrawn:
+        conn.execute("DELETE FROM valhalla WHERE link_id = ANY(%s) AND status = 'proposed'", (withdrawn,))
+        conn.execute("UPDATE links SET status = 'enriched' WHERE id = ANY(%s)", (withdrawn,))
+    return {"withdrawn": withdrawn, "reason_updated": updated}

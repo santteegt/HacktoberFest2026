@@ -205,3 +205,12 @@ def browse_cmd(limit: Annotated[int, typer.Option(help="How many browser candida
         conn.autocommit = True
         _out(run_browse(conn, limit=limit or None, retriage=retriage,
                         on_try=lambda t: print(json.dumps(t), flush=True)))
+
+
+@curator_app.command("recheck")
+def recheck_cmd() -> None:
+    """Re-apply the code rules to proposed code verdicts (after a rule change)."""
+    from ..curator.pipeline import recheck_code_verdicts
+    with _conn() as conn:
+        conn.autocommit = True
+        _out(recheck_code_verdicts(conn))

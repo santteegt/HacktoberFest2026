@@ -79,6 +79,9 @@ def test_github_repo_and_dedupe_key():
     assert col.github_repo("https://github.com/orgs/o") is None
     assert col.github_repo("https://gitlab.com/o/r") is None
     assert col.dedupe_key("https://github.com/O/R/tree/main") == col.dedupe_key("http://www.github.com/o/r")
+    assert col.dedupe_key("https://github.com/o/r/blob/main/README.md") == "github.com/o/r"
+    assert col.dedupe_key("https://github.com/o/r/blob/main/usecases/a.md") != col.dedupe_key(
+        "https://github.com/o/r/blob/main/usecases/b.md")
 
 
 def _row(i, url, saved, **kw):
@@ -90,13 +93,24 @@ def test_rules():
     b = _row(2, "https://github.com/o/r/tree/main", NOW - timedelta(days=10))
     c = _row(3, "https://example.com/post", NOW - timedelta(days=5))
     d = _row(4, "https://short.ly/x", NOW - timedelta(days=1), final_url="https://example.com/post")
-    idx = rules.DupeIndex([a, b, c, d])
+    e1 = _row(5, "https://github.com/o/list/blob/main/x/one.md", NOW - timedelta(days=9),
+              final_url="https://github.com/o/list")
+    e2 = _row(6, "https://github.com/o/list/blob/main/x/two.md", NOW - timedelta(days=8),
+              final_url="https://github.com/o/list")
+    idx = rules.DupeIndex([a, b, c, d, e1, e2])
+    assert rules.judge(e2, {"final_url": e2["final_url"]}, idx, now=NOW) is None  # two files, one repo
+    moved_old = _row(7, "https://github.com/alice/tool", NOW - timedelta(days=99), final_url="https://github.com/org/tool")
+    moved_new = _row(8, "https://github.com/org/tool", NOW - timedelta(days=2), final_url="https://github.com/org/tool")
+    idx2 = rules.DupeIndex([moved_old, moved_new])
+    assert rules.judge(moved_new, {"final_url": moved_new["final_url"]}, idx2).rule == "duplicate"  # transferred repo
     assert rules.judge(b, None, idx).rule == "duplicate"
     assert rules.judge(d, {"final_url": "https://example.com/post"}, idx).reason == "duplicate of #3 (saved earlier)"
     assert rules.judge(a, None, idx) is None
     assert rules.judge(c, {"http_status": 404}, idx, now=NOW).rule == "dead"
     assert rules.judge(c, {"error": "dns: nodename nor servname"}, idx, now=NOW).rule == "dead"
     assert rules.judge(c, {"http_status": 403, "error": "http 403"}, idx, now=NOW) is None  # blocked, not dead
+    home = {"http_status": 200, "final_url": "https://newname.sh/", "content_kind": "html"}
+    assert rules.judge(c, home, idx, now=NOW).rule == "gone"
     assert rules.judge(a, {"github_archived": True, "github_stars": 9}, idx, now=NOW).rule == "archived"
     old = {"github_archived": False, "github_pushed_at": NOW - timedelta(days=5 * 365)}
     assert rules.judge(a, old, idx, now=NOW).rule == "stale"
