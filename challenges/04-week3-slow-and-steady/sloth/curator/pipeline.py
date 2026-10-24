@@ -26,8 +26,7 @@ def run_collect(conn) -> dict:
             "exact_duplicates": len(c.exact_duplicates), "new": new}
 
 
-async def run_enrich(conn, *, limit: int | None = None, ids: list[int] | None = None,
-                     use_browser: bool = True) -> dict:
+async def run_enrich(conn, *, limit: int | None = None, ids: list[int] | None = None) -> dict:
     if ids is not None:
         links = store.links_by_ids(conn, ids)
     else:
@@ -35,8 +34,7 @@ async def run_enrich(conn, *, limit: int | None = None, ids: list[int] | None = 
             """SELECT l.* FROM links l LEFT JOIN enrichment e ON e.link_id = l.id
                WHERE e.link_id IS NULL ORDER BY l.saved_at DESC NULLS LAST, l.id LIMIT %s""",
             (limit,)).fetchall()
-    results = await enrich_many(links, use_browser=use_browser,
-                                on_done=lambda e: store.save_enrichment(conn, e))
+    results = await enrich_many(links, on_done=lambda e: store.save_enrichment(conn, e))
     return {"enriched": len(results), "by": dict(Counter(str(e.fetched_with) for e in results))}
 
 
@@ -73,7 +71,8 @@ class BatchResult:
     seconds: float = 0.0
     tokens_in: int = 0
     tokens_out: int = 0
-    model_seconds: float = 0.0
+    model_seconds: float = 0.0       # wall time spent waiting on the model (includes queueing)
+    compute_seconds: float = 0.0     # Ollama's own compute time
     model: str | None = None
     enriched: dict = field(default_factory=dict)
     collected_new: int = 0
@@ -99,7 +98,7 @@ def new_batch_id(now: datetime | None = None) -> str:
     return f"b{(now or datetime.now(UTC)):%Y%m%d-%H%M}"
 
 
-def run_batch(conn, n: int, *, source: str = "reading-list", use_browser: bool = True,
+def run_batch(conn, n: int, *, source: str = "reading-list", use_browser: bool = False,
               ids: list[int] | None = None, batch_id: str | None = None,
               on_item=None) -> BatchResult:
     """One Curator batch on the next n untriaged links (or the given ids). Autocommit per link."""
@@ -117,8 +116,14 @@ def run_batch(conn, n: int, *, source: str = "reading-list", use_browser: bool =
     have = store.enrichment_for(conn, lids)
     missing = [i for i in lids if i not in have]
     if missing:
-        res.enriched = asyncio.run(run_enrich(conn, ids=missing, use_browser=use_browser))
+        res.enriched = asyncio.run(run_enrich(conn, ids=missing))
         have = store.enrichment_for(conn, lids)
+    if use_browser:  # its own phase, one Chrome session, before any triage call (one Ollama slot)
+        from .enrich import browse_many, browser_candidate
+        todo = [r for r in links if browser_candidate(have.get(r["id"]))]
+        if todo:
+            asyncio.run(browse_many(todo, have, on_done=lambda e: store.save_enrichment(conn, e)))
+            have = store.enrichment_for(conn, lids)
     from .rules import DupeIndex, judge
     from .triage import decide, label
     dupes = DupeIndex(store.all_links_with_final_url(conn))
@@ -138,6 +143,7 @@ def run_batch(conn, n: int, *, source: str = "reading-list", use_browser: bool =
             res.tokens_in += lab.tokens_in
             res.tokens_out += lab.tokens_out
             res.model_seconds += lab.ms / 1000
+            res.compute_seconds += lab.compute_ms / 1000
             res.model = lab.model
             store.save_triage(conn, link["id"], t, decided_by="model", model=lab.model,
                               tokens_in=lab.tokens_in, tokens_out=lab.tokens_out, ms=lab.ms)
@@ -153,34 +159,48 @@ def run_batch(conn, n: int, *, source: str = "reading-list", use_browser: bool =
             on_item(item)
     res.seconds = round(time.monotonic() - t0, 1)
     res.model_seconds = round(res.model_seconds, 1)
+    res.compute_seconds = round(res.compute_seconds, 1)
     return res
 
 
 def unreadable_links(conn, limit: int | None = None) -> list[dict]:
-    """Links the model judged from the title alone and the author has not settled yet."""
-    return conn.execute(
+    """Browser candidates (see enrich.browser_candidate) the author has not settled yet."""
+    from .enrich import browser_candidate
+    rows = conn.execute(
         """SELECT l.* FROM links l JOIN enrichment e ON e.link_id = l.id
            LEFT JOIN valhalla v ON v.link_id = l.id
-           WHERE coalesce(e.readable_chars, 0) < 200 AND e.fetched_with <> 'stagehand'
-             AND coalesce(e.http_status, 0) NOT IN (404, 410) AND coalesce(e.error, '') NOT LIKE 'dns%%'
-             AND e.content_kind IS DISTINCT FROM 'github' AND e.content_kind IS DISTINCT FROM 'pdf'
+           WHERE e.fetched_with <> 'stagehand'
              AND (l.status IN ('new', 'enriched', 'kept', 'reading', 'unsure')
                   OR (l.status = 'valhalla' AND v.status = 'proposed' AND v.decided_by = 'model'))
-           ORDER BY l.saved_at DESC NULLS LAST LIMIT %s""", (limit,)).fetchall()
+           ORDER BY l.saved_at DESC NULLS LAST""").fetchall()
+    enr = store.enrichment_for(conn, [r["id"] for r in rows])
+    picked = [r for r in rows if browser_candidate(enr.get(r["id"]))]
+    return picked[:limit] if limit else picked
 
 
-def run_browse(conn, *, limit: int | None = None, batch_id: str | None = None) -> dict:
-    """Browser pass over unreadable links, then re-triage the ones it could read."""
+def run_browse(conn, *, limit: int | None = None, batch_id: str | None = None, retriage: bool = True,
+               on_try=None) -> dict:
+    """Browser pass over unreadable links, then (separately, so the two never interleave on the one
+    Ollama slot) re-triage the ones it read, if they were triaged before."""
     from .enrich import browse_many
     from .triage import decide, label
     t0 = time.monotonic()
     links = unreadable_links(conn, limit)
     enr = store.enrichment_for(conn, [r["id"] for r in links])
-    read = asyncio.run(browse_many(links, enr, on_done=lambda e: store.save_enrichment(conn, e)))
+    tries: list[dict] = []
+
+    def record(t: dict) -> None:
+        tries.append(t)
+        if on_try:
+            on_try(t)
+    read = asyncio.run(browse_many(links, enr, on_done=lambda e: store.save_enrichment(conn, e), on_try=record))
+    browse_s = round(time.monotonic() - t0, 1)
     bid = batch_id or new_batch_id() + "-browser"
     moves: Counter = Counter()
     have = store.enrichment_for(conn, [e.link_id for e in read])
-    for link in store.links_by_ids(conn, [e.link_id for e in read]):
+    for link in store.links_by_ids(conn, [e.link_id for e in read]) if retriage else []:
+        if link["status"] in ("new", "enriched"):
+            continue  # never triaged: the normal batch will do it with the new text
         lab = label(link, have.get(link["id"]))
         outcome = decide(lab, link, have.get(link["id"]))
         store.save_triage(conn, link["id"], lab.triage, decided_by="model", model=lab.model,
@@ -194,5 +214,12 @@ def run_browse(conn, *, limit: int | None = None, batch_id: str | None = None) -
                              (link["id"],))
             store.set_status(conn, link["id"], outcome, bid)
         moves[f"{before}->{outcome}"] += 1
+    secs = sorted(t["seconds"] for t in tries)
+    ok_secs = sorted(t["seconds"] for t in tries if t["ok"])
     return {"tried": len(links), "read_by_browser": len(read), "moves": dict(moves),
-            "seconds": round(time.monotonic() - t0, 1)}
+            "by_host": dict(Counter(f"{t['host'] if t['host'] in ('x.com', 'facebook.com') else 'other'}:"
+                                    f"{'ok' if t['ok'] else 'fail'}" for t in tries)),
+            "fail_reasons": dict(Counter((t["reason"] or "")[:60] for t in tries if not t["ok"]).most_common(8)),
+            "median_s_per_extract": secs[len(secs) // 2] if secs else None,
+            "median_s_per_success": ok_secs[len(ok_secs) // 2] if ok_secs else None,
+            "browse_seconds": browse_s, "seconds": round(time.monotonic() - t0, 1)}

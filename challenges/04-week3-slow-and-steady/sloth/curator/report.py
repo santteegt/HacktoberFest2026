@@ -57,7 +57,7 @@ def batch_summary(r, *, top: int = 5) -> str:
              + f" · ❓ unsure {len(unsure)}"]
     if r.tokens_in or r.tokens_out:
         lines.append(f"Local model `{r.model}`: {r.tokens_in + r.tokens_out:,} tokens, "
-                     f"{_dur(r.model_seconds)} of model time; the links never left this Mac.")
+                     f"{_dur(r.compute_seconds or r.model_seconds)} of compute; the links never left this Mac.")
     best = sorted((i for i in kept if i.one_line_idea), key=lambda i: -i.buildable)[:top]
     if best:
         lines.append("**Best build ideas**")

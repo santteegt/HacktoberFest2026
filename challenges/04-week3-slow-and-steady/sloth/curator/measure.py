@@ -38,7 +38,7 @@ def run(conn, n: int = 50, label_n: int = 20, *, seed: int = 26, out: Path = OUT
         lab = label(link, enr.get(link["id"]))
         results.append({"link_id": link["id"], "outcome": decide(lab, link, enr.get(link["id"])),
                         "verified": lab.verified, "tries": lab.tries, "problems": lab.problems,
-                        "tokens_in": lab.tokens_in, "tokens_out": lab.tokens_out, "ms": lab.ms,
+                        "tokens_in": lab.tokens_in, "tokens_out": lab.tokens_out, "ms": lab.ms, "compute_ms": lab.compute_ms,
                         "model": lab.model, "triage": lab.triage.model_dump(mode="json")})
     wall = time.monotonic() - t0
     summary = {
@@ -91,7 +91,7 @@ def _label_all(conn, links: list[dict]) -> list[dict]:
         lab = label(link, enr.get(link["id"]))
         out.append({"link_id": link["id"], "outcome": decide(lab, link, enr.get(link["id"])),
                     "verified": lab.verified, "tries": lab.tries, "problems": lab.problems,
-                    "tokens_in": lab.tokens_in, "tokens_out": lab.tokens_out, "ms": lab.ms,
+                    "tokens_in": lab.tokens_in, "tokens_out": lab.tokens_out, "ms": lab.ms, "compute_ms": lab.compute_ms,
                     "model": lab.model, "triage": lab.triage.model_dump(mode="json")})
     return out
 
@@ -128,32 +128,16 @@ def score(out: Path = OUT, results_name: str = "results.json") -> dict:
 
 
 def compute_bench(conn, n: int = 15, *, seed: int = 27) -> dict:
-    """Pure model compute per link (Ollama's prompt_eval + eval durations), immune to queueing behind
-    other lanes. Same payload as core.llm.local_json, called directly only to read the durations."""
-    import httpx
-
-    from sloth.core.config import settings
-    from sloth.core.models import Triage
-
-    from .triage import SYSTEM, link_input
-    s = settings()
+    """Model compute per link (LLMResult.compute_ms = Ollama prompt_eval + eval), immune to queueing
+    behind other lanes on the single Ollama slot; wall time reported next to it."""
     links = sample(conn, n, seed=seed)
     enr = store.enrichment_for(conn, [r["id"] for r in links])
-    rows = []
-    for link in links:
-        body = httpx.post(f"{s.ollama_url}/api/chat", timeout=300, json={
-            "model": s.ollama_model, "stream": False, "think": False, "format": Triage.model_json_schema(),
-            "options": {"num_ctx": s.ollama_num_ctx},
-            "messages": [{"role": "system", "content": SYSTEM},
-                         {"role": "user", "content": f"Link:\n{link_input(link, enr.get(link['id']))}"}]}).json()
-        rows.append({"prompt_tokens": body.get("prompt_eval_count", 0), "out_tokens": body.get("eval_count", 0),
-                     "prompt_ms": body.get("prompt_eval_duration", 0) / 1e6, "eval_ms": body.get("eval_duration", 0) / 1e6,
-                     "total_ms": body.get("total_duration", 0) / 1e6})
-    compute = sum(r["prompt_ms"] + r["eval_ms"] for r in rows) / 1000
-    out = {"n": n, "compute_s": round(compute, 1), "links_per_min_compute": round(n / compute * 60, 1),
-           "mean_prompt_tokens": round(sum(r["prompt_tokens"] for r in rows) / n),
-           "mean_out_tokens": round(sum(r["out_tokens"] for r in rows) / n),
-           "out_tok_per_s": round(sum(r["out_tokens"] for r in rows) / (sum(r["eval_ms"] for r in rows) / 1000), 1),
-           "prompt_tok_per_s": round(sum(r["prompt_tokens"] for r in rows) / (sum(r["prompt_ms"] for r in rows) / 1000), 1)}
-    (OUT / "compute.json").write_text(json.dumps({"summary": out, "rows": rows}, indent=1))
+    labs = [label(link, enr.get(link["id"])) for link in links]
+    compute = sum(lab.compute_ms for lab in labs) / 1000
+    wall = sum(lab.ms for lab in labs) / 1000
+    out = {"n": n, "compute_s": round(compute, 1), "wall_s": round(wall, 1),
+           "links_per_min_compute": round(n / compute * 60, 1), "links_per_min_wall": round(n / wall * 60, 1),
+           "mean_tokens_in": round(sum(lab.tokens_in for lab in labs) / n),
+           "mean_tokens_out": round(sum(lab.tokens_out for lab in labs) / n)}
+    (OUT / "compute.json").write_text(json.dumps(out, indent=1))
     return out

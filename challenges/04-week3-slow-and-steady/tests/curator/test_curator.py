@@ -200,11 +200,15 @@ def test_fetch_http_dead_after_retry_and_blocked_is_not_dead(monkeypatch):
     assert ok.fetched_with == FetchedWith.http and ok.readable_chars > 200
 
 
-def test_browser_stub_and_routing():
-    assert enrich.needs_browser("https://x.com/a/status/1", 5000)
-    assert enrich.needs_browser("https://e.com", 50)
-    assert not enrich.needs_browser("https://e.com", 500)
-    assert enrich.browser_extract("https://x.com/a") is None or True  # stub or Lane 3's real one
+def test_browser_candidates_skip_blocked_and_dead():
+    assert enrich.browser_candidate({"error": "browser-only host", "content_kind": "html"})
+    assert enrich.browser_candidate({"http_status": 200, "readable_chars": 40, "content_kind": "html"})
+    assert not enrich.browser_candidate({"http_status": 200, "readable_chars": 4000, "content_kind": "html"})
+    assert not enrich.browser_candidate({"http_status": 403, "error": "http 403"})
+    assert not enrich.browser_candidate({"http_status": 404})
+    assert not enrich.browser_candidate({"http_status": 200, "readable_chars": 10, "content_kind": "github"})
+    assert enrich.browser_timeout("https://x.com/a/status/1") == 45
+    assert enrich.browser_timeout("https://kaggle.com/learn") == 90
 
 
 def test_parse_labels():
