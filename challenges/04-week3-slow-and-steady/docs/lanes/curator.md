@@ -14,6 +14,15 @@ Owned paths: `sloth/curator/`, `sloth/cli/curator.py`, `profiles/curator/`, `tes
 
 <!-- At CP1 (Sat 16:00), CP2 (Sat 20:00), CP3 (Sun 12:00) local: done, measurements (with method), failures, requests. -->
 
+### CP1 (written early, 2026-10-24 17:35Z = Sat 12:35 local): green
+
+- **Done:** collector (read-only, `bookmark_bar` → "Reading List", canonical dedupe, Chrome µs-since-1601 → UTC) → 969 rows in `public.links`; HTTP enrich (trafilatura, 10 s, 8 concurrent, polite UA) + GitHub enrich (`gh api`, stars/archived/pushed_at + README) for all 969 in 218 s; Lane 3 browser behind a try/except import (stub until merged; `sloth curator browse` ready for their session API); M0.2 done with the author's 20 labels.
+- **Numbers:** 1,017 bookmarks → 969 unique (48 exact dupes). Enrich: 498 HTTP-readable, 215 GitHub, 226 failed (137 browser-only hosts, 42 × 403, 18 × 404, 9 DNS). Triage compute 14.3 links/min (≈ 64 min for 919 links); contended 3.9 links/min. Agreement with the author (prompt v3, n = 20, tuned on the same 20): keep 20/20, build/read/Valhalla 16/20, card-eligible 16/20.
+- **Decisions:** 12B stays (no E4B). New `reading` bucket (author's ask). 403/429/5xx are not dead.
+- **Failures:** none blocking. M0.2 wall time was 4× the compute time because of Ollama's single slot shared with Lane 3.
+- **Requests:** `reading` status in schema comment/SPEC + tell Lane 2 (cards from `status='kept'`); `compute_ms` in `LLMResult`; optional `OLLAMA_NUM_PARALLEL=2`.
+- **Already past CP1:** Valhalla rules, verifier + retry, `sloth curate` end to end on 20 real links, summary/Valhalla/reading text functions, `sloth valhalla {show,restore,empty}`, unsure `keep`/`drop`, Curator skill text. The full Reading List is triaging in 200-link background batches since 17:29Z.
+
 ## Log
 
 <!-- Same format as docs/CHALLENGE-MEMORY.md: - YYYY-MM-DD HH:MMZ [TAG] text. Evidence: ... Timestamps from `date -u`. -->
