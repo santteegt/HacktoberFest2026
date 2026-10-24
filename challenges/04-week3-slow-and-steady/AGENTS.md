@@ -55,9 +55,13 @@ What each category asks for is in [CHALLENGE.md](CHALLENGE.md). Credits and prom
 4. Stage with `create_article` (`published: false`; leave `ai_disclosure_level` at the default). Give the user the draft link.
 5. **Publish only after the user explicitly says yes in the current session**, before the deadline. After it's live, update `../README.md`, `../../README.md` and `../../STICKERS.md`, then add a retrospective to the knowledge base `raw/` and run `/okf-wiki`.
 
-## Chosen project
+## Chosen project: Skunkworks Sloth
 
-_Not chosen yet._ Brainstorm from the wiki first (2-3 ideas with a recommendation), then record the decision and the rejected options in the memory and here.
+Decided 2026-10-24 05:00 UTC (Fri Oct 23 night, local). The author has 7,845 Chrome bookmarks saved over nine years "to learn by building" and built nothing from them. The sloth collects them, drops dead and outdated ones, sorts the rest by vertical with a local Gemma 4 model, keeps a skunkworks board of two-hour prototype cards, asks one question a day on Telegram ("what are you in the mood for?"), builds the picked prototype with an open-weight model on OpenRouter inside a Hermes profile, writes the notes into a plain-markdown second brain and pushes the repo after an approval. Triage is local and private; the coding step is hosted open weights and the post says so with its cost.
+
+- Time-boxed plan, kill rules and measurements: [docs/PLAN.md](docs/PLAN.md). Feature freeze Sat Oct 25 16:00 local; publish target 22:00 local.
+- Partner categories: Gemma, Tiger Data, Auth0 for AI Agents (one flow), Entire if trivial. Browserbase, DigitalOcean, Temporal, SerpApi, Sentry, Ultramarine, Backboard, Render/.tech are out this week.
+- Rejected options and the author's design answers are in the memory (entries of 2026-10-20 to 2026-10-24). Idea notes live in `ideas/` on the author's machine only (gitignored).
 
 ## Working conventions for this folder
 
