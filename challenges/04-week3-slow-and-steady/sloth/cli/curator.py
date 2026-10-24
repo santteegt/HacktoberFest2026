@@ -33,14 +33,13 @@ def collect_cmd() -> None:
 
 
 @curator_app.command("enrich")
-def enrich_cmd(limit: Annotated[int, typer.Option(help="How many un-enriched links (0 = all).")] = 0,
-               browser: Annotated[bool, typer.Option(help="Use the Lane 3 browser for unreadable pages.")] = True) -> None:
-    """HTTP + GitHub (+ browser) enrichment for links that have none yet."""
+def enrich_cmd(limit: Annotated[int, typer.Option(help="How many un-enriched links (0 = all).")] = 0) -> None:
+    """HTTP + GitHub enrichment for links that have none yet (the browser is `sloth curator browse`)."""
     from ..curator.pipeline import run_enrich
     with _conn() as conn:
         conn.autocommit = True
         t0 = time.monotonic()
-        stats = asyncio.run(run_enrich(conn, limit=limit or None, use_browser=browser))
+        stats = asyncio.run(run_enrich(conn, limit=limit or None))
         _out({**stats, "seconds": round(time.monotonic() - t0, 1)})
 
 
@@ -54,22 +53,36 @@ def stats_cmd() -> None:
 
 def curate(batch: Annotated[int, typer.Option("--batch", "-n", help="Links to triage in this batch.")] = 200,
            source: Annotated[str, typer.Option(help="Link source.")] = "reading-list",
-           browser: Annotated[bool, typer.Option(help="Use the Lane 3 browser for unreadable pages.")] = True,
+           browser: Annotated[bool, typer.Option(help="Read x.com and JS-only pages with a visible local Chrome first.")] = False,
            post: Annotated[bool, typer.Option(help="Post the summary and Valhalla list via notify.")] = True) -> None:
     """Collect → enrich → rules → model triage for the next N links; prints the batch summary."""
     from ..curator.pipeline import run_batch
     with _conn() as conn:
         conn.autocommit = True
         result = run_batch(conn, batch, source=source, use_browser=browser)
+    _write_batch_record(result)
     from ..core import notify
-    from ..curator.report import batch_summary, log_line, valhalla_messages
+    from ..curator.report import batch_summary, chunk, log_line, valhalla_messages
     if not post:
         print(batch_summary(result))
     else:
-        notify.post("curator", batch_summary(result))
+        for msg in chunk(batch_summary(result).split("\n")):
+            notify.post("curator", msg)
         for msg in valhalla_messages(result.valhalla, header=f"Valhalla, batch {result.batch_id}"):
             notify.post("valhalla", msg)
         notify.log("curator", "batch", log_line(result), result.as_event())
+
+
+def _write_batch_record(result) -> None:
+    """`.sloth/batches/<batch_id>.json`: counts, totals and per-link wall vs compute (no URLs)."""
+    from ..core.config import ROOT
+    out = ROOT / ".sloth" / "batches"
+    out.mkdir(parents=True, exist_ok=True)
+    ev = result.as_event()
+    ev["links"] = [{"link_id": i.link_id, "outcome": i.outcome, "decided_by": i.decided_by, "rule": i.rule,
+                    "buildable": i.buildable, "ms": getattr(i, "ms", 0), "compute_ms": getattr(i, "compute_ms", 0)}
+                   for i in result.items]
+    (out / f"{result.batch_id}.json").write_text(json.dumps(ev, indent=1, default=str))
 
 
 def _parse_ids(text: list[str]) -> list[int]:
@@ -194,11 +207,33 @@ def reading_cmd() -> None:
 
 
 @curator_app.command("browse")
-def browse_cmd(limit: Annotated[int, typer.Option(help="How many unreadable links (0 = all).")] = 0) -> None:
-    """Re-read title-only links with Lane 3's browser (visible local Chrome), then re-triage them."""
+def browse_cmd(limit: Annotated[int, typer.Option(help="How many browser candidates (0 = all).")] = 0,
+               retriage: Annotated[bool, typer.Option(help="Re-label links that were already triaged.")] = True) -> None:
+    """Read x.com and JS-only pages with Lane 3's browser (visible local Chrome), then re-triage them.
+    Prints one line per extract (host, ok, seconds) and a summary."""
     from ..curator.enrich import browser_session
     from ..curator.pipeline import run_browse
-    print(f"browser: {'Lane 3 session' if browser_session else 'Lane 3 extract() or stub'}")
+    if browser_session is None:
+        raise SystemExit("sloth.builder.browser is not available")
     with _conn() as conn:
         conn.autocommit = True
-        _out(run_browse(conn, limit=limit or None))
+        _out(run_browse(conn, limit=limit or None, retriage=retriage,
+                        on_try=lambda t: print(json.dumps(t), flush=True)))
+
+
+@curator_app.command("recheck")
+def recheck_cmd() -> None:
+    """Re-apply the code rules to proposed code verdicts (after a rule change)."""
+    from ..curator.pipeline import recheck_code_verdicts
+    with _conn() as conn:
+        conn.autocommit = True
+        _out(recheck_code_verdicts(conn))
+
+
+@curator_app.command("retriage-stale")
+def retriage_stale_cmd() -> None:
+    """Re-label links whose enrichment changed after their last model label."""
+    from ..curator.pipeline import retriage_stale
+    with _conn() as conn:
+        conn.autocommit = True
+        _out(retriage_stale(conn))

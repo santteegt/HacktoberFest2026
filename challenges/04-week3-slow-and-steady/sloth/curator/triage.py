@@ -126,28 +126,29 @@ class Labelled:
     model: str
     tokens_in: int
     tokens_out: int
-    ms: int
+    ms: int                  # wall time, including queueing behind other lanes on the Ollama slot
     tries: int
+    compute_ms: int = 0      # Ollama prompt_eval + eval time only
 
 
 def label(link: dict, enr: dict | None, *, today: datetime | None = None) -> Labelled:
     """Ask the model, verify, retry once with the verifier's complaint, give up as unverified."""
     source = link_input(link, enr, today=today)
     prompt = f"Link:\n{source}"
-    tin = tout = ms = 0
+    tin = tout = ms = cms = 0
     res = None
     problems: list[str] = []
     for attempt in range(2):
         res = local_json(prompt, Triage, system=SYSTEM)
-        tin, tout, ms = tin + res.tokens_in, tout + res.tokens_out, ms + res.ms
+        tin, tout, ms, cms = tin + res.tokens_in, tout + res.tokens_out, ms + res.ms, cms + res.compute_ms
         t = normalize(res.value)
         problems = verify(t, source)
         if not problems:
-            return Labelled(t, True, [], res.model, tin, tout, ms, attempt + 1)
+            return Labelled(t, True, [], res.model, tin, tout, ms, attempt + 1, cms)
         prompt = (f"Link:\n{source}\n\nYour previous answer was:\n{res.value.model_dump_json()}\n"
                   f"It was rejected because {'; '.join(problems)}. Answer again with corrected JSON.")
     assert res is not None
-    return Labelled(normalize(res.value), False, problems, res.model, tin, tout, ms, 2)
+    return Labelled(normalize(res.value), False, problems, res.model, tin, tout, ms, 2, cms)
 
 
 def decide(lab: Labelled, link: dict, enr: dict | None) -> str:

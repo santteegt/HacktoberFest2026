@@ -61,14 +61,20 @@ def canonical_url(url: str) -> str:
 
 
 def dedupe_key(url: str) -> str:
-    """Looser key for near-duplicates: scheme-less, no `www.`, GitHub reduced to owner/repo."""
+    """Looser key for near-duplicates: scheme-less, no `www.`, GitHub repo root/branch/README → owner/repo."""
     c = urlsplit(canonical_url(url))
     host = (c.hostname or "").removeprefix("www.")
     path = c.path
     if host == "github.com":
         segs = [s for s in path.split("/") if s]
         if len(segs) >= 2 and segs[0] not in GITHUB_NON_REPO:
-            return f"github.com/{segs[0]}/{segs[1].removesuffix('.git')}"
+            repo = f"github.com/{segs[0]}/{segs[1].removesuffix('.git')}"
+            rest = segs[2:]
+            # The repo page, a branch root or its README are the same thing; a file deeper inside is not.
+            if (not rest or (rest[0] == "tree" and len(rest) <= 2)
+                    or (rest[0] == "blob" and len(rest) == 3 and rest[2].lower().startswith("readme"))):
+                return repo
+            return f"{repo}/{'/'.join(rest)}"
     q = f"?{c.query}" if c.query else ""
     return f"{host}{path.rstrip('/')}{q}"
 
