@@ -61,11 +61,12 @@ def curate(batch: Annotated[int, typer.Option("--batch", "-n", help="Links to tr
         conn.autocommit = True
         result = run_batch(conn, batch, source=source, use_browser=browser)
     from ..core import notify
-    from ..curator.report import batch_summary, log_line, valhalla_messages
+    from ..curator.report import batch_summary, chunk, log_line, valhalla_messages
     if not post:
         print(batch_summary(result))
     else:
-        notify.post("curator", batch_summary(result))
+        for msg in chunk(batch_summary(result).split("\n")):
+            notify.post("curator", msg)
         for msg in valhalla_messages(result.valhalla, header=f"Valhalla, batch {result.batch_id}"):
             notify.post("valhalla", msg)
         notify.log("curator", "batch", log_line(result), result.as_event())
