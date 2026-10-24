@@ -60,6 +60,7 @@ def curate(batch: Annotated[int, typer.Option("--batch", "-n", help="Links to tr
     with _conn() as conn:
         conn.autocommit = True
         result = run_batch(conn, batch, source=source, use_browser=browser)
+    _write_batch_record(result)
     from ..core import notify
     from ..curator.report import batch_summary, chunk, log_line, valhalla_messages
     if not post:
@@ -70,6 +71,18 @@ def curate(batch: Annotated[int, typer.Option("--batch", "-n", help="Links to tr
         for msg in valhalla_messages(result.valhalla, header=f"Valhalla, batch {result.batch_id}"):
             notify.post("valhalla", msg)
         notify.log("curator", "batch", log_line(result), result.as_event())
+
+
+def _write_batch_record(result) -> None:
+    """`.sloth/batches/<batch_id>.json`: counts, totals and per-link wall vs compute (no URLs)."""
+    from ..core.config import ROOT
+    out = ROOT / ".sloth" / "batches"
+    out.mkdir(parents=True, exist_ok=True)
+    ev = result.as_event()
+    ev["links"] = [{"link_id": i.link_id, "outcome": i.outcome, "decided_by": i.decided_by, "rule": i.rule,
+                    "buildable": i.buildable, "ms": getattr(i, "ms", 0), "compute_ms": getattr(i, "compute_ms", 0)}
+                   for i in result.items]
+    (out / f"{result.batch_id}.json").write_text(json.dumps(ev, indent=1, default=str))
 
 
 def _parse_ids(text: list[str]) -> list[int]:

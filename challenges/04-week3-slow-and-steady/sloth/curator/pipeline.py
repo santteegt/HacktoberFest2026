@@ -62,6 +62,8 @@ class Item:
     buildable: int = 0
     one_line_idea: str | None = None
     vertical: str | None = None
+    ms: int = 0                  # model wall time for this link (includes queueing)
+    compute_ms: int = 0          # Ollama compute for this link
 
 
 @dataclass
@@ -149,7 +151,8 @@ def run_batch(conn, n: int, *, source: str = "reading-list", use_browser: bool =
                               tokens_in=lab.tokens_in, tokens_out=lab.tokens_out, ms=lab.ms)
             reason = t.reason if lab.verified else f"unverified label ({'; '.join(lab.problems)}): {t.reason}"
             item = Item(link["id"], title, link["url"], outcome, reason[:240], "model", buildable=t.buildable,
-                        one_line_idea=t.one_line_idea, vertical=str(t.vertical))
+                        one_line_idea=t.one_line_idea, vertical=str(t.vertical), ms=lab.ms,
+                        compute_ms=lab.compute_ms)
             if outcome == "valhalla":
                 store.propose_valhalla(conn, link["id"], t.reason, decided_by="model", batch_id=res.batch_id)
             else:
