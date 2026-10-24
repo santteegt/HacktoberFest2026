@@ -47,7 +47,17 @@ def test_clusters_are_deterministic_and_split_by_topic():
     assert [[x.link_id for x in g] for g in a] == [[x.link_id for x in g] for g in b]
     sets = [{x.link_id for x in g} for g in a]
     assert {1, 2} <= sets[0] or {1, 2} <= sets[1]
-    assert sum(len(s) for s in sets) == 5  # the singleton joined a group, not dropped
+    assert 5 not in set().union(*sets)  # a link sharing no word with its vertical waits
+
+
+def test_leftovers_pair_only_on_shared_words():
+    def mk(i, topic, title):
+        return KeptLink(i, f"https://e.x/{i}", title, datetime(2026, 1, i, tzinfo=UTC), None,
+                        topic, "hardware", "tool", 3, None)
+    links = [mk(1, "SDR quick start", "RTL-SDR guide"), mk(2, "odor detection", "Smell sensor"),
+             mk(3, "lap timing", "openstint: DIY lap timing using RTL-SDR")]
+    groups = cluster.cluster(links)
+    assert [{x.link_id for x in g} for g in groups] == [{1, 3}]
 
 
 def test_single_link_vertical_waits():
@@ -141,3 +151,35 @@ def test_readme_stamp_ignored():
     b = "x\n_Updated 2026-10-24 17:10 UTC by `sloth board sync`. y_"
     assert github._strip_stamp(a) == github._strip_stamp(b)
     assert github._strip_stamp(a) != github._strip_stamp(b.replace("y_", "z_"))
+
+
+class _Conn:
+    def execute(self, *a, **k):
+        return self
+
+    def commit(self):
+        pass
+
+
+def test_sync_prune_keeps_referenced_items_and_adopts_orphans(monkeypatch):
+    from sloth.board import store
+    cards = [{**CARD, "id": "ka", "title": "Card A", "gh_item_id": "I_A"},
+             {**CARD, "id": "kb", "title": "Card B", "gh_item_id": None}]
+    items = [
+        {"id": "I_A", "draft_id": "D_A", "title": "Card A", "body": "", "values": {}},  # no Card ID yet
+        {"id": "I_B", "draft_id": "D_B", "title": "Card B", "body": "", "values": {}},  # lost create
+        {"id": "I_X", "draft_id": "D_X", "title": "Fixture", "body": "", "values": {"Card ID": "kfix"}},
+    ]
+    sent = []
+    monkeypatch.setattr(github, "load_ids", lambda: {**IDS, "url": "u", "number": 2, "owner": "@me"})
+    monkeypatch.setattr(github, "fetch_items", lambda pid: (items, ""))
+    monkeypatch.setattr(github, "gql", lambda q, v=None, retry=True: sent.append(q) or {})
+    monkeypatch.setattr(store, "all_cards", lambda conn, cols=None: cards)
+    monkeypatch.setattr(store, "latest_runs", lambda conn: {})
+    monkeypatch.setattr(store, "links_by_id", lambda conn, ids: {})
+    stats = github.sync(prune=True, readme=False, conn=_Conn(), apply=False)
+    text = "\n".join(sent)
+    assert stats["created"] == 0 and stats["pruned"] == 1
+    assert '"I_X"' in text and 'deleteProjectV2Item' in text
+    assert text.count("deleteProjectV2Item") == 1
+    assert 'itemId: "I_B"' in text  # the orphan was adopted and got its fields
