@@ -1,0 +1,5 @@
+# Card files are generated from Postgres by `sloth board build/render/sync` and carry titles and
+# URLs from the author's private Reading List, so they stay out of git (docs/LANES.md, private data).
+*
+!.gitignore
+!README.md
