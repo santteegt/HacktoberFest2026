@@ -278,7 +278,8 @@ def readme_text(conn) -> str:
         "",
         f"**Reading List:** {counts['collected']} collected · {counts['kept']} kept · "
         f"{counts['valhalla']} in Valhalla ({counts['valhalla_confirmed']} confirmed) · "
-        f"{counts['unsure']} unsure · {counts['untriaged']} not triaged yet",
+        f"{counts['reading']} to read (not buildable) · {counts['unsure']} unsure · "
+        f"{counts['untriaged']} not triaged yet",
         "",
         f"**This week's focus:** {focus_line}",
         "",
