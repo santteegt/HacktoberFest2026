@@ -70,6 +70,14 @@ uv run sloth focus --json "<the author's answer, verbatim>"
 Send `reply`. If the author tells you their focus without being asked ("this week: rust"), run the
 same command with their words.
 
+## Today's pick
+
+```bash
+uv run sloth pick show --json
+```
+
+`card` is today's card, or null when nothing is in Today. Send `reply`.
+
 ## Show the board
 
 ```bash

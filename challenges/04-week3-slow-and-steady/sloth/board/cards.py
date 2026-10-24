@@ -15,7 +15,7 @@ def build(conn, *, use_model: bool = True, limit: int | None = None,
           on_card=None) -> list[tuple[Card, dict]]:
     """Cluster kept links that are on no live card, word each cluster, insert as backlog."""
     links = store.kept_links(conn)
-    clusters = cluster(links)
+    clusters = cluster(links, corpus=store.kept_links(conn, include_carded=True))
     if limit is not None:
         clusters = clusters[:limit]
     taken = store.card_ids(conn)

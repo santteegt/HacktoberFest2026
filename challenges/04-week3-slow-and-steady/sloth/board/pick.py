@@ -199,6 +199,22 @@ def choose(conn, choice: str, *, today: date | None = None) -> dict:
             "reply": picked_text(card), "action": "Send `reply` as is. The Worker takes it from here."}
 
 
+def today_card(conn) -> dict | None:
+    """The card in Today (latest move first), or None."""
+    return conn.execute(
+        """SELECT * FROM cards WHERE "column" = 'today' ORDER BY moved_at DESC, id LIMIT 1""").fetchone()
+
+
+def show_payload(conn) -> dict:
+    card = today_card(conn)
+    if not card:
+        return {"ok": True, "card": None, "reply": "No card is in Today yet."}
+    keep = ("id", "title", "vertical", "learning_goal", "hypothesis", "done_means", "box_minutes",
+            "kill_criteria", "link_ids", "picked_on")
+    return {"ok": True, "card": {k: card[k] for k in keep},
+            "reply": f"Today's pick: **{card['title']}** (`{card['id']}`), {card['box_minutes']}-minute box."}
+
+
 # ------------------------------------------------------------------ Discord texts (pure)
 
 def pick_text(options: list[PickOption]) -> str:
@@ -216,5 +232,5 @@ def picked_text(card: dict) -> str:
 
 
 def worker_ping_text(card: dict) -> str:
-    return (f"Card `{card['id']}` moved to Today: **{card['title']}** "
-            f"({card['box_minutes']}-minute box). Start with `sloth work {card['id']}`.")
+    """Hand-off line in #sk-worker; the Worker's desk skill maps `go` to `sloth work <id>`."""
+    return f"Card `{card['id']}` is today's pick. Reply `go` here to start the {card['box_minutes']}-minute box."
