@@ -58,8 +58,9 @@ def curate(batch: Annotated[int, typer.Option("--batch", "-n", help="Links to tr
         result = run_batch(conn, batch, source=source, use_browser=browser)
     from ..core import notify
     from ..curator.report import batch_summary, log_line, valhalla_messages
-    print(batch_summary(result))
-    if post:
+    if not post:
+        print(batch_summary(result))
+    else:
         notify.post("curator", batch_summary(result))
         for msg in valhalla_messages(result.valhalla, header=f"Valhalla, batch {result.batch_id}"):
             notify.post("valhalla", msg)

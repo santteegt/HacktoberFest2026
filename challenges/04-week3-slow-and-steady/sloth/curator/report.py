@@ -57,7 +57,7 @@ def batch_summary(r, *, top: int = 5) -> str:
              + f" · ❓ unsure {len(unsure)}"]
     if r.tokens_in or r.tokens_out:
         lines.append(f"Local model `{r.model}`: {r.tokens_in + r.tokens_out:,} tokens, "
-                     f"{_dur(r.model_seconds)} of model time, nothing left this Mac.")
+                     f"{_dur(r.model_seconds)} of model time; the links never left this Mac.")
     best = sorted((i for i in kept if i.one_line_idea), key=lambda i: -i.buildable)[:top]
     if best:
         lines.append("**Best build ideas**")
@@ -76,7 +76,7 @@ def valhalla_messages(rows: list[dict], *, header: str = "Valhalla") -> list[str
     """#sk-valhalla text: one line per link, numbered by link id so `restore 3, 7` is unambiguous."""
     if not rows:
         return [f"**{header}**: empty."]
-    lines = [f"**{header}**: {len(rows)} links. Reply `restore <ids>` to keep some, or `empty` to confirm all "
+    lines = [f"**{header}**: {len(rows)} link{'s' if len(rows) != 1 else ''}. Reply `restore <ids>` to keep some, or `empty` to confirm all "
              "(nothing is deleted from Chrome; you get a removal list)."]
     for r in rows:
         tag = "rule" if r.get("decided_by") == "code" else "Gemma"
