@@ -11,7 +11,8 @@ A three-agent skunkworks that turns a hoarded reading list into prototypes. The 
 - **Source:** only the Chrome bookmarks-bar folder **"Reading List"** (1,017 links on 2026-10-24: 427 saved in 2025, 590 in 2026; 32 subfolders such as AI agents, LLMs, Rust, Solidity, Decentralized AI, project ideas; github.com 251, x.com 134, facebook.com 9). Chrome's own reading-list root and the other 6,800 bookmarks are out of scope and said so.
 - **Browser:** Stagehand on the author's local Chrome, Gemma through a custom LLM callback, for links where HTTP fetch returns no readable text (x.com posts, login walls, JS-only pages). Browserbase cloud is not used. If the local-model callback is unreliable, the fallback is a pinned hosted open-weight model for the browser step only, declared in the post. X-bookmarks extraction is a stretch goal after M1, only if the x.com enrichment works.
 - **Agents:** three Hermes profiles (Curator, Coordinator, Worker), each attached to one Discord channel. If Hermes cannot route one profile per channel on one gateway, the fallback is one profile with three skills and a channel-based router (see M0).
-- **Partners entered:** Gemma (triage, wording), Browserbase (Stagehand enrichment), Tiger Data (links, board, runs), Auth0 for AI Agents (one flow: CIBA approval before the Worker pushes a repo public, or Token Vault for the GitHub push), Entire if `entire enable` on the prototype repo takes under 30 minutes. Everything else is out.
+- **Partners entered:** Gemma (triage, wording), Browserbase (Stagehand enrichment), Tiger Data (links, board, runs), Entire if `entire enable` on the prototype repo takes under 30 minutes. Everything else is out of the MVP.
+- **Runner-up features (only after M3 has shipped a first real prototype):** a Gmail source through Auth0 Token Vault, read-only, limited to allowlisted senders. Auth0 holds and refreshes the Google token and keeps it away from the model; the sender restriction is our code (query built from the allowlist plus a `From:` re-check on every message), because `gmail.readonly` cannot be narrowed by sender. Needs a Google Cloud OAuth client (Testing mode), the Auth0 Google connection with Connected Accounts for Token Vault and Offline Access, a Regular Web App with the Token Vault grant, MFA policy Never. Boxed to 90 minutes; enters the Auth0 category only if it ships.
 
 ## Agents
 
@@ -70,7 +71,7 @@ A GitHub Project (v2) owned by the author's account mirrors the skunkworks board
 3. **Triage** (code rules, then model): code decides Valhalla for dead links (4xx/5xx after one retry, parked domains), archived repos, repos with no push in 4 years, duplicates; the model gets the rest with one schema: `{topic, vertical, kind, still_relevant, reason, buildable, one_line_idea}`; verifier checks enum values and that `reason` mentions a fact from the input; one retry locally. Batch report to `#curator`: kept / Valhalla / unsure, with counts and the batch's wall time.
 4. **Board** (Coordinator, code + wording): cluster kept links by vertical and topic; a card needs 2-5 links with `buildable >= 2`; the model writes `title`, `learning_goal`, `hypothesis`, the code sets `box_minutes` (120 default) and `kill_criteria`; cards go to `backlog` and `sloth board sync` mirrors them to the GitHub Project. Weekly focus: the author answers one question ("this week I care about: ...") which becomes a weight on verticals.
 5. **Daily pick** (Coordinator): at the set hour, code scores backlog cards (focus weight, freshness of links, verticals not touched lately), the model words 3-4 options, the gateway shows them as buttons; the tap moves one card to `today`, syncs the Project (Status Today, Picked date) and pings `#worker`.
-6. **Prototype box** (Worker): new repo from `templates/prototype/` (README stub, NOTES.md stub, tests folder, Makefile), the card as the task; the Worker implements, runs tests, stops at the box or at done-means; writes `NOTES.md` (built, learned, next, links used); posts a summary in `#worker` with the cost; asks for approval; on approval (Auth0 CIBA push if working, else a Discord button) pushes to GitHub and moves the card to `built`; the Project item gets Status Built, Cost, Model and Repo (Building is set when the box starts, Killed if the box ends without done-means).
+6. **Prototype box** (Worker): new repo from `templates/prototype/` (README stub, NOTES.md stub, tests folder, Makefile), the card as the task; the Worker implements, runs tests, stops at the box or at done-means; writes `NOTES.md` (built, learned, next, links used); posts a summary in `#worker` with the cost; asks for approval; on approval (a Discord button in `#worker`) pushes to GitHub and moves the card to `built`; the Project item gets Status Built, Cost, Model and Repo (Building is set when the box starts, Killed if the box ends without done-means).
 7. **Second brain**: a script renders `brain/` from `cards`, `runs` and `NOTES.md`; the Coordinator posts the new page link in `#skunkworks-log`.
 
 ## Milestones
@@ -84,7 +85,7 @@ Each milestone has a clock, an owner (Claude builds, the author tests and taps),
 - **M0.3 Stagehand + local model:** Stagehand (Python) on local Chrome with a Gemma callback, `extract` on 5 x.com links and 3 JS-only pages; count successes. Fallback: pinned hosted open-weight model for the browser step only.
 - **M0.4 Worker model:** one toy card through two OpenRouter open-weight models in a Hermes profile with the shell and file tools restricted to a sandbox repo; record minutes and dollars; pick one.
 - **M0.5 Tiger Data:** create the service, apply the schema, insert the collected links. Fallback: SQLite.
-- **M0.6 Auth0 CIBA:** free tenant, Guardian push, one approval round-trip from a script, boxed to 60 minutes. Fallback: a Discord approval button; Auth0 dropped from the categories.
+- ~~M0.6 Auth0 CIBA~~: removed 2026-10-24; the approval is a Discord button and Auth0 moved to the runner-up Gmail source.
 - Done-means: a table in the memory with each check's result, timing and chosen path.
 
 ### M1: Curator (Fri 11:30-16:00)
@@ -107,7 +108,7 @@ Each milestone has a clock, an owner (Claude builds, the author tests and taps),
 
 ### M4: Freeze and package (Sat 12:00-16:00)
 
-- Second prototype or fixes (12:00-14:00). Stretches, in this order and only if green by 14:00: Project `Status` read-back (drag-to-pick from the GitHub UI); X-bookmarks extraction via Stagehand into the same pipeline (only if M0.3 was green).
+- Second prototype or fixes (12:00-14:00). Stretches, in this order and only if a real prototype shipped in M3 and the item is green by 14:00: Gmail source via Auth0 Token Vault (runner-up, 90-minute box); Project `Status` read-back (drag-to-pick from the GitHub UI); X-bookmarks extraction via Stagehand into the same pipeline (only if M0.3 was green).
 - **Feature freeze 16:00.** Clean-clone test, `.env.example`, README, LICENSE, screenshots by script against labelled demo data, measurements consolidated in the memory.
 - Done-means: a stranger can run collect → triage on their own Reading List from the README.
 
@@ -128,7 +129,7 @@ Each milestone has a clock, an owner (Claude builds, the author tests and taps),
 
 - May: triage runs locally and offline on an M4 Max; the reading list never leaves the Mac; the Worker uses open weights (named) on a hosted provider at a stated cost; numbers above with method.
 - May also: the GitHub Project is a live mirror of the board (screenshot it); it is a GitHub service, not open source, and only card titles and bodies go there.
-- Must not: that the Worker is local or free; that the GitHub Project is two-way unless the read-back stretch shipped; that X or Facebook are supported unless the stretch shipped; that prototypes "graduated" unless they have README, demo and post; that Auth0 is used if the fallback button shipped.
+- Must not: that the Worker is local or free; that the GitHub Project is two-way unless the read-back stretch shipped; that X or Facebook are supported unless the stretch shipped; that prototypes "graduated" unless they have README, demo and post; that Auth0 or Gmail are used unless the runner-up shipped; that the Gmail sender limit comes from Auth0 or Google (it is our code).
 
 ## Repository layout (inside this challenge folder)
 
