@@ -50,13 +50,23 @@ def test_scoring_prefers_focus_then_freshness_then_novelty():
     assert "never picked" in d.reasons() and "matches this week's focus" in a.reasons()
 
 
-def test_select_spreads_verticals_then_fills():
-    scored = [pick.score_card(card(f"k{i}", v), TODAY, {"rust": 1.0}, None, TODAY)
-              for i, v in enumerate(["rust", "rust", "rust", "llms"])]
-    chosen = pick.select(scored, 3)
-    assert len(chosen) == 3
-    assert {s.card["vertical"] for s in chosen} == {"rust", "llms"}
-    assert pick.select(scored, 4)[-1].card["vertical"] == "llms"  # lowest score last
+def test_select_leans_on_focus_but_keeps_a_wildcard():
+    w = {"rust": 1.0}
+    scored = [pick.score_card(card(f"k{i}", v), TODAY, w, None, TODAY)
+              for i, v in enumerate(["rust", "rust", "rust", "rust", "llms", "hardware"])]
+    chosen = [s.card["vertical"] for s in pick.select(scored, 4)]
+    assert chosen.count("rust") in (2, 3) and len(set(chosen)) >= 2
+    flat = [pick.score_card(card(f"k{i}", v), TODAY, None, None, TODAY)
+            for i, v in enumerate(["rust", "rust", "llms", "hardware"])]
+    assert {s.card["vertical"] for s in pick.select(flat, 3)} == {"rust", "llms", "hardware"}
+
+
+def test_focus_words_beyond_verticals_give_a_bonus():
+    terms = pick.focus_terms("I wanna focus on memory for agents")
+    assert terms == {"memory"}
+    a = pick.score_card(card("ka", "ai-agents", "Agent memory with SQLite"), TODAY, {"ai-agents": 1.0}, None, TODAY, terms)
+    b = pick.score_card(card("kb", "ai-agents", "Web agent task bus"), TODAY, {"ai-agents": 1.0}, None, TODAY, terms)
+    assert a.score > b.score and a.topic == ("memory",) and "mentions memory" in a.reasons()
 
 
 def test_wording_fallback_is_code():
