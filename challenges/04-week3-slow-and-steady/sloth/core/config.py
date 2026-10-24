@@ -31,6 +31,8 @@ class Settings:
     ollama_model: str
     ollama_num_ctx: int
     openrouter_model: str
+    worker_provider: str          # "openrouter" (open weights, default) | "anthropic" (closed; tests only)
+    worker_model: str             # model id for worker_provider; empty = openrouter_model
     box_minutes: int
     prototypes_dir: Path
     github_owner: str
@@ -56,6 +58,8 @@ def settings() -> Settings:
         ollama_model=llm.get("ollama_model", "sloth-gemma4-12b"),
         ollama_num_ctx=int(llm.get("ollama_num_ctx", 65536)),
         openrouter_model=llm.get("openrouter_model", ""),
+        worker_provider=llm.get("worker_provider", "openrouter"),
+        worker_model=llm.get("worker_model", "") or llm.get("openrouter_model", ""),
         box_minutes=int(raw.get("worker", {}).get("box_minutes", 120)),
         prototypes_dir=Path(os.path.expanduser(raw.get("worker", {}).get(
             "prototypes_dir", "~/GitRepositories/skunkworks-prototypes"))),
