@@ -53,12 +53,27 @@ def is_closed(provider: str) -> bool:
     return provider not in OPEN_PROVIDERS
 
 
+def split_tokens(tokens: dict) -> dict:
+    """Hermes' stream-json `tokens` → billing buckets.
+
+    `hermes chat` runs through the gateway, whose result reports `input_tokens` =
+    `session_prompt_tokens` = uncached + cache reads + cache writes (gateway/run_turn_runner.py,
+    CanonicalUsage.prompt_tokens in agent/usage_pricing.py). Only Hermes' in-process path reports
+    uncached input; if `input` is smaller than the cache buckets, it must be that one.
+    """
+    inp, cr, cw = (int(tokens.get(k) or 0) for k in ("input", "cache_read", "cache_write"))
+    uncached = inp - cr - cw if inp >= cr + cw else inp
+    return {"input": uncached, "cache_read": cr, "cache_write": cw,
+            "output": int(tokens.get("output") or 0), "prompt_total": uncached + cr + cw}
+
+
 def token_cost(model: str, tokens: dict) -> float | None:
-    """List-price cost from Hermes' token totals (input excludes cache reads and writes)."""
+    """List-price cost from Hermes' token totals (see `split_tokens` for what `input` holds)."""
     price = PRICES.get(model)
     if not price or not tokens:
         return None
-    return round(sum(tokens.get(k, 0) * price[k] for k in price) / 1_000_000, 4)
+    buckets = split_tokens(tokens)
+    return round(sum(buckets[k] * price[k] for k in price) / 1_000_000, 4)
 
 
 @dataclass
@@ -315,7 +330,7 @@ def run_box(card: Card, *, links: list[dict] | None = None, model: str | None = 
     r = BoxResult(
         card_id=card.id, repo_dir=str(repo), model=model_id, outcome=outcome, tests_passed=tests_passed,
         test_output=test_output, minutes=round(minutes, 1), cost_usd=cost,
-        tokens_in=(tokens.get("input", 0) + tokens.get("cache_read", 0) + tokens.get("cache_write", 0)) if tokens else None,
+        tokens_in=split_tokens(tokens)["prompt_total"] if tokens else None,
         tokens_out=tokens.get("output"), provider=provider,
         agent_status=answer.get("status"), summary=answer.get("summary") or (result_ev.get("text") or "")[:300] or None,
         learned=answer.get("learned"), session_id=result_ev.get("session_id"), log_path=str(log_path),

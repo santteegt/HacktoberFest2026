@@ -49,7 +49,7 @@ notes = (repo / "NOTES.md").read_text().replace("<!-- What exists now and how to
 (repo / "NOTES.md").write_text(notes)
 answer = json.dumps({{"status": "done", "summary": "built the thing", "tests": "1 passed", "learned": "it works"}})
 print(json.dumps({{"type": "result", "session_id": "s1", "exit_code": 0, "text": answer,
-                  "tokens": {{"input": 1000, "output": 200, "cache_read": 100000, "cache_write": 4000}}}}))
+                  "tokens": {{"input": 105000, "output": 200, "cache_read": 100000, "cache_write": 4000}}}}))
 '''
 
 
@@ -147,3 +147,14 @@ def test_resolve_model_from_config(monkeypatch):
         base, worker_provider="openrouter", worker_model="", openrouter_model="google/x"))
     assert worker.resolve_model() == ("openrouter", "google/x", "google/x")
     assert worker.token_cost("unknown-model", {"input": 1}) is None
+
+
+def test_token_cost_run1_k05d2_exact_numbers():
+    """Run 1 (k05d2, Sonnet 5.5): Hermes' gateway `input` already includes cache reads and writes."""
+    tokens = {"input": 4_311_522, "output": 33_218, "cache_read": 4_203_979, "cache_write": 107_423}
+    b = worker.split_tokens(tokens)
+    assert b["input"] == 120 and b["prompt_total"] == 4_311_522
+    # 120 x $2 + 4,203,979 x $0.10 + 107,423 x $2.50 + 33,218 x $10, per million
+    assert worker.token_cost("claude-sonnet-5-5", tokens) == pytest.approx(1.0214, abs=1e-4)
+    # the in-process shape (uncached input smaller than the cache buckets) is not subtracted twice
+    assert worker.split_tokens({"input": 120, "cache_read": 4_203_979, "cache_write": 107_423})["input"] == 120
