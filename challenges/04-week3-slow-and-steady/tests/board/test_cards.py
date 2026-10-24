@@ -151,3 +151,35 @@ def test_readme_stamp_ignored():
     b = "x\n_Updated 2026-10-24 17:10 UTC by `sloth board sync`. y_"
     assert github._strip_stamp(a) == github._strip_stamp(b)
     assert github._strip_stamp(a) != github._strip_stamp(b.replace("y_", "z_"))
+
+
+class _Conn:
+    def execute(self, *a, **k):
+        return self
+
+    def commit(self):
+        pass
+
+
+def test_sync_prune_keeps_referenced_items_and_adopts_orphans(monkeypatch):
+    from sloth.board import store
+    cards = [{**CARD, "id": "ka", "title": "Card A", "gh_item_id": "I_A"},
+             {**CARD, "id": "kb", "title": "Card B", "gh_item_id": None}]
+    items = [
+        {"id": "I_A", "draft_id": "D_A", "title": "Card A", "body": "", "values": {}},  # no Card ID yet
+        {"id": "I_B", "draft_id": "D_B", "title": "Card B", "body": "", "values": {}},  # lost create
+        {"id": "I_X", "draft_id": "D_X", "title": "Fixture", "body": "", "values": {"Card ID": "kfix"}},
+    ]
+    sent = []
+    monkeypatch.setattr(github, "load_ids", lambda: {**IDS, "url": "u", "number": 2, "owner": "@me"})
+    monkeypatch.setattr(github, "fetch_items", lambda pid: (items, ""))
+    monkeypatch.setattr(github, "gql", lambda q, v=None, retry=True: sent.append(q) or {})
+    monkeypatch.setattr(store, "all_cards", lambda conn, cols=None: cards)
+    monkeypatch.setattr(store, "latest_runs", lambda conn: {})
+    monkeypatch.setattr(store, "links_by_id", lambda conn, ids: {})
+    stats = github.sync(prune=True, readme=False, conn=_Conn(), apply=False)
+    text = "\n".join(sent)
+    assert stats["created"] == 0 and stats["pruned"] == 1
+    assert '"I_X"' in text and 'deleteProjectV2Item' in text
+    assert text.count("deleteProjectV2Item") == 1
+    assert 'itemId: "I_B"' in text  # the orphan was adopted and got its fields
