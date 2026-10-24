@@ -191,19 +191,41 @@ def browser_timeout(url: str) -> int:
     return 45 if host_of(url) in BROWSER_HOSTS else 90
 
 
-def browser_candidate(enr: dict | None) -> bool:
+BROWSER_FAILED = "| browser: "
+
+
+def browser_candidate(enr: dict | None, *, retry_failed: bool = False) -> bool:
     """Browser-only hosts and pages that answered 200 with a JS shell. Never 403/404/DNS failures:
-    a real browser does not fix a blocked or dead page (coordinator ruling, CP1)."""
+    a real browser does not fix a blocked or dead page (coordinator ruling, CP1). A link the browser
+    already failed on is skipped unless retry_failed."""
     if not enr or enr.get("content_kind") in ("github", "pdf", "video"):
         return False
-    if enr.get("error") == "browser-only host":
+    if BROWSER_FAILED in (enr.get("error") or "") and not retry_failed:
+        return False
+    if (enr.get("error") or "").startswith("browser-only host"):
         return True
     return enr.get("http_status") == 200 and (enr.get("readable_chars") or 0) < MIN_READABLE
 
 
+def ollama_drained(max_wait_s: float = 300) -> float:
+    """Block until a 1-token request to the shared model returns, i.e. requests a timed-out extract
+    left running inside Ollama (one slot) have finished. Returns the seconds waited."""
+    from sloth.core.config import settings
+    s = settings()
+    t0 = time.monotonic()
+    try:
+        httpx.post(f"{s.ollama_url}/api/generate", timeout=max_wait_s, json={
+            "model": s.ollama_model, "prompt": "ok", "stream": False, "think": False,
+            "options": {"num_ctx": s.ollama_num_ctx, "num_predict": 1}})
+    except httpx.HTTPError:
+        pass
+    return round(time.monotonic() - t0, 1)
+
+
 async def browse_many(links: list[dict], enr: dict[int, dict],
                       on_done: Callable[[Enrichment], None] | None = None,
-                      on_try: Callable[[dict], None] | None = None) -> list[Enrichment]:
+                      on_try: Callable[[dict], None] | None = None,
+                      on_fail: Callable[[int, str, float], None] | None = None) -> list[Enrichment]:
     """Re-read links with Lane 3's browser, one at a time in one session. Returns the ones it read.
     on_try gets {link_id, host, ok, seconds, reason} for every attempt (for the lane log)."""
     out: list[Enrichment] = []
@@ -220,9 +242,17 @@ async def browse_many(links: list[dict], enr: dict[int, dict],
             except Exception as err:  # noqa: BLE001 - one bad page never stops the batch
                 x, why = None, f"{type(err).__name__}: {str(err)[:120]}"
             ok = x is not None and bool(x.summary_text or x.title)
+            secs = round(time.monotonic() - t0, 1)
+            drained = 0.0
+            if not ok and "timeout" in (why or ""):
+                # The abandoned Stagehand request is still running in Ollama's single slot; wait for
+                # it, or every following page queues behind it and times out too (seen 19:30-20:54Z).
+                drained = await asyncio.to_thread(ollama_drained)
             if on_try:
                 on_try({"link_id": link["id"], "host": host_of(link["url"]), "ok": ok,
-                        "seconds": round(time.monotonic() - t0, 1), "reason": why})
+                        "seconds": secs, "reason": why, "drain_s": drained})
+            if not ok and on_fail:
+                on_fail(link["id"], (why or "unknown")[:80], secs)
             if ok:
                 e = _from_browser(base, x)
                 out.append(e)

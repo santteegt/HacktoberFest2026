@@ -163,3 +163,11 @@ def reading_rows(conn) -> list[dict]:
            LEFT JOIN LATERAL (SELECT vertical, topic FROM triage WHERE link_id = l.id
                               ORDER BY created_at DESC LIMIT 1) t ON true
            WHERE l.status = 'reading' ORDER BY t.vertical, l.saved_at DESC""").fetchall()
+
+
+def mark_browser_failed(conn, link_id: int, reason: str, seconds: float) -> None:
+    """Remember a failed browser try in the enrichment row so the next pass skips it."""
+    conn.execute(
+        """UPDATE enrichment SET error = coalesce(error, '') || ' | browser: ' || %s, browser_seconds = %s
+           WHERE link_id = %s AND coalesce(error, '') NOT LIKE '%%| browser: %%'""",
+        (reason, seconds, link_id))
