@@ -247,3 +247,40 @@ def recheck_code_verdicts(conn) -> dict:
         conn.execute("DELETE FROM valhalla WHERE link_id = ANY(%s) AND status = 'proposed'", (withdrawn,))
         conn.execute("UPDATE links SET status = 'enriched' WHERE id = ANY(%s)", (withdrawn,))
     return {"withdrawn": withdrawn, "reason_updated": updated}
+
+
+def retriage_stale(conn, *, batch_id: str | None = None) -> dict:
+    """Re-label links whose enrichment is newer than their latest label (e.g. the browser read them
+    after triage, and the browser pass stopped before its own re-triage). Author-settled links
+    (restored/confirmed Valhalla) and code verdicts are left alone."""
+    from .triage import decide, label
+    rows = conn.execute(
+        """SELECT l.* FROM links l JOIN enrichment e ON e.link_id = l.id
+           JOIN LATERAL (SELECT created_at, decided_by FROM triage WHERE link_id = l.id
+                         ORDER BY created_at DESC LIMIT 1) t ON true
+           LEFT JOIN valhalla v ON v.link_id = l.id
+           WHERE e.fetched_at > t.created_at AND t.decided_by = 'model'
+             AND (l.status IN ('kept', 'reading', 'unsure')
+                  OR (l.status = 'valhalla' AND v.status = 'proposed' AND v.decided_by = 'model'))
+           ORDER BY l.id""").fetchall()
+    bid = batch_id or new_batch_id() + "-retriage"
+    have = store.enrichment_for(conn, [r["id"] for r in rows])
+    moves: Counter = Counter()
+    compute_ms = 0
+    for link in rows:
+        lab = label(link, have.get(link["id"]))
+        compute_ms += lab.compute_ms
+        outcome = decide(lab, link, have.get(link["id"]))
+        store.save_triage(conn, link["id"], lab.triage, decided_by="model", model=lab.model,
+                          tokens_in=lab.tokens_in, tokens_out=lab.tokens_out, ms=lab.ms)
+        before = link["status"]
+        if outcome == "valhalla":
+            store.propose_valhalla(conn, link["id"], lab.triage.reason, decided_by="model", batch_id=bid)
+        else:
+            if before == "valhalla":
+                conn.execute("UPDATE valhalla SET status = 'restored', resolved_at = now() WHERE link_id = %s",
+                             (link["id"],))
+            store.set_status(conn, link["id"], outcome, bid)
+        moves[f"{before}->{outcome}"] += 1
+    return {"relabelled": len(rows), "moves": dict(moves),
+            "compute_ms_per_link": round(compute_ms / len(rows)) if rows else None}

@@ -215,3 +215,12 @@ def recheck_cmd() -> None:
     with _conn() as conn:
         conn.autocommit = True
         _out(recheck_code_verdicts(conn))
+
+
+@curator_app.command("retriage-stale")
+def retriage_stale_cmd() -> None:
+    """Re-label links whose enrichment changed after their last model label."""
+    from ..curator.pipeline import retriage_stale
+    with _conn() as conn:
+        conn.autocommit = True
+        _out(retriage_stale(conn))
