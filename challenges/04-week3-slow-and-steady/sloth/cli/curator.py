@@ -3,15 +3,20 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import re
 import time
 from typing import Annotated
 
 import typer
-from rich import print
 
 curator_app = typer.Typer(no_args_is_help=True, help="Curator stages, one at a time (debugging and measurements).")
 valhalla_app = typer.Typer(no_args_is_help=True, help="The removal bucket. Nothing here touches Chrome's Bookmarks file.")
+
+
+def _out(value) -> None:
+    """Plain stdout (never rich: it wraps at 80 columns, which breaks Discord-ready text)."""
+    print(value if isinstance(value, str) else json.dumps(value, indent=1, default=str))
 
 
 def _conn():
@@ -24,7 +29,7 @@ def collect_cmd() -> None:
     """Read the Reading List folder (read-only) and upsert new links."""
     from ..curator.pipeline import run_collect
     with _conn() as conn:
-        print(run_collect(conn))
+        _out(run_collect(conn))
 
 
 @curator_app.command("enrich")
@@ -36,7 +41,7 @@ def enrich_cmd(limit: Annotated[int, typer.Option(help="How many un-enriched lin
         conn.autocommit = True
         t0 = time.monotonic()
         stats = asyncio.run(run_enrich(conn, limit=limit or None, use_browser=browser))
-        print({**stats, "seconds": round(time.monotonic() - t0, 1)})
+        _out({**stats, "seconds": round(time.monotonic() - t0, 1)})
 
 
 @curator_app.command("stats")
@@ -44,7 +49,7 @@ def stats_cmd() -> None:
     """Link counts by status, enrichment outcome and decision source."""
     from ..curator.pipeline import stats
     with _conn() as conn:
-        print(stats(conn))
+        _out(stats(conn))
 
 
 def curate(batch: Annotated[int, typer.Option("--batch", "-n", help="Links to triage in this batch.")] = 200,
@@ -119,7 +124,7 @@ def m02_cmd(n: int = 50, label_n: int = 20, seed: int = 26) -> None:
     """M0.2: triage n random real links, measure speed, write the blind labelling file to .sloth/m02/."""
     from ..curator import measure
     with _conn() as conn:
-        print(measure.run(conn, n, label_n, seed=seed))
+        _out(measure.run(conn, n, label_n, seed=seed))
     print(f"label file: {measure.OUT / 'labels.md'}")
 
 
@@ -127,7 +132,7 @@ def m02_cmd(n: int = 50, label_n: int = 20, seed: int = 26) -> None:
 def m02_score_cmd(results: str = "results.json") -> None:
     """Agreement between the author's labels and the model on the M0.2 sample."""
     from ..curator import measure
-    print(measure.score(results_name=results))
+    _out(measure.score(results_name=results))
 
 
 @curator_app.command("m02-rerun")
@@ -135,7 +140,7 @@ def m02_rerun_cmd(tag: str) -> None:
     """Re-label the author-labelled links with the current prompt and score them."""
     from ..curator import measure
     with _conn() as conn:
-        print(measure.rerun_labelled(conn, tag))
+        _out(measure.rerun_labelled(conn, tag))
 
 
 @curator_app.command("unsure")
@@ -174,7 +179,7 @@ def bench_cmd(n: int = 15) -> None:
     """Model compute per link from Ollama's own durations (ignores queueing behind other lanes)."""
     from ..curator import measure
     with _conn() as conn:
-        print(measure.compute_bench(conn, n))
+        _out(measure.compute_bench(conn, n))
 
 
 @curator_app.command("reading")
@@ -196,4 +201,4 @@ def browse_cmd(limit: Annotated[int, typer.Option(help="How many unreadable link
     print(f"browser: {'Lane 3 session' if browser_session else 'Lane 3 extract() or stub'}")
     with _conn() as conn:
         conn.autocommit = True
-        print(run_browse(conn, limit=limit or None))
+        _out(run_browse(conn, limit=limit or None))
