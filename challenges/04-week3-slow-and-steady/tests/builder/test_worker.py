@@ -42,13 +42,14 @@ def test_parse_answer_takes_last_json_object():
 FAKE_HERMES = r'''#!{python}
 import json, sys, pathlib
 repo = pathlib.Path(sys.argv[sys.argv.index("--in") + 1])
+(repo.parent / "argv.json").write_text(json.dumps(sys.argv[1:]))
 (repo / "tests" / "test_placeholder.py").unlink()
 (repo / "tests" / "test_real.py").write_text("def test_ok():\n    assert 1 + 1 == 2\n")
 notes = (repo / "NOTES.md").read_text().replace("<!-- What exists now and how to run it. -->", "A thing that works.")
 (repo / "NOTES.md").write_text(notes)
 answer = json.dumps({{"status": "done", "summary": "built the thing", "tests": "1 passed", "learned": "it works"}})
 print(json.dumps({{"type": "result", "session_id": "s1", "exit_code": 0, "text": answer,
-                  "tokens": {{"input": 1000, "output": 200}}}}))
+                  "tokens": {{"input": 1000, "output": 200, "cache_read": 100000, "cache_write": 4000}}}}))
 '''
 
 
@@ -66,14 +67,17 @@ def test_run_box_end_to_end_with_fake_hermes(tmp_path, card, monkeypatch):
     monkeypatch.setattr(worker, "run_tests", lambda repo: (
         not (repo / "tests" / "test_placeholder.py").exists(), "1 passed"))
     monkeypatch.setattr(worker.time, "sleep", lambda s: None)
-    r = worker.run_box(card, links=LINKS, model="test/model", box_minutes=1,
+    r = worker.run_box(card, links=LINKS, model="test/model", provider="openrouter", box_minutes=1,
                        base_dir=tmp_path / "protos", hermes=_fake_hermes(tmp_path))
     assert r.outcome == Outcome.done and r.tests_passed and not r.timed_out
-    assert r.cost_usd == pytest.approx(0.05) and r.tokens_in == 1000
+    assert r.cost_usd == pytest.approx(0.05) and r.tokens_in == 105000 and r.model == "test/model"
+    argv = json.loads((tmp_path / "protos" / "argv.json").read_text())
+    assert argv[argv.index("--provider") + 1] == "openrouter" and argv[argv.index("-m") + 1] == "test/model"
     notes = (Path(r.repo_dir) / "NOTES.md").read_text()
     assert "A thing that works." in notes and "Outcome: **done**" in notes
     text = worker.summary_text(r, card, run_id=7)
     assert "run 7" in text and "$0.05" in text and "Nothing is on GitHub until you approve" in text
+    assert "closed model" not in text
 
 
 def test_run_box_kills_at_the_box(tmp_path, card, monkeypatch):
@@ -85,7 +89,7 @@ def test_run_box_kills_at_the_box(tmp_path, card, monkeypatch):
     sleeper = "#!{python}\nimport time\ntime.sleep(120)\n"
     # box_minutes=0 → the timer fires after GRACE_S seconds
     card = card.model_copy(update={"box_minutes": 0})
-    r = worker.run_box(card, links=[], model="test/model", box_minutes=0,
+    r = worker.run_box(card, links=[], model="test/model", provider="openrouter", box_minutes=0,
                        base_dir=tmp_path / "protos", hermes=_fake_hermes(tmp_path, sleeper))
     assert r.timed_out and r.outcome == Outcome.boxed_out and r.cost_usd is None
     notes = (Path(r.repo_dir) / "NOTES.md").read_text()
@@ -111,3 +115,35 @@ def test_status_text_lists_today_and_runs():
     text = runs.status_text(st)
     assert "Today: `k5cbc`" in text and "reply `approve 7`" in text and "$0.05" in text
     assert "No card in Today" in runs.status_text({"today": [], "latest_runs": []})
+
+
+def test_run_box_anthropic_test_mode_costs_from_tokens(tmp_path, card, monkeypatch):
+    def no_usage():
+        raise AssertionError("OpenRouter usage must not be read for another provider")
+    monkeypatch.setattr(worker, "openrouter_usage", no_usage)
+    monkeypatch.setattr(worker, "settled_usage", lambda before: no_usage())
+    monkeypatch.setattr(worker, "run_tests", lambda repo: (True, "1 passed"))
+    r = worker.run_box(card, links=LINKS, model="claude-sonnet-5-5", provider="anthropic", box_minutes=1,
+                       base_dir=tmp_path / "protos", hermes=_fake_hermes(tmp_path))
+    argv = json.loads((tmp_path / "protos" / "argv.json").read_text())
+    assert argv[argv.index("--provider") + 1] == "anthropic" and argv[argv.index("-m") + 1] == "claude-sonnet-5-5"
+    assert r.model == "anthropic/claude-sonnet-5-5" and r.provider == "anthropic"
+    # 1000 in x $2 + 200 out x $10 + 4000 cache writes x $2.50 + 100000 cache reads x $0.10, per million
+    assert r.cost_usd == pytest.approx(0.024) and r.tokens_in == 105000 and r.tokens_out == 200
+    assert "(closed model, test run)" in worker.summary_text(r, card, run_id=8)
+    assert "via anthropic (closed model, test run)" in (Path(r.repo_dir) / "NOTES.md").read_text()
+
+
+def test_resolve_model_from_config(monkeypatch):
+    import dataclasses
+    from sloth.core import config
+    base = config.settings()
+    monkeypatch.setattr(worker, "settings", lambda: dataclasses.replace(
+        base, worker_provider="anthropic", worker_model="claude-sonnet-5-5", openrouter_model="google/x"))
+    assert worker.resolve_model() == ("anthropic", "claude-sonnet-5-5", "anthropic/claude-sonnet-5-5")
+    assert worker.resolve_model(model="claude-other") == ("anthropic", "claude-other", "anthropic/claude-other")
+    assert worker.resolve_model(provider="openrouter", model="google/x") == ("openrouter", "google/x", "google/x")
+    monkeypatch.setattr(worker, "settings", lambda: dataclasses.replace(
+        base, worker_provider="openrouter", worker_model="", openrouter_model="google/x"))
+    assert worker.resolve_model() == ("openrouter", "google/x", "google/x")
+    assert worker.token_cost("unknown-model", {"input": 1}) is None

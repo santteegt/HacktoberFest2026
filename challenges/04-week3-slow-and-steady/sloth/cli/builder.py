@@ -13,7 +13,8 @@ browser_app = typer.Typer(no_args_is_help=True, help="Stagehand on a local Chrom
 def work(
     card_id: str = typer.Argument(None, help="Card to build (its column should be 'today')."),
     status: bool = typer.Option(False, "--status", help="Show today's card and the latest runs, then exit."),
-    model: str = typer.Option(None, help="OpenRouter model id; default llm.openrouter_model."),
+    model: str = typer.Option(None, help="Model id; default llm.worker_model (or llm.openrouter_model)."),
+    provider: str = typer.Option(None, help="Hermes provider; default llm.worker_provider (openrouter)."),
     box_minutes: int = typer.Option(None, help="Override the card's box (minutes)."),
     card_file: Path = typer.Option(None, help="Load the card from JSON and upsert it (fixtures, tests)."),
     as_json: bool = typer.Option(False, "--json", help="Print the full result as JSON."),
@@ -21,7 +22,6 @@ def work(
     """Build a card inside its box: repo from the template, Worker run, tests, NOTES.md, runs row."""
     from ..builder import approval, runs, worker
     from ..core import notify
-    from ..core.config import settings
     from ..core.models import Card
 
     if status:
@@ -36,17 +36,20 @@ def work(
             raise typer.BadParameter(f"{card_file} holds card {card.id}, not {card_id}")
         runs.upsert_card(card)
     card = runs.load_card(card_id)
-    use_model = model or settings().openrouter_model
-    if not use_model:
-        raise typer.BadParameter("no model: set llm.openrouter_model or pass --model")
-    box = box_minutes or card.box_minutes
-    run_id = runs.start_run(card.id, use_model)
-    notify.post("worker", f"🦥 Box started for **{card.title}** (card `{card.id}`, run {run_id}): "
-                          f"{box} min, `{use_model}`.")
-    notify.log("worker", "box_start", f"card {card.id} → Building, run {run_id}, {box} min, {use_model}",
-               {"run_id": run_id, "card_id": card.id, "model": use_model})
     try:
-        r = worker.run_box(card, links=runs.card_links(card), model=use_model, box_minutes=box)
+        use_provider, use_model, model_id = worker.resolve_model(provider, model)
+    except RuntimeError as e:
+        raise typer.BadParameter(str(e)) from e
+    closed = " (closed model, test run)" if worker.is_closed(use_provider) else ""
+    box = box_minutes or card.box_minutes
+    run_id = runs.start_run(card.id, model_id)
+    notify.post("worker", f"🦥 Box started for **{card.title}** (card `{card.id}`, run {run_id}): "
+                          f"{box} min, `{model_id}`{closed}.")
+    notify.log("worker", "box_start", f"card {card.id} → Building, run {run_id}, {box} min, {model_id}{closed}",
+               {"run_id": run_id, "card_id": card.id, "model": model_id, "provider": use_provider})
+    try:
+        r = worker.run_box(card, links=runs.card_links(card), model=use_model, provider=use_provider,
+                           box_minutes=box)
     except BaseException:
         runs.finish_run(run_id, outcome=worker.Outcome.killed, cost_usd=None, tokens_in=None,
                         tokens_out=None, repo_dir="", notes_path="")
@@ -59,7 +62,7 @@ def work(
     notify.post("worker", req["text"])  # the Worker desk skill maps `approve <run_id>` to `sloth approve`
     cost = f"${r.cost_usd:.4f}" if r.cost_usd is not None else "cost unknown"
     notify.log("worker", "box_end", f"card {card.id} run {run_id} {r.outcome}, tests "
-               f"{'pass' if r.tests_passed else 'fail'}, {r.minutes:.0f} min, {cost}, {r.model}",
+               f"{'pass' if r.tests_passed else 'fail'}, {r.minutes:.0f} min, {cost}, {r.model}{closed}",
                {"run_id": run_id, "outcome": str(r.outcome), "cost_usd": r.cost_usd})
     print(r.to_json() if as_json else text)
 
