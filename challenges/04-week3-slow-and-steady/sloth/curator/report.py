@@ -38,8 +38,9 @@ def chunk(lines: list[str], limit: int = DISCORD_LIMIT) -> list[str]:
 
 
 def log_line(r) -> str:
-    """One #sk-logs line, e.g. `batch b20261024-2100: 200 in, 120 kept, 60 Valhalla, 20 unsure, 6m12s`."""
-    return (f"batch {r.batch_id}: {len(r.items)} in, {len(r.by('kept'))} kept, {len(r.by('valhalla'))} Valhalla, "
+    """One #sk-logs line, e.g. `batch b20261024-2100: 200 in, 40 to build, 80 to read, 60 Valhalla, 20 unsure, 6m12s`."""
+    return (f"batch {r.batch_id}: {len(r.items)} in, {len(r.by('kept'))} to build, {len(r.by('reading'))} to read, "
+            f"{len(r.by('valhalla'))} Valhalla, "
             f"{len(r.by('unsure'))} unsure, {_dur(r.seconds)}")
 
 
@@ -47,12 +48,12 @@ def batch_summary(r, *, top: int = 5) -> str:
     """The #sk-curator report: counts, why things went to Valhalla, the best ideas, the open questions."""
     if not r.items:
         return f"**Curator batch {r.batch_id}**: nothing left to triage. The Reading List is done."
-    kept, val, unsure = r.by("kept"), r.by("valhalla"), r.by("unsure")
+    kept, reading, val, unsure = r.by("kept"), r.by("reading"), r.by("valhalla"), r.by("unsure")
     rules = Counter(i.rule for i in val if i.rule)
     by_model = sum(1 for i in val if i.decided_by == "model")
     why = ", ".join(f"{n} {k}" for k, n in rules.most_common()) + (f", {by_model} by Gemma" if by_model else "")
     lines = [f"**Curator batch {r.batch_id}**: {len(r.items)} links in {_dur(r.seconds)}",
-             f"✅ kept {len(kept)} · 🪦 Valhalla {len(val)}" + (f" ({why.strip(', ')})" if val else "")
+             f"🛠️ to build {len(kept)} · 📚 to read {len(reading)} · 🪦 Valhalla {len(val)}" + (f" ({why.strip(', ')})" if val else "")
              + f" · ❓ unsure {len(unsure)}"]
     if r.tokens_in or r.tokens_out:
         lines.append(f"Local model `{r.model}`: {r.tokens_in + r.tokens_out:,} tokens, "
@@ -81,6 +82,18 @@ def valhalla_messages(rows: list[dict], *, header: str = "Valhalla") -> list[str
         tag = "rule" if r.get("decided_by") == "code" else "Gemma"
         lines.append(f"`#{r['link_id']}` {_clip(r.get('title') or r.get('url', ''), 70)} · {tag}: "
                      f"{_clip(r.get('reason', ''), 110)}")
+    return chunk(lines)
+
+
+def reading_messages(rows: list[dict]) -> list[str]:
+    """The reading bucket, grouped by vertical (rows ordered by vertical already)."""
+    lines = [f"**📚 Reading bucket**: {len(rows)} links worth reading, nothing to prototype."]
+    current = None
+    for r in rows:
+        if r.get("vertical") != current:
+            current = r.get("vertical")
+            lines.append(f"__{current or 'unsorted'}__")
+        lines.append(f"`#{r['link_id']}` {_clip(r.get('title') or r.get('url', ''), 90)}")
     return chunk(lines)
 
 

@@ -123,10 +123,18 @@ def m02_cmd(n: int = 50, label_n: int = 20, seed: int = 26) -> None:
 
 
 @curator_app.command("m02-score")
-def m02_score_cmd() -> None:
+def m02_score_cmd(results: str = "results.json") -> None:
     """Agreement between the author's labels and the model on the M0.2 sample."""
     from ..curator import measure
-    print(measure.score())
+    print(measure.score(results_name=results))
+
+
+@curator_app.command("m02-rerun")
+def m02_rerun_cmd(tag: str) -> None:
+    """Re-label the author-labelled links with the current prompt and score them."""
+    from ..curator import measure
+    with _conn() as conn:
+        print(measure.rerun_labelled(conn, tag))
 
 
 @curator_app.command("unsure")
@@ -144,7 +152,7 @@ def unsure_cmd() -> None:
 
 @curator_app.command("keep")
 def keep_cmd(ids: Annotated[list[str], typer.Argument(help="Unsure link ids, e.g. `12, 40`.")]) -> None:
-    """Keep unsure links."""
+    """Keep unsure links (to build if their label says buildable >= 2, else to the reading bucket)."""
     from ..curator import store
     with _conn() as conn:
         done = store.resolve_unsure(conn, _parse_ids(ids), keep=True)
@@ -158,3 +166,22 @@ def drop_cmd(ids: Annotated[list[str], typer.Argument(help="Unsure link ids, e.g
     with _conn() as conn:
         done = store.resolve_unsure(conn, _parse_ids(ids), keep=False)
     print(f"sent to Valhalla {len(done)}: {', '.join(f'#{i}' for i in done) or '-'}")
+
+
+@curator_app.command("bench")
+def bench_cmd(n: int = 15) -> None:
+    """Model compute per link from Ollama's own durations (ignores queueing behind other lanes)."""
+    from ..curator import measure
+    with _conn() as conn:
+        print(measure.compute_bench(conn, n))
+
+
+@curator_app.command("reading")
+def reading_cmd() -> None:
+    """The reading bucket: still worth reading, nothing to prototype. Grouped by vertical."""
+    from ..curator import store
+    from ..curator.report import reading_messages
+    with _conn() as conn:
+        rows = store.reading_rows(conn)
+    for msg in reading_messages(rows):
+        print(msg)

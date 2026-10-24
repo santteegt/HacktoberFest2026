@@ -7,7 +7,8 @@ from datetime import UTC, datetime
 
 from sloth.core.models import Enrichment, Link, Triage
 
-# links.status values the Curator writes: new → enriched → kept | valhalla | unsure.
+# links.status values the Curator writes: new → enriched → kept | reading | valhalla | unsure.
+# kept = build candidate (buildable >= 2); reading = worth reading, nothing to prototype.
 
 
 def upsert_links(conn, links: Iterable[Link]) -> int:
@@ -110,8 +111,16 @@ def restore(conn, link_ids: list[int]) -> list[int]:
     ).fetchall()
     done = [r["link_id"] for r in rows]
     if done:
-        conn.execute("UPDATE links SET status = 'kept' WHERE id = ANY(%s)", (done,))
+        conn.execute(_BACK_FROM_LIMBO, (done,))
     return done
+
+
+# A link the author rescues goes to kept if its latest label says buildable >= 2, else to reading.
+_BACK_FROM_LIMBO = """
+    UPDATE links l SET status = CASE WHEN coalesce((SELECT t.buildable FROM triage t WHERE t.link_id = l.id
+                                                   ORDER BY t.created_at DESC LIMIT 1), 0) >= 2
+                                     THEN 'kept' ELSE 'reading' END
+    WHERE l.id = ANY(%s)"""
 
 
 def confirm_all(conn) -> list[dict]:
@@ -140,9 +149,17 @@ def resolve_unsure(conn, link_ids: list[int], *, keep: bool, batch_id: str = "au
     """The author's answer to an unsure link: keep it, or send it to Valhalla (decided_by author)."""
     rows = conn.execute("SELECT id FROM links WHERE id = ANY(%s) AND status = 'unsure'", (link_ids,)).fetchall()
     done = [r["id"] for r in rows]
+    if keep and done:
+        conn.execute(_BACK_FROM_LIMBO, (done,))
     for i in done:
-        if keep:
-            set_status(conn, i, "kept")
-        else:
+        if not keep:
             propose_valhalla(conn, i, "the author sent it to Valhalla", decided_by="author", batch_id=batch_id)
     return done
+
+
+def reading_rows(conn) -> list[dict]:
+    return conn.execute(
+        """SELECT l.id AS link_id, l.title, l.url, t.vertical, t.topic FROM links l
+           LEFT JOIN LATERAL (SELECT vertical, topic FROM triage WHERE link_id = l.id
+                              ORDER BY created_at DESC LIMIT 1) t ON true
+           WHERE l.status = 'reading' ORDER BY t.vertical, l.saved_at DESC""").fetchall()

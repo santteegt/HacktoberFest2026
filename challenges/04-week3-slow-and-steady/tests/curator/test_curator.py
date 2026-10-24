@@ -135,7 +135,13 @@ def test_decide():
     assert triage.decide(lab, link, None) == "unsure"  # no page text and a short title
     assert triage.decide(lab, {"title": "x" * 50}, None) == "valhalla"
     assert triage.decide(triage.Labelled(_t(), True, [], "m", 1, 1, 1, 1), link, None) == "kept"
+    assert triage.decide(triage.Labelled(_t(buildable=1), True, [], "m", 1, 1, 1, 1), link, None) == "reading"
     assert triage.decide(triage.Labelled(_t(), False, ["x"], "m", 1, 1, 1, 2), link, None) == "unsure"
+
+
+def test_read_only_kinds_are_capped():
+    assert triage.normalize(_t(kind=Kind.thread, buildable=3)).buildable == 1
+    assert triage.normalize(_t(kind=Kind.library, buildable=3)).buildable == 3
 
 
 def _result():
@@ -149,9 +155,9 @@ def _result():
 def test_batch_summary_and_log_line():
     r = _result()
     s = report.batch_summary(r)
-    assert "kept 1" in s and "Valhalla 2 (1 dead, 1 by Gemma)" in s and "unsure 1" in s
+    assert "to build 1" in s and "to read 0" in s and "Valhalla 2 (1 dead, 1 by Gemma)" in s and "unsure 1" in s
     assert "#1 Kept one → Build a CLI" in s and "#4 Huh" in s
-    assert report.log_line(r) == "batch b1: 4 in, 1 kept, 2 Valhalla, 1 unsure, 6m12s"
+    assert report.log_line(r) == "batch b1: 4 in, 1 to build, 0 to read, 2 Valhalla, 1 unsure, 6m12s"
     assert "nothing left" in report.batch_summary(BatchResult("b2"))
 
 

@@ -23,9 +23,13 @@ Answer with one JSON object and nothing else. Fields:
 - topic: 2-5 words naming what the link is about (e.g. "MCP server for Postgres").
 - vertical: exactly one of {", ".join(v.value for v in Vertical)}.
 - kind: exactly one of {", ".join(k.value for k in Kind)}.
-- still_relevant: true if it is still worth this developer's time today; false if it is outdated, superseded, pure news or hype that has passed, or too thin to learn from.
+- still_relevant: false only if it is outdated or superseded (old versions, abandoned projects, events that are over), spam, or hype that has passed. A link with nothing to build is still relevant if it is worth reading: X threads, landing pages, explainers and dashboards the developer saved on purpose stay true unless outdated.
 - reason: one sentence, at most 200 characters, that cites a concrete fact from the input (a word or phrase from the title or text, a star count, a date). No generic praise.
-- buildable: 0 = nothing to build (news, opinion, announcement); 1 = could inspire something vague; 2 = a clear weekend prototype; 3 = an obvious prototype doable in a 2-hour box.
+- buildable: how directly the link turns into a small hands-on prototype. Most links are 0 or 1.
+  0 = nothing to build from it: product or landing pages, dashboards, announcements, opinion or X threads, protocol explainers, docs about one setting.
+  1 = useful background or a big framework, research repo or awesome-list you would only skim.
+  2 = it hands you runnable code or a precise method (a library or SDK with a quickstart, an example project, a skill or spec, exercises) and a weekend prototype is clear.
+  3 = a step-by-step tutorial or tiny library where a 2-hour prototype is obvious.
 - one_line_idea: if buildable is 2 or 3, one sentence (at most 160 characters) describing the small prototype to build from it; otherwise null.
 Judge only from the input. If the page could not be read, judge the title; never call a link irrelevant just because its page was unreadable."""
 
@@ -101,8 +105,14 @@ def verify(t: Triage, source: str) -> list[str]:
     return problems
 
 
+# Kinds that are read, not built from: the author never rated one of these above 1 (M0.2 labels).
+READ_ONLY_KINDS = {Kind.article, Kind.news, Kind.thread, Kind.other}
+
+
 def normalize(t: Triage) -> Triage:
     """Code-side cleanup that needs no second model call."""
+    if t.kind in READ_ONLY_KINDS and t.buildable > 1:
+        t = t.model_copy(update={"buildable": 1})
     if t.buildable < 2:
         t = t.model_copy(update={"one_line_idea": None})
     return t
@@ -141,11 +151,15 @@ def label(link: dict, enr: dict | None, *, today: datetime | None = None) -> Lab
 
 
 def decide(lab: Labelled, link: dict, enr: dict | None) -> str:
-    """kept | valhalla | unsure, from the label. Valhalla needs evidence the model could see."""
+    """kept (build candidate) | reading | valhalla | unsure, from the label.
+
+    Valhalla needs evidence the model could see. Still-relevant links with buildable < 2 go to the
+    reading bucket: worth reading, nothing to prototype (the author's ask after labelling M0.2).
+    """
     if not lab.verified:
         return "unsure"
     if lab.triage.still_relevant:
-        return "kept"
+        return "kept" if lab.triage.buildable >= 2 else "reading"
     if not readable_text(enr) and len(link.get("title") or "") < 40:
         return "unsure"  # nothing but a short title: the author decides, not the model
     return "valhalla"
