@@ -29,6 +29,7 @@ Deadline **Mon Oct 26 06:59 UTC** (Mon 01:59 local). **About 38 hours remain**, 
 - L3 / M3b: no real prototype by Sun 12:00 → the post shows the toy run and says the factory ran once; runner-ups are cancelled.
 - Auth0/Gmail: runner-up only after CP3; 90-minute box; otherwise out of the post.
 - Freeze: anything not green at Sun 15:00 is cut from the demo and listed as a follow-up in the README.
+- Worker model: Anthropic Sonnet 5.5 is for plumbing tests only (author, 2026-10-24). **Before the measured run (CP3, Sun morning) and the demo**, set `llm.worker_provider = "openrouter"`, `llm.worker_model = ""` in `.sloth/config.toml` and the `sloth-worker` profile back to `provider openrouter`, `google/gemma-4-26b-a4b-it`; check `runs.model_id` of the CP3 run starts with `google/`.
 
 ## Measurements to log as they happen
 
