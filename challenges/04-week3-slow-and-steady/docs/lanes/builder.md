@@ -14,7 +14,7 @@ Owned paths: `sloth/builder/`, `sloth/cli/builder.py`, `profiles/worker/`, `temp
 
 <!-- At CP1 (Sat 16:00), CP2 (Sat 20:00), CP3 (Sun 12:00) local: done, measurements (with method), failures, requests. -->
 
-### CP1 (written 2026-10-24 17:31Z, ahead of the 21:00Z checkpoint): green
+### CP1 (written 2026-10-24 17:29Z, ahead of the 21:00Z checkpoint): green
 
 - **M0.3 Stagehand: green, keep the local callback.** Stagehand 4.3.0 Python on a local headful Chrome with `sloth-gemma4-12b` through the bring-your-own-LLM callback: x.com **5/5** at the contract's 45 s timeout (9.6-19.0 s each, focal post scoped by selector), JS-only pages **3/3** at 180 s and 1-3/3 at 45 s depending on Ollama load. Kill rule (< 3/5 x.com → hosted fallback) not triggered; no hosted model in the browser step. Caveats: headful only (x.com 403s headless; we do not disguise the browser), and Lane 1 should pass `timeout_s=90` for non-x pages and reuse one `session()` per batch.
 - **M0.4 coding model: green.** Fixture card through the `sloth-worker` profile with two open-weight models, both done in 2.0 min with tests passing; ~$0.065 for both. **Pick: `google/gemma-4-26b-a4b-it`** (request R1). Fallback `qwen/qwen3-coder-next`.
