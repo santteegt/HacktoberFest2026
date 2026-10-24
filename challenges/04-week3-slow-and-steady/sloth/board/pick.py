@@ -37,11 +37,11 @@ class Scored:
     newest: date | None
     last_touched: date | None
 
-    def reasons(self) -> str:
+    def reasons(self, *, with_date: bool = True) -> str:
         bits = []
         if self.focus >= 0.75:
             bits.append(f"matches this week's focus ({NAMES.get(self.card['vertical'], self.card['vertical'])})")
-        if self.newest:
+        if self.newest and with_date:
             bits.append(f"newest link saved {self.newest:%b %d, %Y}")
         bits.append("vertical never picked yet" if self.last_touched is None
                     else f"vertical last picked {self.last_touched:%b %d}")
@@ -84,18 +84,21 @@ class _Wording(BaseModel):
 
 
 def word_options(chosen: list[Scored], *, use_model: bool = True) -> tuple[list[PickOption], dict]:
+    # A fact every option shares (same saved date after a bulk bookmark move) tells the author nothing.
+    with_date = len({s.newest for s in chosen}) > 1
     fallback = [PickOption(card_id=s.card["id"], label=_clip(s.card["title"], 60),
-                           why=_clip(s.reasons(), 200)) for s in chosen]
+                           why=_clip(_goal(s.card) or s.reasons(with_date=with_date), 200)) for s in chosen]
     trace = {"fallback": True, "ms": 0}
     if not use_model:
         return fallback, trace
     cards = "\n".join(
         f'- card_id "{s.card["id"]}": {s.card["title"]}. Goal: {s.card.get("learning_goal") or ""} '
-        f"Facts: {s.reasons()}." for s in chosen)
+        f"Facts: {s.reasons(with_date=with_date)}." for s in chosen)
     prompt = (f"Write one tappable button per card for today's prototype pick.\n\n{cards}\n\n"
               'Return {"options": [{"card_id", "label", "why"}]} with the same card_ids in the same order. '
               '"label": what you would build today, at most 55 characters, inviting and plain, no emojis, no quotes. '
-              '"why": one sentence, at most 160 characters, using only the facts given for that card.')
+              '"why": one sentence, at most 160 characters: what building it would teach (from its Goal), '
+              "plus at most one of its facts. Make each why different; use only what is given for that card.")
     try:
         res = local_json(prompt, _Wording)
     except Exception as e:  # noqa: BLE001
@@ -111,6 +114,11 @@ def word_options(chosen: list[Scored], *, use_model: bool = True) -> tuple[list[
     if len(set(labels)) != len(labels):  # buttons must be unique to map a tap back to a card
         out = [o.model_copy(update={"label": _clip(f"{o.label} ({o.card_id})", 80)}) for o in out]
     return out, {"fallback": out == fallback, "ms": res.ms, "tokens_out": res.tokens_out}
+
+
+def _goal(card: dict) -> str:
+    goal = (card.get("learning_goal") or "").strip()
+    return goal[0].upper() + goal[1:] if goal else ""
 
 
 def _clip(text: str, n: int) -> str:
@@ -191,6 +199,22 @@ def choose(conn, choice: str, *, today: date | None = None) -> dict:
             "reply": picked_text(card), "action": "Send `reply` as is. The Worker takes it from here."}
 
 
+def today_card(conn) -> dict | None:
+    """The card in Today (latest move first), or None."""
+    return conn.execute(
+        """SELECT * FROM cards WHERE "column" = 'today' ORDER BY moved_at DESC, id LIMIT 1""").fetchone()
+
+
+def show_payload(conn) -> dict:
+    card = today_card(conn)
+    if not card:
+        return {"ok": True, "card": None, "reply": "No card is in Today yet."}
+    keep = ("id", "title", "vertical", "learning_goal", "hypothesis", "done_means", "box_minutes",
+            "kill_criteria", "link_ids", "picked_on")
+    return {"ok": True, "card": {k: card[k] for k in keep},
+            "reply": f"Today's pick: **{card['title']}** (`{card['id']}`), {card['box_minutes']}-minute box."}
+
+
 # ------------------------------------------------------------------ Discord texts (pure)
 
 def pick_text(options: list[PickOption]) -> str:
@@ -208,5 +232,5 @@ def picked_text(card: dict) -> str:
 
 
 def worker_ping_text(card: dict) -> str:
-    return (f"Card `{card['id']}` moved to Today: **{card['title']}** "
-            f"({card['box_minutes']}-minute box). Start with `sloth work {card['id']}`.")
+    """Hand-off line in #sk-worker; the Worker's desk skill maps `go` to `sloth work <id>`."""
+    return f"Card `{card['id']}` is today's pick. Reply `go` here to start the {card['box_minutes']}-minute box."

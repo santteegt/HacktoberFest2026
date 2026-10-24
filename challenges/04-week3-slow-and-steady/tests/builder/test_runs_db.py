@@ -24,11 +24,20 @@ if args[:2] == ["repo", "create"]:
 """
 
 
-def test_run_lifecycle_and_approval(tmp_path):
+def test_run_lifecycle_and_approval(tmp_path, monkeypatch):
+    from sloth.board import brain, github, markdown
     from sloth.builder import runs
     from sloth.core.db import connect
 
+    # Lane 2's refresh() owns the columns; keep its side effects out of the repo and off GitHub.
+    monkeypatch.setattr(github, "configured", lambda: False)
+    monkeypatch.setattr(markdown, "BOARD_DIR", tmp_path / "board")
+    monkeypatch.setattr(brain, "BRAIN_DIR", tmp_path / "brain")
+
     card = Card.model_validate_json((FIX / "card.json").read_text()).model_copy(update={"id": "tst1"})
+    with connect() as conn:
+        conn.execute("DELETE FROM runs WHERE card_id = 'tst1'")
+        conn.execute("DELETE FROM cards WHERE id = 'tst1'")
     runs.upsert_card(card)
     repo = tmp_path / "tst1-repo"
     repo.mkdir()
@@ -41,7 +50,8 @@ def test_run_lifecycle_and_approval(tmp_path):
 
     runs.finish_run(run_id, outcome=Outcome.done, cost_usd=0.0123, tokens_in=10, tokens_out=2,
                     repo_dir=str(repo), notes_path=str(repo / "NOTES.md"))
-    assert runs.load_card(card.id).column == Column.building  # waits for the author's tap
+    assert runs.load_card(card.id).column == Column.building  # done, waits for the author's tap
+    assert (tmp_path / "board").exists()  # refresh() ran and rendered the board files
 
     log = tmp_path / "gh.log"
     gh = tmp_path / "gh"
@@ -65,3 +75,25 @@ def test_run_lifecycle_and_approval(tmp_path):
     with connect() as conn:
         conn.execute("DELETE FROM runs WHERE card_id = 'tst1'")
         conn.execute("DELETE FROM cards WHERE id = 'tst1'")
+
+
+def test_failed_box_is_killed_by_refresh(tmp_path, monkeypatch):
+    from sloth.board import brain, github, markdown
+    from sloth.builder import runs
+    from sloth.core.db import connect
+
+    monkeypatch.setattr(github, "configured", lambda: False)
+    monkeypatch.setattr(markdown, "BOARD_DIR", tmp_path / "board")
+    monkeypatch.setattr(brain, "BRAIN_DIR", tmp_path / "brain")
+    card = Card.model_validate_json((FIX / "card.json").read_text()).model_copy(update={"id": "tst2"})
+    with connect() as conn:
+        conn.execute("DELETE FROM runs WHERE card_id = 'tst2'")
+        conn.execute("DELETE FROM cards WHERE id = 'tst2'")
+    runs.upsert_card(card)
+    run_id = runs.start_run(card.id, "test/model")
+    runs.finish_run(run_id, outcome=Outcome.boxed_out, cost_usd=None, tokens_in=None, tokens_out=None,
+                    repo_dir=str(tmp_path), notes_path="")
+    assert runs.load_card(card.id).column == Column.killed
+    with connect() as conn:
+        conn.execute("DELETE FROM runs WHERE card_id = 'tst2'")
+        conn.execute("DELETE FROM cards WHERE id = 'tst2'")

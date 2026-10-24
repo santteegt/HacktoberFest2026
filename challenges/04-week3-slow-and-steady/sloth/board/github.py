@@ -21,7 +21,9 @@ from ..core.models import Column, Vertical
 
 TITLE = "Skunkworks Sloth"
 IDS_PATH = Path(os.environ.get("SLOTH_GH_PROJECT_FILE", CONFIG_PATH.parent / "github-project.json"))
-BATCH = 25  # mutations per GraphQL request
+BATCH = 10  # mutations per GraphQL request (25 long bodies drew HTTP 502s)
+CREATE_BATCH = 5
+RETRIES = (2, 6, 15)  # seconds between tries on a 5xx; field updates are safe to repeat
 
 STATUS_OPTIONS = [  # (name, color, description), order = board columns
     ("Backlog", "GRAY", "Card waiting for a daily pick"),
@@ -46,7 +48,18 @@ class GitHubError(RuntimeError):
 _calls = 0
 
 
-def gql(query: str, variables: dict | None = None) -> dict:
+def gql(query: str, variables: dict | None = None, *, retry: bool = True) -> dict:
+    for wait in (*RETRIES, None) if retry else (None,):
+        try:
+            return _gql_once(query, variables)
+        except GitHubError as e:
+            if wait is None or not re.search(r"HTTP 5\d\d|timeout|timed out|something went wrong", str(e), re.I):
+                raise
+            time.sleep(wait)
+    raise AssertionError("unreachable")
+
+
+def _gql_once(query: str, variables: dict | None = None) -> dict:
     global _calls
     _calls += 1
     body = json.dumps({"query": query, "variables": variables or {}})
@@ -196,10 +209,10 @@ def fetch_items(project_id: str) -> tuple[list[dict], str]:
 
 def desired(card: dict, run: dict | None) -> dict:
     """Field values a card should show. None = cleared."""
-    return {
+    return {  # Card ID first: it is the sync key, so it lands even if a later batch fails
+        "Card ID": card["id"],
         "Status": Column(card["column"]).value.capitalize(),
         "Vertical": card["vertical"],
-        "Card ID": card["id"],
         "Box (min)": card["box_minutes"],
         "Picked": card["picked_on"].isoformat() if card.get("picked_on") else None,
         "Cost (USD)": float(run["cost_usd"]) if run and run.get("cost_usd") is not None else None,
@@ -248,10 +261,10 @@ def field_mutations(ids: dict, item_id: str, changes: dict, prefix: str) -> list
     return out
 
 
-def _run_batches(mutations: list[str]) -> dict:
+def _run_batches(mutations: list[str], *, size: int = BATCH, retry: bool = True) -> dict:
     data = {}
-    for i in range(0, len(mutations), BATCH):
-        data.update(gql("mutation { " + "\n".join(mutations[i:i + BATCH]) + " }"))
+    for i in range(0, len(mutations), size):
+        data.update(gql("mutation { " + "\n".join(mutations[i:i + size]) + " }", retry=retry))
     return data
 
 
@@ -278,7 +291,8 @@ def readme_text(conn) -> str:
         "",
         f"**Reading List:** {counts['collected']} collected · {counts['kept']} kept · "
         f"{counts['valhalla']} in Valhalla ({counts['valhalla_confirmed']} confirmed) · "
-        f"{counts['unsure']} unsure · {counts['untriaged']} not triaged yet",
+        f"{counts['reading']} to read (not buildable) · {counts['unsure']} unsure · "
+        f"{counts['untriaged']} not triaged yet",
         "",
         f"**This week's focus:** {focus_line}",
         "",
@@ -332,26 +346,37 @@ def sync(*, prune: bool = False, readme: bool = True, conn=None, apply: bool = T
     items, current_readme = fetch_items(ids["project_id"])
     by_card = {it["values"].get("Card ID"): it for it in items if it["values"].get("Card ID")}
     by_item = {it["id"]: it for it in items}
+    # A create whose response was lost (5xx) leaves a draft without a Card ID: adopt it by title.
+    orphans = {}
+    for it in items:
+        if not it["values"].get("Card ID") and it["title"]:
+            orphans.setdefault(it["title"], it)
+    for c in cards:
+        if c["id"] not in by_card and not (c.get("gh_item_id") and c["gh_item_id"] in by_item):
+            if (it := orphans.pop(c["title"], None)):
+                by_card[c["id"]] = it
 
     stats = {"cards": len(cards), "created": 0, "bodies": 0, "fields": 0, "pruned": 0,
              "moves_from_runs": moves}
-    # 1. create missing drafts (one batched mutation per BATCH cards)
+    # 1. create missing drafts, a few per request, saving each item id as soon as it exists
     missing = [c for c in cards if c["id"] not in by_card
                and not (c.get("gh_item_id") and c["gh_item_id"] in by_item)]
-    creates = [
-        f"c{i}: addProjectV2DraftIssue(input: {{projectId: {_q(ids['project_id'])}, "
-        f"title: {_q(c['title'])}, body: {_q(card_markdown(c, links, runs.get(c['id']), frontmatter=False))}}}) "
-        f"{{ projectItem {{ id content {{ ... on DraftIssue {{ id }} }} }} }}"
-        for i, c in enumerate(missing)]
-    created = _run_batches(creates)
-    for i, c in enumerate(missing):
-        item = created[f"c{i}"]["projectItem"]
-        new = {"id": item["id"], "draft_id": item["content"]["id"], "title": c["title"],
-               "body": card_markdown(c, links, runs.get(c["id"]), frontmatter=False), "values": {}}
-        by_card[c["id"]] = by_item[item["id"]] = new
-        conn.execute("UPDATE cards SET gh_item_id = %s WHERE id = %s", (item["id"], c["id"]))
-        stats["created"] += 1
-    conn.commit()
+    for start in range(0, len(missing), CREATE_BATCH):
+        chunk = missing[start:start + CREATE_BATCH]
+        bodies = [card_markdown(c, links, runs.get(c["id"]), frontmatter=False) for c in chunk]
+        created = gql("mutation { " + "\n".join(
+            f"c{i}: addProjectV2DraftIssue(input: {{projectId: {_q(ids['project_id'])}, "
+            f"title: {_q(c['title'])}, body: {_q(body)}}}) "
+            f"{{ projectItem {{ id content {{ ... on DraftIssue {{ id }} }} }} }}"
+            for i, (c, body) in enumerate(zip(chunk, bodies))) + " }", retry=False)  # a retried create could duplicate
+        for i, (c, body) in enumerate(zip(chunk, bodies)):
+            item = created[f"c{i}"]["projectItem"]
+            by_card[c["id"]] = by_item[item["id"]] = {
+                "id": item["id"], "draft_id": item["content"]["id"], "title": c["title"],
+                "body": body, "values": {}}
+            conn.execute("UPDATE cards SET gh_item_id = %s WHERE id = %s", (item["id"], c["id"]))
+            stats["created"] += 1
+        conn.commit()
 
     # 2. diff bodies and fields; batch every change
     mutations = []
@@ -370,8 +395,10 @@ def sync(*, prune: bool = False, readme: bool = True, conn=None, apply: bool = T
             conn.execute("UPDATE cards SET gh_item_id = %s WHERE id = %s", (item["id"], c["id"]))
     if prune:
         known = {c["id"] for c in cards}
+        in_use = ({by_card[c["id"]]["id"] for c in cards if c["id"] in by_card}
+                  | {c["gh_item_id"] for c in cards if c.get("gh_item_id")})
         for n, it in enumerate(items):
-            if it["values"].get("Card ID") not in known:
+            if it["id"] not in in_use and it["values"].get("Card ID") not in known:
                 mutations.append(f"d{n}: deleteProjectV2Item(input: {{projectId: {_q(ids['project_id'])}, "
                                  f"itemId: {_q(it['id'])}}}) {{ deletedItemId }}")
                 stats["pruned"] += 1

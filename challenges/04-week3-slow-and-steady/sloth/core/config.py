@@ -54,7 +54,7 @@ def settings() -> Settings:
         channels={k: str(disc.get(k, "")) for k in CHANNELS},
         ollama_url=llm.get("ollama_url", "http://localhost:11434"),
         ollama_model=llm.get("ollama_model", "sloth-gemma4-12b"),
-        ollama_num_ctx=int(llm.get("ollama_num_ctx", 32768)),
+        ollama_num_ctx=int(llm.get("ollama_num_ctx", 65536)),
         openrouter_model=llm.get("openrouter_model", ""),
         box_minutes=int(raw.get("worker", {}).get("box_minutes", 120)),
         prototypes_dir=Path(os.path.expanduser(raw.get("worker", {}).get(

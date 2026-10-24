@@ -18,8 +18,8 @@ log = "<#sk-logs channel id>"
 
 [llm]
 ollama_url = "http://localhost:11434"
-ollama_model = "sloth-gemma4-12b"   # FROM gemma4:12b-it-qat, num_ctx 32768 (see README)
-ollama_num_ctx = 32768
+ollama_model = "sloth-gemma4-12b"   # FROM gemma4:12b-it-qat, num_ctx 65536, the minimum Hermes accepts (see README)
+ollama_num_ctx = 65536
 openrouter_model = ""               # set by the Builder lane after M0.4
 
 [worker]

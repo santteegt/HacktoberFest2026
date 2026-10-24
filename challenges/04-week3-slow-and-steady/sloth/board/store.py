@@ -1,7 +1,8 @@
 """Board reads and writes against the shared schema (sloth/core/schema.sql).
 
-Kept links come from the Curator's tables: the latest triage row per link, minus links in
-Valhalla (unless restored) and links already on a live card.
+Kept links come from the Curator's tables: `links.status = 'kept'` (Curator statuses:
+new → enriched → kept | reading | valhalla | unsure; `reading` never becomes a card) with the
+latest triage row per link, minus links in Valhalla (unless restored) and links on a live card.
 """
 
 from __future__ import annotations
@@ -34,7 +35,7 @@ def current_schema(conn) -> str:
     return conn.execute("SELECT current_schema() AS s").fetchone()["s"]
 
 
-def kept_links(conn) -> list[KeptLink]:
+def kept_links(conn, *, include_carded: bool = False) -> list[KeptLink]:
     rows = conn.execute(
         """
         WITH latest AS (
@@ -44,13 +45,12 @@ def kept_links(conn) -> list[KeptLink]:
                t.topic, t.vertical, t.kind, t.buildable, t.one_line_idea, t.reason
         FROM latest t JOIN links l ON l.id = t.link_id
         LEFT JOIN valhalla v ON v.link_id = l.id AND v.status <> 'restored'
-        WHERE t.still_relevant AND v.link_id IS NULL
-          AND l.status NOT IN ('valhalla')
-          AND NOT EXISTS (
-              SELECT 1 FROM cards c WHERE c."column" = ANY(%s) AND l.id = ANY(c.link_ids))
+        WHERE l.status = 'kept' AND t.buildable >= 2 AND v.link_id IS NULL
+          AND (%s OR NOT EXISTS (
+              SELECT 1 FROM cards c WHERE c."column" = ANY(%s) AND l.id = ANY(c.link_ids)))
         ORDER BY l.id
         """,
-        (list(LIVE_COLUMNS),),
+        (include_carded, list(LIVE_COLUMNS)),
     ).fetchall()
     return [KeptLink(**r) for r in rows]
 
@@ -134,7 +134,8 @@ def link_counts(conn) -> dict[str, int]:
           (SELECT count(*) FROM valhalla WHERE status <> 'restored') AS valhalla,
           (SELECT count(*) FROM valhalla WHERE status = 'confirmed') AS valhalla_confirmed,
           (SELECT count(*) FROM links WHERE status IN ('new', 'enriched')) AS untriaged,
-          (SELECT count(*) FROM links WHERE status = 'triaged') AS unsure
+          (SELECT count(*) FROM links WHERE status = 'reading') AS reading,
+          (SELECT count(*) FROM links WHERE status = 'unsure') AS unsure
         """
     ).fetchone()
     return dict(row)

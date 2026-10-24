@@ -94,7 +94,20 @@ def test_run_box_kills_at_the_box(tmp_path, card, monkeypatch):
 
 def test_approval_wording():
     req = approval.approval_request(3, "Card", "/x/fx01-card", tests_passed=False)
-    assert "private" in req["text"] and "Tests did not pass" in req["text"]
+    assert "private" in req["text"] and "Tests did not pass" in req["text"] and "`approve 3`" in req["text"]
     assert req["buttons"][0]["command"] == "sloth approve 3"
     pub = approval.publish_request(3, "Card", "https://github.com/u/r")
+    assert "`publish 3`" in pub["text"]
     assert pub["buttons"][0]["command"] == "sloth approve 3 --public"
+
+
+def test_status_text_lists_today_and_runs():
+    from datetime import datetime, UTC
+    from sloth.builder import runs
+    st = {"today": [{"id": "k5cbc", "title": "Spec CLI"}],
+          "latest_runs": [{"id": 7, "card_id": "k5cbc", "title": "Spec CLI", "outcome": "done", "approved": False,
+                           "repo_url": None, "cost_usd": 0.0467, "model_id": "m", "started_at": datetime.now(UTC),
+                           "ended_at": None}]}
+    text = runs.status_text(st)
+    assert "Today: `k5cbc`" in text and "reply `approve 7`" in text and "$0.05" in text
+    assert "No card in Today" in runs.status_text({"today": [], "latest_runs": []})

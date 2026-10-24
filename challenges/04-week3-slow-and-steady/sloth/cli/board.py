@@ -112,6 +112,15 @@ def pick_options(n: Annotated[int, typer.Option(min=2, max=4)] = 4,
         _out(pick.options_payload(conn, n=n, use_model=not no_model), as_json)
 
 
+@pick_app.command("show")
+def pick_show(as_json: Annotated[bool, typer.Option("--json")] = False) -> None:
+    """Print today's card (`card` is null when nothing is in Today)."""
+    from ..board import pick
+    from ..core.db import connect
+    with connect() as conn:
+        _out(pick.show_payload(conn), as_json)
+
+
 @pick_app.command("choose")
 def pick_choose(choice: Annotated[str, typer.Argument(help="Card id, or the tapped option label.")],
                 as_json: Annotated[bool, typer.Option("--json")] = False) -> None:

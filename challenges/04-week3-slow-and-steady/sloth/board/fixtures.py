@@ -10,7 +10,7 @@ from . import store
 FIX = Path(__file__).resolve().parents[2] / "tests" / "fixtures"
 
 
-def seed(conn, *, allow_public: bool = False) -> dict[str, int]:
+def seed(conn, *, allow_public: bool = False) -> dict:
     schema = store.current_schema(conn)
     if schema == "public" and not allow_public:
         raise RuntimeError("refusing to seed fixtures into `public` (the Curator's real data); "
@@ -40,7 +40,8 @@ def seed(conn, *, allow_public: bool = False) -> dict[str, int]:
             """,
             (link_id, t["topic"], t["vertical"], t["kind"], t["still_relevant"], t["reason"],
              t["buildable"], t["one_line_idea"]))
-        status = "kept" if t["still_relevant"] else "valhalla"
+        # Curator contract: kept = buildable >= 2, reading = relevant but not buildable
+        status = ("kept" if t["buildable"] >= 2 else "reading") if t["still_relevant"] else "valhalla"
         conn.execute("UPDATE links SET status = %s WHERE id = %s", (status, link_id))
         if not t["still_relevant"]:
             conn.execute(

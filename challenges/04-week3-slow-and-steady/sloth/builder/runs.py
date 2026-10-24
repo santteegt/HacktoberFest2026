@@ -1,7 +1,7 @@
-"""`runs` rows and the card moves the Worker owns (building → built | killed).
-
-Lane 2 creates cards and moves them to `today`; from there the Worker moves them. Lane 2's
-GitHub sync reads `runs` and `cards`.
+"""`runs` rows. The Builder writes only runs; Lane 2's `sloth.board.cards.refresh(conn)` owns
+`cards.column` and maps the latest run to a column (building → Building, done unapproved →
+Building, done + approved → Built, boxed_out/killed → Killed), then rewrites the board files and
+the brain and syncs the GitHub Project. It is called after every runs write.
 """
 
 from __future__ import annotations
@@ -11,7 +11,7 @@ import subprocess
 from pathlib import Path
 
 from ..core.db import connect
-from ..core.models import Card, Column, Outcome
+from ..core.models import Card, Outcome
 
 
 def load_card(card_id: str) -> Card:
@@ -23,14 +23,13 @@ def load_card(card_id: str) -> Card:
 
 
 def upsert_card(card: Card) -> None:
-    """Fixture and test helper: write a card row (Lane 2 owns real cards)."""
+    """Fixture and test helper: insert a card row if it is missing; never changes an existing card."""
     with connect() as conn:
         conn.execute(
             """INSERT INTO cards (id, title, vertical, learning_goal, hypothesis, done_means, box_minutes,
                                   link_ids, kill_criteria, "column")
                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-               ON CONFLICT (id) DO UPDATE SET title = EXCLUDED.title, "column" = EXCLUDED."column",
-                   moved_at = now()""",
+               ON CONFLICT (id) DO NOTHING""",
             (card.id, card.title, str(card.vertical), card.learning_goal, card.hypothesis, card.done_means,
              card.box_minutes, card.link_ids, card.kill_criteria, str(card.column)),
         )
@@ -48,9 +47,13 @@ def card_links(card: Card) -> list[dict]:
                          for i in card.link_ids if i not in found]
 
 
-def move_card(card_id: str, column: Column) -> None:
-    with connect() as conn:
-        conn.execute('UPDATE cards SET "column" = %s, moved_at = now() WHERE id = %s', (str(column), card_id))
+def refresh_board(conn) -> dict:
+    """Hand the move to Lane 2. A board/Project failure is reported, never loses the run row."""
+    try:
+        from ..board.cards import refresh
+        return refresh(conn)
+    except Exception as e:  # noqa: BLE001
+        return {"error": f"{type(e).__name__}: {str(e)[:300]}"}
 
 
 def start_run(card_id: str, model: str, repo_dir: str | None = None) -> int:
@@ -58,22 +61,20 @@ def start_run(card_id: str, model: str, repo_dir: str | None = None) -> int:
         run_id = conn.execute(
             "INSERT INTO runs (card_id, model_id, outcome, repo_dir) VALUES (%s, %s, 'building', %s) RETURNING id",
             (card_id, model, repo_dir)).fetchone()["id"]
-        conn.execute('UPDATE cards SET "column" = %s, moved_at = now() WHERE id = %s',
-                     (str(Column.building), card_id))
+        conn.commit()
+        refresh_board(conn)
     return run_id
 
 
 def finish_run(run_id: int, *, outcome: Outcome, cost_usd: float | None, tokens_in: int | None,
                tokens_out: int | None, repo_dir: str, notes_path: str) -> None:
     with connect() as conn:
-        row = conn.execute(
+        conn.execute(
             """UPDATE runs SET ended_at = now(), outcome = %s, cost_usd = %s, tokens_in = %s, tokens_out = %s,
-                   repo_dir = %s, notes_path = %s WHERE id = %s RETURNING card_id""",
-            (str(outcome), cost_usd, tokens_in, tokens_out, repo_dir, notes_path, run_id)).fetchone()
-        if outcome != Outcome.done and row:
-            # Done runs stay in Building until the author approves; the rest are Killed.
-            conn.execute('UPDATE cards SET "column" = %s, moved_at = now() WHERE id = %s',
-                         (str(Column.killed), row["card_id"]))
+                   repo_dir = %s, notes_path = %s WHERE id = %s""",
+            (str(outcome), cost_usd, tokens_in, tokens_out, repo_dir, notes_path, run_id))
+        conn.commit()
+        refresh_board(conn)
 
 
 def get_run(run_id: int) -> dict:
@@ -82,6 +83,33 @@ def get_run(run_id: int) -> dict:
     if not row:
         raise KeyError(f"run {run_id} not found")
     return row
+
+
+def status() -> dict:
+    """Today's card(s) and the latest runs, for the Worker desk's `status` and `go`."""
+    with connect() as conn:
+        today = conn.execute(
+            """SELECT id, title FROM cards WHERE "column" = 'today' ORDER BY moved_at DESC""").fetchall()
+        latest = conn.execute(
+            """SELECT r.id, r.card_id, c.title, r.outcome, r.approved, r.repo_url, r.cost_usd, r.model_id,
+                      r.started_at, r.ended_at
+               FROM runs r JOIN cards c ON c.id = r.card_id ORDER BY r.started_at DESC LIMIT 3""").fetchall()
+    return {"today": today, "latest_runs": latest}
+
+
+def status_text(st: dict) -> str:
+    lines = []
+    if st["today"]:
+        lines += [f"Today: `{c['id']}` {c['title']} (reply `go` to start its box)" for c in st["today"]]
+    else:
+        lines.append("No card in Today. The Coordinator's daily pick puts one there.")
+    for r in st["latest_runs"]:
+        cost = f"${float(r['cost_usd']):.2f}" if r["cost_usd"] is not None else "cost pending"
+        state = r["outcome"] if r["outcome"] != "building" else f"building since {r['started_at']:%H:%M} UTC"
+        pushed = f", repo {r['repo_url']}" if r["repo_url"] else (
+            f", reply `approve {r['id']}` to push it" if r["outcome"] == "done" else "")
+        lines.append(f"Run {r['id']}: `{r['card_id']}` {r['title']}: {state}, {cost}{pushed}")
+    return "\n".join(lines)
 
 
 def repo_name(repo_dir: str) -> str:
@@ -104,6 +132,8 @@ def approve(run_id: int, *, make_public: bool = False, gh: str = "gh") -> str:
             raise RuntimeError(f"run {run_id} is not pushed yet; approve it first")
         subprocess.run([gh, "repo", "edit", run["repo_url"], "--visibility", "public",
                         "--accept-visibility-change-consequences"], check=True, capture_output=True, text=True)
+        with connect() as conn:
+            refresh_board(conn)  # the Project's Repo field and README follow
         return run["repo_url"]
     if run["repo_url"]:
         return run["repo_url"]
@@ -119,7 +149,6 @@ def approve(run_id: int, *, make_public: bool = False, gh: str = "gh") -> str:
     url = url.rstrip(".")
     with connect() as conn:
         conn.execute("UPDATE runs SET approved = true, repo_url = %s WHERE id = %s", (url, run_id))
-        if run["outcome"] == "done":
-            conn.execute('UPDATE cards SET "column" = %s, moved_at = now() WHERE id = %s',
-                         (str(Column.built), run["card_id"]))
+        conn.commit()
+        refresh_board(conn)
     return url
