@@ -1,0 +1,302 @@
+[
+ {
+  "link_index": 0,
+  "topic": "ai-agents topic 0",
+  "vertical": "ai-agents",
+  "kind": "tutorial",
+  "still_relevant": false,
+  "reason": "synthetic fixture",
+  "buildable": 3,
+  "one_line_idea": "Build a tiny ai-agents demo #0"
+ },
+ {
+  "link_index": 1,
+  "topic": "llms topic 1",
+  "vertical": "llms",
+  "kind": "tool",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 2,
+  "one_line_idea": "Build a tiny llms demo #1"
+ },
+ {
+  "link_index": 2,
+  "topic": "ai-engineering topic 2",
+  "vertical": "ai-engineering",
+  "kind": "library",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 2,
+  "one_line_idea": "Build a tiny ai-engineering demo #2"
+ },
+ {
+  "link_index": 3,
+  "topic": "decentralized-ai topic 3",
+  "vertical": "decentralized-ai",
+  "kind": "article",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 1,
+  "one_line_idea": "Build a tiny decentralized-ai demo #3"
+ },
+ {
+  "link_index": 4,
+  "topic": "rust topic 0",
+  "vertical": "rust",
+  "kind": "thread",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 0,
+  "one_line_idea": "Build a tiny rust demo #4"
+ },
+ {
+  "link_index": 5,
+  "topic": "security-privacy topic 1",
+  "vertical": "security-privacy",
+  "kind": "paper",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 3,
+  "one_line_idea": "Build a tiny security-privacy demo #5"
+ },
+ {
+  "link_index": 6,
+  "topic": "ai-agents topic 2",
+  "vertical": "ai-agents",
+  "kind": "tutorial",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 3,
+  "one_line_idea": "Build a tiny ai-agents demo #6"
+ },
+ {
+  "link_index": 7,
+  "topic": "llms topic 3",
+  "vertical": "llms",
+  "kind": "tool",
+  "still_relevant": false,
+  "reason": "synthetic fixture",
+  "buildable": 2,
+  "one_line_idea": "Build a tiny llms demo #7"
+ },
+ {
+  "link_index": 8,
+  "topic": "ai-engineering topic 0",
+  "vertical": "ai-engineering",
+  "kind": "library",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 2,
+  "one_line_idea": "Build a tiny ai-engineering demo #8"
+ },
+ {
+  "link_index": 9,
+  "topic": "decentralized-ai topic 1",
+  "vertical": "decentralized-ai",
+  "kind": "article",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 1,
+  "one_line_idea": "Build a tiny decentralized-ai demo #9"
+ },
+ {
+  "link_index": 10,
+  "topic": "rust topic 2",
+  "vertical": "rust",
+  "kind": "thread",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 0,
+  "one_line_idea": "Build a tiny rust demo #10"
+ },
+ {
+  "link_index": 11,
+  "topic": "security-privacy topic 3",
+  "vertical": "security-privacy",
+  "kind": "paper",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 3,
+  "one_line_idea": "Build a tiny security-privacy demo #11"
+ },
+ {
+  "link_index": 12,
+  "topic": "ai-agents topic 0",
+  "vertical": "ai-agents",
+  "kind": "tutorial",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 3,
+  "one_line_idea": "Build a tiny ai-agents demo #12"
+ },
+ {
+  "link_index": 13,
+  "topic": "llms topic 1",
+  "vertical": "llms",
+  "kind": "tool",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 2,
+  "one_line_idea": "Build a tiny llms demo #13"
+ },
+ {
+  "link_index": 14,
+  "topic": "ai-engineering topic 2",
+  "vertical": "ai-engineering",
+  "kind": "library",
+  "still_relevant": false,
+  "reason": "synthetic fixture",
+  "buildable": 2,
+  "one_line_idea": "Build a tiny ai-engineering demo #14"
+ },
+ {
+  "link_index": 15,
+  "topic": "decentralized-ai topic 3",
+  "vertical": "decentralized-ai",
+  "kind": "article",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 1,
+  "one_line_idea": "Build a tiny decentralized-ai demo #15"
+ },
+ {
+  "link_index": 16,
+  "topic": "rust topic 0",
+  "vertical": "rust",
+  "kind": "thread",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 0,
+  "one_line_idea": "Build a tiny rust demo #16"
+ },
+ {
+  "link_index": 17,
+  "topic": "security-privacy topic 1",
+  "vertical": "security-privacy",
+  "kind": "paper",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 3,
+  "one_line_idea": "Build a tiny security-privacy demo #17"
+ },
+ {
+  "link_index": 18,
+  "topic": "ai-agents topic 2",
+  "vertical": "ai-agents",
+  "kind": "tutorial",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 3,
+  "one_line_idea": "Build a tiny ai-agents demo #18"
+ },
+ {
+  "link_index": 19,
+  "topic": "llms topic 3",
+  "vertical": "llms",
+  "kind": "tool",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 2,
+  "one_line_idea": "Build a tiny llms demo #19"
+ },
+ {
+  "link_index": 20,
+  "topic": "ai-engineering topic 0",
+  "vertical": "ai-engineering",
+  "kind": "library",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 2,
+  "one_line_idea": "Build a tiny ai-engineering demo #20"
+ },
+ {
+  "link_index": 21,
+  "topic": "decentralized-ai topic 1",
+  "vertical": "decentralized-ai",
+  "kind": "article",
+  "still_relevant": false,
+  "reason": "synthetic fixture",
+  "buildable": 1,
+  "one_line_idea": "Build a tiny decentralized-ai demo #21"
+ },
+ {
+  "link_index": 22,
+  "topic": "rust topic 2",
+  "vertical": "rust",
+  "kind": "thread",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 0,
+  "one_line_idea": "Build a tiny rust demo #22"
+ },
+ {
+  "link_index": 23,
+  "topic": "security-privacy topic 3",
+  "vertical": "security-privacy",
+  "kind": "paper",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 3,
+  "one_line_idea": "Build a tiny security-privacy demo #23"
+ },
+ {
+  "link_index": 24,
+  "topic": "ai-agents topic 0",
+  "vertical": "ai-agents",
+  "kind": "tutorial",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 3,
+  "one_line_idea": "Build a tiny ai-agents demo #24"
+ },
+ {
+  "link_index": 25,
+  "topic": "llms topic 1",
+  "vertical": "llms",
+  "kind": "tool",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 2,
+  "one_line_idea": "Build a tiny llms demo #25"
+ },
+ {
+  "link_index": 26,
+  "topic": "ai-engineering topic 2",
+  "vertical": "ai-engineering",
+  "kind": "library",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 2,
+  "one_line_idea": "Build a tiny ai-engineering demo #26"
+ },
+ {
+  "link_index": 27,
+  "topic": "decentralized-ai topic 3",
+  "vertical": "decentralized-ai",
+  "kind": "article",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 1,
+  "one_line_idea": "Build a tiny decentralized-ai demo #27"
+ },
+ {
+  "link_index": 28,
+  "topic": "rust topic 0",
+  "vertical": "rust",
+  "kind": "thread",
+  "still_relevant": false,
+  "reason": "synthetic fixture",
+  "buildable": 0,
+  "one_line_idea": "Build a tiny rust demo #28"
+ },
+ {
+  "link_index": 29,
+  "topic": "security-privacy topic 1",
+  "vertical": "security-privacy",
+  "kind": "paper",
+  "still_relevant": true,
+  "reason": "synthetic fixture",
+  "buildable": 3,
+  "one_line_idea": "Build a tiny security-privacy demo #29"
+ }
+]

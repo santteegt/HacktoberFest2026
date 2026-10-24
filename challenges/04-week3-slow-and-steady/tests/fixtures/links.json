@@ -1,0 +1,338 @@
+[
+ {
+  "url": "https://medium.com/@example3/planner-rag-1000?utm_source=x",
+  "canonical_url": "https://medium.com/@example3/planner-rag-1000",
+  "title": "Synthetic link 0: planner rag",
+  "folder_path": "Reading List/LLMs",
+  "saved_at": "2025-01-10T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://docs.example2.io/tracer-rag",
+  "canonical_url": "https://docs.example2.io/tracer-rag",
+  "title": "Synthetic link 1: tracer rag",
+  "folder_path": "Reading List/Solidity",
+  "saved_at": "2026-02-11T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://github.com/example2/memory-memory",
+  "canonical_url": "https://github.com/example2/memory-memory",
+  "title": "Synthetic link 2: memory memory",
+  "folder_path": "Reading List/LLMs",
+  "saved_at": "2025-03-12T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://x.com/example2/status/1003",
+  "canonical_url": "https://x.com/example2/status/1003",
+  "title": "Synthetic link 3: memory rag",
+  "folder_path": "Reading List/LLMs",
+  "saved_at": "2026-04-13T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://x.com/example1/status/1004",
+  "canonical_url": "https://x.com/example1/status/1004",
+  "title": "Synthetic link 4: planner rag",
+  "folder_path": "Reading List/Solidity",
+  "saved_at": "2025-05-14T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://github.com/example9/vector-bridge",
+  "canonical_url": "https://github.com/example9/vector-bridge",
+  "title": "Synthetic link 5: vector bridge",
+  "folder_path": "Reading List/security",
+  "saved_at": "2026-06-15T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://x.com/example9/status/1006",
+  "canonical_url": "https://x.com/example9/status/1006",
+  "title": "Synthetic link 6: rollup bridge",
+  "folder_path": "Reading List/Rust",
+  "saved_at": "2025-07-16T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://github.com/example4/tracer-rollup",
+  "canonical_url": "https://github.com/example4/tracer-rollup",
+  "title": "Synthetic link 7: tracer rollup",
+  "folder_path": "Reading List/LLMs",
+  "saved_at": "2026-08-17T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://docs.example1.io/router-prover",
+  "canonical_url": "https://docs.example1.io/router-prover",
+  "title": "Synthetic link 8: router prover",
+  "folder_path": "Reading List/security",
+  "saved_at": "2025-09-18T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://medium.com/@example8/ledger-tracer-1009?utm_source=x",
+  "canonical_url": "https://medium.com/@example8/ledger-tracer-1009",
+  "title": "Synthetic link 9: ledger tracer",
+  "folder_path": "Reading List/Decentralized AI",
+  "saved_at": "2026-01-10T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://x.com/example3/status/1010",
+  "canonical_url": "https://x.com/example3/status/1010",
+  "title": "Synthetic link 10: indexer zk",
+  "folder_path": "Reading List/Decentralized AI",
+  "saved_at": "2025-02-11T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://docs.example8.io/sandbox-ledger",
+  "canonical_url": "https://docs.example8.io/sandbox-ledger",
+  "title": "Synthetic link 11: sandbox ledger",
+  "folder_path": "Reading List/Decentralized AI",
+  "saved_at": "2026-03-12T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://docs.example2.io/rollup-memory",
+  "canonical_url": "https://docs.example2.io/rollup-memory",
+  "title": "Synthetic link 12: rollup memory",
+  "folder_path": "Reading List/Rust",
+  "saved_at": "2025-04-13T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://medium.com/@example3/prover-memory-1013",
+  "canonical_url": "https://medium.com/@example3/prover-memory-1013",
+  "title": "Synthetic link 13: prover memory",
+  "folder_path": "Reading List/AI agents",
+  "saved_at": "2026-05-14T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://github.com/example9/sandbox-sandbox",
+  "canonical_url": "https://github.com/example9/sandbox-sandbox",
+  "title": "Synthetic link 14: sandbox sandbox",
+  "folder_path": "Reading List/project ideas",
+  "saved_at": "2025-06-15T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://docs.example8.io/ledger-zk",
+  "canonical_url": "https://docs.example8.io/ledger-zk",
+  "title": "Synthetic link 15: ledger zk",
+  "folder_path": "Reading List/LLMs",
+  "saved_at": "2026-07-16T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://medium.com/@example8/zk-rag-1016",
+  "canonical_url": "https://medium.com/@example8/zk-rag-1016",
+  "title": "Synthetic link 16: zk rag",
+  "folder_path": "Reading List/Decentralized AI",
+  "saved_at": "2025-08-17T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://docs.example8.io/bridge-planner",
+  "canonical_url": "https://docs.example8.io/bridge-planner",
+  "title": "Synthetic link 17: bridge planner",
+  "folder_path": "Reading List/project ideas",
+  "saved_at": "2026-09-18T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://github.com/example8/tracer-eval?utm_source=x",
+  "canonical_url": "https://github.com/example8/tracer-eval",
+  "title": "Synthetic link 18: tracer eval",
+  "folder_path": "Reading List/LLMs",
+  "saved_at": "2025-01-10T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://blog.example1.dev/posts/router-bridge",
+  "canonical_url": "https://blog.example1.dev/posts/router-bridge",
+  "title": "Synthetic link 19: router bridge",
+  "folder_path": "Reading List/Rust",
+  "saved_at": "2026-02-11T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://x.com/example7/status/1020",
+  "canonical_url": "https://x.com/example7/status/1020",
+  "title": "Synthetic link 20: planner prover",
+  "folder_path": "Reading List/LLMs",
+  "saved_at": "2025-03-12T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://x.com/example8/status/1021",
+  "canonical_url": "https://x.com/example8/status/1021",
+  "title": "Synthetic link 21: planner oracle",
+  "folder_path": "Reading List/Rust",
+  "saved_at": "2026-04-13T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://blog.example9.dev/posts/oracle-memory",
+  "canonical_url": "https://blog.example9.dev/posts/oracle-memory",
+  "title": "Synthetic link 22: oracle memory",
+  "folder_path": "Reading List/project ideas",
+  "saved_at": "2025-05-14T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://blog.example4.dev/posts/vector-zk",
+  "canonical_url": "https://blog.example4.dev/posts/vector-zk",
+  "title": "Synthetic link 23: vector zk",
+  "folder_path": "Reading List/Rust",
+  "saved_at": "2026-06-15T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://x.com/example4/status/1024",
+  "canonical_url": "https://x.com/example4/status/1024",
+  "title": "Synthetic link 24: indexer agent",
+  "folder_path": "Reading List",
+  "saved_at": "2025-07-16T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://docs.example3.io/oracle-bridge",
+  "canonical_url": "https://docs.example3.io/oracle-bridge",
+  "title": "Synthetic link 25: oracle bridge",
+  "folder_path": "Reading List/AI agents",
+  "saved_at": "2026-08-17T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://x.com/example7/status/1026",
+  "canonical_url": "https://x.com/example7/status/1026",
+  "title": "Synthetic link 26: tracer sandbox",
+  "folder_path": "Reading List/Rust",
+  "saved_at": "2025-09-18T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://docs.example1.io/ledger-planner?utm_source=x",
+  "canonical_url": "https://docs.example1.io/ledger-planner",
+  "title": "Synthetic link 27: ledger planner",
+  "folder_path": "Reading List/security",
+  "saved_at": "2026-01-10T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://blog.example7.dev/posts/rollup-prover",
+  "canonical_url": "https://blog.example7.dev/posts/rollup-prover",
+  "title": "Synthetic link 28: rollup prover",
+  "folder_path": "Reading List/security",
+  "saved_at": "2025-02-11T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://github.com/example4/zk-router",
+  "canonical_url": "https://github.com/example4/zk-router",
+  "title": "Synthetic link 29: zk router",
+  "folder_path": "Reading List",
+  "saved_at": "2026-03-12T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://x.com/example2/status/1030",
+  "canonical_url": "https://x.com/example2/status/1030",
+  "title": "Synthetic link 30: sandbox rag",
+  "folder_path": "Reading List/LLMs",
+  "saved_at": "2025-04-13T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://github.com/example3/rollup-tracer",
+  "canonical_url": "https://github.com/example3/rollup-tracer",
+  "title": "Synthetic link 31: rollup tracer",
+  "folder_path": "Reading List/AI agents",
+  "saved_at": "2026-05-14T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://github.com/example4/planner-vector",
+  "canonical_url": "https://github.com/example4/planner-vector",
+  "title": "Synthetic link 32: planner vector",
+  "folder_path": "Reading List/Decentralized AI",
+  "saved_at": "2025-06-15T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://medium.com/@example6/prover-rollup-1033",
+  "canonical_url": "https://medium.com/@example6/prover-rollup-1033",
+  "title": "Synthetic link 33: prover rollup",
+  "folder_path": "Reading List/LLMs",
+  "saved_at": "2026-07-16T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://blog.example8.dev/posts/prover-prover",
+  "canonical_url": "https://blog.example8.dev/posts/prover-prover",
+  "title": "Synthetic link 34: prover prover",
+  "folder_path": "Reading List/Decentralized AI",
+  "saved_at": "2025-08-17T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://github.com/example3/rollup-sandbox",
+  "canonical_url": "https://github.com/example3/rollup-sandbox",
+  "title": "Synthetic link 35: rollup sandbox",
+  "folder_path": "Reading List/Decentralized AI",
+  "saved_at": "2026-09-18T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://blog.example3.dev/posts/agent-router?utm_source=x",
+  "canonical_url": "https://blog.example3.dev/posts/agent-router",
+  "title": "Synthetic link 36: agent router",
+  "folder_path": "Reading List/project ideas",
+  "saved_at": "2025-01-10T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://x.com/example9/status/1037",
+  "canonical_url": "https://x.com/example9/status/1037",
+  "title": "Synthetic link 37: agent bridge",
+  "folder_path": "Reading List/LLMs",
+  "saved_at": "2026-02-11T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://medium.com/@example9/tracer-eval-1038",
+  "canonical_url": "https://medium.com/@example9/tracer-eval-1038",
+  "title": "Synthetic link 38: tracer eval",
+  "folder_path": "Reading List/project ideas",
+  "saved_at": "2025-03-12T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://x.com/example9/status/1039",
+  "canonical_url": "https://x.com/example9/status/1039",
+  "title": "Synthetic link 39: sandbox indexer",
+  "folder_path": "Reading List/Solidity",
+  "saved_at": "2026-04-13T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://x.com/example2/status/1003#dup",
+  "canonical_url": "https://x.com/example2/status/1003",
+  "title": "Synthetic link 3: memory rag",
+  "folder_path": "Reading List/LLMs",
+  "saved_at": "2026-04-13T12:00:00Z",
+  "source": "reading-list"
+ },
+ {
+  "url": "https://dead.example.invalid/gone",
+  "canonical_url": "https://dead.example.invalid/gone",
+  "title": "Synthetic dead link",
+  "folder_path": "Reading List",
+  "saved_at": "2025-02-01T00:00:00Z",
+  "source": "reading-list"
+ }
+]

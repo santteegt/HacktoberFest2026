@@ -1,5 +1,8 @@
 ideas/
 .env
+.sloth/
+.venv/
 node_modules/
 __pycache__/
-.sloth/
+.pytest_cache/
+*.egg-info/

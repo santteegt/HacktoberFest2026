@@ -1,0 +1,31 @@
+# Copy to .sloth/config.toml (gitignored) and fill in. No secrets here:
+# tokens and keys are read from the Hermes profile .env files at runtime.
+
+[sources]
+bookmarks_path = "~/Library/Application Support/Google/Chrome/Default/Bookmarks"
+bookmarks_folder = "Reading List"
+
+[db]
+tiger_service_id = "<tiger service id>"   # `tiger service list`
+url_env = "SLOTH_DATABASE_URL"            # set this env var to override (e.g. a local DB)
+
+[discord]
+curator = "<#sk-curator channel id>"
+valhalla = "<#sk-valhalla channel id>"
+coordinator = "<#sk-coordinator channel id>"
+worker = "<#sk-worker channel id>"
+log = "<#sk-logs channel id>"
+
+[llm]
+ollama_url = "http://localhost:11434"
+ollama_model = "sloth-gemma4-12b"   # FROM gemma4:12b-it-qat, num_ctx 32768 (see README)
+ollama_num_ctx = 32768
+openrouter_model = ""               # set by the Builder lane after M0.4
+
+[worker]
+box_minutes = 120
+prototypes_dir = "~/GitRepositories/skunkworks-prototypes"
+
+[github]
+owner = "@me"
+# project_number = 0                # written by `sloth board init`

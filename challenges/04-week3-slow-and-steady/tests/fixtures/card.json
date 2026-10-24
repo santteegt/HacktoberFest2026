@@ -1,0 +1,16 @@
+{
+ "id": "fx01",
+ "title": "Local agent memory with a vector index in 2 hours",
+ "vertical": "ai-agents",
+ "learning_goal": "Understand how an agent stores and recalls facts with embeddings.",
+ "hypothesis": "I can get a CLI agent to remember and recall 10 facts using a local embedding model and SQLite in 2 hours.",
+ "done_means": "`make demo` stores 10 facts and answers 3 recall questions correctly; tests pass.",
+ "box_minutes": 120,
+ "link_ids": [
+  1,
+  2,
+  3
+ ],
+ "kill_criteria": "No working recall after 90 minutes.",
+ "column": "today"
+}
