@@ -12,18 +12,17 @@ from sloth.core.models import Enrichment, Link, Triage
 
 def upsert_links(conn, links: Iterable[Link]) -> int:
     """Insert new links; existing canonical URLs keep their status. Returns how many were new."""
-    new = 0
-    for link in links:
-        row = conn.execute(
+    before = conn.execute("SELECT count(*) AS n FROM links").fetchone()["n"]
+    with conn.cursor() as cur:  # executemany pipelines the round trips (Tiger is ~90 ms away)
+        cur.executemany(
             """INSERT INTO links (url, canonical_url, title, folder_path, saved_at, source)
                VALUES (%s, %s, %s, %s, %s, %s)
                ON CONFLICT (canonical_url) DO UPDATE
-                 SET title = EXCLUDED.title, folder_path = EXCLUDED.folder_path
-               RETURNING (xmax = 0) AS inserted""",
-            (link.url, link.canonical_url, link.title, link.folder_path, link.saved_at, link.source),
-        ).fetchone()
-        new += bool(row["inserted"])
-    return new
+                 SET title = EXCLUDED.title, folder_path = EXCLUDED.folder_path""",
+            [(link.url, link.canonical_url, link.title, link.folder_path, link.saved_at, link.source)
+             for link in links],
+        )
+    return conn.execute("SELECT count(*) AS n FROM links").fetchone()["n"] - before
 
 
 def next_batch(conn, n: int, *, statuses: tuple[str, ...] = ("new", "enriched"),
