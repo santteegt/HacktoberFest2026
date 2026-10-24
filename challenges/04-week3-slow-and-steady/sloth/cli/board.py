@@ -58,15 +58,11 @@ def build(no_model: Annotated[bool, typer.Option("--no-model", help="Code wordin
 
 
 def _sync_quiet():
-    """Sync if the Project exists; never fail a board move because GitHub is down."""
-    from ..board import github
-    if not github.configured():
-        return None
-    try:
-        return github.sync()
-    except Exception as e:  # noqa: BLE001
-        print(f"warning: GitHub Project sync failed: {type(e).__name__}: {e}")
-        return {"error": str(e)[:200]}
+    """Refresh after a move; never fails the move (GitHub errors are reported in the result)."""
+    from ..board.cards import refresh
+    from ..core.db import connect
+    with connect() as conn:
+        return refresh(conn)
 
 
 @board_app.command("show")
@@ -98,9 +94,11 @@ def init() -> None:
 @board_app.command("sync")
 def sync(prune: Annotated[bool, typer.Option(help="Delete Project items whose Card ID is not in the DB.")] = False,
          readme: Annotated[bool, typer.Option(help="Refresh the Project README status block.")] = True) -> None:
-    """One-way DB → GitHub Project sync, idempotent by Card ID (also applies run rows)."""
-    from ..board import github
-    print(json.dumps(github.sync(prune=prune, readme=readme), indent=1, default=str))
+    """Apply run rows, rewrite board files and brain, mirror to the GitHub Project (idempotent)."""
+    from ..board.cards import refresh
+    from ..core.db import connect
+    with connect() as conn:
+        print(json.dumps(refresh(conn, prune=prune, readme=readme), indent=1, default=str))
 
 
 @pick_app.command("options")

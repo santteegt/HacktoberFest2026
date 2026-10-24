@@ -307,7 +307,7 @@ def set_readme(ids: dict, text: str) -> None:
                     "--readme", text], check=True, capture_output=True, text=True, timeout=60)
 
 
-def sync(*, prune: bool = False, readme: bool = True, conn=None) -> dict:
+def sync(*, prune: bool = False, readme: bool = True, conn=None, apply: bool = True) -> dict:
     """Mirror every card to the Project. Applies run rows first so Builder moves show up."""
     from . import store
     from .cards import apply_runs, render_all
@@ -321,10 +321,11 @@ def sync(*, prune: bool = False, readme: bool = True, conn=None) -> dict:
     if conn is None:
         from ..core.db import connect
         with connect() as c:
-            return sync(prune=prune, readme=readme, conn=c)
+            return sync(prune=prune, readme=readme, conn=c, apply=apply)
 
-    moves = apply_runs(conn)
-    render_all(conn)
+    moves = apply_runs(conn) if apply else []
+    if apply:
+        render_all(conn)
     cards = store.all_cards(conn)
     runs = store.latest_runs(conn)
     links = store.links_by_id(conn, sorted({i for c in cards for i in c["link_ids"]}))

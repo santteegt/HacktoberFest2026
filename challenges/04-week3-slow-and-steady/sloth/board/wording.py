@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field
 
 from ..core.config import settings
 from ..core.llm import local_json
-from .cluster import words
+from .cluster import _STOP
 from .store import KeptLink
 
 
@@ -65,15 +65,19 @@ def link_lines(links: list[KeptLink]) -> str:
     return "\n".join(out)
 
 
+def _tokens(text: str) -> set[str]:
+    return {t for t in re.findall(r"[a-z0-9]+", text.lower()) if len(t) > 2 and t not in _STOP}
+
+
 def verify(w: CardWording, links: list[KeptLink]) -> list[str]:
     problems = []
     if not 8 <= len(w.title) <= 70:
         problems.append("title must be 8-70 characters")
     if re.match(r"(?i)\s*card\b", w.title) or '"' in w.title:
         problems.append("title must not start with 'Card' or contain quotes")
-    source = set().union(*(words(link) for link in links)) | {
-        t for link in links for t in re.findall(r"[a-z0-9]+", (link.title or "").lower()) if len(t) > 2}
-    title_words = {t for t in re.findall(r"[a-z0-9]+", w.title.lower()) if len(t) > 2}
+    source = set().union(*(_tokens(f"{link.title or ''} {link.topic} {link.one_line_idea or ''}")
+                           for link in links))
+    title_words = _tokens(w.title)
     if source and not (title_words & source):
         problems.append("title must reuse at least one word from the links' titles or topics")
     if not w.learning_goal.lower().startswith("learn"):

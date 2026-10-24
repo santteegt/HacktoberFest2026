@@ -91,3 +91,25 @@ def render_all(conn) -> int:
     for card in cards:
         write_card_file(card, links, runs.get(card["id"]))
     return len(cards)
+
+
+def refresh(conn, *, prune: bool = False, readme: bool = True) -> dict:
+    """Everything that follows a move: run rows → columns, board files, brain, GitHub Project.
+
+    The Project part is skipped (markdown-only fallback) when `sloth board init` never ran, and a
+    GitHub failure is reported, not raised, so a move is never lost to the network.
+    """
+    from . import brain, github
+    moves = apply_runs(conn)
+    render_all(conn)
+    out = {"moves_from_runs": moves, "files": True}
+    if any(to == Column.built for _, _, to in moves) or brain.BRAIN_DIR.joinpath("index.md").exists():
+        out["brain"] = brain.render(conn)["pages"]
+    if github.configured():
+        try:
+            out["project"] = github.sync(prune=prune, readme=readme, conn=conn, apply=False)
+        except Exception as e:  # noqa: BLE001
+            out["project"] = {"error": f"{type(e).__name__}: {str(e)[:300]}"}
+    else:
+        out["project"] = "not configured (markdown only)"
+    return out
