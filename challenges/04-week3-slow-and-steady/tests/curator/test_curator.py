@@ -221,6 +221,9 @@ def test_browser_candidates_skip_blocked_and_dead():
     assert not enrich.browser_candidate({"http_status": 403, "error": "http 403"})
     assert not enrich.browser_candidate({"http_status": 404})
     assert not enrich.browser_candidate({"http_status": 200, "readable_chars": 10, "content_kind": "github"})
+    tried = {"error": "browser-only host | browser: timeout after 45s", "content_kind": "html"}
+    assert not enrich.browser_candidate(tried)
+    assert enrich.browser_candidate(tried, retry_failed=True)
     assert enrich.browser_timeout("https://x.com/a/status/1") == 45
     assert enrich.browser_timeout("https://kaggle.com/learn") == 90
 

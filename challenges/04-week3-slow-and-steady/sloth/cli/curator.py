@@ -208,7 +208,8 @@ def reading_cmd() -> None:
 
 @curator_app.command("browse")
 def browse_cmd(limit: Annotated[int, typer.Option(help="How many browser candidates (0 = all).")] = 0,
-               retriage: Annotated[bool, typer.Option(help="Re-label links that were already triaged.")] = True) -> None:
+               retriage: Annotated[bool, typer.Option(help="Re-label links that were already triaged.")] = True,
+               retry_failed: Annotated[bool, typer.Option(help="Also retry links the browser failed on before.")] = False) -> None:
     """Read x.com and JS-only pages with Lane 3's browser (visible local Chrome), then re-triage them.
     Prints one line per extract (host, ok, seconds) and a summary."""
     from ..curator.enrich import browser_session
@@ -217,7 +218,7 @@ def browse_cmd(limit: Annotated[int, typer.Option(help="How many browser candida
         raise SystemExit("sloth.builder.browser is not available")
     with _conn() as conn:
         conn.autocommit = True
-        _out(run_browse(conn, limit=limit or None, retriage=retriage,
+        _out(run_browse(conn, limit=limit or None, retriage=retriage, retry_failed=retry_failed,
                         on_try=lambda t: print(json.dumps(t), flush=True)))
 
 

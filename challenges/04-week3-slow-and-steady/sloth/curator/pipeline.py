@@ -166,7 +166,7 @@ def run_batch(conn, n: int, *, source: str = "reading-list", use_browser: bool =
     return res
 
 
-def unreadable_links(conn, limit: int | None = None) -> list[dict]:
+def unreadable_links(conn, limit: int | None = None, *, retry_failed: bool = False) -> list[dict]:
     """Browser candidates (see enrich.browser_candidate) the author has not settled yet."""
     from .enrich import browser_candidate
     rows = conn.execute(
@@ -177,18 +177,18 @@ def unreadable_links(conn, limit: int | None = None) -> list[dict]:
                   OR (l.status = 'valhalla' AND v.status = 'proposed' AND v.decided_by = 'model'))
            ORDER BY l.saved_at DESC NULLS LAST""").fetchall()
     enr = store.enrichment_for(conn, [r["id"] for r in rows])
-    picked = [r for r in rows if browser_candidate(enr.get(r["id"]))]
+    picked = [r for r in rows if browser_candidate(enr.get(r["id"]), retry_failed=retry_failed)]
     return picked[:limit] if limit else picked
 
 
 def run_browse(conn, *, limit: int | None = None, batch_id: str | None = None, retriage: bool = True,
-               on_try=None) -> dict:
+               on_try=None, retry_failed: bool = False) -> dict:
     """Browser pass over unreadable links, then (separately, so the two never interleave on the one
     Ollama slot) re-triage the ones it read, if they were triaged before."""
     from .enrich import browse_many
     from .triage import decide, label
     t0 = time.monotonic()
-    links = unreadable_links(conn, limit)
+    links = unreadable_links(conn, limit, retry_failed=retry_failed)
     enr = store.enrichment_for(conn, [r["id"] for r in links])
     tries: list[dict] = []
 
@@ -196,7 +196,8 @@ def run_browse(conn, *, limit: int | None = None, batch_id: str | None = None, r
         tries.append(t)
         if on_try:
             on_try(t)
-    read = asyncio.run(browse_many(links, enr, on_done=lambda e: store.save_enrichment(conn, e), on_try=record))
+    read = asyncio.run(browse_many(links, enr, on_done=lambda e: store.save_enrichment(conn, e), on_try=record,
+                                   on_fail=lambda i, why, secs: store.mark_browser_failed(conn, i, why, secs)))
     browse_s = round(time.monotonic() - t0, 1)
     bid = batch_id or new_batch_id() + "-browser"
     moves: Counter = Counter()
