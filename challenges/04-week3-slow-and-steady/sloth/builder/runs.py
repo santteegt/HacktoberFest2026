@@ -85,6 +85,33 @@ def get_run(run_id: int) -> dict:
     return row
 
 
+def status() -> dict:
+    """Today's card(s) and the latest runs, for the Worker desk's `status` and `go`."""
+    with connect() as conn:
+        today = conn.execute(
+            """SELECT id, title FROM cards WHERE "column" = 'today' ORDER BY moved_at DESC""").fetchall()
+        latest = conn.execute(
+            """SELECT r.id, r.card_id, c.title, r.outcome, r.approved, r.repo_url, r.cost_usd, r.model_id,
+                      r.started_at, r.ended_at
+               FROM runs r JOIN cards c ON c.id = r.card_id ORDER BY r.started_at DESC LIMIT 3""").fetchall()
+    return {"today": today, "latest_runs": latest}
+
+
+def status_text(st: dict) -> str:
+    lines = []
+    if st["today"]:
+        lines += [f"Today: `{c['id']}` {c['title']} (reply `go` to start its box)" for c in st["today"]]
+    else:
+        lines.append("No card in Today. The Coordinator's daily pick puts one there.")
+    for r in st["latest_runs"]:
+        cost = f"${float(r['cost_usd']):.2f}" if r["cost_usd"] is not None else "cost pending"
+        state = r["outcome"] if r["outcome"] != "building" else f"building since {r['started_at']:%H:%M} UTC"
+        pushed = f", repo {r['repo_url']}" if r["repo_url"] else (
+            f", reply `approve {r['id']}` to push it" if r["outcome"] == "done" else "")
+        lines.append(f"Run {r['id']}: `{r['card_id']}` {r['title']}: {state}, {cost}{pushed}")
+    return "\n".join(lines)
+
+
 def repo_name(repo_dir: str) -> str:
     return f"sloth-{Path(repo_dir).name}"
 
