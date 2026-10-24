@@ -183,3 +183,15 @@ def test_sync_prune_keeps_referenced_items_and_adopts_orphans(monkeypatch):
     assert '"I_X"' in text and 'deleteProjectV2Item' in text
     assert text.count("deleteProjectV2Item") == 1
     assert 'itemId: "I_B"' in text  # the orphan was adopted and got its fields
+
+
+def test_cap_per_vertical_keeps_best_clusters():
+    from sloth.board.cards import cap_per_vertical
+
+    def mk(i, b, v="ai-agents"):
+        return KeptLink(i, "u", "t", datetime(2026, 1, 1, tzinfo=UTC), None, "x", v, "tool", b, None)
+    clusters = [[mk(1, 2), mk(2, 2)], [mk(3, 3), mk(4, 3)], [mk(5, 3), mk(6, 3), mk(7, 3)], [mk(8, 2, "rust"), mk(9, 2, "rust")]]
+    kept, capped = cap_per_vertical(clusters, 2)
+    assert [[x.link_id for x in g] for g in kept] == [[5, 6, 7], [3, 4], [8, 9]]
+    assert capped == {"ai-agents": 1}
+    assert cap_per_vertical(clusters, None) == (clusters, {})

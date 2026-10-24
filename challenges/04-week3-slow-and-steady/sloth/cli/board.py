@@ -34,6 +34,7 @@ def seed_fixtures(allow_public: Annotated[bool, typer.Option(help="Seed into pub
 @board_app.command("build")
 def build(no_model: Annotated[bool, typer.Option("--no-model", help="Code wording only.")] = False,
           limit: Annotated[int | None, typer.Option(help="At most N new cards.")] = None,
+          max_per_vertical: Annotated[int | None, typer.Option(help="At most N new cards per vertical (best clusters first).")] = None,
           sync: Annotated[bool, typer.Option(help="Sync the GitHub Project afterwards.")] = True,
           as_json: Annotated[bool, typer.Option("--json")] = False) -> None:
     """Cluster kept links into new backlog cards (model words them), write board files."""
@@ -46,14 +47,21 @@ def build(no_model: Annotated[bool, typer.Option("--no-model", help="Code wordin
             tag = "fallback" if trace["fallback"] else f"{trace['ms']}ms"
             print(f"+ {card.id} [{card.vertical}] {card.title} ({len(card.link_ids)} links, {tag})")
 
+    import time
+    report: dict = {}
+    t0 = time.monotonic()
     with connect() as conn:
-        made = cards.build(conn, use_model=not no_model, limit=limit, on_card=show)
+        made = cards.build(conn, use_model=not no_model, limit=limit, max_per_vertical=max_per_vertical,
+                           on_card=show, report=report)
+    report["wall_s"] = round(time.monotonic() - t0, 1)
+    report["model_request_s"] = round(sum(t["ms"] for _, t in made) / 1000, 1)
+    report["tokens_out"] = sum(t["tokens_out"] for _, t in made)
     if made:
         notify.log("coordinator", "cards", f"{len(made)} new cards in backlog",
                    {"cards": [c.id for c, _ in made]})
     synced = _sync_quiet() if (sync and made) else None
     _out({"ok": True, "new_cards": [c.id for c, _ in made], "synced": synced,
-          "fallbacks": sum(t["fallback"] for _, t in made),
+          "fallbacks": sum(t["fallback"] for _, t in made), **report,
           "reply": f"{len(made)} new cards in the backlog."}, as_json)
 
 

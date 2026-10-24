@@ -11,13 +11,46 @@ from .markdown import write_card_file
 from .wording import box_minutes, kill_criteria, word_card
 
 
+def _quality(group) -> tuple:
+    """Best clusters first: mean buildable, then size, then the newest link."""
+    newest = max((link.saved_at.timestamp() for link in group if link.saved_at), default=0)
+    return (-sum(link.buildable for link in group) / len(group), -len(group), -newest,
+            min(link.link_id for link in group))
+
+
+def cap_per_vertical(clusters: list, n: int | None) -> tuple[list, dict[str, int]]:
+    """Keep the n best new clusters per vertical; return them and how many each vertical lost."""
+    if n is None:
+        return clusters, {}
+    by_v: dict[str, list] = {}
+    for g in clusters:
+        by_v.setdefault(g[0].vertical, []).append(g)
+    kept, capped = [], {}
+    for v in sorted(by_v):
+        ranked = sorted(by_v[v], key=_quality)
+        kept += ranked[:n]
+        if len(ranked) > n:
+            capped[v] = len(ranked) - n
+    return kept, capped
+
+
 def build(conn, *, use_model: bool = True, limit: int | None = None,
-          on_card=None) -> list[tuple[Card, dict]]:
-    """Cluster kept links that are on no live card, word each cluster, insert as backlog."""
+          max_per_vertical: int | None = None, on_card=None,
+          report: dict | None = None) -> list[tuple[Card, dict]]:
+    """Cluster kept links that are on no live card, word each cluster, insert as backlog.
+
+    `max_per_vertical` caps new cards per vertical per build (a board the author can scan beats
+    a complete one); capped clusters' links stay free for a later build. `report` gets the
+    candidate count and what was capped.
+    """
     links = store.kept_links(conn)
     clusters = cluster(links, corpus=store.kept_links(conn, include_carded=True))
+    candidates = len(clusters)
+    clusters, capped = cap_per_vertical(clusters, max_per_vertical)
     if limit is not None:
         clusters = clusters[:limit]
+    if report is not None:
+        report.update(free_links=len(links), candidates=candidates, capped=capped)
     taken = store.card_ids(conn)
     box = box_minutes()
     made = []

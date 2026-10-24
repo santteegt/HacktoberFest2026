@@ -1,8 +1,8 @@
 """Daily pick: code scores and selects, the model only words the options.
 
 score = 0.5 · focus weight + 0.3 · freshness of the newest link + 0.2 · vertical novelty
-(no focus set → every vertical weighs 0.5). Options are the top cards with distinct verticals
-first. The offered options are stored as an `events` row so a tapped label maps back to its
++ 0.15 when the card uses a word of the focus answer (no focus set → every vertical weighs 0.5).
+Options are picked greedily with a penalty per repeated vertical. The offered options are stored as an `events` row so a tapped label maps back to its
 card without asking the model.
 """
 
@@ -18,9 +18,11 @@ from pydantic import BaseModel, Field
 from ..core.llm import local_json
 from ..core.models import Column, PickOption
 from . import store
-from .focus import NAMES, current_focus
+from .focus import GLOSSARY, NAMES, current_focus
 
 W_FOCUS, W_FRESH, W_NOVEL = 0.5, 0.3, 0.2
+W_TOPIC = 0.15  # bonus when the card's title or goal uses a word of the focus answer
+REPEAT_PENALTY = 0.25
 FRESH_HALF_LIFE_DAYS = 120
 NOVEL_FULL_DAYS = 7
 QUESTION = "What are you in the mood for today?"
@@ -36,11 +38,14 @@ class Scored:
     novel: float
     newest: date | None
     last_touched: date | None
+    topic: tuple[str, ...] = ()
 
     def reasons(self, *, with_date: bool = True) -> str:
         bits = []
         if self.focus >= 0.75:
             bits.append(f"matches this week's focus ({NAMES.get(self.card['vertical'], self.card['vertical'])})")
+        if self.topic:
+            bits.append(f"mentions {', '.join(self.topic)} from this week's focus")
         if self.newest and with_date:
             bits.append(f"newest link saved {self.newest:%b %d, %Y}")
         bits.append("vertical never picked yet" if self.last_touched is None
@@ -48,28 +53,50 @@ class Scored:
         return "; ".join(bits)
 
 
+def focus_terms(text: str | None) -> set[str]:
+    """Words of the author's focus answer beyond vertical names ("memory" in "memory for agents")."""
+    if not text:
+        return set()
+    vertical_words = {w for name in NAMES.values() for w in _words(name)} | {
+        w for terms in GLOSSARY.values() for t in terms for w in _words(t)}
+    filler = {w for f in _FILLER for w in _words(f)}
+    return {w for w in _words(text) if len(w) > 3 and w not in vertical_words | filler}
+
+
+def _words(text: str) -> set[str]:
+    return {w.rstrip("s") if len(w) > 4 else w for w in re.findall(r"[a-z0-9]+", text.lower())}
+
+
+_FILLER = {"wanna", "want", "focus", "week", "this", "care", "about", "really", "some", "maybe",
+           "stuff", "things", "anything", "more", "like", "with", "play", "learn", "build", "tap"}
+
+
 def score_card(card: dict, newest: date | None, weights: dict[str, float] | None,
-               last_touched: date | None, today: date) -> Scored:
+               last_touched: date | None, today: date, terms: set[str] | None = None) -> Scored:
     focus = weights.get(card["vertical"], 0.0) if weights else 0.5
     fresh = 0.5 ** (max(0, (today - newest).days) / FRESH_HALF_LIFE_DAYS) if newest else 0.0
     novel = 1.0 if last_touched is None else min(1.0, max(0, (today - last_touched).days) / NOVEL_FULL_DAYS)
-    total = W_FOCUS * focus + W_FRESH * fresh + W_NOVEL * novel
-    return Scored(card, round(total, 4), focus, round(fresh, 3), round(novel, 3), newest, last_touched)
+    hits = tuple(sorted((terms or set()) & _words(f"{card['title']} {card.get('learning_goal') or ''}")))
+    total = W_FOCUS * focus + W_FRESH * fresh + W_NOVEL * novel + (W_TOPIC if hits else 0.0)
+    return Scored(card, round(total, 4), focus, round(fresh, 3), round(novel, 3), newest, last_touched, hits)
 
 
 def select(scored: list[Scored], n: int) -> list[Scored]:
-    ranked = sorted(scored, key=lambda s: (-s.score, s.card["id"]))
-    out, seen = [], set()
-    for s in ranked:  # one per vertical first
-        if s.card["vertical"] not in seen:
-            out.append(s)
-            seen.add(s.card["vertical"])
-    out = out[:n]
-    for s in ranked:  # then fill with the best remaining
-        if len(out) >= n:
-            break
-        if s not in out:
-            out.append(s)
+    """Greedy by score, minus REPEAT_PENALTY for each card already chosen from the same vertical.
+
+    With a focus, two or three focus cards usually beat the rest and one wildcard gets in;
+    without one, the options spread across verticals.
+    """
+    pool = sorted(scored, key=lambda s: (-s.score, s.card["id"]))
+    out: list[Scored] = []
+    while pool and len(out) < n:
+        count = {}
+        for s in out:
+            count[s.card["vertical"]] = count.get(s.card["vertical"], 0) + 1
+        best = max(pool, key=lambda s: (s.score - REPEAT_PENALTY * count.get(s.card["vertical"], 0),
+                                        -pool.index(s)))
+        out.append(best)
+        pool.remove(best)
     return sorted(out, key=lambda s: (-s.score, s.card["id"]))
 
 
@@ -130,12 +157,13 @@ def scored_backlog(conn, today: date) -> list[Scored]:
     links = store.links_by_id(conn, sorted({i for c in cards for i in c["link_ids"]}))
     focus = current_focus(conn, today)
     weights = focus["weights"] if focus and focus["weights"] else None
+    terms = focus_terms(focus["text"]) if weights else set()
     touched = store.last_touched(conn)
     out = []
     for c in cards:
         saved = [links[i]["saved_at"] for i in c["link_ids"] if i in links and links[i]["saved_at"]]
         newest = max(saved).astimezone(UTC).date() if saved else None
-        out.append(score_card(c, newest, weights, touched.get(c["vertical"]), today))
+        out.append(score_card(c, newest, weights, touched.get(c["vertical"]), today, terms))
     return out
 
 
