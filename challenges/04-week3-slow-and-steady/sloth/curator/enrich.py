@@ -24,6 +24,11 @@ try:  # Lane 3 lands sloth.builder.browser.extract(url, *, timeout_s=45) -> Brow
 except ImportError:  # until then: a browser that can never read anything
     def browser_extract(url: str, *, timeout_s: int = 45) -> BrowserExtract | None:  # noqa: ARG001
         return None
+try:  # Lane 3's batch API: one Chrome session reused for many URLs (their M0.3 advice)
+    from sloth.builder.browser import extract_with as browser_extract_with
+    from sloth.builder.browser import session as browser_session
+except ImportError:
+    browser_session = browser_extract_with = None
 
 USER_AGENT = "Mozilla/5.0 (compatible; SkunkworksSloth/0.1; personal reading-list triage, one fetch per link)"
 TIMEOUT_S = 10
@@ -199,3 +204,37 @@ async def enrich_many(links: Iterable[dict], *, use_browser: bool = True, browse
                 on_done(e)
             return e
         return list(await asyncio.gather(*(run(link) for link in links)))
+
+
+def browser_timeout(url: str) -> int:
+    """Lane 3's M0.3: x.com posts finish in 10-20 s scoped; JS-only pages need up to 90 s."""
+    return 45 if host_of(url) in BROWSER_HOSTS else 90
+
+
+async def browse_many(links: list[dict], enr: dict[int, dict],
+                      on_done: Callable[[Enrichment], None] | None = None) -> list[Enrichment]:
+    """Re-read links with the real browser, one at a time, in one session when Lane 3 offers it.
+    Returns only the links the browser could read."""
+    out: list[Enrichment] = []
+
+    async def one(read, link: dict) -> None:
+        base = Enrichment.model_validate({**(enr.get(link["id"]) or {}), "link_id": link["id"],
+                                          "fetched_with": (enr.get(link["id"]) or {}).get("fetched_with", "failed")})
+        try:
+            x = await read(link["url"])
+        except Exception:  # noqa: BLE001 - one bad page never stops the batch
+            x = None
+        if x is not None and (x.summary_text or x.title):
+            e = _from_browser(base, x)
+            out.append(e)
+            if on_done:
+                on_done(e)
+
+    if browser_session is not None:
+        async with browser_session() as sh:
+            for link in links:
+                await one(lambda u: browser_extract_with(sh, u, timeout_s=browser_timeout(u)), link)
+    else:
+        for link in links:
+            await one(lambda u: asyncio.to_thread(browser_extract, u, timeout_s=browser_timeout(u)), link)
+    return out

@@ -154,3 +154,45 @@ def run_batch(conn, n: int, *, source: str = "reading-list", use_browser: bool =
     res.seconds = round(time.monotonic() - t0, 1)
     res.model_seconds = round(res.model_seconds, 1)
     return res
+
+
+def unreadable_links(conn, limit: int | None = None) -> list[dict]:
+    """Links the model judged from the title alone and the author has not settled yet."""
+    return conn.execute(
+        """SELECT l.* FROM links l JOIN enrichment e ON e.link_id = l.id
+           LEFT JOIN valhalla v ON v.link_id = l.id
+           WHERE coalesce(e.readable_chars, 0) < 200 AND e.fetched_with <> 'stagehand'
+             AND coalesce(e.http_status, 0) NOT IN (404, 410) AND coalesce(e.error, '') NOT LIKE 'dns%%'
+             AND e.content_kind IS DISTINCT FROM 'github' AND e.content_kind IS DISTINCT FROM 'pdf'
+             AND (l.status IN ('new', 'enriched', 'kept', 'reading', 'unsure')
+                  OR (l.status = 'valhalla' AND v.status = 'proposed' AND v.decided_by = 'model'))
+           ORDER BY l.saved_at DESC NULLS LAST LIMIT %s""", (limit,)).fetchall()
+
+
+def run_browse(conn, *, limit: int | None = None, batch_id: str | None = None) -> dict:
+    """Browser pass over unreadable links, then re-triage the ones it could read."""
+    from .enrich import browse_many
+    from .triage import decide, label
+    t0 = time.monotonic()
+    links = unreadable_links(conn, limit)
+    enr = store.enrichment_for(conn, [r["id"] for r in links])
+    read = asyncio.run(browse_many(links, enr, on_done=lambda e: store.save_enrichment(conn, e)))
+    bid = batch_id or new_batch_id() + "-browser"
+    moves: Counter = Counter()
+    have = store.enrichment_for(conn, [e.link_id for e in read])
+    for link in store.links_by_ids(conn, [e.link_id for e in read]):
+        lab = label(link, have.get(link["id"]))
+        outcome = decide(lab, link, have.get(link["id"]))
+        store.save_triage(conn, link["id"], lab.triage, decided_by="model", model=lab.model,
+                          tokens_in=lab.tokens_in, tokens_out=lab.tokens_out, ms=lab.ms)
+        before = link["status"]
+        if outcome == "valhalla":
+            store.propose_valhalla(conn, link["id"], lab.triage.reason, decided_by="model", batch_id=bid)
+        else:
+            if before == "valhalla":  # the page says otherwise now: withdraw the model's proposal
+                conn.execute("UPDATE valhalla SET status = 'restored', resolved_at = now() WHERE link_id = %s",
+                             (link["id"],))
+            store.set_status(conn, link["id"], outcome, bid)
+        moves[f"{before}->{outcome}"] += 1
+    return {"tried": len(links), "read_by_browser": len(read), "moves": dict(moves),
+            "seconds": round(time.monotonic() - t0, 1)}

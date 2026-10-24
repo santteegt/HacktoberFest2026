@@ -186,3 +186,14 @@ def reading_cmd() -> None:
         rows = store.reading_rows(conn)
     for msg in reading_messages(rows):
         print(msg)
+
+
+@curator_app.command("browse")
+def browse_cmd(limit: Annotated[int, typer.Option(help="How many unreadable links (0 = all).")] = 0) -> None:
+    """Re-read title-only links with Lane 3's browser (visible local Chrome), then re-triage them."""
+    from ..curator.enrich import browser_session
+    from ..curator.pipeline import run_browse
+    print(f"browser: {'Lane 3 session' if browser_session else 'Lane 3 extract() or stub'}")
+    with _conn() as conn:
+        conn.autocommit = True
+        print(run_browse(conn, limit=limit or None))
