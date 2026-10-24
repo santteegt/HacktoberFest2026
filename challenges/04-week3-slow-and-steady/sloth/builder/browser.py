@@ -14,9 +14,11 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 import time
 from contextlib import asynccontextmanager
 from typing import Any
+from urllib.parse import urlsplit
 
 from pydantic import AnyUrl, BaseModel, Field
 
@@ -29,6 +31,9 @@ LOGIN_WALL_MARKERS = (
     "log in to facebook", "you must log in", "sign up to see",
     "access to x.com was denied", "http error 403",
 )
+# Hosts whose main content sits in one element: extract only from it (a long x.com thread
+# otherwise sends the whole timeline's accessibility tree to the model).
+SCOPE_SELECTOR = {h: "article" for h in ("x.com", "www.x.com", "twitter.com", "mobile.twitter.com")}
 SETTLE_S = 8          # max seconds to wait for client-side rendering after DOMContentLoaded
 MIN_TEXT_CHARS = 80   # below this the page did not render anything worth extracting
 
@@ -132,6 +137,20 @@ async def _visible_text(page) -> str:
     return text
 
 
+def _scope_selectors(url: str) -> list[str]:
+    """Most specific first. On a reply page the first <article> is the parent post; the focal
+    post is the one by the URL's author without a reply-compose link (logged-out x.com view)."""
+    parts = urlsplit(url)
+    base = SCOPE_SELECTOR.get(parts.hostname or "")
+    if not base:
+        return []
+    m = re.match(r"/([A-Za-z0-9_]{1,15})/status/\d+", parts.path)
+    if not m:
+        return [base]
+    by_author = f'{base}:has(a[href="/{m.group(1)}" i])'
+    return [f'{by_author}:not(:has(a[href^="/compose/post"]))', by_author, base]
+
+
 def is_login_wall(text: str) -> bool:
     low = text.lower()
     return len(text) < 1500 and any(m in low for m in LOGIN_WALL_MARKERS)
@@ -150,11 +169,17 @@ async def extract_with_reason(sh, url: str, *, timeout_s: int = 45) -> tuple[Bro
                 return None, f"empty page ({len(text)} chars)"
             if is_login_wall(text):
                 return None, "login wall or access denied"
+            scope = None
+            for sel in _scope_selectors(url):
+                loc = page.locator(sel).first()
+                if await loc.count() > 0:
+                    scope = loc
+                    break
             try:
-                data = (await sh.extract(INSTRUCTION, _PageContent, page=page)).data
+                data = (await sh.extract(INSTRUCTION, _PageContent, page=page, locator=scope)).data
                 links = [str(u) for u in data.outbound_links][:10]
             except Exception:  # noqa: BLE001 - usually an unmappable link id; retry without links
-                data = (await sh.extract(INSTRUCTION, _PageText, page=page)).data
+                data = (await sh.extract(INSTRUCTION, _PageText, page=page, locator=scope)).data
                 links = []
             if not data.summary_text.strip():
                 return None, "model returned no summary"

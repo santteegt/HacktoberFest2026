@@ -15,7 +15,7 @@ import signal
 import subprocess
 import time
 from dataclasses import asdict, dataclass, field
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import httpx
@@ -116,10 +116,15 @@ def skill_text() -> str:
     return text.split("---", 2)[2].strip() if text.startswith("---") else text
 
 
-def build_prompt(card: Card, repo: Path, box_minutes: int) -> str:
+def build_prompt(card: Card, repo: Path, box_minutes: int, *, start: datetime | None = None) -> str:
+    start = start or datetime.now(UTC)
+    wrap = start + timedelta(minutes=box_minutes * 0.8)
+    end = start + timedelta(minutes=box_minutes)
     return (
         f"Skunkworks Sloth card {card.id}: {card.title}\n\n"
-        f"Repo: {repo}\nBox: {box_minutes} minutes, starting now. The runner kills the session at the box.\n"
+        f"Repo: {repo}\nBox: {box_minutes} minutes, from {start:%H:%M} to {end:%H:%M} UTC. "
+        f"The runner kills the session at {end:%H:%M} UTC. Check `date -u` as you go; at {wrap:%H:%M} UTC "
+        f"stop building, finish NOTES.md, commit and answer.\n"
         f"Start by reading {repo}/TASK.md. Follow the prototype-box instructions below.\n\n"
         f"---\n\n{skill_text()}\n"
     )

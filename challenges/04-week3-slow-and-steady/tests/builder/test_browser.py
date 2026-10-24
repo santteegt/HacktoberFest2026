@@ -47,3 +47,10 @@ def test_extract_with_reason_times_out():
 
     result, why = asyncio.run(browser.extract_with_reason(SlowSH(), "https://example.com", timeout_s=1))
     assert result is None and why.startswith("timeout")
+
+
+def test_scope_selectors_prefer_the_focal_post():
+    sels = browser._scope_selectors("https://x.com/VitalikButerin/status/123?s=20")
+    assert sels == ['article:has(a[href="/VitalikButerin" i]):not(:has(a[href^="/compose/post"]))',
+                    'article:has(a[href="/VitalikButerin" i])', "article"]
+    assert browser._scope_selectors("https://example.com/post") == []
