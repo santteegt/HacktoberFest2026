@@ -2,3 +2,4 @@ ideas/
 .env
 node_modules/
 __pycache__/
+.sloth/
