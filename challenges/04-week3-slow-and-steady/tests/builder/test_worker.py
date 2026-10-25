@@ -77,7 +77,7 @@ def test_run_box_end_to_end_with_fake_hermes(tmp_path, card, monkeypatch):
     assert "A thing that works." in notes and "Outcome: **done**" in notes
     text = worker.summary_text(r, card, run_id=7)
     assert "run 7" in text and "$0.05" in text and "Nothing is on GitHub until you approve" in text
-    assert "closed model" not in text
+    assert "closed model" not in text  # open weights carry no tag
 
 
 def test_run_box_kills_at_the_box(tmp_path, card, monkeypatch):
@@ -130,8 +130,8 @@ def test_run_box_anthropic_test_mode_costs_from_tokens(tmp_path, card, monkeypat
     assert r.model == "anthropic/claude-sonnet-5-5" and r.provider == "anthropic"
     # 1000 in x $2 + 200 out x $10 + 4000 cache writes x $2.50 + 100000 cache reads x $0.10, per million
     assert r.cost_usd == pytest.approx(0.024) and r.tokens_in == 105000 and r.tokens_out == 200
-    assert "(closed model, test run)" in worker.summary_text(r, card, run_id=8)
-    assert "via anthropic (closed model, test run)" in (Path(r.repo_dir) / "NOTES.md").read_text()
+    assert worker.summary_text(r, card, run_id=8).count("(closed model)") == 1
+    assert "via anthropic (closed model)" in (Path(r.repo_dir) / "NOTES.md").read_text()
 
 
 def test_resolve_model_from_config(monkeypatch):
@@ -158,3 +158,49 @@ def test_token_cost_run1_k05d2_exact_numbers():
     assert worker.token_cost("claude-sonnet-5-5", tokens) == pytest.approx(1.0214, abs=1e-4)
     # the in-process shape (uncached input smaller than the cache buckets) is not subtracted twice
     assert worker.split_tokens({"input": 120, "cache_read": 4_203_979, "cache_write": 107_423})["input"] == 120
+
+
+def _settings_with(**kw):
+    import dataclasses
+    from sloth.core import config
+    return lambda: dataclasses.replace(config.settings(), **kw)
+
+
+def test_resolve_model_complex_path(monkeypatch):
+    monkeypatch.setattr(worker, "settings", _settings_with(
+        worker_provider="openrouter", worker_model="", openrouter_model="google/gemma-4-26b-a4b-it",
+        complex_provider="anthropic", complex_model="claude-sonnet-5-5"))
+    assert worker.resolve_model() == ("openrouter", "google/gemma-4-26b-a4b-it", "google/gemma-4-26b-a4b-it")
+    assert worker.resolve_model(complex_task=True) == ("anthropic", "claude-sonnet-5-5", "anthropic/claude-sonnet-5-5")
+    # explicit flags still win over the complex settings
+    assert worker.resolve_model("openrouter", "qwen/qwen3-coder-next", complex_task=True) == (
+        "openrouter", "qwen/qwen3-coder-next", "qwen/qwen3-coder-next")
+    assert worker.resolve_model(model="claude-opus-5-5", complex_task=True)[2] == "anthropic/claude-opus-5-5"
+
+
+def test_model_tags():
+    assert worker.model_tag("openrouter") == "" and worker.model_tag("openrouter", True) == ""
+    assert worker.model_tag("anthropic") == " (closed model)"
+    assert worker.model_tag("anthropic", True) == " (closed model, complex task)"
+
+
+def test_run_box_complex_uses_complex_settings(tmp_path, card, monkeypatch):
+    monkeypatch.setattr(worker, "settings", _settings_with(
+        worker_provider="openrouter", worker_model="", openrouter_model="google/gemma-4-26b-a4b-it",
+        complex_provider="anthropic", complex_model="claude-sonnet-5-5", prototypes_dir=tmp_path / "p"))
+    monkeypatch.setattr(worker, "openrouter_usage", lambda: (_ for _ in ()).throw(AssertionError("no OpenRouter")))
+    monkeypatch.setattr(worker, "run_tests", lambda repo: (True, "1 passed"))
+    r = worker.run_box(card, links=LINKS, complex_task=True, box_minutes=1,
+                       base_dir=tmp_path / "protos", hermes=_fake_hermes(tmp_path))
+    argv = json.loads((tmp_path / "protos" / "argv.json").read_text())
+    assert argv[argv.index("--provider") + 1] == "anthropic" and argv[argv.index("-m") + 1] == "claude-sonnet-5-5"
+    assert r.model == "anthropic/claude-sonnet-5-5" and r.complex_task and r.cost_usd == pytest.approx(0.024)
+    assert "(closed model, complex task)" in worker.summary_text(r, card, run_id=9)
+    assert "via anthropic (closed model, complex task)" in (Path(r.repo_dir) / "NOTES.md").read_text()
+
+
+def test_status_text_names_both_models():
+    from sloth.builder import runs
+    text = runs.status_text({"today": [], "latest_runs": [], "models": {
+        "go": "google/gemma-4-26b-a4b-it", "go deep": "anthropic/claude-sonnet-5-5 (closed model, complex task)"}})
+    assert text.startswith("Models: `go` → `google/gemma-4-26b-a4b-it` · `go deep` → `anthropic/claude-sonnet-5-5")
