@@ -38,7 +38,8 @@ All commands run from the Skunkworks Sloth folder (your terminal cwd) as `uv run
 | `keep 12, 40` (answering the unsure list) | `uv run sloth curator keep 12 40` | the printed result |
 | `valhalla 12` (answering the unsure list) | `uv run sloth curator drop 12` | the printed result, and "it is in #sk-valhalla's next `show`" |
 | "what's unsure?" | `uv run sloth curator unsure` | the printed list |
-| "reading" / "what should I read?" | `uv run sloth curator reading` | the printed list (grouped by vertical, already split under 2,000 characters) |
+| "reading" / "what should I read?" | `uv run sloth curator reading` | the printed counts per vertical, as is |
+| "reading ai-agents" (any vertical name) | `uv run sloth curator reading ai-agents` | the printed list (newest 20, already split under 2,000 characters) |
 | "status" / "how far are we?" | `uv run sloth curator stats` | one sentence: to build (`kept`), to read (`reading`), Valhalla (proposed/confirmed), unsure, links left (`new` + `enriched`) |
 
 ## Never
