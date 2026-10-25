@@ -89,13 +89,19 @@ CREATE TABLE IF NOT EXISTS cards (
 CREATE TABLE IF NOT EXISTS reading_picks (  -- the Coordinator's daily reading link from the Curator's `reading` bucket
     id              BIGSERIAL PRIMARY KEY,
     link_id         BIGINT NOT NULL REFERENCES links(id) ON DELETE CASCADE,
-    picked_on       DATE NOT NULL UNIQUE,       -- one recommendation per day
+    picked_on       DATE NOT NULL,              -- one main recommendation per day (partial unique index below)
+    extra           BOOLEAN NOT NULL DEFAULT false,  -- true for `--again` picks on the same day
     vertical        TEXT,
     why             TEXT,                       -- the model's one-line reason, checked against the link's facts
     focus_id        BIGINT REFERENCES focus(id),
     discord_message_id TEXT,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Migration for databases created before `extra` existed (idempotent).
+ALTER TABLE reading_picks ADD COLUMN IF NOT EXISTS extra BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE reading_picks DROP CONSTRAINT IF EXISTS reading_picks_picked_on_key;
+CREATE UNIQUE INDEX IF NOT EXISTS reading_picks_one_per_day ON reading_picks (picked_on) WHERE NOT extra;
 
 CREATE TABLE IF NOT EXISTS runs (
     id          BIGSERIAL PRIMARY KEY,

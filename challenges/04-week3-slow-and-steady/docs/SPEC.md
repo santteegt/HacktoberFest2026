@@ -45,7 +45,7 @@ Postgres on Tiger Data (fallback: local SQLite with the same schema).
 
 - `links` (id, url, canonical_url, title, folder_path, saved_at, source, status [new | enriched | kept | reading | valhalla | unsure], final_url, content_kind, readable_chars, github_stars, github_last_commit, fetched_with: http | stagehand, fetched_at)
 - `triage` (link_id, model, topic, vertical, kind, still_relevant bool, reason, buildable 0-3, one_line_idea, decided_by: code | model, tokens_in, tokens_out, ms, created_at) as a hypertable on `created_at`
-- `reading_picks` (id, link_id, picked_on UNIQUE, vertical, why, focus_id, discord_message_id, created_at): one daily reading recommendation; a link is never recommended twice
+- `reading_picks` (id, link_id, picked_on, extra (one main pick per day via a partial unique index; `--again` rows are extra), vertical, why, focus_id, discord_message_id, created_at): one daily reading recommendation; a link is never recommended twice
 - `cards` (id, title, vertical, learning_goal, hypothesis, box_minutes, link_ids[], kill_criteria, column: backlog | today | building | built | killed | archived, created_at, moved_at, gh_item_id, gh_synced_at)
 - `runs` (card_id, model_id, started_at, ended_at, cost_usd, tokens, outcome: done | boxed_out | killed, repo_url, notes_path)
 - `valhalla` (link_id, reason, decided_by, batch_id, discord_message_id, status: proposed | restored | confirmed, created_at, resolved_at)
