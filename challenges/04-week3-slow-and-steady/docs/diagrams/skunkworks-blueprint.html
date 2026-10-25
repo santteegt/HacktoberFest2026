@@ -105,13 +105,12 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
 .chip.d { border-color: var(--discord); color: var(--discord); background: var(--discord-tint); }
 .chip.t { border-style: dashed; color: var(--muted); }
 .chip.c { font-weight: 600; }
-.partners { display: grid; grid-template-columns: 1.4fr 1fr 1.6fr; gap: 14px; }
+.partners { display: grid; grid-template-columns: 1fr 1.3fr; gap: 14px; }
 .pcol { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
 .pcol h3 { margin: 0; font: 600 12px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .ptile { display: grid; gap: 2px; padding: 10px 12px; border-radius: 8px; border: 1.5px solid var(--partner); }
 .ptile strong { font: 600 16px var(--display); }
 .ptile span { font: 12px var(--mono); color: var(--muted); }
-.ptile.runner { border-style: dashed; border-color: var(--muted); }
 .pcol.off .chips .chip { color: var(--muted); }
 @media (max-width: 860px) {
   .agents, .partners { grid-template-columns: minmax(0, 1fr); }
@@ -131,7 +130,7 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
       <span><i class="k-local"></i>local &amp; open (your Mac)</span>
       <span><i class="k-hosted"></i>hosted service</span>
       <span><i class="k-discord"></i>Discord</span>
-      <span><i class="k-dash"></i>test-only or runner-up</span>
+      <span><i class="k-dash"></i>test-only or guardrail</span>
       <span><i class="k-partner"></i>challenge partner</span>
     </div>
   </header>
@@ -149,7 +148,7 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
           <!-- Zones -->
           <rect class="zone-local" x="16" y="36" width="712" height="668" rx="14"/>
           <text class="zl zl-l" x="32" y="60">YOUR MAC · M4 MAX · LOCAL &amp; OPEN</text>
-          <rect class="zone-hosted" x="752" y="36" width="352" height="404" rx="14"/>
+          <rect class="zone-hosted" x="752" y="36" width="352" height="344" rx="14"/>
           <text class="zl zl-h" x="768" y="60">HOSTED SERVICES</text>
           <rect class="zone-discord" x="752" y="460" width="352" height="244" rx="14"/>
           <text class="zl zl-d" x="768" y="484">DISCORD SERVER</text>
@@ -177,7 +176,7 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
           <!-- Row 2: sloth CLI -->
           <rect class="box-l" x="40" y="176" width="670" height="170" rx="10"/>
           <text class="th" x="56" y="199">sloth CLI</text>
-          <text class="m" x="124" y="199">Python 3.13 · uv · typer</text>
+          <text class="m" x="146" y="199">Python 3.13 · uv · typer</text>
 
           <rect class="box" x="56" y="212" width="152" height="120" rx="7"/>
           <text class="th" x="132" y="235" text-anchor="middle">curator</text>
@@ -289,9 +288,6 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
           <text class="th" x="928" y="325" text-anchor="middle">GitHub</text>
           <text class="m" x="928" y="345" text-anchor="middle">Project #2 · private repos · API</text>
 
-          <rect class="box dash" x="772" y="378" width="312" height="48" rx="8"/>
-          <text class="th" x="928" y="398" text-anchor="middle">Auth0 Token Vault → Gmail</text>
-          <text class="m" x="928" y="416" text-anchor="middle">runner-up · not built</text>
 
           <!-- Discord channels -->
           <rect class="box-d" x="772" y="500" width="150" height="34" rx="17"/><text class="mf" x="847" y="521" text-anchor="middle">#sk-curator</text>
@@ -612,11 +608,6 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
         <div class="ptile"><strong>Gemma</strong><span>12B triage, wording, reading lines · 26B A4B Worker</span></div>
         <div class="ptile"><strong>Browserbase · Stagehand</strong><span>SDK on local Chrome · 197 pages read · no cloud</span></div>
         <div class="ptile"><strong>Tiger Data</strong><span>Postgres + TimescaleDB · 9 tables · free tier</span></div>
-      </div>
-      <div class="pcol">
-        <h3>Runner-up</h3>
-        <div class="ptile runner"><strong>Auth0 for AI Agents</strong><span>Token Vault → Gmail newsletters · allowlisted senders · only after the measured run</span></div>
-        <div class="ptile runner"><strong>Entire</strong><span>agent sessions linked to commits · only if trivial</span></div>
       </div>
       <div class="pcol off">
         <h3>Not used this week</h3>
