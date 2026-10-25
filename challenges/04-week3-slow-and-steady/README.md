@@ -37,7 +37,7 @@ The split is honest, so here it is:
 - **Local and private.** Triage, the browser step and the Coordinator run on **Gemma 4 12B** (`gemma4:12b-it-qat`, Apache 2.0) through **Ollama** on my M4 Max. The reading list never leaves the Mac; 95% of the triage decisions were made by the local model and the rest by code rules. It works offline, and running it again costs nothing.
 - **The browser step is local too.** [Stagehand](https://github.com/browserbase/stagehand) (MIT) drives a local Chrome, and Gemma reads the page through Stagehand's bring-your-own-LLM callback. Browserbase's cloud is not used.
 - **Hosted, paid, open weights.** The Worker writes code with **`google/gemma-4-26b-a4b-it`** on **OpenRouter**. The weights are open, but the inference is hosted and costs money per run. Each run's model id and cost are recorded.
-- **Closed test runs, labelled.** While wiring Discord, some Worker runs used **Anthropic Claude Sonnet 5.5** (closed) to test the plumbing. They are recorded as `anthropic/claude-sonnet-5-5`, every message about them says "(closed model, test run)", and none of them backs a number in the lazy payoff below.
+- **Two Worker providers, labelled.** By default the Worker codes with open weights (Gemma 4 26B A4B on OpenRouter). For a card that needs more, I reply `go deep` and the Worker uses **Anthropic Claude Sonnet 5.5** (closed). Those runs are recorded as `anthropic/claude-sonnet-5-5`, and every message about them says "(closed model)". The first plumbing tests also ran on Sonnet; none of them backs a number in the lazy payoff below.
 
 Because every model sits behind one alias or one config key (`llm.ollama_model`, `llm.worker_provider` / `llm.worker_model`), any piece can be swapped for another open model without touching the code.
 
@@ -76,7 +76,7 @@ Tested on **macOS on Apple Silicon** (M4 Max), Python 3.13 with [uv](https://doc
    ollama create sloth-gemma4-12b -f Modelfile.sloth
    ```
 
-3. **Agents and bots.** The three agents ship as Hermes profile distributions; see [Install on another Hermes host](#install-on-another-hermes-host). Create one Discord bot per agent. Keys live only in each profile's `.env` and are read at runtime, never copied: `DISCORD_BOT_TOKEN` in all three, `OPENROUTER_API_KEY` in the Worker (and `ANTHROPIC_API_KEY` only for closed test runs). With `SLOTH_DRY_RUN=1`, or outside the profiles, every Discord line prints to stdout instead.
+3. **Agents and bots.** The three agents ship as Hermes profile distributions; see [Install on another Hermes host](#install-on-another-hermes-host). Create one Discord bot per agent. Keys live only in each profile's `.env` and are read at runtime, never copied: `DISCORD_BOT_TOKEN` in all three, `OPENROUTER_API_KEY` in the Worker (and `ANTHROPIC_API_KEY` if you want `go deep` to use Claude for complex cards). With `SLOTH_DRY_RUN=1`, or outside the profiles, every Discord line prints to stdout instead.
 
 4. **Check and create the tables**
    ```bash
@@ -113,6 +113,42 @@ scripts/install.sh --yes                 # or --prefix NAME, --prototypes DIR, -
 The script checks for Hermes ≥ 0.22, uv and Ollama (and warns if gh or tiger is missing), runs `uv sync`, and creates the `sloth-gemma4-12b` alias if it is missing. It installs `sloth-curator`, `sloth-coordinator` and `sloth-worker` with `hermes profile install … --alias` (or updates them in place if they exist), fills the path placeholders, and copies `config.example.toml` to `.sloth/config.toml` if there is none. Then it prints the `.env` keys to fill per profile, `sloth doctor`, `sloth apply-schema`, and the exact `hermes -p <profile> cron resume <id>` lines. Hermes installs the crons **paused**. The script never writes a secret, never resumes a cron and never starts the gateway.
 
 After changing an agent in Hermes (SOUL, skills, config, crons), `scripts/export-profiles.sh` copies those changes back into `profiles/`. It copies an allow-list only, never reads `.env` or `auth.json`, swaps this machine's paths back to the placeholders, and refuses to finish if a secret-looking value or a home path is left.
+
+### Add to an existing Hermes setup
+
+The agents install next to whatever profiles you already have. Two things to know first:
+
+- **Pick a prefix if the names are taken:** `scripts/install.sh --prefix skunk --yes` gives you `skunk-curator`, `skunk-coordinator` and `skunk-worker`.
+- **One gateway serves every profile on the host.** Starting it brings all your unparked profiles online, including old ones. Park any profile that should stay offline with `hermes -p <name> gateway stop` before you start it.
+
+### Migrate a running setup to another host
+
+The database is hosted (Tiger Cloud), so links, triage, cards and runs move with the config, not with the machine. What has to travel by hand is the secrets and the local files.
+
+On the **old host**:
+
+```bash
+scripts/export-profiles.sh              # copy any SOUL/skill/config/cron changes back into profiles/
+git add profiles && git commit -m "profiles: export before migration" && git push
+hermes gateway stop                     # a Discord bot token can only be connected from one host at a time
+```
+
+Carry these over by a private channel (never git): each agent's `~/.hermes/profiles/sloth-<agent>/.env`, and `.sloth/config.toml` (channel ids and the Tiger service id; no secrets). If you want the generated prototypes, copy `~/GitRepositories/skunkworks-prototypes/` too. Pushed prototypes can simply be cloned.
+
+On the **new host**:
+
+```bash
+git clone <your fork> && cd challenges/04-week3-slow-and-steady
+scripts/install.sh --yes                # profiles, uv env, Ollama base model + 64k alias, path placeholders
+cp <old>/.sloth/config.toml .sloth/config.toml
+# put each .env back: ~/.hermes/profiles/sloth-<agent>/.env, then chmod 600
+uv run sloth doctor                     # database, Ollama, channels and tokens must all be green
+hermes -p sloth-coordinator cron list   # resume the jobs you want: hermes -p <profile> cron resume <id>
+hermes gateway install && hermes gateway start   # or keep it in a terminal: hermes gateway run
+uv run sloth board sync && uv run sloth brain   # rebuild board/ and brain/ locally
+```
+
+Then send `/new` once in each agent's channel, so every agent starts a session with the installed prompt.
 
 ## Stack
 

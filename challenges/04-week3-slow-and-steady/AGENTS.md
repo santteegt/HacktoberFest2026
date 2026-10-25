@@ -64,6 +64,14 @@ Decided 2026-10-24 05:00 UTC (Fri Oct 23 night, local); scoped 05:30 UTC after t
 - Partner categories: Gemma, Browserbase (Stagehand enrichment), Tiger Data, Entire if trivial. Runner-up after the first real prototype: Gmail source via Auth0 Token Vault (allowlisted senders, enforced in code). DigitalOcean, Temporal, SerpApi, Sentry, Ultramarine, Backboard, Render/.tech are out this week. X-bookmarks extraction is a stretch after M1.
 - Rejected options and the author's design answers are in the memory (entries of 2026-10-20 to 2026-10-24). Idea notes live in `ideas/` on the author's machine only (gitignored).
 
+## Install, add to an existing Hermes, or migrate
+
+The three agents ship as Hermes profile distributions in `profiles/{curator,coordinator,worker}/`. Full steps are in [README.md → Install on another Hermes host](README.md#install-on-another-hermes-host). Short form:
+
+- **Fresh install or add to an existing Hermes:** `scripts/install.sh --yes` (add `--prefix NAME` if `sloth-*` names are taken). Then fill each profile's `.env` (keys are listed by the script), run `uv run sloth doctor` and `uv run sloth apply-schema`, resume the paused crons, and start the gateway (`hermes gateway install` + `start` for a supervised service, or `hermes gateway run`). One gateway serves every profile on the host, so park profiles that must stay offline (`hermes -p <name> gateway stop`).
+- **Migrate:** on the old host, run `scripts/export-profiles.sh`, commit, push, then `hermes gateway stop`. Carry the profile `.env` files and `.sloth/config.toml` privately. On the new host, run `scripts/install.sh --yes`, restore those files (`chmod 600`), then `sloth doctor`, cron resume, `hermes gateway install` + `hermes gateway start` (or `hermes gateway run` in a terminal), and `/new` in each channel. The database is hosted, so no data export is needed.
+- **Agents editing this repo:** never edit `~/.hermes` by hand to change an agent. Change `profiles/<agent>/` and reinstall, or change it in Hermes and run `scripts/export-profiles.sh`. Never commit a `.env`.
+
 ## Working conventions for this folder
 
 - **Keep [docs/CHALLENGE-MEMORY.md](docs/CHALLENGE-MEMORY.md) current** (root `AGENTS.md` rule 8). Its "may claim / must NOT claim" table is binding for the post.
