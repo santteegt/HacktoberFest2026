@@ -13,7 +13,7 @@ from typing import Literal
 
 from .config import CHANNEL_PROFILE, dry_run, settings
 
-Channel = Literal["curator", "valhalla", "coordinator", "worker", "log"]
+Channel = Literal["curator", "valhalla", "coordinator", "worker", "log", "daily_reading"]
 Agent = Literal["curator", "coordinator", "worker"]
 
 

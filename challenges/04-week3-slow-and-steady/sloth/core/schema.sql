@@ -86,6 +86,17 @@ CREATE TABLE IF NOT EXISTS cards (
     gh_synced_at    TIMESTAMPTZ
 );
 
+CREATE TABLE IF NOT EXISTS reading_picks (  -- the Coordinator's daily reading link from the Curator's `reading` bucket
+    id              BIGSERIAL PRIMARY KEY,
+    link_id         BIGINT NOT NULL REFERENCES links(id) ON DELETE CASCADE,
+    picked_on       DATE NOT NULL UNIQUE,       -- one recommendation per day
+    vertical        TEXT,
+    why             TEXT,                       -- the model's one-line reason, checked against the link's facts
+    focus_id        BIGINT REFERENCES focus(id),
+    discord_message_id TEXT,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE TABLE IF NOT EXISTS runs (
     id          BIGSERIAL PRIMARY KEY,
     card_id     TEXT NOT NULL REFERENCES cards(id),
