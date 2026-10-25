@@ -1,0 +1,633 @@
+<title>Skunkworks Sloth Blueprint</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one column of full-width figures, each a drawing with a one-line caption; chips carry the rest. */
+:root {
+  --bg: #f4f6f2; --fg: #1c2420; --muted: #5b6760; --line: #c6cec7; --panel: #ffffff;
+  --local: #2e6a4e; --local-tint: #e2ede5;
+  --hosted: #33528c; --hosted-tint: #e3e9f4;
+  --discord: #5a4cb0; --discord-tint: #ebe9f8;
+  --partner: #a8701c; --badge-fg: #ffffff;
+  --warn: #9b3b2b;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111513; --fg: #e5ebe7; --muted: #98a59e; --line: #2e3833; --panel: #171c19;
+    --local: #74c49a; --local-tint: #19271f;
+    --hosted: #93acE4; --hosted-tint: #18202f;
+    --discord: #ab9ff2; --discord-tint: #211d35;
+    --partner: #e3a84f; --badge-fg: #1b1306;
+    --warn: #e88b78;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111513; --fg: #e5ebe7; --muted: #98a59e; --line: #2e3833; --panel: #171c19;
+  --local: #74c49a; --local-tint: #19271f;
+  --hosted: #93acE4; --hosted-tint: #18202f;
+  --discord: #ab9ff2; --discord-tint: #211d35;
+  --partner: #e3a84f; --badge-fg: #1b1306;
+  --warn: #e88b78;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 40px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 56px; }
+header { display: grid; gap: 10px; }
+.eyebrow { font: 600 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--local); }
+h1 { font: 800 clamp(34px, 6vw, 60px)/1.02 var(--display); margin: 0; letter-spacing: -.02em; text-wrap: balance; }
+h1 span { color: var(--local); }
+.lede { margin: 0; max-width: 62ch; color: var(--muted); font-size: 16px; }
+.key { display: flex; flex-wrap: wrap; gap: 8px 18px; font: 12px var(--mono); color: var(--muted); align-items: center; }
+.key i { display: inline-block; width: 22px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 6px; border: 1.5px solid; }
+.k-local { background: var(--local-tint); border-color: var(--local) !important; }
+.k-hosted { background: var(--hosted-tint); border-color: var(--hosted) !important; }
+.k-discord { background: var(--discord-tint); border-color: var(--discord) !important; }
+.k-dash { background: transparent; border-style: dashed !important; border-color: var(--muted) !important; }
+.k-partner { background: var(--partner); border-color: var(--partner) !important; }
+section { display: grid; gap: 14px; }
+h2 { font: 600 26px/1.15 var(--display); margin: 0; display: flex; gap: 12px; align-items: baseline; }
+h2 small { font: 600 12px var(--mono); color: var(--muted); letter-spacing: .1em; }
+figure { margin: 0; display: grid; gap: 10px; }
+.draw { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+.draw svg { display: block; width: 100%; min-width: 860px; height: auto; color: var(--fg); }
+figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
+
+/* SVG vocabulary */
+.zone-local { fill: var(--local-tint); stroke: var(--local); stroke-width: 1.5; }
+.zone-hosted { fill: var(--hosted-tint); stroke: var(--hosted); stroke-width: 1.5; }
+.zone-discord { fill: var(--discord-tint); stroke: var(--discord); stroke-width: 1.5; }
+.box { fill: var(--panel); stroke: var(--line); stroke-width: 1.2; }
+.box-l { fill: var(--panel); stroke: var(--local); stroke-width: 1.4; }
+.box-h { fill: var(--panel); stroke: var(--hosted); stroke-width: 1.4; }
+.box-d { fill: var(--panel); stroke: var(--discord); stroke-width: 1.4; }
+.dash { stroke-dasharray: 5 4; }
+.soft { fill: var(--bg); }
+.t { fill: var(--fg); font-family: var(--body); font-size: 13.5px; }
+.th { fill: var(--fg); font-family: var(--body); font-size: 14px; font-weight: 600; }
+.tbig { fill: var(--fg); font-family: var(--display); font-size: 17px; font-weight: 600; }
+.m { fill: var(--muted); font-family: var(--mono); font-size: 11.2px; }
+.mf { fill: var(--fg); font-family: var(--mono); font-size: 11.2px; }
+.zl { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .1em; }
+.zl-l { fill: var(--local); } .zl-h { fill: var(--hosted); } .zl-d { fill: var(--discord); }
+.edge { fill: var(--fg); font-family: var(--mono); font-size: 11px; paint-order: stroke; stroke: var(--panel); stroke-width: 5px; stroke-linejoin: round; }
+.ln { stroke: var(--fg); stroke-width: 1.4; fill: none; }
+.ln-l { stroke: var(--local); stroke-width: 1.6; fill: none; }
+.ln-h { stroke: var(--hosted); stroke-width: 1.6; fill: none; }
+.ln-d { stroke: var(--discord); stroke-width: 1.6; fill: none; }
+.ln-m { stroke: var(--muted); stroke-width: 1.2; fill: none; }
+.lane { stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 5; }
+.badge { fill: var(--partner); }
+.bt { fill: var(--badge-fg); font-family: var(--mono); font-size: 8.8px; font-weight: 600; letter-spacing: .08em; }
+.dot { fill: var(--fg); }
+.dot-l { fill: var(--local); } .dot-d { fill: var(--discord); } .dot-h { fill: var(--hosted); }
+.bar-l { fill: var(--local); } .bar-h { fill: var(--hosted); } .bar-m { fill: var(--muted); } .bar-w { fill: var(--warn); } .bar-p { fill: var(--partner); }
+.box-band { fill: var(--local-tint); stroke: var(--local); stroke-width: 1.2; }
+.ok { fill: var(--local); } .bad { fill: var(--warn); }
+
+/* Chip panels */
+.agents { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.agent { background: var(--panel); border: 1px solid var(--line); border-top: 4px solid var(--local); border-radius: 10px; padding: 16px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.agent.worker { border-top-color: var(--hosted); }
+.agent h3 { margin: 0; font: 600 21px var(--display); display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.agent h3 small { font: 12px var(--mono); color: var(--muted); }
+.row { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 8px; align-items: start; }
+.row b { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: 4px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.chip { font: 12px var(--mono); padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); white-space: nowrap; }
+.chip.l { border-color: var(--local); color: var(--local); background: var(--local-tint); }
+.chip.h { border-color: var(--hosted); color: var(--hosted); background: var(--hosted-tint); }
+.chip.d { border-color: var(--discord); color: var(--discord); background: var(--discord-tint); }
+.chip.t { border-style: dashed; color: var(--muted); }
+.chip.c { font-weight: 600; }
+.partners { display: grid; grid-template-columns: 1.4fr 1fr 1.6fr; gap: 14px; }
+.pcol { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.pcol h3 { margin: 0; font: 600 12px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.ptile { display: grid; gap: 2px; padding: 10px 12px; border-radius: 8px; border: 1.5px solid var(--partner); }
+.ptile strong { font: 600 16px var(--display); }
+.ptile span { font: 12px var(--mono); color: var(--muted); }
+.ptile.runner { border-style: dashed; border-color: var(--muted); }
+.pcol.off .chips .chip { color: var(--muted); }
+@media (max-width: 860px) {
+  .agents, .partners { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .chip { transition: transform .15s ease; }
+  .chip:hover { transform: translateY(-1px); }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Hacktoberfest 2026 · Week 3 · Slow and Steady</div>
+    <h1>Skunkworks <span>Sloth</span> blueprint</h1>
+    <p class="lede">A hoarded Chrome Reading List goes in; one reading link and one two-hour prototype a day come out. Three agents, one Mac, one question a day.</p>
+    <div class="key">
+      <span><i class="k-local"></i>local &amp; open (your Mac)</span>
+      <span><i class="k-hosted"></i>hosted service</span>
+      <span><i class="k-discord"></i>Discord</span>
+      <span><i class="k-dash"></i>test-only or runner-up</span>
+      <span><i class="k-partner"></i>challenge partner</span>
+    </div>
+  </header>
+
+  <!-- 1. Architecture -->
+  <section>
+    <h2>System map <small>EVERY COMPONENT</small></h2>
+    <figure>
+      <div class="draw">
+        <svg viewBox="0 0 1120 720" role="img" aria-label="Architecture: on the Mac, Chrome bookmarks, Stagehand with local Chrome and Ollama Gemma 12B feed the sloth CLI; a Hermes gateway runs three agent profiles that call the CLI; hosted services are Tiger Postgres, OpenRouter Gemma 26B, GitHub, and test-only Anthropic; Discord carries six channels.">
+          <defs>
+            <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+          </defs>
+
+          <!-- Zones -->
+          <rect class="zone-local" x="16" y="36" width="712" height="668" rx="14"/>
+          <text class="zl zl-l" x="32" y="60">YOUR MAC · M4 MAX · LOCAL &amp; OPEN</text>
+          <rect class="zone-hosted" x="752" y="36" width="352" height="404" rx="14"/>
+          <text class="zl zl-h" x="768" y="60">HOSTED SERVICES</text>
+          <rect class="zone-discord" x="752" y="460" width="352" height="244" rx="14"/>
+          <text class="zl zl-d" x="768" y="484">DISCORD SERVER</text>
+
+          <!-- Row 1: inputs and engines -->
+          <rect class="box-l" x="40" y="80" width="180" height="60" rx="8"/>
+          <text class="th" x="130" y="105" text-anchor="middle">Chrome bookmarks</text>
+          <text class="m" x="130" y="125" text-anchor="middle">Reading List · 1,017</text>
+
+          <rect class="box-l" x="250" y="80" width="190" height="60" rx="8"/>
+          <text class="th" x="345" y="105" text-anchor="middle">Stagehand</text>
+          <text class="m" x="345" y="125" text-anchor="middle">headful local Chrome</text>
+          <rect class="badge" x="372" y="71" width="62" height="16" rx="8"/>
+          <text class="bt" x="403" y="82" text-anchor="middle">PARTNER</text>
+
+          <rect class="box-l" x="500" y="80" width="210" height="60" rx="8"/>
+          <text class="th" x="605" y="105" text-anchor="middle">Ollama · Gemma 4 12B</text>
+          <text class="m" x="605" y="125" text-anchor="middle">QAT · 64k context · 1 slot</text>
+          <rect class="badge" x="642" y="71" width="62" height="16" rx="8"/>
+          <text class="bt" x="673" y="82" text-anchor="middle">PARTNER</text>
+
+          <line class="ln-l" x1="440" y1="110" x2="497" y2="110" marker-end="url(#a1)"/>
+          <text class="edge" x="470" y="102" text-anchor="middle">callback</text>
+
+          <!-- Row 2: sloth CLI -->
+          <rect class="box-l" x="40" y="176" width="670" height="170" rx="10"/>
+          <text class="th" x="56" y="199">sloth CLI</text>
+          <text class="m" x="124" y="199">Python 3.13 · uv · typer</text>
+
+          <rect class="box" x="56" y="212" width="152" height="120" rx="7"/>
+          <text class="th" x="132" y="235" text-anchor="middle">curator</text>
+          <text class="m" x="132" y="257" text-anchor="middle">collect</text>
+          <text class="m" x="132" y="275" text-anchor="middle">enrich</text>
+          <text class="m" x="132" y="293" text-anchor="middle">rules · triage</text>
+          <text class="m" x="132" y="311" text-anchor="middle">valhalla</text>
+
+          <rect class="box" x="218" y="212" width="152" height="120" rx="7"/>
+          <text class="th" x="294" y="235" text-anchor="middle">builder</text>
+          <text class="m" x="294" y="257" text-anchor="middle">browser.extract</text>
+          <text class="m" x="294" y="275" text-anchor="middle">work · 2 h box</text>
+          <text class="m" x="294" y="293" text-anchor="middle">approve</text>
+          <text class="m" x="294" y="311" text-anchor="middle">prototype template</text>
+
+          <rect class="box" x="380" y="212" width="152" height="120" rx="7"/>
+          <text class="th" x="456" y="235" text-anchor="middle">board</text>
+          <text class="m" x="456" y="257" text-anchor="middle">cards · focus</text>
+          <text class="m" x="456" y="275" text-anchor="middle">pick · reading</text>
+          <text class="m" x="456" y="293" text-anchor="middle">sync → Project</text>
+          <text class="m" x="456" y="311" text-anchor="middle">brain</text>
+
+          <rect class="box" x="542" y="212" width="152" height="120" rx="7"/>
+          <text class="th" x="618" y="235" text-anchor="middle">core</text>
+          <text class="m" x="618" y="257" text-anchor="middle">config · secrets</text>
+          <text class="m" x="618" y="275" text-anchor="middle">db · schema</text>
+          <text class="m" x="618" y="293" text-anchor="middle">notify</text>
+          <text class="m" x="618" y="311" text-anchor="middle">llm (JSON schema)</text>
+
+          <line class="ln-l" x1="130" y1="140" x2="130" y2="209" marker-end="url(#a1)"/>
+          <text class="edge" x="138" y="166">reads JSON</text>
+          <line class="ln-l" x1="300" y1="209" x2="330" y2="143" marker-end="url(#a1)"/>
+          <text class="edge" x="322" y="166">extract()</text>
+          <line class="ln-l" x1="618" y1="209" x2="618" y2="143" marker-end="url(#a1)"/>
+          <text class="edge" x="626" y="166">prompts</text>
+
+          <!-- Row 3: Hermes gateway -->
+          <rect class="box-l" x="40" y="384" width="670" height="196" rx="10"/>
+          <text class="th" x="56" y="407">Hermes gateway</text>
+          <text class="m" x="172" y="407">one process · 3 profiles · cron scheduler</text>
+
+          <rect class="box" x="56" y="420" width="206" height="148" rx="7"/>
+          <text class="th" x="159" y="442" text-anchor="middle">Curator</text>
+          <text class="mf" x="70" y="464">model  local Gemma 12B</text>
+          <text class="mf" x="70" y="481">skill  sloth-curator</text>
+          <text class="mf" x="70" y="498">cron   07:00 curator-daily</text>
+          <text class="m" x="70" y="520">#sk-curator</text>
+          <text class="m" x="70" y="537">#sk-valhalla</text>
+
+          <rect class="box" x="272" y="420" width="206" height="148" rx="7"/>
+          <text class="th" x="375" y="442" text-anchor="middle">Coordinator</text>
+          <text class="mf" x="286" y="464">model  local Gemma 12B</text>
+          <text class="mf" x="286" y="481">skill  skunkworks-board</text>
+          <text class="mf" x="286" y="498">cron   08:00 daily-reading</text>
+          <text class="mf" x="286" y="515">       09:00 daily-pick</text>
+          <text class="mf" x="286" y="532">       Sun 18:00 weekly-focus</text>
+          <text class="mf" x="286" y="549">       every 30 m board-sync</text>
+
+          <rect class="box" x="488" y="420" width="206" height="148" rx="7"/>
+          <text class="th" x="591" y="442" text-anchor="middle">Worker</text>
+          <text class="mf" x="502" y="464">model  Gemma 4 26B A4B</text>
+          <text class="m" x="502" y="481">       via OpenRouter</text>
+          <text class="mf" x="502" y="498">skill  worker-desk</text>
+          <text class="mf" x="502" y="515">skill  prototype-box</text>
+          <text class="m" x="502" y="537">#sk-worker</text>
+
+          <line class="ln-l" x1="375" y1="384" x2="375" y2="349" marker-end="url(#a1)"/>
+          <text class="edge" x="384" y="370">skills run uv run sloth …</text>
+
+          <!-- Row 4: local outputs and guardrails -->
+          <rect class="box-l" x="56" y="612" width="206" height="76" rx="7"/>
+          <text class="th" x="159" y="635" text-anchor="middle">brain/ · board/</text>
+          <text class="m" x="159" y="655" text-anchor="middle">plain markdown</text>
+          <text class="m" x="159" y="672" text-anchor="middle">cards · verticals · readings</text>
+
+          <rect class="box dash" x="272" y="612" width="206" height="76" rx="7"/>
+          <text class="th" x="375" y="635" text-anchor="middle">Guardrails</text>
+          <text class="m" x="375" y="655" text-anchor="middle">deny sudo · docker · keychain</text>
+          <text class="m" x="375" y="672" text-anchor="middle">manual approvals · no GUI</text>
+
+          <rect class="box-l" x="488" y="612" width="206" height="76" rx="7"/>
+          <text class="th" x="591" y="635" text-anchor="middle">skunkworks-prototypes/</text>
+          <text class="m" x="591" y="655" text-anchor="middle">repo per card · NOTES.md</text>
+          <text class="m" x="591" y="672" text-anchor="middle">make test · make demo</text>
+
+          <line class="ln-l" x1="591" y1="568" x2="591" y2="609" marker-end="url(#a1)"/>
+          <text class="edge" x="600" y="593">builds</text>
+          <line class="ln-l" x1="159" y1="609" x2="159" y2="580"/>
+          <text class="edge" x="168" y="597">sloth brain</text>
+
+          <!-- Hosted -->
+          <rect class="box-h" x="772" y="76" width="312" height="62" rx="8"/>
+          <text class="th" x="928" y="101" text-anchor="middle">Tiger Data · Postgres</text>
+          <text class="m" x="928" y="121" text-anchor="middle">9 tables · TimescaleDB · free tier</text>
+          <rect class="badge" x="1014" y="67" width="62" height="16" rx="8"/>
+          <text class="bt" x="1045" y="78" text-anchor="middle">PARTNER</text>
+
+          <rect class="box-h" x="772" y="154" width="312" height="62" rx="8"/>
+          <text class="th" x="928" y="179" text-anchor="middle">OpenRouter</text>
+          <text class="m" x="928" y="199" text-anchor="middle">Gemma 4 26B A4B · open weights</text>
+          <rect class="badge" x="1014" y="145" width="62" height="16" rx="8"/>
+          <text class="bt" x="1045" y="156" text-anchor="middle">PARTNER</text>
+
+          <rect class="box dash" x="772" y="232" width="312" height="52" rx="8"/>
+          <text class="th" x="928" y="254" text-anchor="middle">Anthropic · Sonnet 5.5</text>
+          <text class="m" x="928" y="273" text-anchor="middle">plumbing test runs only · closed</text>
+
+          <rect class="box-h" x="772" y="300" width="312" height="62" rx="8"/>
+          <text class="th" x="928" y="325" text-anchor="middle">GitHub</text>
+          <text class="m" x="928" y="345" text-anchor="middle">Project #2 · private repos · API</text>
+
+          <rect class="box dash" x="772" y="378" width="312" height="48" rx="8"/>
+          <text class="th" x="928" y="398" text-anchor="middle">Auth0 Token Vault → Gmail</text>
+          <text class="m" x="928" y="416" text-anchor="middle">runner-up · not built</text>
+
+          <!-- Discord channels -->
+          <rect class="box-d" x="772" y="500" width="150" height="34" rx="17"/><text class="mf" x="847" y="521" text-anchor="middle">#sk-curator</text>
+          <rect class="box-d" x="934" y="500" width="150" height="34" rx="17"/><text class="mf" x="1009" y="521" text-anchor="middle">#sk-valhalla</text>
+          <rect class="box-d" x="772" y="546" width="150" height="34" rx="17"/><text class="mf" x="847" y="567" text-anchor="middle">#sk-coordinator</text>
+          <rect class="box-d" x="934" y="546" width="150" height="34" rx="17"/><text class="mf" x="1009" y="567" text-anchor="middle">#sk-daily-reading</text>
+          <rect class="box-d" x="772" y="592" width="150" height="34" rx="17"/><text class="mf" x="847" y="613" text-anchor="middle">#sk-worker</text>
+          <rect class="box-d" x="934" y="592" width="150" height="34" rx="17"/><text class="mf" x="1009" y="613" text-anchor="middle">#sk-logs</text>
+          <text class="m" x="928" y="660" text-anchor="middle">3 bots · 1 allowed user · you</text>
+          <text class="m" x="928" y="678" text-anchor="middle">#sk-logs ← every state change</text>
+
+          <!-- Cross-boundary edges -->
+          <path class="ln-h" d="M710 236 C 740 236, 740 107, 769 107" marker-end="url(#a1)"/>
+          <text class="edge" x="728" y="170">SQL</text>
+          <path class="ln-h" d="M694 470 C 735 470, 735 185, 769 185" marker-end="url(#a1)"/>
+          <text class="edge" x="716" y="268">codes</text>
+          <path class="ln-m dash" d="M694 486 C 745 486, 745 258, 769 258" marker-end="url(#a1)"/>
+          <path class="ln-h" d="M710 300 C 742 300, 742 331, 769 331" marker-end="url(#a1)"/>
+          <text class="edge" x="713" y="322">sync · push</text>
+          <path class="ln-d" d="M710 520 C 735 520, 735 563, 769 563" marker-end="url(#a1)"/>
+          <text class="edge" x="716" y="512">bots</text>
+        </svg>
+      </div>
+      <figcaption>Everything that reads your links runs on the Mac: Chrome, Stagehand, Ollama and the three agents. Only the Worker's coding model, the database, GitHub and Discord are hosted.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 2. Daily loop -->
+  <section>
+    <h2>A day in the skunkworks <small>WORKFLOW</small></h2>
+    <figure>
+      <div class="draw">
+        <svg viewBox="0 0 1120 470" role="img" aria-label="Daily loop: 07:00 the Curator triages new links; 08:00 the Coordinator posts a reading; 09:00 it posts pick options; you tap one, reply go, the Worker builds for up to two hours, posts a summary, and you approve a private repo.">
+          <defs>
+            <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+          </defs>
+          <!-- lanes -->
+          <text class="th" x="16" y="74">You</text>
+          <text class="th" x="16" y="144">Curator</text>
+          <text class="th" x="16" y="214">Coordinator</text>
+          <text class="th" x="16" y="284">Worker</text>
+          <text class="th" x="16" y="354">Postgres</text>
+          <text class="th" x="16" y="424">GitHub Project</text>
+          <line class="lane" x1="130" y1="70" x2="1104" y2="70"/>
+          <line class="lane" x1="130" y1="140" x2="1104" y2="140"/>
+          <line class="lane" x1="130" y1="210" x2="1104" y2="210"/>
+          <line class="lane" x1="130" y1="280" x2="1104" y2="280"/>
+          <line class="lane" x1="130" y1="350" x2="1104" y2="350"/>
+          <line class="lane" x1="130" y1="420" x2="1104" y2="420"/>
+          <!-- time header -->
+          <text class="zl zl-l" x="190" y="30" text-anchor="middle">07:00</text>
+          <text class="zl zl-l" x="320" y="30" text-anchor="middle">08:00</text>
+          <text class="zl zl-l" x="450" y="30" text-anchor="middle">09:00</text>
+          <text class="zl zl-d" x="580" y="30" text-anchor="middle">YOU TAP</text>
+          <text class="zl zl-d" x="700" y="30" text-anchor="middle">YOU: GO</text>
+          <text class="zl zl-h" x="850" y="30" text-anchor="middle">≤ 2 H</text>
+          <text class="zl zl-d" x="1010" y="30" text-anchor="middle">YOU: APPROVE</text>
+
+          <!-- 07:00 curator -->
+          <line class="ln-l" x1="190" y1="140" x2="190" y2="345" marker-end="url(#a2)"/>
+          <line class="ln-d" x1="190" y1="140" x2="190" y2="75" marker-end="url(#a2)"/>
+          <circle class="dot-l" cx="190" cy="140" r="7"/>
+          <text class="edge" x="198" y="106">#sk-curator</text>
+          <text class="edge" x="198" y="160">curator-daily</text>
+          <text class="edge" x="198" y="318">new links · triage</text>
+
+          <!-- 08:00 reading -->
+          <line class="ln-d" x1="320" y1="210" x2="320" y2="75" marker-end="url(#a2)"/>
+          <line class="ln-l" x1="320" y1="210" x2="320" y2="345" marker-end="url(#a2)"/>
+          <circle class="dot-l" cx="320" cy="210" r="7"/>
+          <text class="edge" x="328" y="124">#sk-daily-reading</text>
+          <text class="edge" x="328" y="230">daily-reading</text>
+          <text class="edge" x="328" y="300">reading_picks · brain</text>
+
+          <!-- 09:00 pick -->
+          <line class="ln-d" x1="450" y1="210" x2="450" y2="75" marker-end="url(#a2)"/>
+          <circle class="dot-l" cx="450" cy="210" r="7"/>
+          <text class="edge" x="458" y="106">3–4 options</text>
+          <text class="edge" x="458" y="230">daily-pick</text>
+
+          <!-- tap -->
+          <line class="ln-d" x1="580" y1="70" x2="580" y2="205" marker-end="url(#a2)"/>
+          <line class="ln-l" x1="580" y1="210" x2="580" y2="415" marker-end="url(#a2)"/>
+          <circle class="dot-d" cx="580" cy="70" r="7"/>
+          <text class="edge" x="588" y="160">pick choose</text>
+          <text class="edge" x="588" y="250">card → Today</text>
+          <text class="edge" x="588" y="398">Today</text>
+
+          <!-- go -->
+          <line class="ln-d" x1="700" y1="70" x2="700" y2="275" marker-end="url(#a2)"/>
+          <line class="ln-h" x1="700" y1="280" x2="700" y2="415" marker-end="url(#a2)"/>
+          <circle class="dot-d" cx="700" cy="70" r="7"/>
+          <text class="edge" x="708" y="160">go</text>
+          <text class="edge" x="708" y="398">Building</text>
+
+          <!-- box -->
+          <rect class="box-band" x="706" y="266" width="138" height="28" rx="6"/>
+          <text class="mf" x="775" y="284" text-anchor="middle">2 h box · Gemma 26B</text>
+          <line class="ln-h" x1="850" y1="280" x2="850" y2="345" marker-end="url(#a2)"/>
+          <line class="ln-d" x1="850" y1="280" x2="850" y2="75" marker-end="url(#a2)"/>
+          <circle class="dot-h" cx="850" cy="280" r="7"/>
+          <text class="edge" x="858" y="106">summary · cost</text>
+          <text class="edge" x="858" y="318">runs row</text>
+
+          <!-- approve -->
+          <line class="ln-d" x1="1010" y1="70" x2="1010" y2="275" marker-end="url(#a2)"/>
+          <line class="ln-h" x1="1010" y1="280" x2="1010" y2="415" marker-end="url(#a2)"/>
+          <circle class="dot-d" cx="1010" cy="70" r="7"/>
+          <text class="edge" x="1018" y="160">approve N</text>
+          <text class="edge" x="1018" y="398">Built</text>
+          <text class="edge" x="1018" y="306">private repo</text>
+
+          <!-- background -->
+          <text class="m" x="138" y="446">↻ board-sync every 30 min · Sun 18:00 weekly-focus question</text>
+        </svg>
+      </div>
+      <figcaption>Your whole job is three replies: a tap, <code>go</code>, <code>approve N</code>. Crons post first; nothing moves without you.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 3. Curator pipeline -->
+  <section>
+    <h2>Curator pipeline <small>REAL COUNTS · OCT 24</small></h2>
+    <figure>
+      <div class="draw">
+        <svg viewBox="0 0 1120 330" role="img" aria-label="Curator pipeline: 1,017 bookmarks become 969 links; enrichment reads 440 over HTTP, 223 via GitHub, 197 with Stagehand, 109 title only; code rules send 48 to Valhalla; Gemma makes 921 decisions; buckets are 308 build, 609 read, 52 Valhalla, 0 unsure.">
+          <defs>
+            <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+          </defs>
+          <!-- collect -->
+          <rect class="box-l" x="16" y="104" width="150" height="122" rx="8"/>
+          <text class="tbig" x="91" y="130" text-anchor="middle">Collect</text>
+          <text class="m" x="91" y="154" text-anchor="middle">1,017 bookmarks</text>
+          <text class="m" x="91" y="173" text-anchor="middle">− 48 duplicates</text>
+          <text class="th" x="91" y="204" text-anchor="middle">969 links</text>
+          <line class="ln" x1="166" y1="165" x2="197" y2="165" marker-end="url(#a3)"/>
+
+          <!-- enrich -->
+          <rect class="box-l" x="200" y="34" width="232" height="262" rx="8"/>
+          <text class="tbig" x="316" y="60" text-anchor="middle">Enrich</text>
+          <text class="mf" x="216" y="88">HTTP · trafilatura</text><text class="mf" x="416" y="88" text-anchor="end">440</text>
+          <rect class="bar-l" x="216" y="95" width="160" height="12" rx="3"/>
+          <text class="mf" x="216" y="136">GitHub API</text><text class="mf" x="416" y="136" text-anchor="end">223</text>
+          <rect class="bar-l" x="216" y="143" width="81" height="12" rx="3"/>
+          <text class="mf" x="216" y="184">Stagehand browser</text><text class="mf" x="416" y="184" text-anchor="end">197</text>
+          <rect class="bar-p" x="216" y="191" width="72" height="12" rx="3"/>
+          <text class="mf" x="216" y="232">title only</text><text class="mf" x="416" y="232" text-anchor="end">109</text>
+          <rect class="bar-m" x="216" y="239" width="40" height="12" rx="3"/>
+          <text class="m" x="216" y="278">login walls · long X threads</text>
+          <line class="ln" x1="432" y1="165" x2="451" y2="165" marker-end="url(#a3)"/>
+
+          <!-- rules -->
+          <rect class="box" x="454" y="104" width="150" height="122" rx="8"/>
+          <text class="tbig" x="529" y="130" text-anchor="middle">Code rules</text>
+          <text class="m" x="529" y="154" text-anchor="middle">dead · gone · archived</text>
+          <text class="m" x="529" y="173" text-anchor="middle">duplicate · stale</text>
+          <text class="th" x="529" y="204" text-anchor="middle" style="fill:var(--warn)">48 → Valhalla</text>
+          <line class="ln" x1="604" y1="165" x2="635" y2="165" marker-end="url(#a3)"/>
+          <text class="edge" x="620" y="156" text-anchor="middle">rest</text>
+
+          <!-- gemma -->
+          <rect class="box-l" x="638" y="104" width="172" height="122" rx="8"/>
+          <rect class="badge" x="740" y="95" width="62" height="16" rx="8"/>
+          <text class="bt" x="771" y="106" text-anchor="middle">PARTNER</text>
+          <text class="tbig" x="724" y="130" text-anchor="middle">Gemma triage</text>
+          <text class="m" x="724" y="154" text-anchor="middle">JSON schema + verifier</text>
+          <text class="m" x="724" y="173" text-anchor="middle">1 local retry</text>
+          <text class="th" x="724" y="204" text-anchor="middle">921 · 4.2 s each</text>
+          <line class="ln" x1="810" y1="165" x2="839" y2="165" marker-end="url(#a3)"/>
+
+          <!-- buckets -->
+          <text class="th" x="846" y="52">Build</text><text class="mf" x="1104" y="52" text-anchor="end">308</text>
+          <rect class="bar-l" x="846" y="60" width="101" height="14" rx="3"/>
+          <text class="m" x="846" y="92">→ 58 cards on the board</text>
+
+          <text class="th" x="846" y="122">Read</text><text class="mf" x="1104" y="122" text-anchor="end">609</text>
+          <rect class="bar-h" x="846" y="130" width="200" height="14" rx="3"/>
+          <text class="m" x="846" y="162">→ one daily reading</text>
+
+          <text class="th" x="846" y="192">Valhalla</text><text class="mf" x="1104" y="192" text-anchor="end">52</text>
+          <rect class="bar-w" x="846" y="200" width="17" height="14" rx="3"/>
+          <text class="m" x="846" y="232">→ you: empty / restore</text>
+
+          <text class="th" x="846" y="262">Unsure</text><text class="mf" x="1104" y="262" text-anchor="end">0</text>
+          <rect class="bar-m" x="846" y="270" width="2" height="14" rx="1"/>
+          <text class="m" x="846" y="302">→ you: keep / valhalla</text>
+        </svg>
+      </div>
+      <figcaption>Code decides what is certain (dead, duplicate, archived); Gemma judges the rest; you settle Valhalla. Chrome's bookmark file is only ever read.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 4. States -->
+  <section>
+    <h2>What moves a card <small>STATES</small></h2>
+    <figure>
+      <div class="draw">
+        <svg viewBox="0 0 1120 300" role="img" aria-label="Card states: Backlog to Today on your pick, to Building on go, to Built on approve, to a public repo on publish; Killed when the box ends without done-means. Valhalla: proposed to confirmed on empty, or restored.">
+          <defs>
+            <marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+          </defs>
+          <text class="zl zl-l" x="16" y="30">CARD</text>
+          <rect class="box" x="16" y="60" width="140" height="48" rx="24"/><text class="th" x="86" y="89" text-anchor="middle">Backlog · 57</text>
+          <rect class="box-d" x="236" y="60" width="140" height="48" rx="24"/><text class="th" x="306" y="89" text-anchor="middle">Today</text>
+          <rect class="box-h" x="456" y="60" width="140" height="48" rx="24"/><text class="th" x="526" y="89" text-anchor="middle">Building · 1</text>
+          <rect class="box-l" x="676" y="60" width="140" height="48" rx="24"/><text class="th" x="746" y="89" text-anchor="middle">Built</text>
+          <rect class="box dash" x="896" y="60" width="200" height="48" rx="24"/><text class="th" x="996" y="89" text-anchor="middle">public repo</text>
+          <rect class="box" x="456" y="168" width="140" height="48" rx="24"/><text class="th" x="526" y="197" text-anchor="middle" style="fill:var(--warn)">Killed</text>
+
+          <line class="ln" x1="156" y1="84" x2="233" y2="84" marker-end="url(#a4)"/><text class="edge" x="195" y="76" text-anchor="middle">your pick</text>
+          <line class="ln" x1="376" y1="84" x2="453" y2="84" marker-end="url(#a4)"/><text class="edge" x="415" y="76" text-anchor="middle">go</text>
+          <line class="ln" x1="596" y1="84" x2="673" y2="84" marker-end="url(#a4)"/><text class="edge" x="635" y="76" text-anchor="middle">approve N</text>
+          <line class="ln" x1="816" y1="84" x2="893" y2="84" marker-end="url(#a4)"/><text class="edge" x="855" y="76" text-anchor="middle">publish N</text>
+          <line class="ln" x1="526" y1="108" x2="526" y2="165" marker-end="url(#a4)"/><text class="edge" x="534" y="142">box ends · done-means unmet</text>
+          <path class="ln" d="M500 60 C 488 26, 564 26, 552 57" marker-end="url(#a4)"/><text class="edge" x="526" y="24" text-anchor="middle">done, waits for you</text>
+
+          <text class="zl" x="16" y="254" style="fill:var(--warn)">VALHALLA</text>
+          <rect class="box" x="120" y="232" width="140" height="44" rx="22"/><text class="th" x="190" y="259" text-anchor="middle">Proposed · 52</text>
+          <rect class="box" x="400" y="232" width="200" height="44" rx="22"/><text class="th" x="500" y="259" text-anchor="middle">Confirmed · removal list</text>
+          <rect class="box" x="740" y="232" width="200" height="44" rx="22"/><text class="th" x="840" y="259" text-anchor="middle">back to Build / Read</text>
+          <line class="ln" x1="260" y1="254" x2="397" y2="254" marker-end="url(#a4)"/><text class="edge" x="328" y="246" text-anchor="middle">empty</text>
+          <path class="ln" d="M190 276 C 190 296, 840 296, 840 279" marker-end="url(#a4)"/><text class="edge" x="660" y="292" text-anchor="middle">restore 3, 7</text>
+        </svg>
+      </div>
+      <figcaption>Every arrow except the box timeout is one of your replies. The board, the GitHub Project and the brain follow the same states.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 5. Agents, skills, crons -->
+  <section>
+    <h2>Agents, skills and schedules <small>HERMES PROFILES</small></h2>
+    <div class="agents">
+      <article class="agent">
+        <h3>Curator <small>sloth-curator</small></h3>
+        <div class="row"><b>Model</b><div class="chips"><span class="chip l">Gemma 4 12B · Ollama</span></div></div>
+        <div class="row"><b>Skill</b><div class="chips"><span class="chip c">sloth-curator</span></div></div>
+        <div class="row"><b>Cron</b><div class="chips"><span class="chip l">07:00 curator-daily</span></div></div>
+        <div class="row"><b>Talks</b><div class="chips"><span class="chip d">#sk-curator</span><span class="chip d">#sk-valhalla</span></div></div>
+        <div class="row"><b>You say</b><div class="chips"><span class="chip">what's unsure?</span><span class="chip">status</span><span class="chip">reading</span><span class="chip">/curate</span><span class="chip">keep 12</span><span class="chip">valhalla 12</span><span class="chip">show</span><span class="chip">restore 3, 7</span><span class="chip">empty</span></div></div>
+        <div class="row"><b>Runs</b><div class="chips"><span class="chip">curate</span><span class="chip">curator collect · enrich · browse</span><span class="chip">curator unsure · keep · drop</span><span class="chip">valhalla show · restore · empty</span></div></div>
+      </article>
+      <article class="agent">
+        <h3>Coordinator <small>sloth-coordinator</small></h3>
+        <div class="row"><b>Model</b><div class="chips"><span class="chip l">Gemma 4 12B · Ollama</span></div></div>
+        <div class="row"><b>Skill</b><div class="chips"><span class="chip c">skunkworks-board</span></div></div>
+        <div class="row"><b>Crons</b><div class="chips"><span class="chip l">08:00 daily-reading</span><span class="chip l">09:00 daily-pick</span><span class="chip l">Sun 18:00 weekly-focus</span><span class="chip l">30 m board-sync</span></div></div>
+        <div class="row"><b>Talks</b><div class="chips"><span class="chip d">#sk-coordinator</span><span class="chip d">#sk-daily-reading</span><span class="chip d">→ #sk-worker</span></div></div>
+        <div class="row"><b>You say</b><div class="chips"><span class="chip">focus</span><span class="chip">pick</span><span class="chip">2 / a title</span><span class="chip">today</span><span class="chip">board</span><span class="chip">reading for today</span><span class="chip">another reading</span></div></div>
+        <div class="row"><b>Runs</b><div class="chips"><span class="chip">focus</span><span class="chip">pick options · choose · show</span><span class="chip">reading today</span><span class="chip">board build · sync · show</span><span class="chip">brain</span></div></div>
+      </article>
+      <article class="agent worker">
+        <h3>Worker <small>sloth-worker</small></h3>
+        <div class="row"><b>Model</b><div class="chips"><span class="chip h">Gemma 4 26B A4B · OpenRouter</span><span class="chip t">Sonnet 5.5 · test only</span></div></div>
+        <div class="row"><b>Skills</b><div class="chips"><span class="chip c">worker-desk</span><span class="chip c">prototype-box</span></div></div>
+        <div class="row"><b>Box</b><div class="chips"><span class="chip h">120 min · hard kill</span><span class="chip h">wrap-up at 80%</span></div></div>
+        <div class="row"><b>Talks</b><div class="chips"><span class="chip d">#sk-worker</span></div></div>
+        <div class="row"><b>You say</b><div class="chips"><span class="chip">go</span><span class="chip">go k05d2</span><span class="chip">status</span><span class="chip">approve 1</span><span class="chip">publish 1</span></div></div>
+        <div class="row"><b>Runs</b><div class="chips"><span class="chip">work &lt;card&gt;</span><span class="chip">work --status</span><span class="chip">approve &lt;run&gt; [--public]</span><span class="chip">browser test</span></div></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 6. Data -->
+  <section>
+    <h2>What gets stored <small>TIGER POSTGRES · ROWS NOW</small></h2>
+    <figure>
+      <div class="draw">
+        <svg viewBox="0 0 1120 372" role="img" aria-label="Data model: links is the hub; enrichment, triage, valhalla and reading_picks point to links; cards hold link ids; runs point to cards; reading_picks point to focus; events is a standalone timeline.">
+          <defs>
+            <marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
+          </defs>
+          <!-- col1 -->
+          <rect class="box" x="40" y="20" width="200" height="100" rx="8"/><text class="th" x="56" y="44">enrichment</text><text class="mf" x="224" y="44" text-anchor="end">969</text>
+          <text class="m" x="56" y="68">fetched_with</text><text class="m" x="56" y="86">readable_text</text><text class="m" x="56" y="104">github_* · browser_seconds</text>
+          <rect class="box" x="40" y="140" width="200" height="100" rx="8"/><text class="th" x="56" y="164">triage</text><text class="mf" x="224" y="164" text-anchor="end">1,098</text>
+          <text class="m" x="56" y="188">vertical · kind</text><text class="m" x="56" y="206">buildable 0–3 · reason</text><text class="m" x="56" y="224">decided_by code | model</text>
+          <rect class="box" x="40" y="260" width="200" height="100" rx="8"/><text class="th" x="56" y="284">valhalla</text><text class="mf" x="224" y="284" text-anchor="end">52</text>
+          <text class="m" x="56" y="308">reason</text><text class="m" x="56" y="326">status proposed | …</text><text class="m" x="56" y="344">decided_by · you</text>
+          <!-- col2 -->
+          <rect class="box" x="460" y="20" width="200" height="100" rx="8"/><text class="th" x="476" y="44">events</text><text class="mf" x="644" y="44" text-anchor="end">11</text>
+          <text class="m" x="476" y="68">agent · kind · text</text><text class="m" x="476" y="86">mirrors #sk-logs</text><text class="m" x="476" y="104">no foreign keys</text>
+          <rect class="box-l" x="460" y="140" width="200" height="100" rx="8"/><text class="th" x="476" y="164">links</text><text class="mf" x="644" y="164" text-anchor="end">969</text>
+          <text class="m" x="476" y="188">canonical_url (unique)</text><text class="m" x="476" y="206">folder · saved_at</text><text class="m" x="476" y="224">status kept | reading | …</text>
+          <rect class="box" x="460" y="260" width="200" height="100" rx="8"/><text class="th" x="476" y="284">runs</text><text class="mf" x="644" y="284" text-anchor="end">1</text>
+          <text class="m" x="476" y="308">model_id · cost_usd</text><text class="m" x="476" y="326">outcome · approved</text><text class="m" x="476" y="344">repo_url · notes</text>
+          <!-- col3 -->
+          <rect class="box" x="880" y="20" width="200" height="100" rx="8"/><text class="th" x="896" y="44">reading_picks</text><text class="mf" x="1064" y="44" text-anchor="end">1</text>
+          <text class="m" x="896" y="68">picked_on · extra</text><text class="m" x="896" y="86">why (one line)</text><text class="m" x="896" y="104">one main pick per day</text>
+          <rect class="box" x="880" y="140" width="200" height="100" rx="8"/><text class="th" x="896" y="164">focus</text><text class="mf" x="1064" y="164" text-anchor="end">1</text>
+          <text class="m" x="896" y="188">your words</text><text class="m" x="896" y="206">→ vertical weights</text><text class="m" x="896" y="224">week_start</text>
+          <rect class="box" x="880" y="260" width="200" height="100" rx="8"/><text class="th" x="896" y="284">cards</text><text class="mf" x="1064" y="284" text-anchor="end">58</text>
+          <text class="m" x="896" y="308">column · picked_on</text><text class="m" x="896" y="326">hypothesis · done-means</text><text class="m" x="896" y="344">gh_item_id</text>
+          <!-- FKs -->
+          <path class="ln" d="M240 70 C 360 70, 360 172, 457 172" marker-end="url(#a5)"/>
+          <line class="ln" x1="240" y1="190" x2="457" y2="190" marker-end="url(#a5)"/>
+          <path class="ln" d="M240 310 C 360 310, 360 208, 457 208" marker-end="url(#a5)"/>
+          <text class="edge" x="348" y="184" text-anchor="middle">link_id</text>
+          <path class="ln" d="M880 70 C 770 70, 770 172, 663 172" marker-end="url(#a5)"/>
+          <text class="edge" x="772" y="118" text-anchor="middle">link_id</text>
+          <line class="ln" x1="980" y1="120" x2="980" y2="137" marker-end="url(#a5)"/>
+          <text class="edge" x="988" y="133">focus_id</text>
+          <path class="ln dash" d="M880 310 C 770 310, 770 208, 663 208" marker-end="url(#a5)"/>
+          <text class="edge" x="772" y="262" text-anchor="middle">link_ids[]</text>
+          <line class="ln" x1="660" y1="330" x2="877" y2="330" marker-end="url(#a5)"/>
+          <text class="edge" x="770" y="346" text-anchor="middle">card_id</text>
+        </svg>
+      </div>
+      <figcaption><code>links</code> is the hub. Triage keeps history (1,098 rows for 969 links), so a re-read page can change its verdict.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 7. Partners -->
+  <section>
+    <h2>Partner tools <small>WHAT IS REAL</small></h2>
+    <div class="partners">
+      <div class="pcol">
+        <h3>In the build</h3>
+        <div class="ptile"><strong>Gemma</strong><span>12B triage, wording, reading lines · 26B A4B Worker</span></div>
+        <div class="ptile"><strong>Browserbase · Stagehand</strong><span>SDK on local Chrome · 197 pages read · no cloud</span></div>
+        <div class="ptile"><strong>Tiger Data</strong><span>Postgres + TimescaleDB · 9 tables · free tier</span></div>
+      </div>
+      <div class="pcol">
+        <h3>Runner-up</h3>
+        <div class="ptile runner"><strong>Auth0 for AI Agents</strong><span>Token Vault → Gmail newsletters · allowlisted senders · only after the measured run</span></div>
+        <div class="ptile runner"><strong>Entire</strong><span>agent sessions linked to commits · only if trivial</span></div>
+      </div>
+      <div class="pcol off">
+        <h3>Not used this week</h3>
+        <div class="chips">
+          <span class="chip">DigitalOcean</span><span class="chip">Render</span><span class="chip">TabPFN</span><span class="chip">Tinker</span><span class="chip">Arduino</span><span class="chip">Ultramarine</span><span class="chip">Backboard</span><span class="chip">ElevenLabs</span><span class="chip">GitHub Copilot</span><span class="chip">Mastra</span><span class="chip">MongoDB Atlas</span><span class="chip">Sentry</span><span class="chip">SerpApi</span><span class="chip">Temporal</span><span class="chip">.tech domain</span>
+        </div>
+        <h3>Also in the stack (not partners)</h3>
+        <div class="chips">
+          <span class="chip l">Ollama</span><span class="chip l">Hermes Agent</span><span class="chip l">trafilatura</span><span class="chip l">uv · typer · pydantic</span><span class="chip h">OpenRouter</span><span class="chip h">GitHub</span><span class="chip d">Discord</span><span class="chip t">Anthropic (tests)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
