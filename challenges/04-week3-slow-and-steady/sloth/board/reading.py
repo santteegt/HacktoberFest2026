@@ -6,7 +6,8 @@ Code picks: 0.5 · focus weight (0.1 floor for other verticals; 0.5 for all with
 ties break the same way all day. The model only writes the one-line "why read this today",
 checked against the input, with a code-written fallback.
 
-One main pick per day (`reading_picks.picked_on`); `--again` adds extra picks (extra = true).
+One main pick per day (partial unique index on `reading_picks.picked_on WHERE NOT extra`);
+`--again` adds extra picks (extra = true). Every recorded pick refreshes the second brain.
 Without `--post` and `--again` nothing is recorded: the day's pick is deterministic, so a
 preview in #sk-coordinator and the 08:00 post name the same link.
 """
@@ -18,7 +19,6 @@ import re
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
 
-import psycopg
 from pydantic import BaseModel, Field
 
 from ..core.llm import local_json
@@ -179,7 +179,7 @@ def todays_main(conn, today: date) -> dict | None:
     return conn.execute(
         """SELECT r.*, l.title, coalesce(e.final_url, l.url) AS url FROM reading_picks r
            JOIN links l ON l.id = r.link_id LEFT JOIN enrichment e ON e.link_id = l.id
-           WHERE r.picked_on = %s ORDER BY r.created_at, r.id LIMIT 1""", (today,)).fetchone()
+           WHERE r.picked_on = %s AND NOT r.extra ORDER BY r.created_at, r.id LIMIT 1""", (today,)).fetchone()
 
 
 def _focus_id(conn) -> int | None:
@@ -187,25 +187,11 @@ def _focus_id(conn) -> int | None:
     return row["id"] if row else None
 
 
-def _record(conn, c: Candidate, today: date, why: str, extra: bool) -> tuple[bool, str | None]:
-    """Insert the pick. Returns (recorded, note). Works on the old schema (no `extra` column)."""
-    try:
-        with conn.transaction():
-            conn.execute(
-                """INSERT INTO reading_picks (link_id, picked_on, vertical, why, focus_id, extra)
-                   VALUES (%s, %s, %s, %s, %s, %s)""",
-                (c.link_id, today, c.vertical, why, _focus_id(conn), extra))
-        return True, None
-    except psycopg.errors.UndefinedColumn:
-        pass
-    try:
-        with conn.transaction():
-            conn.execute(
-                """INSERT INTO reading_picks (link_id, picked_on, vertical, why, focus_id)
-                   VALUES (%s, %s, %s, %s, %s)""", (c.link_id, today, c.vertical, why, _focus_id(conn)))
-        return True, None
-    except psycopg.errors.UniqueViolation:
-        return False, "not recorded: reading_picks allows one row per day (schema request pending)"
+def _record(conn, c: Candidate, today: date, why: str, extra: bool) -> None:
+    conn.execute(
+        """INSERT INTO reading_picks (link_id, picked_on, vertical, why, focus_id, extra)
+           VALUES (%s, %s, %s, %s, %s, %s)""",
+        (c.link_id, today, c.vertical, why, _focus_id(conn), extra))
 
 
 def today_payload(conn, *, post: bool = False, again: bool = False, use_model: bool = True,
@@ -229,13 +215,16 @@ def today_payload(conn, *, post: bool = False, again: bool = False, use_model: b
     why, why_by = word_why(c, focus["text"] if focus else None, use_model=use_model)
     left = len(pool) - 1
     text = reading_text(c.title, c.url, c.vertical, why, left=left, extra=again)
-    recorded, note, posted = False, None, False
+    recorded = posted = False
     if post:
         notify.post("daily_reading", text)
         posted = True
     if post or again:
-        recorded, note = _record(conn, c, today, why, extra=again)
+        _record(conn, c, today, why, extra=again)
         conn.commit()
+        recorded = True
+        from .brain import render  # the brain page exists the same day
+        render(conn)
     if posted or recorded:
         notify.log("coordinator", "reading",
                    f"{'extra ' if again else ''}reading for {today}: link {c.link_id} ({c.vertical})",
@@ -243,6 +232,4 @@ def today_payload(conn, *, post: bool = False, again: bool = False, use_model: b
     out = {"ok": True, "link_id": c.link_id, "url": c.url, "title": c.title, "vertical": c.vertical,
            "why": why, "why_by": why_by, "score": c.score, "left": left, "recorded": recorded,
            "posted": posted, "text": text, "reply": text, "action": "Send `reply` as is."}
-    if note:
-        out["note"] = note
     return out

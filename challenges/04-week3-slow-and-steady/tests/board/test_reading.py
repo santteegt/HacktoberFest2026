@@ -67,40 +67,50 @@ def test_reading_text_fits_and_keeps_url():
 # ------------------------------------------------------------------ database flow
 
 URL = os.environ.get("SLOTH_DATABASE_URL", "")
-OLD_DDL = """CREATE TABLE IF NOT EXISTS reading_picks (
-    id BIGSERIAL PRIMARY KEY, link_id BIGINT NOT NULL REFERENCES links(id) ON DELETE CASCADE,
-    picked_on DATE NOT NULL UNIQUE, vertical TEXT, why TEXT, focus_id BIGINT REFERENCES focus(id),
-    discord_message_id TEXT, created_at TIMESTAMPTZ NOT NULL DEFAULT now())"""
-PROPOSED = """ALTER TABLE reading_picks ADD COLUMN IF NOT EXISTS extra BOOLEAN NOT NULL DEFAULT false;
-ALTER TABLE reading_picks DROP CONSTRAINT IF EXISTS reading_picks_picked_on_key;
-CREATE UNIQUE INDEX IF NOT EXISTS reading_picks_one_per_day ON reading_picks (picked_on) WHERE NOT extra;"""
 
 
-@pytest.fixture(params=["proposed", "old"])
-def conn(request, monkeypatch):
+def test_reading_page_and_excerpt():
+    from sloth.board import brain
+    r = {"page": "2026-10-25", "picked_on": TODAY, "extra": False, "vertical": "ai-agents",
+         "title": "Agent memory frameworks", "url": "https://e.x/m", "saved_at": datetime(2026, 3, 2, tzinfo=UTC),
+         "why": "Compares eight memory frameworks for agents.", "readable_text": "word " * 400}
+    page = brain.reading_page(r, [{"id": "kab12", "title": "Memory scaffold"}], "2026-10-25T08:00:00Z")
+    assert page.startswith("---\ntype: reading\n")
+    assert "- Link: https://e.x/m" in page and "- Saved: 2026-03-02" in page
+    assert "[AI agents](../verticals/ai-agents.md)" in page and "[all readings](index.md)" in page
+    assert "## Why today\n\nCompares eight memory frameworks for agents." in page
+    assert "- [Memory scaffold](../cards/kab12.md)" in page
+    quote = page.split("## Excerpt\n\n> ")[1].split("\n")[0]
+    assert len(quote) <= brain.EXCERPT_CHARS + 1 and quote.endswith("…")
+    assert brain.excerpt("a  b\n\nc") == "a b c"
+    empty = brain.reading_page({**r, "readable_text": None}, [], "t")
+    assert "_Only the title was readable" in empty and "_Nothing built in this vertical yet._" in empty
+
+
+@pytest.fixture
+def conn(monkeypatch, tmp_path):
     if "search_path%3Dlane_" not in URL:
         pytest.skip("needs a lane-schema database URL")
     schema = "lane_board_reading_test"
     url = re.sub(r"search_path%3D\w+", f"search_path%3D{schema}", URL)
-    from sloth.board import fixtures
+    from sloth.board import brain, fixtures, markdown
     from sloth.core import notify
     sent = []
     monkeypatch.setattr(notify, "post", lambda ch, text, **k: sent.append((ch, text)))
     monkeypatch.setattr(notify, "log", lambda *a, **k: sent.append(("log", a[2])))
+    monkeypatch.setattr(brain, "BRAIN_DIR", tmp_path / "brain")
+    monkeypatch.setattr(markdown, "BOARD_DIR", tmp_path / "board")
     with psycopg.connect(url, row_factory=dict_row) as c:
         c.execute(f"DROP SCHEMA IF EXISTS {schema} CASCADE")
         c.execute(f"CREATE SCHEMA {schema}")
         c.execute(SCHEMA.read_text())
-        c.execute(OLD_DDL)  # until sloth/core/schema.sql carries reading_picks in this branch
-        if request.param == "proposed":
-            c.execute(PROPOSED)
         fixtures.seed(c)
         ids = [r["id"] for r in c.execute("SELECT id FROM links WHERE status = 'reading' ORDER BY id").fetchall()]
         c.execute("INSERT INTO enrichment (link_id, readable_text, readable_chars, fetched_with) "
                   "VALUES (%s, 'Rust ownership explained with small examples.', 4000, 'http')", (ids[-1],))
         c.commit()
         c.sent = sent
-        c.param = request.param
+        c.brain = tmp_path / "brain"
         yield c
         c.rollback()
         c.execute(f"DROP SCHEMA IF EXISTS {schema} CASCADE")
@@ -111,23 +121,28 @@ def test_daily_reading_flow(conn):
     readable = conn.execute("SELECT link_id FROM enrichment").fetchone()["link_id"]
     preview = reading.today_payload(conn, use_model=False, today=TODAY)
     assert preview["ok"] and preview["link_id"] == readable and not preview["recorded"]
-    assert conn.sent == []  # a preview never posts or logs
+    assert conn.sent == [] and not (conn.brain / "reading").exists()  # a preview never posts, logs or writes
 
     posted = reading.today_payload(conn, post=True, use_model=False, today=TODAY)
     assert posted["link_id"] == readable and posted["posted"] and posted["recorded"]
     assert conn.sent[0][0] == "daily_reading" and posted["url"] in conn.sent[0][1]
+    page = (conn.brain / "reading" / "2026-10-25.md").read_text()
+    v = posted["vertical"]
+    assert posted["url"] in page and "Rust ownership explained" in page and f"(../verticals/{v}.md)" in page
+    assert "(2026-10-25.md)" in (conn.brain / "reading" / "index.md").read_text()
+    assert "(reading/2026-10-25.md)" in (conn.brain / "index.md").read_text()
+    assert "(../reading/2026-10-25.md)" in (conn.brain / "verticals" / f"{v}.md").read_text()
 
     again_post = reading.today_payload(conn, post=True, use_model=False, today=TODAY)
     assert again_post.get("already") and len([s for s in conn.sent if s[0] == "daily_reading"]) == 1
 
     extra = reading.today_payload(conn, again=True, use_model=False, today=TODAY)
-    assert extra["ok"] and extra["link_id"] != readable
-    if conn.param == "proposed":
-        assert extra["recorded"]
-        nxt = reading.today_payload(conn, again=True, use_model=False, today=TODAY)
-        assert nxt["link_id"] not in (readable, extra["link_id"])
-    else:
-        assert not extra["recorded"] and "one row per day" in extra["note"]
+    assert extra["ok"] and extra["recorded"] and extra["link_id"] != readable
+    assert (conn.brain / "reading" / "2026-10-25-2.md").exists()
+    nxt = reading.today_payload(conn, again=True, use_model=False, today=TODAY)
+    assert nxt["link_id"] not in (readable, extra["link_id"])
+    index = (conn.brain / "reading" / "index.md").read_text()
+    assert index.index("2026-10-25-3.md") < index.index("(2026-10-25.md)")  # newest first
 
     tomorrow = reading.today_payload(conn, use_model=False, today=date(2026, 10, 26))
     assert tomorrow["link_id"] != readable  # never recommended twice
