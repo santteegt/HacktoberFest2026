@@ -76,7 +76,7 @@ Tested on **macOS on Apple Silicon** (M4 Max), Python 3.13 with [uv](https://doc
    ollama create sloth-gemma4-12b -f Modelfile.sloth
    ```
 
-3. **Agents and bots.** Create three Hermes profiles, `sloth-curator`, `sloth-coordinator` and `sloth-worker`, each with its own Discord bot. Install the skills from [`profiles/`](profiles/) (each folder's README says where they go). Keys live only in each profile's `.env` and are read at runtime, never copied: `DISCORD_BOT_TOKEN` in all three, `OPENROUTER_API_KEY` in `sloth-worker` (and `ANTHROPIC_API_KEY` only if you run closed test runs). Curator and Coordinator use the Ollama alias; the Worker uses OpenRouter with the browser and computer-use toolsets disabled and manual approvals. Set `SLOTH_DRY_RUN=0` in the profiles that should post; anywhere else, every Discord line prints to stdout instead.
+3. **Agents and bots.** The three agents ship as Hermes profile distributions; see [Install on another Hermes host](#install-on-another-hermes-host). Create one Discord bot per agent. Keys live only in each profile's `.env` and are read at runtime, never copied: `DISCORD_BOT_TOKEN` in all three, `OPENROUTER_API_KEY` in the Worker (and `ANTHROPIC_API_KEY` only for closed test runs). With `SLOTH_DRY_RUN=1`, or outside the profiles, every Discord line prints to stdout instead.
 
 4. **Check and create the tables**
    ```bash
@@ -101,6 +101,18 @@ Tested on **macOS on Apple Silicon** (M4 Max), Python 3.13 with [uv](https://doc
 6. **Crons.** `scripts/curate-daily.sh` runs as a Hermes cron (`0 7 * * *`, script only): it collects new Reading List links and triages them only when there are any. The Coordinator's crons are the daily pick (09:00), the weekly focus (Sunday 18:00) and a 30-minute `sloth board sync` safety net; see [`profiles/coordinator/README.md`](profiles/coordinator/README.md).
 
 Tests: `uv run pytest` (database tests run only against a scratch schema; see the test files).
+
+## Install on another Hermes host
+
+[`profiles/curator/`](profiles/curator/), [`profiles/coordinator/`](profiles/coordinator/) and [`profiles/worker/`](profiles/worker/) are Hermes profile distributions (Hermes Agent docs: `user-guide/profile-distributions`). Each holds a `distribution.yaml` (MIT, `hermes_requires >=0.22.0`, the `.env` keys it needs), `SOUL.md`, `config.yaml` (model, approvals with the deny list, disabled toolsets, Discord display settings), the agent's Sloth skills, and, for the Curator and Coordinator, `cron/jobs.json` plus the cron scripts. They contain no secrets and no paths from my machine: `__SLOTH_HOME__` (this folder) and `__SLOTH_PROTOTYPES__` (the Worker's repos) are filled in at install time.
+
+```bash
+scripts/install.sh --yes                 # or --prefix NAME, --prototypes DIR, --no-alias
+```
+
+The script checks for Hermes ≥ 0.22, uv and Ollama (and warns if gh or tiger is missing), runs `uv sync`, and creates the `sloth-gemma4-12b` alias if it is missing. It installs `sloth-curator`, `sloth-coordinator` and `sloth-worker` with `hermes profile install … --alias` (or updates them in place if they exist), fills the path placeholders, and copies `config.example.toml` to `.sloth/config.toml` if there is none. Then it prints the `.env` keys to fill per profile, `sloth doctor`, `sloth apply-schema`, and the exact `hermes -p <profile> cron resume <id>` lines. Hermes installs the crons **paused**. The script never writes a secret, never resumes a cron and never starts the gateway.
+
+After changing an agent in Hermes (SOUL, skills, config, crons), `scripts/export-profiles.sh` copies those changes back into `profiles/`. It copies an allow-list only, never reads `.env` or `auth.json`, swaps this machine's paths back to the placeholders, and refuses to finish if a secret-looking value or a home path is left.
 
 ## Stack
 

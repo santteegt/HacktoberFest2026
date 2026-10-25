@@ -1,6 +1,8 @@
 # Worker profile (`sloth-worker`)
 
-Text the coordinator installs into the Hermes profile `sloth-worker` (owned by Lane 3; `~/.hermes/` is coordinator-only).
+> **Hermes profile distribution.** Install with `scripts/install.sh` (or `hermes profile install profiles/worker --name sloth-worker`, then fill `__SLOTH_HOME__` / `__SLOTH_PROTOTYPES__`). Refresh from the live profile with `scripts/export-profiles.sh`. `SOUL.md`, `config.yaml`, `skills/`, `cron/jobs.json` and `scripts/` here are exported from the live profile; edit them in Hermes and export, or edit here and re-run the install.
+
+The Worker's distribution (owned by Lane 3).
 
 - `skills/prototype-box/SKILL.md`: how the Worker builds a card inside the box. The runner (`sloth work`) also inlines this text into the task prompt, so a run does not depend on the skill being installed.
 - `skills/worker-desk/SKILL.md`: the Worker bot's Discord desk in `#sk-worker` (`go`, `approve <run_id>`, `publish <run_id>`, `status` → `sloth` commands with `--project`).

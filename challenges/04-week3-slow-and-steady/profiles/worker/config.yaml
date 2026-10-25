@@ -1,0 +1,65 @@
+model:
+  default: google/gemma-4-26b-a4b-it
+  provider: openrouter
+_config_version: 51
+approvals:
+  deny:
+    - sudo
+    - sudo *
+    - su
+    - su *
+    - doas *
+    - pkexec *
+    - visudo*
+    - osascript *
+    - launchctl *
+    - crontab *
+    - dscl *
+    - dseditgroup *
+    - sysadminctl *
+    - security *
+    - csrutil *
+    - spctl *
+    - tccutil *
+    - nvram *
+    - pmset *
+    - systemsetup *
+    - networksetup *
+    - scutil *
+    - defaults write *
+    - chown *
+    - chmod *+s*
+    - chmod *u+s*
+    - chmod *g+s*
+    - docker *
+    - podman *
+  cron_mode: deny
+  single_query_mode: deny
+  unattended_mode: deny
+  mode: manual
+agent:
+  disabled_toolsets:
+    - computer_use
+    - browser
+    - image_gen
+    - video_gen
+    - tts
+    - delegation
+    - cronjob
+    - connections
+    - kanban
+  run_budget_seconds: 7200
+terminal:
+  backend: local
+  cwd: __SLOTH_PROTOTYPES__
+  env_passthrough:
+    - SLOTH_DRY_RUN
+display:
+  platforms:
+    discord:
+      tool_progress: log
+      show_reasoning: false
+      interim_assistant_messages: false
+      long_running_notifications: false
+      busy_ack_detail: false
+      suppress_warning_notifications: true

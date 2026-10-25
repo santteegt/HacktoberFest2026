@@ -1,7 +1,8 @@
 # Coordinator profile pieces (Lane 2: Board)
 
-Files here are the Coordinator's skill text, versioned with the code. The coordinator session
-installs them into `~/.hermes/profiles/sloth-coordinator/` (lanes never edit `~/.hermes/`).
+> **Hermes profile distribution.** Install with `scripts/install.sh` (or `hermes profile install profiles/coordinator --name sloth-coordinator`, then fill `__SLOTH_HOME__` / `__SLOTH_PROTOTYPES__`). Refresh from the live profile with `scripts/export-profiles.sh`. `SOUL.md`, `config.yaml`, `skills/`, `cron/jobs.json` and `scripts/` here are exported from the live profile; edit them in Hermes and export, or edit here and re-run the install.
+
+Files here are the Coordinator's distribution, versioned with the code.
 
 | File | Install to |
 | --- | --- |
