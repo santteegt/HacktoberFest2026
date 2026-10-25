@@ -130,7 +130,7 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
       <span><i class="k-local"></i>local &amp; open (your Mac)</span>
       <span><i class="k-hosted"></i>hosted service</span>
       <span><i class="k-discord"></i>Discord</span>
-      <span><i class="k-dash"></i>test-only or guardrail</span>
+      <span><i class="k-dash"></i>guardrail</span>
       <span><i class="k-partner"></i>challenge partner</span>
     </div>
   </header>
@@ -140,7 +140,7 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
     <h2>System map <small>EVERY COMPONENT</small></h2>
     <figure>
       <div class="draw">
-        <svg viewBox="0 0 1120 720" role="img" aria-label="Architecture: on the Mac, Chrome bookmarks, Stagehand with local Chrome and Ollama Gemma 12B feed the sloth CLI; a Hermes gateway runs three agent profiles that call the CLI; hosted services are Tiger Postgres, OpenRouter Gemma 26B, GitHub, and test-only Anthropic; Discord carries six channels.">
+        <svg viewBox="0 0 1120 720" role="img" aria-label="Architecture: on the Mac, Chrome bookmarks, Stagehand with local Chrome and Ollama Gemma 12B feed the sloth CLI; a Hermes gateway runs three agent profiles that call the CLI; hosted services are Tiger Postgres, OpenRouter Gemma 26B (default Worker model), Anthropic Claude Sonnet 5.5 (complex tasks) and GitHub; Discord carries six channels.">
           <defs>
             <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
           </defs>
@@ -238,7 +238,7 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
           <rect class="box" x="488" y="420" width="206" height="148" rx="7"/>
           <text class="th" x="591" y="442" text-anchor="middle">Worker</text>
           <text class="mf" x="502" y="464">model  Gemma 4 26B A4B</text>
-          <text class="m" x="502" y="481">       via OpenRouter</text>
+          <text class="m" x="502" y="481">       deep: Claude Sonnet 5.5</text>
           <text class="mf" x="502" y="498">skill  worker-desk</text>
           <text class="mf" x="502" y="515">skill  prototype-box</text>
           <text class="m" x="502" y="537">#sk-worker</text>
@@ -280,9 +280,9 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
           <rect class="badge" x="1014" y="145" width="62" height="16" rx="8"/>
           <text class="bt" x="1045" y="156" text-anchor="middle">PARTNER</text>
 
-          <rect class="box dash" x="772" y="232" width="312" height="52" rx="8"/>
-          <text class="th" x="928" y="254" text-anchor="middle">Anthropic · Sonnet 5.5</text>
-          <text class="m" x="928" y="273" text-anchor="middle">plumbing test runs only · closed</text>
+          <rect class="box-h" x="772" y="232" width="312" height="52" rx="8"/>
+          <text class="th" x="928" y="254" text-anchor="middle">Anthropic · Claude Sonnet 5.5</text>
+          <text class="m" x="928" y="273" text-anchor="middle">complex tasks (go deep) · closed</text>
 
           <rect class="box-h" x="772" y="300" width="312" height="62" rx="8"/>
           <text class="th" x="928" y="325" text-anchor="middle">GitHub</text>
@@ -304,14 +304,15 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
           <text class="edge" x="728" y="170">SQL</text>
           <path class="ln-h" d="M694 470 C 735 470, 735 185, 769 185" marker-end="url(#a1)"/>
           <text class="edge" x="716" y="268">codes</text>
-          <path class="ln-m dash" d="M694 486 C 745 486, 745 258, 769 258" marker-end="url(#a1)"/>
+          <path class="ln-h" d="M694 486 C 745 486, 745 258, 769 258" marker-end="url(#a1)"/>
+          <text class="edge" x="722" y="410">go deep</text>
           <path class="ln-h" d="M710 300 C 742 300, 742 331, 769 331" marker-end="url(#a1)"/>
           <text class="edge" x="713" y="322">sync · push</text>
           <path class="ln-d" d="M710 520 C 735 520, 735 563, 769 563" marker-end="url(#a1)"/>
           <text class="edge" x="716" y="512">bots</text>
         </svg>
       </div>
-      <figcaption>Everything that reads your links runs on the Mac: Chrome, Stagehand, Ollama and the three agents. Only the Worker's coding model, the database, GitHub and Discord are hosted.</figcaption>
+      <figcaption>Everything that reads your links runs on the Mac: Chrome, Stagehand, Ollama and the three agents. Only the Worker's coding models (open weights by default, Claude for <code>go deep</code>), the database, GitHub and Discord are hosted.</figcaption>
     </figure>
   </section>
 
@@ -385,7 +386,7 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
 
           <!-- box -->
           <rect class="box-band" x="706" y="266" width="138" height="28" rx="6"/>
-          <text class="mf" x="775" y="284" text-anchor="middle">2 h box · Gemma 26B</text>
+          <text class="mf" x="775" y="284" text-anchor="middle">2 h box · Gemma | Sonnet</text>
           <line class="ln-h" x1="850" y1="280" x2="850" y2="345" marker-end="url(#a2)"/>
           <line class="ln-d" x1="850" y1="280" x2="850" y2="75" marker-end="url(#a2)"/>
           <circle class="dot-h" cx="850" cy="280" r="7"/>
@@ -540,12 +541,12 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
       </article>
       <article class="agent worker">
         <h3>Worker <small>sloth-worker</small></h3>
-        <div class="row"><b>Model</b><div class="chips"><span class="chip h">Gemma 4 26B A4B · OpenRouter</span><span class="chip t">Sonnet 5.5 · test only</span></div></div>
+        <div class="row"><b>Model</b><div class="chips"><span class="chip h">Gemma 26B · OpenRouter</span><span class="chip h">Sonnet 5.5 · go deep</span></div></div>
         <div class="row"><b>Skills</b><div class="chips"><span class="chip c">worker-desk</span><span class="chip c">prototype-box</span></div></div>
         <div class="row"><b>Box</b><div class="chips"><span class="chip h">120 min · hard kill</span><span class="chip h">wrap-up at 80%</span></div></div>
         <div class="row"><b>Talks</b><div class="chips"><span class="chip d">#sk-worker</span></div></div>
-        <div class="row"><b>You say</b><div class="chips"><span class="chip">go</span><span class="chip">go k05d2</span><span class="chip">status</span><span class="chip">approve 1</span><span class="chip">publish 1</span></div></div>
-        <div class="row"><b>Runs</b><div class="chips"><span class="chip">work &lt;card&gt;</span><span class="chip">work --status</span><span class="chip">approve &lt;run&gt; [--public]</span><span class="chip">browser test</span></div></div>
+        <div class="row"><b>You say</b><div class="chips"><span class="chip">go</span><span class="chip">go deep</span><span class="chip">go k05d2</span><span class="chip">status</span><span class="chip">approve 1</span><span class="chip">publish 1</span></div></div>
+        <div class="row"><b>Runs</b><div class="chips"><span class="chip">work &lt;card&gt; [--complex]</span><span class="chip">work --status</span><span class="chip">approve &lt;run&gt; [--public]</span><span class="chip">browser test</span></div></div>
       </article>
     </div>
   </section>
@@ -616,7 +617,7 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
         </div>
         <h3>Also in the stack (not partners)</h3>
         <div class="chips">
-          <span class="chip l">Ollama</span><span class="chip l">Hermes Agent</span><span class="chip l">trafilatura</span><span class="chip l">uv · typer · pydantic</span><span class="chip h">OpenRouter</span><span class="chip h">GitHub</span><span class="chip d">Discord</span><span class="chip t">Anthropic (tests)</span>
+          <span class="chip l">Ollama</span><span class="chip l">Hermes Agent</span><span class="chip l">trafilatura</span><span class="chip l">uv · typer · pydantic</span><span class="chip h">OpenRouter</span><span class="chip h">GitHub</span><span class="chip d">Discord</span><span class="chip h">Anthropic (complex tasks)</span>
         </div>
       </div>
     </div>
