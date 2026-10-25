@@ -19,6 +19,7 @@ metadata:
 - A cron job or the author asks for the **weekly focus** (`/focus`, "new week", "change my focus"), or the author tells you what they care about this week.
 - The author taps a button you showed, or answers a question you asked with clarify.
 - The author asks to see the board (`/board`, "what's on the board?").
+- The author asks for something to read ("reading for today", "what should I read?", "another reading").
 
 ## How it works
 
@@ -77,6 +78,16 @@ uv run sloth pick show --json
 ```
 
 `card` is today's card, or null when nothing is in Today. Send `reply`.
+
+## Daily reading
+
+| The author says | Run |
+| --- | --- |
+| "reading for today", "what should I read?" | `uv run sloth reading today --json` |
+| "another reading", "something else to read" | `uv run sloth reading today --json --again` |
+
+Send `reply` as is (it has the title, the link and one line on why). Never pick a link yourself and
+never add `--post` (the 08:00 job posts to `#sk-daily-reading`).
 
 ## Show the board
 

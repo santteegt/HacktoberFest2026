@@ -168,7 +168,23 @@ def brain(as_json: Annotated[bool, typer.Option("--json")] = False) -> None:
         _out(b.render(conn), as_json)
 
 
+reading_app = typer.Typer(no_args_is_help=True, help="Daily reading from the Curator's reading bucket.")
+
+
+@reading_app.command("today")
+def reading_today(post: Annotated[bool, typer.Option(help="Post to #sk-daily-reading and record it.")] = False,
+                  again: Annotated[bool, typer.Option(help="An extra pick for today (recorded).")] = False,
+                  no_model: Annotated[bool, typer.Option("--no-model")] = False,
+                  as_json: Annotated[bool, typer.Option("--json")] = False) -> None:
+    """Pick one never-recommended `reading` link (code) with a one-line why (model)."""
+    from ..board import reading
+    from ..core.db import connect
+    with connect() as conn:
+        _out(reading.today_payload(conn, post=post, again=again, use_model=not no_model), as_json)
+
+
 def register(app: typer.Typer) -> None:
+    app.add_typer(reading_app, name="reading")
     app.add_typer(board_app, name="board")
     app.add_typer(pick_app, name="pick")
     app.command("focus")(focus)
