@@ -1,0 +1,37 @@
+name: sloth-curator
+version: 0.1.0
+description: "Skunkworks Sloth Curator: reads the Chrome Reading List, triages it with local Gemma 4 12B (Ollama), runs #sk-curator and the #sk-valhalla removal bucket."
+hermes_requires: ">=0.22.0"
+author: "Santiago Gonzalez"
+license: "MIT"
+# scripts/ carries the cron scripts; Hermes copies it only because it is listed here.
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - skills/
+  - cron/jobs.json
+  - scripts/
+env_requires:
+  - name: DISCORD_BOT_TOKEN
+    description: "This agent's own Discord bot token (one bot per agent)"
+    required: true
+  - name: DISCORD_ALLOWED_USERS
+    description: "Your Discord user id; only you can talk to the bot"
+    required: true
+  - name: DISCORD_ALLOWED_CHANNELS
+    description: "Channel ids this agent listens in (#sk-curator,#sk-valhalla), comma-separated"
+    required: true
+  - name: DISCORD_FREE_RESPONSE_CHANNELS
+    description: "Channel ids where it answers without an @mention (same as above)"
+    required: true
+  - name: DISCORD_HOME_CHANNEL
+    description: "The agent's home channel id"
+    required: true
+  - name: DISCORD_ALLOW_BOTS
+    description: "Never answer other bots (the three Sloth bots share a server)"
+    required: false
+    default: "none"
+  - name: SLOTH_DRY_RUN
+    description: "0 = really post to Discord; 1 = print instead"
+    required: false
+    default: "0"

@@ -1,0 +1,22 @@
+{
+  "jobs": [
+    {
+      "id": "71dcb267ebef",
+      "name": "curator-daily",
+      "prompt": "",
+      "skills": [],
+      "script": "curate-daily.sh",
+      "no_agent": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 * * *",
+        "display": "0 7 * * *"
+      },
+      "schedule_display": "0 7 * * *",
+      "deliver": "local",
+      "repeat": {
+        "times": null
+      }
+    }
+  ]
+}

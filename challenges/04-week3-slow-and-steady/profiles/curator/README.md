@@ -1,6 +1,8 @@
 # Curator profile files (Lane 1)
 
-Source of truth for the `sloth-curator` Hermes profile's Skunkworks Sloth parts. The coordinator installs them into `~/.hermes/profiles/sloth-curator/` (lanes never edit `~/.hermes/`).
+> **Hermes profile distribution.** Install with `scripts/install.sh` (or `hermes profile install profiles/curator --name sloth-curator`, then fill `__SLOTH_HOME__` / `__SLOTH_PROTOTYPES__`). Refresh from the live profile with `scripts/export-profiles.sh`. `SOUL.md`, `config.yaml`, `skills/`, `cron/jobs.json` and `scripts/` here are exported from the live profile; edit them in Hermes and export, or edit here and re-run the install.
+
+Source of truth for the `sloth-curator` Hermes profile's Skunkworks Sloth parts. Installed by `scripts/install.sh`.
 
 - `skills/sloth-curator/SKILL.md` → `~/.hermes/profiles/sloth-curator/skills/sloth-curator/SKILL.md`
 - `SOUL.md` → suggested persona lines to merge into the profile's `SOUL.md`.

@@ -1,0 +1,76 @@
+{
+  "jobs": [
+    {
+      "id": "a59153f5cc3e",
+      "name": "daily-pick",
+      "prompt": "",
+      "skills": [],
+      "script": "pick-morning.sh",
+      "no_agent": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * *",
+        "display": "0 9 * * *"
+      },
+      "schedule_display": "0 9 * * *",
+      "deliver": "local",
+      "repeat": {
+        "times": null
+      }
+    },
+    {
+      "id": "3c82f822a9a9",
+      "name": "weekly-focus",
+      "prompt": "",
+      "skills": [],
+      "script": "focus-weekly.sh",
+      "no_agent": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 18 * * 0",
+        "display": "0 18 * * 0"
+      },
+      "schedule_display": "0 18 * * 0",
+      "deliver": "local",
+      "repeat": {
+        "times": null
+      }
+    },
+    {
+      "id": "a80ba198a0d6",
+      "name": "board-sync",
+      "prompt": "",
+      "skills": [],
+      "script": "board-sync.sh",
+      "no_agent": true,
+      "schedule": {
+        "kind": "interval",
+        "minutes": 30,
+        "display": "every 30m"
+      },
+      "schedule_display": "every 30m",
+      "deliver": "local",
+      "repeat": {
+        "times": null
+      }
+    },
+    {
+      "id": "7a5ce0d820a7",
+      "name": "daily-reading",
+      "prompt": "",
+      "skills": [],
+      "script": "reading-daily.sh",
+      "no_agent": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * *",
+        "display": "0 8 * * *"
+      },
+      "schedule_display": "0 8 * * *",
+      "deliver": "local",
+      "repeat": {
+        "times": null
+      }
+    }
+  ]
+}
