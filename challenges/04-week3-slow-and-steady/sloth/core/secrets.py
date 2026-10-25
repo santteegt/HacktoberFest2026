@@ -40,6 +40,11 @@ def database_url() -> str:
     s = settings()
     if url := os.environ.get(s.db_url_env):
         return url
+    # Unattended runs (Hermes cron, screen locked) cannot read the keychain behind `tiger`,
+    # so the sloth profiles' .env files (owner-only) may carry the URL too.
+    for profile in ("sloth-coordinator", "sloth-curator", "sloth-worker"):
+        if (url := profile_env(profile).get(s.db_url_env, "")) and not url.startswith("<"):
+            return url
     if not s.tiger_service_id:
         raise KeyError("db.tiger_service_id missing in .sloth/config.toml")
     res = subprocess.run(
