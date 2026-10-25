@@ -30,7 +30,7 @@ SKILL = ROOT / "profiles" / "worker" / "skills" / "prototype-box" / "SKILL.md"
 GRACE_S = 120          # after the box: time for the wrap-up answer before the process is killed
 TEST_TIMEOUT_S = 300
 RENDERED = {".md", ".toml", ".py", ""}  # template files whose {{placeholders}} are filled
-OPEN_PROVIDERS = {"openrouter"}          # open-weight models; anything else is a closed test run
+OPEN_PROVIDERS = {"openrouter"}          # open-weight models; anything else is a closed model
 # USD per million tokens, from https://platform.claude.com/docs/en/about-claude/pricing (read
 # 2026-10-24): base input, output, 5-minute cache write (Hermes' default TTL), cache hit.
 PRICES = {
@@ -38,9 +38,17 @@ PRICES = {
 }
 
 
-def resolve_model(provider: str | None = None, model: str | None = None) -> tuple[str, str, str]:
-    """(provider, model, model_id) from flags or config; model_id is what `runs.model_id` records."""
+def resolve_model(provider: str | None = None, model: str | None = None, *,
+                  complex_task: bool = False) -> tuple[str, str, str]:
+    """(provider, model, model_id) from flags or config; model_id is what `runs.model_id` records.
+
+    The default path is the open-weights Worker (`worker_provider` / `worker_model`); `go deep`
+    (`complex_task`) uses `complex_provider` / `complex_model`. Explicit flags override both.
+    """
     s = settings()
+    if complex_task:
+        provider = provider or s.complex_provider
+        model = model or s.complex_model
     provider = provider or s.worker_provider or "openrouter"
     model = model or s.worker_model or s.openrouter_model
     if not model:
@@ -51,6 +59,13 @@ def resolve_model(provider: str | None = None, model: str | None = None) -> tupl
 
 def is_closed(provider: str) -> bool:
     return provider not in OPEN_PROVIDERS
+
+
+def model_tag(provider: str, complex_task: bool = False) -> str:
+    """Suffix every Worker message carries: none for open weights, else say the model is closed."""
+    if not is_closed(provider):
+        return ""
+    return " (closed model, complex task)" if complex_task else " (closed model)"
 
 
 def split_tokens(tokens: dict) -> dict:
@@ -95,6 +110,7 @@ class BoxResult:
     log_path: str | None = None
     timed_out: bool = False
     provider: str = "openrouter"
+    complex_task: bool = False
     extra: dict = field(default_factory=dict)
 
     def to_json(self) -> str:
@@ -264,7 +280,7 @@ def finish_notes(repo: Path, r: BoxResult) -> Path:
     text = text.rstrip() + (
         "\n\n## Run (written by the runner)\n\n"
         f"- Outcome: **{r.outcome}** · tests {'pass' if r.tests_passed else 'fail'} (checked by `make test` after the box)\n"
-        f"- Model: `{r.model}` via {r.provider}{' (closed model, test run)' if is_closed(r.provider) else ''}"
+        f"- Model: `{r.model}` via {r.provider}{model_tag(r.provider, r.complex_task)}"
         f" · cost {cost} · tokens in/out {r.tokens_in}/{r.tokens_out}\n"
         f"- Wall time: {r.minutes:.1f} min of a {r.extra.get('box_minutes')}-minute box"
         f"{' (stopped by the timer)' if r.timed_out else ''}\n"
@@ -277,10 +293,10 @@ def finish_notes(repo: Path, r: BoxResult) -> Path:
 
 
 def run_box(card: Card, *, links: list[dict] | None = None, model: str | None = None,
-            provider: str | None = None, box_minutes: int | None = None, base_dir: Path | None = None,
-            suffix: str = "", hermes: str = "hermes") -> BoxResult:
+            provider: str | None = None, complex_task: bool = False, box_minutes: int | None = None,
+            base_dir: Path | None = None, suffix: str = "", hermes: str = "hermes") -> BoxResult:
     """Prepare the repo, run the Worker under the box timer, verify, write NOTES.md."""
-    provider, model, model_id = resolve_model(provider, model)
+    provider, model, model_id = resolve_model(provider, model, complex_task=complex_task)
     box = box_minutes if box_minutes is not None else (card.box_minutes or settings().box_minutes)
     repo = prepare_repo(card, model=model_id, links=links or [], base_dir=base_dir, suffix=suffix)
     runs_dir = repo.parent / ".runs"
@@ -331,7 +347,7 @@ def run_box(card: Card, *, links: list[dict] | None = None, model: str | None = 
         card_id=card.id, repo_dir=str(repo), model=model_id, outcome=outcome, tests_passed=tests_passed,
         test_output=test_output, minutes=round(minutes, 1), cost_usd=cost,
         tokens_in=split_tokens(tokens)["prompt_total"] if tokens else None,
-        tokens_out=tokens.get("output"), provider=provider,
+        tokens_out=tokens.get("output"), provider=provider, complex_task=complex_task,
         agent_status=answer.get("status"), summary=answer.get("summary") or (result_ev.get("text") or "")[:300] or None,
         learned=answer.get("learned"), session_id=result_ev.get("session_id"), log_path=str(log_path),
         timed_out=timed_out, extra={"box_minutes": box, "exit_code": proc.returncode, "tokens": tokens,
@@ -353,7 +369,7 @@ def summary_text(r: BoxResult, card: Card, run_id: int | None = None) -> str:
     lines = [
         f"🦥 **{card.title}** (card `{card.id}`{f', run {run_id}' if run_id else ''})",
         f"{verdict} · {r.minutes:.0f} min · {cost} · `{r.model}`"
-        f"{' (closed model, test run)' if is_closed(r.provider) else ''}",
+        f"{model_tag(r.provider, r.complex_task)}",
     ]
     if r.summary:
         lines.append(f"**Built:** {r.summary}")

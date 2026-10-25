@@ -1,7 +1,7 @@
 ---
 name: worker-desk
-description: "Skunkworks Sloth Worker desk: answer #sk-worker messages (go, approve, publish, status) by calling the `sloth` CLI. The coding itself happens in the separate prototype-box skill, inside `sloth work`."
-version: 0.1.0
+description: "Skunkworks Sloth Worker desk: answer #sk-worker messages (go, go deep, approve, publish, status) by calling the `sloth` CLI. The coding itself happens in the separate prototype-box skill, inside `sloth work`."
+version: 0.2.0
 author: Skunkworks Sloth
 license: MIT
 platforms: [macos]
@@ -28,13 +28,16 @@ Run ids are numbers (`run 12` in the summary); card ids are short codes like `k5
 
 | The author writes | You run | You reply |
 | --- | --- | --- |
-| `go` / `start` (after the Coordinator's hand-off line) | `$SLOTH work --status` to read today's card id, then `nohup $SLOTH work <card_id> > __SLOTH_PROTOTYPES__/.sloth-work-<card_id>.log 2>&1 &` | One line: "Box started for `<card_id>`; I'll post the summary here when it ends." `sloth work` posts its own start line, summary and approval request: do not repeat them. |
-| `go k5cbc` (names a card) | `nohup $SLOTH work k5cbc > __SLOTH_PROTOTYPES__/.sloth-work-k5cbc.log 2>&1 &` | the same one line |
+| `go` / `start` (after the Coordinator's hand-off line) | `$SLOTH work --status` to read today's card id and the models, then `nohup $SLOTH work <card_id> > __SLOTH_PROTOTYPES__/.sloth-work-<card_id>.log 2>&1 &` | One line naming the model from the `go` entry of the status "Models:" line: "Box started for `<card_id>` on `<model>`; I'll post the summary here when it ends." `sloth work` posts its own start line, summary and approval request: do not repeat them. |
+| `go k5cbc` (names a card) | `$SLOTH work --status`, then `nohup $SLOTH work k5cbc > __SLOTH_PROTOTYPES__/.sloth-work-k5cbc.log 2>&1 &` | the same one line |
+| `go deep` (a complex task) | `$SLOTH work --status`, then `nohup $SLOTH work <card_id> --complex > __SLOTH_PROTOTYPES__/.sloth-work-<card_id>.log 2>&1 &` | One line naming the model from the `go deep` entry, with its tag, e.g. "Box started for `<card_id>` on `anthropic/claude-sonnet-5-5` (closed model, complex task); summary here when it ends." |
+| `go k5cbc deep` | `$SLOTH work --status`, then `nohup $SLOTH work k5cbc --complex > __SLOTH_PROTOTYPES__/.sloth-work-k5cbc.log 2>&1 &` | the same one line as `go deep` |
 | `approve 12` (or ✅ on an approval request that names run 12) | `$SLOTH approve 12` | "Pushed as a private repo: <url printed by the command>". This creates a **private** GitHub repo. |
 | `publish 12` (exactly that) | `$SLOTH approve 12 --public` | "Run 12 is public: <url>". Only for the literal `publish <run_id>`; for "make it public?" or anything vaguer, ask "Reply `publish 12` to make it public." |
 | `status` / "how's the box going?" | `$SLOTH work --status` | the printed lines, as is |
 
 Rules for `go`:
+- Plain `go` always uses the open-weights default. Add `--complex` only when the author's message says `deep`; never choose it yourself.
 - `--status` shows exactly one card under "Today": start it. It shows none: reply "No card in Today yet; tap a pick in #sk-coordinator first." It shows more than one: ask which id.
 - A run for that card is already `building`: do not start another; reply with the status line instead.
 - One box at a time. If any run is `building`, say so and stop.

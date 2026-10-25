@@ -15,6 +15,8 @@ def work(
     status: bool = typer.Option(False, "--status", help="Show today's card and the latest runs, then exit."),
     model: str = typer.Option(None, help="Model id; default llm.worker_model (or llm.openrouter_model)."),
     provider: str = typer.Option(None, help="Hermes provider; default llm.worker_provider (openrouter)."),
+    complex_task: bool = typer.Option(False, "--complex",
+                                      help="Complex task (`go deep`): use llm.complex_provider / complex_model."),
     box_minutes: int = typer.Option(None, help="Override the card's box (minutes)."),
     card_file: Path = typer.Option(None, help="Load the card from JSON and upsert it (fixtures, tests)."),
     as_json: bool = typer.Option(False, "--json", help="Print the full result as JSON."),
@@ -37,10 +39,10 @@ def work(
         runs.upsert_card(card)
     card = runs.load_card(card_id)
     try:
-        use_provider, use_model, model_id = worker.resolve_model(provider, model)
+        use_provider, use_model, model_id = worker.resolve_model(provider, model, complex_task=complex_task)
     except RuntimeError as e:
         raise typer.BadParameter(str(e)) from e
-    closed = " (closed model, test run)" if worker.is_closed(use_provider) else ""
+    closed = worker.model_tag(use_provider, complex_task)
     box = box_minutes or card.box_minutes
     run_id = runs.start_run(card.id, model_id)
     notify.post("worker", f"🦥 Box started for **{card.title}** (card `{card.id}`, run {run_id}): "
@@ -49,7 +51,7 @@ def work(
                {"run_id": run_id, "card_id": card.id, "model": model_id, "provider": use_provider})
     try:
         r = worker.run_box(card, links=runs.card_links(card), model=use_model, provider=use_provider,
-                           box_minutes=box)
+                           complex_task=complex_task, box_minutes=box)
     except BaseException:
         runs.finish_run(run_id, outcome=worker.Outcome.killed, cost_usd=None, tokens_in=None,
                         tokens_out=None, repo_dir="", notes_path="")
