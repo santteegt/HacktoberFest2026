@@ -10,13 +10,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG_PATH = Path(os.environ.get("SLOTH_CONFIG", ROOT / ".sloth" / "config.toml"))
-CHANNELS = ("curator", "valhalla", "coordinator", "worker", "log")
+CHANNELS = ("curator", "valhalla", "coordinator", "worker", "log", "daily_reading")
 # Which bot speaks in which channel (#sk-logs is shared: each agent posts as itself).
 CHANNEL_PROFILE = {
     "curator": "sloth-curator",
     "valhalla": "sloth-curator",
     "coordinator": "sloth-coordinator",
     "worker": "sloth-worker",
+    "daily_reading": "sloth-coordinator",
 }
 
 

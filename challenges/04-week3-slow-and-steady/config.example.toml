@@ -15,6 +15,7 @@ valhalla = "<#sk-valhalla channel id>"
 coordinator = "<#sk-coordinator channel id>"
 worker = "<#sk-worker channel id>"
 log = "<#sk-logs channel id>"
+daily_reading = "<#sk-daily-reading channel id>"
 
 [llm]
 ollama_url = "http://localhost:11434"
