@@ -14,16 +14,16 @@ Three [Hermes Agent](https://github.com/NousResearch/hermes-agent) profiles live
 Chrome "Reading List" ──► Curator ──► Postgres (links, triage) ──► Coordinator ──► card in Today
   (Bookmarks file)          │  local Gemma 4 12B + Stagehand          │  local Gemma 4 12B       │
                             ▼                                         ▼                          ▼
-              #sk-curator  #sk-valhalla  #sk-daily-reading     #sk-coordinator              Worker (#sk-worker)
-                                                               GitHub Project board         2-hour box, open weights
+              #sk-curator  #sk-valhalla                   #sk-coordinator              Worker (#sk-worker)
+                                                     #sk-daily-reading, GitHub Project   2-hour box, open weights
                                                                                             NOTES.md → brain/ → approve → GitHub
                                        every state change ──► #sk-logs
 ```
 
 | Agent | Channel(s) | What it does | What it never does |
 | --- | --- | --- | --- |
-| **Curator** | `#sk-curator`, `#sk-valhalla`, `#sk-daily-reading` | Collects the folder (canonical-URL dedupe), enriches each link (HTTP + readability, GitHub API, Stagehand on a local Chrome for pages a plain fetch can't read), triages with Gemma 4 into **build / read / Valhalla**, posts a batch report. Sends dead, archived, stale and duplicate links to **Valhalla**, a removal bucket I empty with `empty` or `restore 3, 7`. Posts one link a day from the reading bucket. | Delete anything. Valhalla is a proposal; I remove the links from Chrome myself. |
-| **Coordinator** | `#sk-coordinator` | Clusters build-worthy links into cards (2-5 links each, title, learning goal, hypothesis and done-means worded by Gemma; box and kill criteria set by code). Asks a weekly focus question, scores the backlog, and offers 3-4 options with buttons each day. My tap moves one card to **Today**. | Pick without my tap. |
+| **Curator** | `#sk-curator`, `#sk-valhalla` | Collects the folder (canonical-URL dedupe), enriches each link (HTTP + readability, GitHub API, Stagehand on a local Chrome for pages a plain fetch can't read), triages with Gemma 4 into **build / read / Valhalla**, posts a batch report. Sends dead, archived, stale and duplicate links to **Valhalla**, a removal bucket I empty with `empty` or `restore 3, 7`. | Delete anything. Valhalla is a proposal; I remove the links from Chrome myself. |
+| **Coordinator** | `#sk-coordinator`, `#sk-daily-reading` | Clusters build-worthy links into cards (2-5 links each, title, learning goal, hypothesis and done-means worded by Gemma; box and kill criteria set by code). Asks a weekly focus question, scores the backlog, and offers 3-4 options with buttons each day. My tap moves one card to **Today**. Each morning it also recommends one link from the Curator's reading bucket for the week's focus, posts it to `#sk-daily-reading` and adds it to the brain. | Pick without my tap. |
 | **Worker** | `#sk-worker` | On `go`, `sloth work` creates a repo from [`templates/prototype/`](templates/prototype/) and runs the Worker profile on the card under a hard two-hour timer. Code runs `make test` itself after the box, completes `NOTES.md` (built, learned, next, links used), records cost and model, and posts a summary. `approve <run_id>` pushes a **private** repo; `publish <run_id>` makes it public. | Push before an approval, or run past the box. |
 
 - **`#sk-logs`**: one line per state change, posted by script as the agent that made it (`[curator] batch …`, `[worker] card k05d2 run 1 done …`). It's the timeline of the week and the source of the numbers below.
