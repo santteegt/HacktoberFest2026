@@ -85,9 +85,9 @@ def valhalla_messages(rows: list[dict], *, header: str = "Valhalla") -> list[str
     return chunk(lines)
 
 
-def reading_messages(rows: list[dict]) -> list[str]:
+def reading_messages(rows: list[dict], *, header: str | None = None) -> list[str]:
     """The reading bucket, grouped by vertical (rows ordered by vertical already)."""
-    lines = [f"**📚 Reading bucket**: {len(rows)} links worth reading, nothing to prototype."]
+    lines = [header or f"**📚 Reading bucket**: {len(rows)} link{'s' if len(rows) != 1 else ''} worth reading, nothing to prototype."]
     current = None
     for r in rows:
         if r.get("vertical") != current:

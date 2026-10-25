@@ -163,7 +163,7 @@ def unsure_cmd() -> None:
     from ..curator.report import chunk
     with _conn() as conn:
         rows = store.unsure_rows(conn)
-    lines = [f"**Unsure**: {len(rows)} links. Reply `keep <ids>` or `valhalla <ids>`."] + [
+    lines = [f"**Unsure**: {len(rows)} link{'s' if len(rows) != 1 else ''}. Reply `keep <ids>` or `valhalla <ids>`."] + [
         f"`#{r['link_id']}` {r['title'] or r['url']}" for r in rows]
     for msg in chunk(lines):
         print(msg)
@@ -196,14 +196,27 @@ def bench_cmd(n: int = 15) -> None:
 
 
 @curator_app.command("reading")
-def reading_cmd() -> None:
-    """The reading bucket: still worth reading, nothing to prototype. Grouped by vertical."""
+def reading_cmd(vertical: Annotated[str | None, typer.Argument(help="Only this vertical, e.g. ai-agents.")] = None,
+                limit: Annotated[int, typer.Option(help="Newest N links of the vertical (0 = all).")] = 20) -> None:
+    """The reading bucket. Without a vertical: counts per vertical. With one: its newest N links."""
+    from collections import Counter
+
     from ..curator import store
     from ..curator.report import reading_messages
     with _conn() as conn:
         rows = store.reading_rows(conn)
-    for msg in reading_messages(rows):
+    counts = Counter(r.get("vertical") or "unsorted" for r in rows)
+    if not vertical:
+        print(f"📚 Reading bucket: {len(rows)} links worth reading, nothing to prototype. By vertical: "
+              + ", ".join(f"{v} {n}" for v, n in counts.most_common())
+              + ". Ask for one (e.g. `reading ai-agents`) to see its newest links.")
+        return
+    picked = [r for r in rows if r.get("vertical") == vertical]
+    shown = picked[:limit] if limit else picked
+    for msg in reading_messages(shown, header=f"**📚 Reading, {vertical}**: newest {len(shown)} of {len(picked)}."):
         print(msg)
+    if len(picked) > len(shown):
+        print(f"…{len(picked) - len(shown)} more in {vertical}.")
 
 
 @curator_app.command("browse")
