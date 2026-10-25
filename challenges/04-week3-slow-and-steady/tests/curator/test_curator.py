@@ -183,6 +183,16 @@ def test_valhalla_messages_chunk_under_discord_limit():
     assert report.valhalla_messages([])[0].endswith("empty.")
 
 
+def test_valhalla_label_credits_the_right_decider():
+    rows = [{"link_id": 1, "title": "A", "reason": "dead", "decided_by": "code"},
+            {"link_id": 2, "title": "B", "reason": "old hype", "decided_by": "model"},
+            {"link_id": 3, "title": "C", "reason": "the author sent it to Valhalla", "decided_by": "author"}]
+    text = report.valhalla_messages(rows)[0]
+    assert "`#1` A · rule: dead" in text
+    assert "`#2` B · Gemma: old hype" in text
+    assert "`#3` C · you: the author sent it to Valhalla" in text
+
+
 def test_write_export(tmp_path):
     p = report.write_export([{"link_id": 1, "url": "https://e.com", "title": "E", "folder_path": "RL",
                               "reason": "dead"}], now=NOW, out_dir=tmp_path)

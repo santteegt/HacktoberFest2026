@@ -72,6 +72,10 @@ def batch_summary(r, *, top: int = 5) -> str:
     return "\n".join(chunk(lines, 10_000))  # one string; the caller splits with chunk() if needed
 
 
+# Who proposed a Valhalla row, as the author reads it in #sk-valhalla.
+DECIDER_LABEL = {"code": "rule", "model": "Gemma", "author": "you"}
+
+
 def valhalla_messages(rows: list[dict], *, header: str = "Valhalla") -> list[str]:
     """#sk-valhalla text: one line per link, numbered by link id so `restore 3, 7` is unambiguous."""
     if not rows:
@@ -79,7 +83,7 @@ def valhalla_messages(rows: list[dict], *, header: str = "Valhalla") -> list[str
     lines = [f"**{header}**: {len(rows)} link{'s' if len(rows) != 1 else ''}. Reply `restore <ids>` to keep some, or `empty` to confirm all "
              "(nothing is deleted from Chrome; you get a removal list)."]
     for r in rows:
-        tag = "rule" if r.get("decided_by") == "code" else "Gemma"
+        tag = DECIDER_LABEL.get(r.get("decided_by"), r.get("decided_by") or "?")
         lines.append(f"`#{r['link_id']}` {_clip(r.get('title') or r.get('url', ''), 70)} · {tag}: "
                      f"{_clip(r.get('reason', ''), 110)}")
     return chunk(lines)
