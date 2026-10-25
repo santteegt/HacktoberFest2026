@@ -32,8 +32,10 @@ class Settings:
     ollama_model: str
     ollama_num_ctx: int
     openrouter_model: str
-    worker_provider: str          # "openrouter" (open weights, default) | "anthropic" (closed; tests only)
+    worker_provider: str          # default Worker provider: "openrouter" (open weights)
     worker_model: str             # model id for worker_provider; empty = openrouter_model
+    complex_provider: str         # provider for cards the author sends with `go deep`: "anthropic" (closed)
+    complex_model: str            # model id for complex_provider
     box_minutes: int
     prototypes_dir: Path
     github_owner: str
@@ -61,6 +63,8 @@ def settings() -> Settings:
         openrouter_model=llm.get("openrouter_model", ""),
         worker_provider=llm.get("worker_provider", "openrouter"),
         worker_model=llm.get("worker_model", "") or llm.get("openrouter_model", ""),
+        complex_provider=llm.get("complex_provider", "anthropic"),
+        complex_model=llm.get("complex_model", "claude-sonnet-5-5"),
         box_minutes=int(raw.get("worker", {}).get("box_minutes", 120)),
         prototypes_dir=Path(os.path.expanduser(raw.get("worker", {}).get(
             "prototypes_dir", "~/GitRepositories/skunkworks-prototypes"))),

@@ -22,8 +22,10 @@ ollama_url = "http://localhost:11434"
 ollama_model = "sloth-gemma4-12b"   # FROM gemma4:12b-it-qat, num_ctx 65536, the minimum Hermes accepts (see README)
 ollama_num_ctx = 65536
 openrouter_model = ""               # set by the Builder lane after M0.4
-worker_provider = "openrouter"      # "openrouter" (open weights, the default) or "anthropic" (closed; tests only)
+worker_provider = "openrouter"      # default Worker provider: open weights on OpenRouter
 worker_model = ""                   # empty = openrouter_model
+complex_provider = "anthropic"      # used when the author says `go deep` (closed model, ANTHROPIC_API_KEY in the Worker .env)
+complex_model = "claude-sonnet-5-5"
 
 [worker]
 box_minutes = 120
