@@ -69,22 +69,11 @@ def test_reading_text_fits_and_keeps_url():
 URL = os.environ.get("SLOTH_DATABASE_URL", "")
 
 
-def test_reading_page_and_excerpt():
+def test_excerpt():
     from sloth.board import brain
-    r = {"page": "2026-10-25", "picked_on": TODAY, "extra": False, "vertical": "ai-agents",
-         "title": "Agent memory frameworks", "url": "https://e.x/m", "saved_at": datetime(2026, 3, 2, tzinfo=UTC),
-         "why": "Compares eight memory frameworks for agents.", "readable_text": "word " * 400}
-    page = brain.reading_page(r, [{"id": "kab12", "title": "Memory scaffold"}], "2026-10-25T08:00:00Z")
-    assert page.startswith("---\ntype: reading\n")
-    assert "- Link: https://e.x/m" in page and "- Saved: 2026-03-02" in page
-    assert "[AI agents](../verticals/ai-agents.md)" in page and "[all readings](index.md)" in page
-    assert "## Why today\n\nCompares eight memory frameworks for agents." in page
-    assert "- [Memory scaffold](../cards/kab12.md)" in page
-    quote = page.split("## Excerpt\n\n> ")[1].split("\n")[0]
+    quote = brain.excerpt("word " * 400)
     assert len(quote) <= brain.EXCERPT_CHARS + 1 and quote.endswith("…")
     assert brain.excerpt("a  b\n\nc") == "a b c"
-    empty = brain.reading_page({**r, "readable_text": None}, [], "t")
-    assert "_Only the title was readable" in empty and "_Nothing built in this vertical yet._" in empty
 
 
 @pytest.fixture
@@ -126,23 +115,21 @@ def test_daily_reading_flow(conn):
     posted = reading.today_payload(conn, post=True, use_model=False, today=TODAY)
     assert posted["link_id"] == readable and posted["posted"] and posted["recorded"]
     assert conn.sent[0][0] == "daily_reading" and posted["url"] in conn.sent[0][1]
-    page = (conn.brain / "reading" / "2026-10-25.md").read_text()
-    v = posted["vertical"]
-    assert posted["url"] in page and "Rust ownership explained" in page and f"(../verticals/{v}.md)" in page
-    assert "(2026-10-25.md)" in (conn.brain / "reading" / "index.md").read_text()
-    assert "(reading/2026-10-25.md)" in (conn.brain / "index.md").read_text()
-    assert "(../reading/2026-10-25.md)" in (conn.brain / "verticals" / f"{v}.md").read_text()
+    reading_notes = sorted((conn.brain / "readings").glob("2026-10-25 *.md"))
+    assert len(reading_notes) == 1
+    page = reading_notes[0].read_text()
+    assert posted["url"] in page and "Rust ownership explained" in page and "Topic: [[" in page
+    assert f"[[{reading_notes[0].stem}]]" in (conn.brain / "index.md").read_text()
 
     again_post = reading.today_payload(conn, post=True, use_model=False, today=TODAY)
     assert again_post.get("already") and len([s for s in conn.sent if s[0] == "daily_reading"]) == 1
 
     extra = reading.today_payload(conn, again=True, use_model=False, today=TODAY)
     assert extra["ok"] and extra["recorded"] and extra["link_id"] != readable
-    assert (conn.brain / "reading" / "2026-10-25-2.md").exists()
+    assert len(list((conn.brain / "readings").glob("2026-10-25 *.md"))) == 2
     nxt = reading.today_payload(conn, again=True, use_model=False, today=TODAY)
     assert nxt["link_id"] not in (readable, extra["link_id"])
-    index = (conn.brain / "reading" / "index.md").read_text()
-    assert index.index("2026-10-25-3.md") < index.index("(2026-10-25.md)")  # newest first
+    assert len(list((conn.brain / "readings").glob("2026-10-25 *.md"))) == 3
 
     tomorrow = reading.today_payload(conn, use_model=False, today=date(2026, 10, 26))
     assert tomorrow["link_id"] != readable  # never recommended twice

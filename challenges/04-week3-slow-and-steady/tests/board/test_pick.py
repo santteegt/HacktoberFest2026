@@ -91,14 +91,10 @@ def test_discord_texts():
     assert "no focus" in focus.focus_saved_text({"weights": {}})
 
 
-def test_brain_card_page_reads_notes(tmp_path):
+def test_brain_notes_for_reads_notes(tmp_path):
     (tmp_path / "NOTES.md").write_text("# NOTES\n\n## Learned\nThings.\n")
-    run = {"outcome": "done", "approved": True, "model_id": "m/x", "cost_usd": 0.05,
-           "repo_url": "https://github.com/u/r", "repo_dir": str(tmp_path), "notes_path": "NOTES.md",
-           "started_at": datetime(2026, 10, 24, 14, tzinfo=UTC), "ended_at": datetime(2026, 10, 24, 15, 30, tzinfo=UTC)}
-    c = {**card("ka", "rust", "Ledger"), "column": "built", "kill_criteria": "k", "hypothesis": "I can.",
-         "picked_on": TODAY}
-    page = brain.card_page(c, {}, run, [run], "2026-10-24T00:00:00Z")
-    assert page.startswith("---\ntype: prototype\n")
-    assert "### Learned" in page and "90 min, $0.05" in page and "Total cost: $0.05" in page
+    run = {"repo_dir": str(tmp_path), "notes_path": "NOTES.md"}
+    text, path = brain.notes_for(run)
+    assert "## Learned" in text and path == tmp_path / "NOTES.md"
+    assert brain._demote(text).startswith("### NOTES")
     assert brain.notes_for(None) == (None, None)
