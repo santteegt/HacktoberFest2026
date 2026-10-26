@@ -160,12 +160,13 @@ def focus(text: Annotated[str | None, typer.Argument(help="The author's answer, 
             _out(f.set_focus(conn, text=text, weights=weights, use_model=not no_model), as_json)
 
 
-def brain(as_json: Annotated[bool, typer.Option("--json")] = False) -> None:
-    """Render brain/ (index, one page per vertical, one per built card) from the database."""
+def brain(retaxonomy: Annotated[bool, typer.Option(help="Ask Gemma to rename every vertical's subtopics.")] = False,
+          as_json: Annotated[bool, typer.Option("--json")] = False) -> None:
+    """Render brain/ as an Obsidian vault: verticals, topics, cards, prototypes, readings."""
     from ..board import brain as b
     from ..core.db import connect
     with connect() as conn:
-        _out(b.render(conn), as_json)
+        _out(b.render(conn, retaxonomy=retaxonomy), as_json)
 
 
 reading_app = typer.Typer(no_args_is_help=True, help="Daily reading from the Curator's reading bucket.")

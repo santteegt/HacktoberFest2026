@@ -70,7 +70,8 @@ def test_seed_build_pick_run_brain(conn, tmp_path):
     out = cards.refresh(conn)
     assert out["moves_from_runs"] == [(top["card_id"], "building", "built")]
     assert out["project"] == "not configured (markdown only)"
-    assert (tmp_path / "brain" / "cards" / f"{top['card_id']}.md").exists()
+    title = store.get_card(conn, top["card_id"])["title"]
+    assert (tmp_path / "brain" / "prototypes" / f"{brain.safe_name(title + ' (prototype)')}.md").exists()
     assert brain.render(conn)["new_pages"] == []
     assert store.last_touched(conn)["security-privacy"] == date(2026, 10, 24)
     assert pick.choose(conn, "no such card")["ok"] is False
