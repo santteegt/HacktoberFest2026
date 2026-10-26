@@ -2,7 +2,7 @@
 title: "Skunkworks Sloth: a set of agents automating my bookmarks review, keeping me focused and growing my portfolio and skills"
 published: false
 tags: devchallenge, hf26challenge, ai, opensource
-cover_image: https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/diagrams/png/01-system-map.png
+cover_image: https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/diagrams/png/01-system-map.png
 ---
 
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 3: Slow and Steady](https://dev.to/challenges/hacktoberfest-week3-2026-10-19)*
@@ -25,45 +25,45 @@ Who gets to be lazier: anyone with a bookmark folder full of good intentions. I'
 
 ## Demo
 
-![curator](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_curator.png)
+![curator](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/sk_curator.png)
 
 All three agents are deployed with their independent profile in an Hermes instance, and communicate their work on specific channels within my personal Discord server.
 
 The `curator` agent is in charge of processing batches of bookmark sources. Once it finished, it provides a summary reports, and highlights any links that needs a review from me
 
-![Curator link review](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_curator_review.png)
+![Curator link review](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/sk_curator_review.png)
 
 Above, the `curator` reports an odd link that I can check and either keep it or send it to `valhalla`.
 
-![Curator valhalla](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_curator_valhalla.png)
+![Curator valhalla](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/sk_curator_valhalla.png)
 
 A specific channel reports all links that were sent to valhalla for a final human triage. Here, I can confirm which ones to pick and the ones to dispose based on their status
 
-![Skunkworks Kanban](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/skunkworks_kanban.png)
+![Skunkworks Kanban](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/skunkworks_kanban.png)
 
 The `coordinator` agent then turns the `curator’s` curated links into a skunkworks backlog. It uses Github projects to build a Kanban board that I can checkout from time to time
 
-![Coordinator focus](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/second_brain.png)
+![Coordinator focus](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/second_brain.png)
 
 Moreover, the `coordinator` also builds a second brain using the Open Knowledge Format (OKF) format for keeping a knowledge base that can be used by me or other agents.
 
-![Coordinator focus](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_coordinator_focus.png)
+![Coordinator focus](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/sk_coordinator_focus.png)
 
 Every week, the `coordinator` will ask me for my preference around the topic of focus. He proposed a few based the knowledge and skunworks kanban status.
 
-![Coordinator pick](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_coordinator_pick.png)
+![Coordinator pick](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/sk_coordinator_pick.png)
 
 Then, every day I get to pick a topic-specific project/idea to explore and communicate my decision to the `coordinator`. It then, forwards it to a `worker` agent that will assist me in the initial prototyping.
 
-![Coordinator daily read](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_coordinator_read.png)
+![Coordinator daily read](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/sk_coordinator_read.png)
 
 Additionally, the `coordinator` suggest me a daily reading post from those bookmarked links that are not touching any code.
 
-![Worker go](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_worker_go.png)
+![Worker go](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/sk_worker_go.png)
 
 Once the `worker` agent receives the ticket information from the `coordinator`, it awaits for my command to start a building session. I can tell it which model to use, either an open weights served by OpenRouter or a Anthropic model in case of more complex tasks.
 
-![Worker deliver](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_worker_finish.png)
+![Worker deliver](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/sk_worker_finish.png)
 
 Finally, the `worker` reports its works and verify that testing passes. I review the code and docs, make adjustments, and approve the prototype to be published as a repository on Github. The skunkworks kanban board and second brain update through the process.
 
@@ -77,7 +77,7 @@ The project lives in [`challenges/04-week3-slow-and-steady`](https://github.com/
 
 ### The architecture in one picture
 
-![System map](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/diagrams/png/01-system-map.png)
+![System map](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/diagrams/png/01-system-map.png)
 
 The green zone is my laptop, and everything that reads my links lives there:
 
@@ -93,13 +93,13 @@ The rule I kept all week: **models do language, code does rules.** No agent deci
 
 ### A day in the skunkworks
 
-![A day in the skunkworks](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/diagrams/png/02-a-day-in-the-skunkworks.png)
+![A day in the skunkworks](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/diagrams/png/02-a-day-in-the-skunkworks.png)
 
 Crons post first: at 07:00 the Curator triages anything new, at 08:00 the Coordinator posts today's reading, and at 09:00 it posts three or four cards weighted by my weekly focus. I tap one and say `go` in `#sk-worker`. The Worker builds for up to two hours, posts a summary with the test result and the cost, and waits. `approve N` pushes a private repo and moves the card to Built.
 
 ### The Curator pipeline, with real numbers
 
-![Curator pipeline](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/diagrams/png/03-curator-pipeline.png)
+![Curator pipeline](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/diagrams/png/03-curator-pipeline.png)
 
 - 1,017 bookmarks became **969 unique links** (48 exact duplicates).
 - Enrichment read 440 pages over plain HTTP, 223 through the GitHub API (stars, archived flag, last push, README) and 197 in a real browser. 109 could only be judged by their title: login walls and very long X threads.
@@ -111,13 +111,13 @@ Valhalla is a proposal, never a deletion. I reply `empty` or `restore 3, 7`, and
 
 ### What moves a card
 
-![Card states](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/diagrams/png/04-what-moves-a-card.png)
+![Card states](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/diagrams/png/04-what-moves-a-card.png)
 
 The Coordinator clustered the build pile into **58 cards**, each with a learning goal, a hypothesis, a done-means and kill criteria. Every arrow except the box timeout is one of my replies. A run that finishes waits in Building until I approve it, and a box that ends without meeting its done-means is Killed, with honest notes.
 
 ### Agents, skills and schedules
 
-![Agents, skills and schedules](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/diagrams/png/05-agents-skills-and-schedules.png)
+![Agents, skills and schedules](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/diagrams/png/05-agents-skills-and-schedules.png)
 
 Each agent is a Hermes profile with one job: its own model, skills, crons and channel. Deny rules block `sudo`, Docker and keychain commands, risky commands need my approval, and computer use is off. That's a command policy, not a sandbox: the agents still run as my user.
 
@@ -125,13 +125,13 @@ The Worker has **two providers**. By default it codes with **Gemma 4 26B A4B**, 
 
 ### What gets stored
 
-![What gets stored](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/diagrams/png/06-what-gets-stored.png)
+![What gets stored](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/diagrams/png/06-what-gets-stored.png)
 
 `links` is the hub. Triage keeps its history (1,098 rows for 969 links), so a page the browser reads later can change its verdict. `events` mirrors the `#sk-logs` channel, which is where every number in this post comes from.
 
 ### How each partner tool fits
 
-![Partner tools](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/diagrams/png/07-partner-tools.png)
+![Partner tools](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/diagrams/png/07-partner-tools.png)
 
 **Gemma**
 - *What:* Gemma 4 12B (QAT, Apache 2.0) through Ollama on my M4 Max, plus Gemma 4 26B A4B through OpenRouter as the Worker's default coder.
