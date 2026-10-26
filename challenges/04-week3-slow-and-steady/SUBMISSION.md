@@ -9,7 +9,7 @@ cover_image: https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756
 
 ## What I Built
 
-In the last 8 years, I've been collecting a ton of bookmarks on different apps on interesting projects, tools and topics. At some point, the numbers of saved links have increased a lot that it turned impossible to review them by myself. Hacktoberfest 2026 Week 3 challenge theme inspired my to prototype a small swarm of agents that help me automate the curatation of this huge amount of bookmars sitting next to me, and build at the same time a personal skunkworks division that generates knowledge, help prototyping ideas and build a potfolio of skills. I took a sample of bookmarks from my Google Chrome (which currently holds ~**8,130 bookmarks**). One folder, **Reading List**: since March 2025 I have saved **1,017 links** to it, every one of them "to learn by building". I have built nothing from it (so lazy).
+In the last 8 years, I've been collecting a ton of bookmarks on different apps on interesting projects, tools and topics. At some point, the numbers of saved links have increased a lot that it turned impossible to review them by myself. Hacktoberfest 2026 Week 3 challenge theme inspired me to prototype a small swarm of agents that help me automate the curation of this huge amount of bookmarks sitting next to me, and build at the same time a personal skunkworks division that generates knowledge, help prototyping ideas and build a portfolio of skills. I took a sample of bookmarks from my Google Chrome (which currently holds ~**8,130 bookmarks**). One folder, **Reading List**: since March 2025 I have saved **1,017 links** to it, every one of them "to learn by building". I have built nothing from it (so lazy).
 
 That folder is the prototype's test bed: 1,017 of 8,130 bookmarks, about 12.5% of the pile. The other 7,113 are next.
 
@@ -19,7 +19,7 @@ That folder is the prototype's test bed: 1,017 of 8,130 bookmarks, about 12.5% o
 - The **Coordinator** turns the build pile into two-hour project cards, asks me once a week what I care about, offers a few cards every morning, and hands me one link a day from the reading pile.
 - The **Worker** builds the card I pick inside a hard two-hour box, writes down what it learned, and waits for my approval before anything reaches GitHub.
 
-Each agent has its own Discord channel. My whole job is three replies a day: tap a card, say `go`, say `approve`.
+Each agent has its own Discord channel. My part of running it is three replies a day: tap a card, say `go`, say `approve`. The rest of my time goes into what the sloth can't do for me: reading the daily link and reviewing the code before I approve it.
 
 Who gets to be lazier: anyone with a bookmark folder full of good intentions. I'm the first user.
 
@@ -43,13 +43,13 @@ A specific channel reports all links that were sent to valhalla for a final huma
 
 The `coordinator` agent then turns the `curator’s` curated links into a skunkworks backlog. It uses Github projects to build a Kanban board that I can checkout from time to time
 
-![Coordinator focus](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/second_brain.png)
+![Second brain graph in Obsidian](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/second_brain.png)
 
 Moreover, the `coordinator` also builds a second brain using the Open Knowledge Format (OKF) format for keeping a knowledge base that can be used by me or other agents.
 
 ![Coordinator focus](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/sk_coordinator_focus.png)
 
-Every week, the `coordinator` will ask me for my preference around the topic of focus. He proposed a few based the knowledge and skunworks kanban status.
+Every week, the `coordinator` will ask me for my preference around the topic of focus. He proposed a few based the knowledge and skunkworks kanban status.
 
 ![Coordinator pick](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/screenshots/sk_coordinator_pick.png)
 
@@ -169,7 +169,9 @@ The harness is open too. Hermes let me harden each profile and package all three
 
 ## My Agent Session
 
-<!-- TODO(author): save the curated coordinator session with DevRelay, make it public, embed with the agent_session tag. -->
+The coordinator session, curated and scrubbed: from the first idea to three parallel lanes, the failures above, and the measured run.
+
+{% agent_session 1234 %}
 
 ## The Lazy Payoff
 
@@ -179,7 +181,7 @@ The harness is open too. Hermes let me harden each profile and package all three
 | Prototypes built from the list | 0 | 1 on open weights, approved and pushed (plus 1 labelled closed-model test) |
 | From "what should I build?" to a tested repo | never happened | about 20 minutes: pick, `go`, a 4.9-minute build, `approve` |
 | Cost of that build | n/a | $0.11 on Gemma 4 26B A4B (OpenRouter) |
-| My time per day | (not doing it) | 30-120 minutes for pick + `go` + approve + Valhalla |
+| My time per day | (not doing it) | a few replies to run the loop; 30-120 minutes in total including reading and reviewing the generated code before `approve` |
 | Reading | a pile of 609 | one link a day, picked for this week's focus |
 
 The first open-weights build was the card I picked on Sunday evening, **Private Aztec Sandbox Smart Contract**. The Worker wrote a Noir counter contract with private state, two tests and a demo in 4.9 minutes. My first look said it failed: the runner checked `make test` without the Aztec toolchain on its PATH. With the same PATH the Worker had, both tests passed. They run in Aztec's test environment (TXE), not against a live Sandbox node, which is less than the Worker's own notes claimed. That gap is why the runner checks every build itself instead of trusting the agent's report.
