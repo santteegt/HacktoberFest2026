@@ -1,19 +1,15 @@
 ---
-title: "Skunkworks Sloth: 1,017 bookmarks, zero builds, three agents and one question a day"
+title: "Skunkworks Sloth: a set of agents automating my bookmarks review, keeping me focused and growing my portfolio and skills"
 published: false
 tags: devchallenge, hf26challenge, ai, opensource
 cover_image: https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/diagrams/png/01-system-map.png
 ---
 
-<!-- DRAFT v2 2026-10-25, written from docs/CHALLENGE-MEMORY.md and its claims table.
-     TODO(author): demo video, measured run numbers (CP3), minutes per day, agent session embed.
-     Images point at raw.githubusercontent.com/.../main/...: they render only after the repo is pushed. -->
-
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 3: Slow and Steady](https://dev.to/challenges/hacktoberfest-week3-2026-10-19)*
 
 ## What I Built
 
-My Chrome holds **8,130 bookmarks**. One folder, **Reading List**, is the honest one: since March 2025 I have saved 1,017 links to it, every one of them "to learn by building". I have built nothing from it.
+In the last 8 years, I've been collecting a ton of bookmarks on different apps on interesting projects, tools and topics. At some point, the numbers of saved links have increased a lot that it turned impossible to review them by myself. Hacktoberfest 2026 Week 3 challenge theme inspired my to prototype a small swarm of agents that help me automate the curatation of this huge amount of bookmars sitting next to me, and build at the same time a personal skunkworks division that generates knowledge, help prototyping ideas and build a potfolio of skills. I took a sample of bookmarks from my Google Chrome (which currently holds ~**8,130 bookmarks**). One folder, **Reading List**: since March 2025 I have saved **1,017 links** to it, every one of them "to learn by building". I have built nothing from it (so lazy).
 
 That folder is the prototype's test bed: 1,017 of 8,130 bookmarks, about 12.5% of the pile. The other 7,113 are next.
 
@@ -29,9 +25,47 @@ Who gets to be lazier: anyone with a bookmark folder full of good intentions. I'
 
 ## Demo
 
-<!-- TODO(author): 2-3 minute video. Suggested cut: triage batch with Wi-Fi off → #sk-curator report → #sk-valhalla `show` → focus + pick buttons in #sk-coordinator → `go` in #sk-worker → summary + approve → card moving on the GitHub Project → today's reading and its brain page. -->
+![curator](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_curator.png)
 
-{% embed TODO-video-url %}
+All three agents are deployed with their independent profile in an Hermes instance, and communicate their work on specific channels within my personal Discord server.
+
+The `curator` agent is in charge of processing batches of bookmark sources. Once it finished, it provides a summary reports, and highlights any links that needs a review from me
+
+![Curator link review](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_curator_review.png)
+
+Above, the `curator` reports an odd link that I can check and either keep it or send it to `valhalla`.
+
+![Curator valhalla](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_curator_valhalla.png)
+
+A specific channel reports all links that were sent to valhalla for a final human triage. Here, I can confirm which ones to pick and the ones to dispose based on their status
+
+![Skunkworks Kanban](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/skunkworks_kanban.png)
+
+The `coordinator` agent then turns the `curator’s` curated links into a skunkworks backlog. It uses Github projects to build a Kanban board that I can checkout from time to time
+
+![Coordinator focus](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/second_brain.png)
+
+Moreover, the `coordinator` also builds a second brain using the Open Knowledge Format (OKF) format for keeping a knowledge base that can be used by me or other agents.
+
+![Coordinator focus](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_coordinator_focus.png)
+
+Every week, the `coordinator` will ask me for my preference around the topic of focus. He proposed a few based the knowledge and skunworks kanban status.
+
+![Coordinator pick](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_coordinator_pick.png)
+
+Then, every day I get to pick a topic-specific project/idea to explore and communicate my decision to the `coordinator`. It then, forwards it to a `worker` agent that will assist me in the initial prototyping.
+
+![Coordinator daily read](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_coordinator_read.png)
+
+Additionally, the `coordinator` suggest me a daily reading post from those bookmarked links that are not touching any code.
+
+![Worker go](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_worker_go.png)
+
+Once the `worker` agent receives the ticket information from the `coordinator`, it awaits for my command to start a building session. I can tell it which model to use, either an open weights served by OpenRouter or a Anthropic model in case of more complex tasks.
+
+![Worker deliver](https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/challenges/04-week3-slow-and-steady/docs/screenshots/sk_worker_finish.png)
+
+Finally, the `worker` reports its works and verify that testing passes. I review the code and docs, make adjustments, and approve the prototype to be published as a repository on Github. The skunkworks kanban board and second brain update through the process.
 
 ## Code
 
@@ -145,7 +179,7 @@ The harness is open too. Hermes let me harden each profile and package all three
 | Prototypes built from the list | 0 | 1 on open weights, approved and pushed (plus 1 labelled closed-model test) |
 | From "what should I build?" to a tested repo | never happened | about 20 minutes: pick, `go`, a 4.9-minute build, `approve` |
 | Cost of that build | n/a | $0.11 on Gemma 4 26B A4B (OpenRouter) |
-| My time per day | (not doing it) | TODO(author): minutes for pick + `go` + approve + Valhalla |
+| My time per day | (not doing it) | 30-120 minutes for pick + `go` + approve + Valhalla |
 | Reading | a pile of 609 | one link a day, picked for this week's focus |
 
 The first open-weights build was the card I picked on Sunday evening, **Private Aztec Sandbox Smart Contract**. The Worker wrote a Noir counter contract with private state, two tests and a demo in 4.9 minutes. My first look said it failed: the runner checked `make test` without the Aztec toolchain on its PATH. With the same PATH the Worker had, both tests passed. They run in Aztec's test environment (TXE), not against a live Sandbox node, which is less than the Worker's own notes claimed. That gap is why the runner checks every build itself instead of trusting the agent's report.
