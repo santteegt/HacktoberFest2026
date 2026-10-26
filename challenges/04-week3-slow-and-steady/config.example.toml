@@ -26,6 +26,8 @@ worker_provider = "openrouter"      # default Worker provider: open weights on O
 worker_model = ""                   # empty = openrouter_model
 complex_provider = "anthropic"      # used when the author says `go deep` (closed model, ANTHROPIC_API_KEY in the Worker .env)
 complex_model = "claude-sonnet-5-5"
+# Models the author may name in Discord with `go with <model>` ("provider:model").
+worker_models = ["openrouter:google/gemma-4-26b-a4b-it", "openrouter:qwen/qwen3-coder-next", "anthropic:claude-sonnet-5-5"]
 
 [worker]
 box_minutes = 120

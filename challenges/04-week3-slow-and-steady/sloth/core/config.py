@@ -36,6 +36,7 @@ class Settings:
     worker_model: str             # model id for worker_provider; empty = openrouter_model
     complex_provider: str         # provider for cards the author sends with `go deep`: "anthropic" (closed)
     complex_model: str            # model id for complex_provider
+    worker_models: list[str]      # allowlist for `go with <model>`, as "provider:model"
     box_minutes: int
     prototypes_dir: Path
     github_owner: str
@@ -65,6 +66,11 @@ def settings() -> Settings:
         worker_model=llm.get("worker_model", "") or llm.get("openrouter_model", ""),
         complex_provider=llm.get("complex_provider", "anthropic"),
         complex_model=llm.get("complex_model", "claude-sonnet-5-5"),
+        worker_models=list(llm.get("worker_models", [
+            "openrouter:google/gemma-4-26b-a4b-it",
+            "openrouter:qwen/qwen3-coder-next",
+            "anthropic:claude-sonnet-5-5",
+        ])),
         box_minutes=int(raw.get("worker", {}).get("box_minutes", 120)),
         prototypes_dir=Path(os.path.expanduser(raw.get("worker", {}).get(
             "prototypes_dir", "~/GitRepositories/skunkworks-prototypes"))),
