@@ -13,6 +13,9 @@ browser_app = typer.Typer(no_args_is_help=True, help="Stagehand on a local Chrom
 def work(
     card_id: str = typer.Argument(None, help="Card to build (its column should be 'today')."),
     status: bool = typer.Option(False, "--status", help="Show today's card and the latest runs, then exit."),
+    verify: int = typer.Option(None, "--verify", metavar="RUN_ID",
+                               help="Re-run make test/demo for a finished run; update its outcome."),
+    note: str = typer.Option(None, help="With --verify: one runner line to add under NOTES.md's Run section."),
     model: str = typer.Option(None, help="Model id; default llm.worker_model (or llm.openrouter_model)."),
     provider: str = typer.Option(None, help="Hermes provider; default llm.worker_provider (openrouter)."),
     complex_task: bool = typer.Option(False, "--complex",
@@ -30,8 +33,19 @@ def work(
         st = runs.status()
         print(json.dumps(st, default=str, indent=1) if as_json else runs.status_text(st))
         return
+    if verify is not None:
+        res = runs.reverify(verify, note=note)
+        verdict = "tests pass" if res["tests_passed"] else "tests fail"
+        demo = "demo exit 0" if res["demo_ok"] else "demo failed"
+        notify.post("worker", f"🔁 Re-verified run {verify} (card `{res['card_id']}`): {verdict}, {demo}. "
+                              f"Outcome {res['before']} → {res['outcome']}.")
+        notify.log("worker", "reverify", f"run {verify} re-verified: {verdict}, outcome {res['before']} → "
+                   f"{res['outcome']}", {"run_id": verify, "outcome": res["outcome"]})
+        print(json.dumps({k: v for k, v in res.items() if k != "board"}, default=str, indent=1) if as_json
+              else f"run {verify}: {verdict}, {demo}, outcome {res['before']} → {res['outcome']}")
+        return
     if not card_id:
-        raise typer.BadParameter("give a card id (or --status)")
+        raise typer.BadParameter("give a card id (or --status / --verify)")
     if card_file:
         card = Card.model_validate_json(card_file.read_text())
         if card.id != card_id:

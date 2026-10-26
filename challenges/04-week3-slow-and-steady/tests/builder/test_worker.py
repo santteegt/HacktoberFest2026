@@ -204,3 +204,42 @@ def test_status_text_names_both_models():
     text = runs.status_text({"today": [], "latest_runs": [], "models": {
         "go": "google/gemma-4-26b-a4b-it", "go deep": "anthropic/claude-sonnet-5-5 (closed model, complex task)"}})
     assert text.startswith("Models: `go` → `google/gemma-4-26b-a4b-it` · `go deep` → `anthropic/claude-sonnet-5-5")
+
+
+def _tool_repo(tmp_path: Path) -> tuple[Path, Path]:
+    """A repo whose `make test` needs a tool that is only on the login shell's PATH."""
+    tools = tmp_path / "tools"
+    tools.mkdir()
+    tool = tools / "sloth-fake-toolchain"
+    tool.write_text("#!/bin/sh\necho toolchain ok\n")
+    tool.chmod(0o755)
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    (repo / "Makefile").write_text("test:\n\tsloth-fake-toolchain\n\ndemo:\n\tsloth-fake-toolchain\n")
+    return repo, tools
+
+
+def test_verification_uses_the_worker_terminal_path(tmp_path, monkeypatch):
+    repo, tools = _tool_repo(tmp_path)
+    monkeypatch.setenv("PATH", "/usr/bin:/bin")  # the runner's own, stripped PATH
+    monkeypatch.setattr(worker, "login_shell_path", lambda: f"{tools}:/usr/bin:/bin")
+    ok, out = worker.run_tests(repo)
+    assert ok and "toolchain ok" in out
+    assert worker.run_demo(repo)[0]
+    # and the same Makefile fails when verification falls back to the stripped PATH
+    monkeypatch.setattr(worker, "login_shell_path", lambda: "/usr/bin:/bin")
+    assert not worker.run_tests(repo)[0]
+
+
+def test_login_shell_path_unions_interactive_shells(tmp_path, monkeypatch):
+    fake_shell = tmp_path / "bash"
+    fake_shell.write_text('#!/bin/sh\nprintf "noise __SLOTH_PATH__/from/rc:/usr/bin__SLOTH_PATH__ noise"\n')
+    fake_shell.chmod(0o755)
+    monkeypatch.setenv("SHELL", str(fake_shell))
+    monkeypatch.setenv("PATH", "/usr/bin:/bin")
+    worker.login_shell_path.cache_clear()
+    try:
+        parts = worker.login_shell_path().split(":")
+    finally:
+        worker.login_shell_path.cache_clear()
+    assert parts[0] == "/from/rc" and "/bin" in parts and len(parts) == len(set(parts))
