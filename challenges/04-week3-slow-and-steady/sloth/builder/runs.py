@@ -122,6 +122,42 @@ def status_text(st: dict) -> str:
     return "\n".join(lines)
 
 
+def reverify(run_id: int, *, note: str | None = None) -> dict:
+    """Re-run `make test` (and `make demo`) in the run's repo with the Worker terminal's PATH.
+
+    Updates only `runs.outcome` (done | killed), appends a "Re-verified" line (and `note`, if given)
+    to NOTES.md's Run section, then hands the move to the board's refresh().
+    """
+    from datetime import UTC, datetime
+    from pathlib import Path
+
+    from .worker import append_run_note, run_demo, run_tests
+
+    run = get_run(run_id)
+    if run["outcome"] == "building":
+        raise RuntimeError(f"run {run_id} is still building")
+    repo = Path(run["repo_dir"] or "")
+    if not (repo / "Makefile").is_file():
+        raise RuntimeError(f"run {run_id} has no local repo with a Makefile ({repo})")
+    tests_ok, test_out = run_tests(repo)
+    demo_ok, demo_out = run_demo(repo)
+    outcome = Outcome.done if tests_ok else Outcome.killed
+    when = datetime.now(UTC).strftime("%Y-%m-%d %H:%MZ")
+    append_run_note(repo, (
+        f"Re-verified {when} by `sloth work --verify {run_id}` with the Worker terminal's PATH: "
+        f"tests {'pass' if tests_ok else 'fail'}, demo {'exit 0' if demo_ok else 'failed'} "
+        f"(outcome {run['outcome']} → {outcome})."), message=f"docs: re-verify run {run_id} ({outcome})")
+    if note:
+        append_run_note(repo, note, message=f"docs: runner note for run {run_id}")
+    with connect() as conn:
+        conn.execute("UPDATE runs SET outcome = %s WHERE id = %s", (str(outcome), run_id))
+        conn.commit()
+        board = refresh_board(conn)
+    return {"run_id": run_id, "card_id": run["card_id"], "before": run["outcome"], "outcome": str(outcome),
+            "tests_passed": tests_ok, "demo_ok": demo_ok, "test_output": test_out, "demo_output": demo_out,
+            "board": board}
+
+
 def repo_name(repo_dir: str) -> str:
     return f"sloth-{Path(repo_dir).name}"
 

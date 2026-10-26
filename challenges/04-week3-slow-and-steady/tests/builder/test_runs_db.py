@@ -97,3 +97,45 @@ def test_failed_box_is_killed_by_refresh(tmp_path, monkeypatch):
     with connect() as conn:
         conn.execute("DELETE FROM runs WHERE card_id = 'tst2'")
         conn.execute("DELETE FROM cards WHERE id = 'tst2'")
+
+
+def test_reverify_updates_outcome_and_notes(tmp_path, monkeypatch):
+    from sloth.board import brain, github, markdown
+    from sloth.builder import runs, worker
+    from sloth.core.db import connect
+
+    monkeypatch.setattr(github, "configured", lambda: False)
+    monkeypatch.setattr(markdown, "BOARD_DIR", tmp_path / "board")
+    monkeypatch.setattr(brain, "BRAIN_DIR", tmp_path / "brain")
+    tools = tmp_path / "tools"
+    tools.mkdir()
+    (tools / "sloth-fake-toolchain").write_text("#!/bin/sh\necho ok\n")
+    (tools / "sloth-fake-toolchain").chmod(0o755)
+    monkeypatch.setattr(worker, "login_shell_path", lambda: f"{tools}:/usr/bin:/bin")
+    repo = tmp_path / "tst3-repo"
+    repo.mkdir()
+    (repo / "Makefile").write_text("test:\n\tsloth-fake-toolchain\n\ndemo:\n\tsloth-fake-toolchain\n")
+    (repo / "NOTES.md").write_text("# Notes\n\n## Learned\n\nkeep me\n\n## Run (written by the runner)\n\n- Outcome: **killed**\n")
+    subprocess.run(["git", "init", "-q", str(repo)], check=True)
+
+    card = Card.model_validate_json((FIX / "card.json").read_text()).model_copy(update={"id": "tst3"})
+    with connect() as conn:
+        conn.execute("DELETE FROM runs WHERE card_id = 'tst3'")
+        conn.execute("DELETE FROM cards WHERE id = 'tst3'")
+    runs.upsert_card(card)
+    run_id = runs.start_run(card.id, "test/model")
+    runs.finish_run(run_id, outcome=Outcome.killed, cost_usd=0.1, tokens_in=1, tokens_out=1,
+                    repo_dir=str(repo), notes_path=str(repo / "NOTES.md"))
+    assert runs.load_card(card.id).column == Column.killed
+
+    res = runs.reverify(run_id, note="Tests run in a simulator, not a live node.")
+    assert res["outcome"] == "done" and res["before"] == "killed" and res["tests_passed"]
+    run = runs.get_run(run_id)
+    assert run["outcome"] == "done" and float(run["cost_usd"]) == pytest.approx(0.1)  # only outcome changed
+    notes = (repo / "NOTES.md").read_text()
+    assert "keep me" in notes and "Re-verified" in notes and "(outcome killed → done)" in notes
+    assert notes.rstrip().endswith("Tests run in a simulator, not a live node.")
+    assert runs.load_card(card.id).column == Column.building  # done, unapproved: refresh() maps it back
+    with connect() as conn:
+        conn.execute("DELETE FROM runs WHERE card_id = 'tst3'")
+        conn.execute("DELETE FROM cards WHERE id = 'tst3'")

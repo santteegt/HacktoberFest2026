@@ -9,12 +9,14 @@ from __future__ import annotations
 
 import json
 import os
+import pwd
 import re
 import shutil
 import signal
 import subprocess
 import time
 from dataclasses import asdict, dataclass, field
+from functools import cache
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -216,19 +218,69 @@ def settled_usage(before: float | None, *, wait_s: float = 90, step_s: float = 1
     return last
 
 
+SH_FAMILY = {"bash", "zsh", "sh", "dash", "ksh"}
+DEMO_TIMEOUT_S = 120
+
+
+@cache
+def login_shell_path() -> str:
+    """PATH as the Worker's terminal sees it.
+
+    Hermes runs every terminal command as `$SHELL -lic …` (tools/environments/local.py), so tools
+    installed through ~/.zshrc or ~/.bashrc (the Aztec toolchain, nvm, cargo…) are on its PATH. The
+    runner may run under another shell or a cron, so it takes the union of what each interactive
+    shell reports (login and plain interactive), then this process's own PATH.
+    """
+    shells: list[str] = []
+    for cand in (os.environ.get("SHELL"), pwd.getpwuid(os.getuid()).pw_shell, "/bin/zsh", "/bin/bash"):
+        if cand and Path(cand).name in SH_FAMILY and os.access(cand, os.X_OK) and cand not in shells:
+            shells.append(cand)
+    parts: list[str] = []
+    # -lic is what Hermes runs; -ic adds ~/.bashrc, which macOS bash skips for login shells.
+    for sh, flags in ((sh, flags) for sh in shells for flags in ("-lic", "-ic")):
+        try:
+            out = subprocess.run([sh, flags, 'printf "__SLOTH_PATH__%s__SLOTH_PATH__" "$PATH"'],
+                                 stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=20).stdout
+        except (OSError, subprocess.TimeoutExpired):
+            continue
+        if m := re.search(r"__SLOTH_PATH__(.*?)__SLOTH_PATH__", out, re.S):
+            parts += m.group(1).split(":")
+    parts += os.environ.get("PATH", "").split(":")
+    return ":".join(dict.fromkeys(p for p in parts if p))
+
+
 def _child_env() -> dict[str, str]:
-    """The prototype has its own uv project; do not leak this package's virtualenv into it."""
-    return {k: v for k, v in os.environ.items() if k not in ("VIRTUAL_ENV", "UV_PROJECT_ENVIRONMENT")}
+    """The Worker terminal's PATH, without this package's virtualenv (the prototype has its own)."""
+    env = {k: v for k, v in os.environ.items() if k not in ("VIRTUAL_ENV", "UV_PROJECT_ENVIRONMENT")}
+    env["PATH"] = login_shell_path()
+    return env
+
+
+def _make(repo: Path, target: str, timeout_s: int) -> tuple[bool, str]:
+    try:
+        p = subprocess.run(["make", target], cwd=repo, capture_output=True, text=True,
+                           timeout=timeout_s, env=_child_env(), stdin=subprocess.DEVNULL)
+    except subprocess.TimeoutExpired:
+        return False, f"make {target} timed out after {timeout_s}s"
+    tail = (p.stdout + p.stderr).strip().splitlines()[-15:]
+    return p.returncode == 0, "\n".join(tail)
 
 
 def run_tests(repo: Path) -> tuple[bool, str]:
-    try:
-        p = subprocess.run(["make", "test"], cwd=repo, capture_output=True, text=True,
-                           timeout=TEST_TIMEOUT_S, env=_child_env())
-    except subprocess.TimeoutExpired:
-        return False, f"make test timed out after {TEST_TIMEOUT_S}s"
-    tail = (p.stdout + p.stderr).strip().splitlines()[-15:]
-    return p.returncode == 0, "\n".join(tail)
+    return _make(repo, "test", TEST_TIMEOUT_S)
+
+
+def run_demo(repo: Path) -> tuple[bool, str]:
+    return _make(repo, "demo", DEMO_TIMEOUT_S)
+
+
+def append_run_note(repo: Path, line: str, *, message: str) -> None:
+    """Add a runner line at the end of NOTES.md's Run section (the last section) and commit it."""
+    notes = repo / "NOTES.md"
+    notes.write_text(notes.read_text().rstrip() + f"\n- {line}\n")
+    _git(repo, "add", "NOTES.md")
+    _git(repo, "-c", "user.name=Skunkworks Sloth", "-c", "user.email=sloth@localhost",
+         "commit", "-q", "-m", message, check=False)
 
 
 def _parse_stream(log_path: Path) -> dict:
