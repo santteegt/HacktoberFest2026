@@ -13,7 +13,9 @@ cover_image: https://raw.githubusercontent.com/santteegt/HacktoberFest2026/main/
 
 ## What I Built
 
-I have a folder in Chrome called **Reading List**. Since March 2025 I have saved 1,017 links to it, every one of them "to learn by building". I have built nothing from it.
+My Chrome holds **8,130 bookmarks**. One folder, **Reading List**, is the honest one: since March 2025 I have saved 1,017 links to it, every one of them "to learn by building". I have built nothing from it.
+
+That folder is the prototype's test bed: 1,017 of 8,130 bookmarks, about 12.5% of the pile. The other 7,113 are next.
 
 **Skunkworks Sloth** is three small agents that do the part I kept putting off:
 
@@ -139,12 +141,14 @@ The harness is open too. Hermes let me harden each profile and package all three
 
 | | Before | After |
 | --- | --- | --- |
-| Links I had looked at again | 0 of 1,017 | all 969 triaged, with a reason each |
-| Prototypes built from the list | 0 | TODO(CP3): first measured run on open weights |
+| Bookmarks waiting | 8,130 in Chrome, 1,017 of them in the Reading List | the Reading List fully triaged: 969 links, a reason each; 7,113 bookmarks still to go |
+| Prototypes built from the list | 0 | 1 on open weights, approved and pushed (plus 1 labelled closed-model test) |
+| From "what should I build?" to a tested repo | never happened | about 20 minutes: pick, `go`, a 4.9-minute build, `approve` |
+| Cost of that build | n/a | $0.11 on Gemma 4 26B A4B (OpenRouter) |
 | My time per day | (not doing it) | TODO(author): minutes for pick + `go` + approve + Valhalla |
 | Reading | a pile of 609 | one link a day, picked for this week's focus |
 
-<!-- TODO(CP3): card, minutes from pick to running skeleton, tests, cost in dollars, model id (must start with google/). -->
+The first open-weights build was the card I picked on Sunday evening, **Private Aztec Sandbox Smart Contract**. The Worker wrote a Noir counter contract with private state, two tests and a demo in 4.9 minutes. My first look said it failed: the runner checked `make test` without the Aztec toolchain on its PATH. With the same PATH the Worker had, both tests passed. They run in Aztec's test environment (TXE), not against a live Sandbox node, which is less than the Worker's own notes claimed. That gap is why the runner checks every build itself instead of trusting the agent's report.
 
 ## Future Work
 
