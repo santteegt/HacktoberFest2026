@@ -18,6 +18,9 @@ def work(
     note: str = typer.Option(None, help="With --verify: one runner line to add under NOTES.md's Run section."),
     model: str = typer.Option(None, help="Model id; default llm.worker_model (or llm.openrouter_model)."),
     provider: str = typer.Option(None, help="Hermes provider; default llm.worker_provider (openrouter)."),
+    use: str = typer.Option(None, "--use", metavar="PROVIDER:MODEL",
+                            help="Pick from llm.worker_models (`go with <model>`); a unique suffix works."),
+    list_models: bool = typer.Option(False, "--models", help="List llm.worker_models, then exit."),
     complex_task: bool = typer.Option(False, "--complex",
                                       help="Complex task (`go deep`): use llm.complex_provider / complex_model."),
     box_minutes: int = typer.Option(None, help="Override the card's box (minutes)."),
@@ -29,6 +32,9 @@ def work(
     from ..core import notify
     from ..core.models import Card
 
+    if list_models:
+        print("\n".join(worker.allowlist_lines()) or "llm.worker_models is empty")
+        return
     if status:
         st = runs.status()
         print(json.dumps(st, default=str, indent=1) if as_json else runs.status_text(st))
@@ -46,16 +52,20 @@ def work(
         return
     if not card_id:
         raise typer.BadParameter("give a card id (or --status / --verify)")
+    try:
+        use_provider, use_model, model_id = worker.resolve_model(provider, model, complex_task=complex_task,
+                                                                 use=use)
+    except worker.ModelNotAllowed as e:
+        print(str(e))  # the desk relays this line as is
+        raise typer.Exit(2) from e
+    except RuntimeError as e:
+        raise typer.BadParameter(str(e)) from e
     if card_file:
         card = Card.model_validate_json(card_file.read_text())
         if card.id != card_id:
             raise typer.BadParameter(f"{card_file} holds card {card.id}, not {card_id}")
         runs.upsert_card(card)
     card = runs.load_card(card_id)
-    try:
-        use_provider, use_model, model_id = worker.resolve_model(provider, model, complex_task=complex_task)
-    except RuntimeError as e:
-        raise typer.BadParameter(str(e)) from e
     closed = worker.model_tag(use_provider, complex_task)
     box = box_minutes or card.box_minutes
     run_id = runs.start_run(card.id, model_id)

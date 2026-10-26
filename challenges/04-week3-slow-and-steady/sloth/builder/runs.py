@@ -94,7 +94,7 @@ def status() -> dict:
             """SELECT r.id, r.card_id, c.title, r.outcome, r.approved, r.repo_url, r.cost_usd, r.model_id,
                       r.started_at, r.ended_at
                FROM runs r JOIN cards c ON c.id = r.card_id ORDER BY r.started_at DESC LIMIT 3""").fetchall()
-    from .worker import model_tag, resolve_model
+    from .worker import allowlist_lines, model_tag, resolve_model
     models = {}
     for path, flag in (("go", False), ("go deep", True)):
         try:
@@ -102,13 +102,15 @@ def status() -> dict:
             models[path] = f"{model_id}{model_tag(provider, flag)}"
         except RuntimeError as e:
             models[path] = f"not configured ({e})"
-    return {"today": today, "latest_runs": latest, "models": models}
+    return {"today": today, "latest_runs": latest, "models": models, "allowed": allowlist_lines()}
 
 
 def status_text(st: dict) -> str:
     lines = []
     if st.get("models"):
         lines.append("Models: " + " · ".join(f"`{k}` → `{v}`" for k, v in st["models"].items()))
+    if st.get("allowed"):
+        lines.append("`go with <model>` allows: " + ", ".join(st["allowed"]))
     if st["today"]:
         lines += [f"Today: `{c['id']}` {c['title']} (reply `go` to start its box)" for c in st["today"]]
     else:

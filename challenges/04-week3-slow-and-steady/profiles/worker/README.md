@@ -5,8 +5,9 @@
 The Worker's distribution (owned by Lane 3).
 
 - `skills/prototype-box/SKILL.md`: how the Worker builds a card inside the box. The runner (`sloth work`) also inlines this text into the task prompt, so a run does not depend on the skill being installed.
-- `skills/worker-desk/SKILL.md`: the Worker bot's Discord desk in `#sk-worker` (`go`, `go deep`, `approve <run_id>`, `publish <run_id>`, `status` → `sloth` commands with `--project`).
+- `skills/worker-desk/SKILL.md`: the Worker bot's Discord desk in `#sk-worker` (`go`, `go deep`, `go with <model>`, `models`, `approve <run_id>`, `publish <run_id>`, `status` → `sloth` commands with `--project`).
 - Two providers, chosen at `go` time: `go` runs the open-weights default (`llm.worker_provider` / `worker_model`, OpenRouter `google/gemma-4-26b-a4b-it`); `go deep` runs `sloth work --complex` on `llm.complex_provider` / `complex_model` (Anthropic `claude-sonnet-5-5`, closed, needs `ANTHROPIC_API_KEY` in the profile `.env`). Messages tag closed runs "(closed model, complex task)".
 - Approval wording lives in `sloth/builder/approval.py`; `sloth work` and `sloth approve` post it.
 
 Profile settings the runner relies on (set by the coordinator, see `docs/lanes/builder.md`): `model.provider: openrouter`, `model.default: <llm.openrouter_model>`, `terminal.cwd` under `~/GitRepositories/skunkworks-prototypes`, browser and computer-use toolsets disabled, approvals manual with the deny list.
+- `go with <model>` runs `sloth work --use <model>`, which accepts only `llm.worker_models` entries (`provider:model`, or a unique suffix such as `qwen3-coder-next`) and lists them when it refuses. `models` prints that list with "open weights" or "closed model" next to each. `--provider/--model` stay unrestricted for the author's own shell.
