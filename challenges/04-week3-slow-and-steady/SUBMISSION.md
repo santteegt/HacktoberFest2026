@@ -1,9 +1,11 @@
 ---
 title: "Skunkworks Sloth: a set of agents automating my bookmarks review, keeping me focused and growing my portfolio and skills"
-published: false
+published: true
 tags: devchallenge, hf26challenge, ai, opensource
 cover_image: https://raw.githubusercontent.com/santteegt/HacktoberFest2026/92756b46e0660a69c1aa95e959db9583d857a40d/challenges/04-week3-slow-and-steady/docs/diagrams/png/01-system-map.png
 ---
+
+<!-- Published 2026-10-26 on DEV: https://dev.to/santteegt/skunkworks-sloth-a-set-of-agents-automating-my-bookmarks-review-keeping-me-focused-and-growing-my-1168 (article 4918874). This file mirrors the live post; edit on DEV first, then sync here. -->
 
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 3: Slow and Steady](https://dev.to/challenges/hacktoberfest-week3-2026-10-19)*
 
@@ -154,7 +156,6 @@ The Worker has **two providers**. By default it codes with **Gemma 4 26B A4B**, 
 - **A browser timeout is not a cancellation.** When Stagehand gave up on a long X thread after 45 seconds, Ollama kept working on it in its single slot, and every later request queued and timed out. Waiting for the abandoned request to drain fixed it.
 - **Small models skip soft instructions.** The Curator once answered "what's unsure?" from general knowledge instead of running its tool. A hard "load your skill first, run the matching command" rule in its persona fixed it on the next try.
 - **Count cached tokens once.** An early test run looked like $9.64. Hermes' input count already includes cached tokens; the real figure was about $1.02.
-- **Park the agents you're done with.** One Hermes gateway serves every profile on the machine. Starting it brought my Week 2 WhatsApp agent back online for an hour; its allowlist kept it silent.
 - **Crons don't have your keychain.** A morning job failed because the database password sat in the macOS keychain, which a locked session can't open.
 
 ## Why Does Open Innovation Matter?
@@ -208,12 +209,12 @@ Either way, the browser stays on my machine, the model stays local, and the agen
 ## Pre-submission checklist
 - [x] Started inside the challenge window; later commits noted in README
 - [x] Tags `devchallenge` and `hf26challenge` present
-- [ ] Public repo pushed (images and the code embed need it); demo link or embed works
+- [x] Public repo pushed (images and the code embed need it); demo link or embed works
 - [x] Open-source AI is at the core; "why open" is explained
-- [ ] Post says what effort it saves; "The Lazy Payoff" has a measured number (CP3) or the row is removed
+- [x] Post says what effort it saves; "The Lazy Payoff" has a measured number (CP3) or the row is removed
 - [x] Each prize category claimed has a concrete, meaningful use
 - [x] No login needed for judges; no secrets in repo or transcript (re-scan before push)
 - [x] Credits for borrowed code/assets (README)
 - [x] Written in English (prize eligibility)
-- [ ] Posted with the correct `ai_disclosure_level`
-- [ ] Posted before Oct 26 06:59 UTC (Sun Oct 25, 11:59 PM PDT; Mon 01:59 local)
+- [x] Posted with the correct `ai_disclosure_level`
+- [x] Posted before Oct 26 06:59 UTC (Sun Oct 25, 11:59 PM PDT; Mon 01:59 local)

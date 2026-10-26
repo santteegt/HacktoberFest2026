@@ -3,7 +3,7 @@ type: "concept"
 title: "Small local model agent patterns"
 description: "Patterns that made a 12B local model usable inside a Telegram agent, learned in the Week 1 build."
 tags: "[models, frameworks, ideas]"
-timestamp: "2026-10-18T00:00:00Z"
+timestamp: "2026-10-25T00:00:00Z"
 ---
 
 ## Definition
@@ -20,6 +20,9 @@ Habits for building an agent on a small open model (Gemma 4 12B through Ollama i
 - Read the agent's real conversations from its own database and the runtime's logs, not the agent's summary of what it did.
 - Shuffle answer positions in code; model-written positions were biased.
 - Week 2 (26B on OpenRouter) confirmed the same rules at a larger size and added identity: see [Messaging agent patterns](messaging-agent-patterns.md).
+- Week 3: make skill-first a hard rule in SOUL.md (load the skill, run the matching command, never answer from general knowledge) and list every request phrase in the skill description; the 12B answered from general knowledge until both changed.
+- Week 3: let code decide what it can (dead links, redirects, archived repos, duplicates decided 48 of 51 removals) and cap the model's scale in code where it overrates; hide login-wall text from the model.
+- Week 3: treat a model's report of its own success as unverified and re-run its checks in the same environment it used.
 
 ## Related Concepts
 
@@ -28,8 +31,10 @@ Habits for building an agent on a small open model (Gemma 4 12B through Ollama i
 - [Ollama](ollama.md)
 - [Challenge playbook](challenge-playbook.md)
 - [Week 1 challenge: Touch Grass](week1-challenge-touch-grass.md)
+- [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md)
 
 ## Sources
 
 - [Retrospective: Week 1 Touch Grass (Idea Leash)](sources/retrospective-week1-touch-grass.md)
 - [Retrospective: Week 2 Side Hustle (PartsPaddock)](sources/retrospective-week2-side-hustle.md)
+- [Retrospective: Week 3 Slow and Steady (Skunkworks Sloth)](sources/retrospective-week3-slow-and-steady.md)

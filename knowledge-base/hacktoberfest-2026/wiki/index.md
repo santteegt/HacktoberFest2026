@@ -4,7 +4,7 @@ okf_version: "0.1"
 
 # Hacktoberfest 2026 — Wiki Index
 
-_Last updated: 2026-10-20 — 49 pages_
+_Last updated: 2026-10-25 — 52 pages_
 
 ## Topics
 - [Hacktoberfest 2026](hacktoberfest-2026.md) — the program: stickers replace PRs, open-source AI theme
@@ -13,6 +13,7 @@ _Last updated: 2026-10-20 — 49 pages_
 - [Weekend challenge retrospective](weekend-challenge-retrospective.md) — what worked, what failed, numbers
 - [Week 1 challenge: Touch Grass](week1-challenge-touch-grass.md) — DEV event 79, the Idea Leash entry and its outcome
 - [Week 2 challenge: Side Hustle](week2-challenge-side-hustle.md) — DEV event 80, the PartsPaddock entry and its outcome
+- [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md) — DEV event 81, the Skunkworks Sloth entry and its outcome
 - [Partner tools catalog](partner-tools-catalog.md) — the challenge partners by role (16 weekend + 3 Week 3), recipes, ideation questions
 - [Global Hack Week](global-hack-week.md) — MLH's monthly online week, incl. the Hacktoberfest edition
 
@@ -22,15 +23,16 @@ _Last updated: 2026-10-20 — 49 pages_
 - [DEV Challenge rules](dev-challenge-rules.md) — eligibility, teams, originality, AI, judging, payout
 - [Open-source AI prompt](open-source-ai-prompt.md) — the prompt shared by all five challenges
 - [Prize categories and partners](prize-categories-and-partners.md) — sponsor technologies for category prizes
-- [Challenge playbook](challenge-playbook.md) — rules for the next challenges, from the weekend build and Week 1
+- [Challenge playbook](challenge-playbook.md) — rules for the next challenges, from the weekend build through Week 3
 - [Small local model agent patterns](small-local-model-agent-patterns.md) — what made a 12B local model usable in an agent
 - [Messaging agent patterns](messaging-agent-patterns.md) — identity in code, money behind a person, bilingual matching, group etiquette
+- [Parallel agent lanes](parallel-agent-lanes.md) — one coordinator, lanes with owned paths and contracts, conflict-free merges
 
 ## Tools
 - [DevRelay](devrelay.md) — MCP gateway and skills; install is a sticker
 - [Gemma](gemma.md) — open-weight model family; used in the weekend build and Week 1
 - [Ollama](ollama.md) — local runtime; first-hand findings
-- [Hermes Agent](hermes-agent.md) — open agent harness: profiles, skills, Telegram gateway
+- [Hermes Agent](hermes-agent.md) — open agent harness: profiles, skills, distributions, multiplexed gateway (Telegram, WhatsApp, Discord)
 - [OpenRouter](openrouter.md) — hosted API for open-weight models; free pool rate-limited, paid id cheap
 - [Tinker](tinker.md) — hosted fine-tuning, exportable adapters
 - [TabPFN](tabpfn.md) — pretrained model for small tabular data
@@ -64,3 +66,4 @@ _Last updated: 2026-10-20 — 49 pages_
 - [Retrospective: Week 1 Touch Grass](sources/retrospective-week1-touch-grass.md) — post-publish retrospective of Idea Leash
 - [Retrospective: Week 2 Side Hustle](sources/retrospective-week2-side-hustle.md) — post-publish retrospective of PartsPaddock
 - [Week 3 new partners: Auth0, Browserbase, Ultramarine](sources/week3-new-partners-auth0-browserbase-ultramarine.md) — what the three new categories ask for and how they fit
+- [Retrospective: Week 3 Slow and Steady](sources/retrospective-week3-slow-and-steady.md) — post-publish retrospective of Skunkworks Sloth

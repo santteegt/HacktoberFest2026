@@ -3,7 +3,7 @@ type: tool
 title: "Gemma"
 description: "Google's open-weight model family (Gemma 4: E2B, E4B, 12B, 26B A4B, 31B), Apache 2.0, runnable locally; a Featured prize category."
 tags: [models, tools]
-timestamp: "2026-10-18T00:00:00Z"
+timestamp: "2026-10-25T00:00:00Z"
 ---
 
 ## Definition
@@ -19,6 +19,8 @@ Gemma 4 is a family of open-weight models released from 2026-03-31, with text, i
 - Fits: private or offline assistants, structured extraction, tiny-prompt classifiers, document photos (E4B). Weak fit: fast generation on old CPUs. Likely the busiest category.
 - First-hand (Week 1): Gemma 4 12B QAT through Ollama wrote notes, quizzes and grading wording on a 64 GB Mac, fast enough for chat turns (most 0.7 to 7 s), but it is an unreliable tool user: it skipped commands and described them as done, and praised a wrong answer.
 - First-hand (Week 2): Gemma 4 26B A4B (MoE, about 4B active) through OpenRouter ran a WhatsApp agent in Spanish and English; it produced correct listing values but drifted field names (`type` for `kind`, `price` for `price_usd`) and invented phone numbers when asked to pass identity. The free `:free` pool was rate-limited; the paid id cost about $0.0014 per 20k-token call.
+- First-hand (Week 3): Gemma 4 12B QAT on Ollama (64k context) triaged 969 links at about 4.2 s of compute per link on an M4 Max, after code capped article and thread kinds and the prompt spelled the scale out with the author's examples; it agreed with the author on 16 of 20 links the prompt was tuned on. It also skipped its Hermes skill until SOUL.md made skill-first a hard rule.
+- First-hand: `embeddinggemma:300m` placed 917 links into 49 subtopics; raw cosine piled 151 of 321 into one subtopic until vectors were centred per vertical. Gemma 4 26B A4B on OpenRouter built a tested Noir contract in 4.9 min for $0.11, but its notes overstated where the tests ran.
 
 ## Related Concepts
 
@@ -29,9 +31,11 @@ Gemma 4 is a family of open-weight models released from 2026-03-31, with text, i
 - [Small local model agent patterns](small-local-model-agent-patterns.md)
 - [OpenRouter](openrouter.md)
 - [Week 2 challenge: Side Hustle](week2-challenge-side-hustle.md)
+- [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md)
 
 ## Sources
 
 - [Partner tools feature catalog](sources/partner-tools-feature-catalog.md)
 - [Retrospective: Week 1 Touch Grass (Idea Leash)](sources/retrospective-week1-touch-grass.md)
 - [Retrospective: Week 2 Side Hustle (PartsPaddock)](sources/retrospective-week2-side-hustle.md)
+- [Retrospective: Week 3 Slow and Steady (Skunkworks Sloth)](sources/retrospective-week3-slow-and-steady.md)

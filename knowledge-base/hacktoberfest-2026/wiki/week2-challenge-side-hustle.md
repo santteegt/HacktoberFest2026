@@ -3,7 +3,7 @@ type: "topic"
 title: "Week 2 challenge: Side Hustle"
 description: "DEV event 80: build open-source AI someone would pay for; the PartsPaddock entry and its outcome."
 tags: "[challenges, ideas]"
-timestamp: "2026-10-18T00:00:00Z"
+timestamp: "2026-10-25T00:00:00Z"
 ---
 
 ## Definition
@@ -26,6 +26,7 @@ The second weekly Open-Source AI challenge (DEV event 80, tags `devchallenge` an
 - [Challenge playbook](challenge-playbook.md)
 - [Week 1 challenge: Touch Grass](week1-challenge-touch-grass.md)
 - [Prize categories and partners](prize-categories-and-partners.md)
+- [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md)
 
 ## Sources
 
