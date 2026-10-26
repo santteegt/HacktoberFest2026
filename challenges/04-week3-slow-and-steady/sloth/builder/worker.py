@@ -40,14 +40,43 @@ PRICES = {
 }
 
 
+class ModelNotAllowed(ValueError):
+    """`--use` named a model that is not on llm.worker_models (the message lists the allowed ones)."""
+
+
+def allowed_models() -> list[tuple[str, str]]:
+    """llm.worker_models as (provider, model) pairs, in config order."""
+    return [tuple(e.split(":", 1)) for e in settings().worker_models if ":" in e]  # type: ignore[misc]
+
+
+def allowlist_lines() -> list[str]:
+    return [f"`{p}:{m}` ({'closed model' if is_closed(p) else 'open weights'})" for p, m in allowed_models()]
+
+
+def pick_allowed(choice: str) -> tuple[str, str]:
+    """Resolve `--use`: an exact `provider:model`, an exact model id, or a unique suffix of either."""
+    c = choice.strip().lower()
+    pairs = allowed_models()
+    exact = [(p, m) for p, m in pairs if c in (f"{p}:{m}".lower(), m.lower())]
+    hits = exact or [(p, m) for p, m in pairs if c and f"{p}:{m}".lower().endswith(c)]
+    if len(hits) == 1:
+        return hits[0]
+    why = "matches several" if hits else "is not on the allowlist"
+    raise ModelNotAllowed(f"`{choice}` {why}. Allowed: " + ", ".join(allowlist_lines()))
+
+
 def resolve_model(provider: str | None = None, model: str | None = None, *,
-                  complex_task: bool = False) -> tuple[str, str, str]:
+                  complex_task: bool = False, use: str | None = None) -> tuple[str, str, str]:
     """(provider, model, model_id) from flags or config; model_id is what `runs.model_id` records.
 
     The default path is the open-weights Worker (`worker_provider` / `worker_model`); `go deep`
-    (`complex_task`) uses `complex_provider` / `complex_model`. Explicit flags override both.
+    (`complex_task`) uses `complex_provider` / `complex_model`; `use` picks from llm.worker_models
+    (and nothing else). Explicit `provider` / `model` flags (the author's own shell) override all.
     """
     s = settings()
+    if use:
+        use_provider, use_model = pick_allowed(use)
+        provider, model = provider or use_provider, model or use_model
     if complex_task:
         provider = provider or s.complex_provider
         model = model or s.complex_model
@@ -345,10 +374,11 @@ def finish_notes(repo: Path, r: BoxResult) -> Path:
 
 
 def run_box(card: Card, *, links: list[dict] | None = None, model: str | None = None,
-            provider: str | None = None, complex_task: bool = False, box_minutes: int | None = None,
-            base_dir: Path | None = None, suffix: str = "", hermes: str = "hermes") -> BoxResult:
+            provider: str | None = None, complex_task: bool = False, use: str | None = None,
+            box_minutes: int | None = None, base_dir: Path | None = None, suffix: str = "",
+            hermes: str = "hermes") -> BoxResult:
     """Prepare the repo, run the Worker under the box timer, verify, write NOTES.md."""
-    provider, model, model_id = resolve_model(provider, model, complex_task=complex_task)
+    provider, model, model_id = resolve_model(provider, model, complex_task=complex_task, use=use)
     box = box_minutes if box_minutes is not None else (card.box_minutes or settings().box_minutes)
     repo = prepare_repo(card, model=model_id, links=links or [], base_dir=base_dir, suffix=suffix)
     runs_dir = repo.parent / ".runs"

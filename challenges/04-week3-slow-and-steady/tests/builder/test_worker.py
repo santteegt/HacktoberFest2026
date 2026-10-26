@@ -243,3 +243,46 @@ def test_login_shell_path_unions_interactive_shells(tmp_path, monkeypatch):
     finally:
         worker.login_shell_path.cache_clear()
     assert parts[0] == "/from/rc" and "/bin" in parts and len(parts) == len(set(parts))
+
+
+ALLOW = ["openrouter:google/gemma-4-26b-a4b-it", "openrouter:qwen/qwen3-coder-next", "anthropic:claude-sonnet-5-5"]
+AMBIG = ALLOW + ["openrouter:qwen/qwen3-coder-flash-next"]
+
+
+def test_use_picks_from_the_allowlist(monkeypatch):
+    monkeypatch.setattr(worker, "settings", _settings_with(
+        worker_models=ALLOW, worker_provider="openrouter", worker_model="", openrouter_model="google/gemma-4-26b-a4b-it",
+        complex_provider="anthropic", complex_model="claude-sonnet-5-5"))
+    assert worker.resolve_model(use="qwen3-coder-next") == ("openrouter", "qwen/qwen3-coder-next", "qwen/qwen3-coder-next")
+    assert worker.resolve_model(use="openrouter:qwen/qwen3-coder-next")[1] == "qwen/qwen3-coder-next"
+    assert worker.resolve_model(use="Claude-Sonnet-5-5") == ("anthropic", "claude-sonnet-5-5", "anthropic/claude-sonnet-5-5")
+    assert worker.resolve_model(use="gemma-4-26b-a4b-it")[0] == "openrouter"
+    with pytest.raises(worker.ModelNotAllowed) as e:
+        worker.resolve_model(use="gpt-5")
+    msg = str(e.value)
+    assert "not on the allowlist" in msg and "`anthropic:claude-sonnet-5-5` (closed model)" in msg
+    assert "`openrouter:qwen/qwen3-coder-next` (open weights)" in msg
+    monkeypatch.setattr(worker, "settings", _settings_with(worker_models=AMBIG))
+    with pytest.raises(worker.ModelNotAllowed, match="matches several"):
+        worker.resolve_model(use="-next")  # not unique once two entries end the same way
+    # explicit CLI flags stay unrestricted
+    assert worker.resolve_model("openrouter", "deepseek/deepseek-v4-flash")[2] == "deepseek/deepseek-v4-flash"
+
+
+def test_use_tags_follow_the_provider():
+    assert worker.model_tag("anthropic") == " (closed model)"
+    assert worker.model_tag("anthropic", True) == " (closed model, complex task)"
+    assert worker.model_tag("openrouter") == ""
+
+
+def test_status_and_desk_text_show_the_allowlist(monkeypatch):
+    from sloth.builder import runs
+    monkeypatch.setattr(worker, "settings", _settings_with(worker_models=ALLOW))
+    lines = worker.allowlist_lines()
+    assert lines == ["`openrouter:google/gemma-4-26b-a4b-it` (open weights)",
+                     "`openrouter:qwen/qwen3-coder-next` (open weights)",
+                     "`anthropic:claude-sonnet-5-5` (closed model)"]
+    text = runs.status_text({"today": [], "latest_runs": [], "allowed": lines})
+    assert "`go with <model>` allows: `openrouter:google/gemma-4-26b-a4b-it` (open weights)" in text
+    skill = (Path(__file__).parents[2] / "profiles/worker/skills/worker-desk/SKILL.md").read_text()
+    assert "--use qwen3-coder-next" in skill and "$SLOTH work --models" in skill and "version: 0.3.0" in skill

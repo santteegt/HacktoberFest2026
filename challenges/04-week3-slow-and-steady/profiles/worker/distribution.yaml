@@ -1,6 +1,6 @@
 name: sloth-worker
-version: 0.2.0
-description: "Skunkworks Sloth Worker desk: starts the two-hour prototype box (`sloth work`) and pushes a repo only on `approve`. Codes with open-weight google/gemma-4-26b-a4b-it on OpenRouter by default; `go deep` uses Claude Sonnet 5.5 (closed) for complex tasks."
+version: 0.3.0
+description: "Skunkworks Sloth Worker desk: starts the two-hour prototype box (`sloth work`) and pushes a repo only on `approve`. Codes with open-weight google/gemma-4-26b-a4b-it on OpenRouter by default; `go deep` uses Claude Sonnet 5.5 (closed) for complex tasks; `go with <model>` picks from llm.worker_models."
 hermes_requires: ">=0.22.0"
 author: "Santiago Gonzalez"
 license: "MIT"
