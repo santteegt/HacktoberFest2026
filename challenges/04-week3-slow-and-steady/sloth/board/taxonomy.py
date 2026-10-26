@@ -3,7 +3,7 @@
 `triage.topic` is near-unique free text, so the brain needs a small, stable layer on top:
 the local Gemma names the subtopics of each vertical once, from the list of its links' topics
 (language job), and code assigns every link to its nearest subtopic with the local
-`embeddinggemma` embedding model (cosine), falling back to keyword overlap when the embedder
+`embeddinggemma` embedding model (cosine after centring both sides per vertical), falling back to keyword overlap when the embedder
 is down. Everything is cached in `.sloth/brain-taxonomy.json`: re-renders only embed links
 they have not seen, and the subtopics change only with `sloth brain --retaxonomy`.
 """
@@ -130,10 +130,26 @@ def link_text(link: dict) -> str:
 
 # ------------------------------------------------------------------ cache + build
 
+VERSION = 2  # 2: centred embeddings (v1 assignments are redone, subtopic names kept)
+
+
 def load() -> dict:
     if CACHE_PATH.exists():
-        return json.loads(CACHE_PATH.read_text())
-    return {"version": 1, "verticals": {}, "links": {}}
+        tax = json.loads(CACHE_PATH.read_text())
+        if tax.get("version", 1) < VERSION:
+            tax = {**tax, "version": VERSION, "links": {}}
+            for entry in tax["verticals"].values():
+                entry.pop("mean_link", None)
+        return tax
+    return {"version": VERSION, "verticals": {}, "links": {}}
+
+
+def _mean(vecs: list[list[float]]) -> list[float]:
+    return [sum(col) / len(vecs) for col in zip(*vecs)]
+
+
+def _minus(a: list[float], b: list[float]) -> list[float]:
+    return [x - y for x, y in zip(a, b)]
 
 
 def save(tax: dict) -> None:
@@ -157,7 +173,7 @@ def topic_links(conn) -> list[dict]:
 def ensure(conn, *, retaxonomy: bool = False, embed: Embedder | None = embed_ollama,
            namer: Callable[[str, list[str], int], list[dict]] = name_subtopics) -> dict:
     """Name missing verticals' subtopics and assign unseen links. Returns the taxonomy."""
-    tax = {"version": 1, "verticals": {}, "links": {}} if retaxonomy else load()
+    tax = {"version": VERSION, "verticals": {}, "links": {}} if retaxonomy else load()
     links = topic_links(conn)
     by_v: dict[str, list[dict]] = {}
     for link in links:
@@ -189,10 +205,20 @@ def ensure(conn, *, retaxonomy: bool = False, embed: Embedder | None = embed_oll
             vecs = embed([link_text(link) for link in todo])
         except Exception:  # noqa: BLE001
             vecs = None
+    # Centre both sides per vertical: raw cosine sends most links to the most generic subtopic
+    # (151 of 321 AI-agent links went to "Agent frameworks and SDKs"); centred it spreads 27-48.
+    if vecs is not None:
+        for v, entry in tax["verticals"].items():
+            mine = [vecs[i] for i, link in enumerate(todo) if link["vertical"] == v]
+            if mine and "mean_link" not in entry:
+                entry["mean_link"] = [round(x, 5) for x in _mean(mine)]
     for i, link in enumerate(todo):
-        subs = tax["verticals"][link["vertical"]]["subtopics"]
-        if vecs is not None and all("vec" in s for s in subs):
-            best = max(subs, key=lambda s: (cosine(vecs[i], s["vec"]), -subs.index(s)))["slug"]
+        entry = tax["verticals"][link["vertical"]]
+        subs = entry["subtopics"]
+        if vecs is not None and all("vec" in s for s in subs) and len(subs) > 1:
+            mean_s = _mean([s["vec"] for s in subs])
+            lv = _minus(vecs[i], entry["mean_link"])
+            best = max(subs, key=lambda s: (cosine(lv, _minus(s["vec"], mean_s)), -subs.index(s)))["slug"]
         else:
             best = keyword_assign(link_text(link), subs)
         tax["links"][str(link["id"])] = best
