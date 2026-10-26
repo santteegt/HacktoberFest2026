@@ -87,7 +87,7 @@ The Coordinator clustered the build pile into **58 cards**, each with a learning
 
 Each agent is a Hermes profile with one job: its own model, skills, crons and channel. Deny rules block `sudo`, Docker and keychain commands, risky commands need my approval, and computer use is off. That's a command policy, not a sandbox: the agents still run as my user.
 
-The Worker has **two providers**. By default it codes with **Gemma 4 26B A4B**, an open-weight model, through OpenRouter. When a card needs more, I say `go deep` and the same box runs on **Anthropic Claude Sonnet 5.5**. Every message about those runs says "(closed model)", and the cost is tracked either way.
+The Worker has **two providers**. By default it codes with **Gemma 4 26B A4B**, an open-weight model, through OpenRouter. When a card needs more, I say `go deep` and the same box runs on **Anthropic Claude Sonnet 5.5**. Every message about those runs says "(closed model)", and the cost is tracked either way. I can also name a model, `go with qwen3-coder-next`, from a short allowlist in the config. The desk refuses anything else, so a typo can't start an expensive run.
 
 ### What gets stored
 
