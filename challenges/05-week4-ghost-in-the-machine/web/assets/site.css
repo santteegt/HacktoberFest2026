@@ -41,20 +41,7 @@ a:hover { color: var(--marigold); }
 .skip:focus { left: 16px; top: 8px; }
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
-/* papel picado strip and top bar (as on the story pages) */
-.picado { display: block; width: 100%; height: 46px; }
-.topbar { position: relative; z-index: 60; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 12px; max-width: 1100px; margin: 0 auto; padding: 6px 16px 0; font-size: .9rem; }
-.topbar .brand { color: var(--muted); font: 800 .8rem/1.2 var(--title-font); letter-spacing: .16em; text-transform: uppercase; }
-.switches { display: flex; flex-wrap: wrap; gap: 8px; }
-.switch {
-  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 14px;
-  font: 700 .85rem/1 var(--title-font); color: var(--cream); cursor: pointer;
-  background: var(--night-2); border: 2px solid var(--line); border-radius: 999px;
-}
-.switch .sw-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--muted); background: transparent; }
-.switch[aria-pressed="true"] { border-color: var(--candle); }
-.switch[aria-pressed="true"] .sw-dot { background: var(--candle); border-color: var(--candle); box-shadow: 0 0 8px rgba(255, 210, 74, .8); }
-.switch:hover { border-color: var(--marigold); }
+/* the papel picado strip, top bar and switches live in template/header.css (inlined by `ghosts gallery build`) */
 
 .hero { padding-bottom: 18px; }
 .hero .wrap { padding-top: 18px; }
@@ -164,6 +151,25 @@ input::placeholder { color: #9d88bf; }
 .about p { max-width: 46rem; }
 .fine { color: var(--muted); font-size: .9rem; }
 
+/* ---------- About modal ---------- */
+.about-dialog {
+  width: min(42rem, calc(100vw - 32px)); max-height: calc(100vh - 48px); padding: 0; overflow: auto;
+  color: var(--cream); background: var(--night-2); border: 3px solid var(--ink); border-radius: 10px; box-shadow: 7px 7px 0 var(--marigold);
+}
+.about-dialog::backdrop { background: rgba(4, 0, 10, .72); }
+.about-body { position: relative; padding: 22px 20px 24px; }
+@media (min-width: 640px) { .about-body { padding: 28px 32px 30px; } }
+.about-dialog h2 { margin: 0 0 12px; padding-right: 48px; font: 800 1.4rem var(--title-font); color: var(--candle); }
+.about-dialog h3 { margin: 22px 0 8px; font: 800 1.05rem var(--title-font); color: var(--candle); letter-spacing: .08em; text-transform: uppercase; }
+.about-dialog p { margin: 0 0 12px; }
+.credits { margin: 0; padding-left: 20px; display: grid; gap: 10px; color: var(--muted); font-size: .92rem; }
+.credits a, .about-dialog a { overflow-wrap: anywhere; }
+.about-close {
+  position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; padding: 0; cursor: pointer;
+  font: 800 1.5rem/1 var(--title-font); color: var(--ink); background: var(--candle); border: 2px solid var(--ink); border-radius: 50%; box-shadow: 2px 2px 0 var(--ink);
+}
+.about-close:hover { background: var(--marigold); }
+
 /* ---------- the sheet ghost (faces picked by data-kind, as in ghost.css) ---------- */
 .ghost .face { display: none; }
 [data-kind="friendly"] .ghost .face-friendly,
@@ -179,8 +185,6 @@ input::placeholder { color: #9d88bf; }
 .bob { animation: bob 3.2s ease-in-out infinite; }
 
 /* ---------- the ghost haunting the whole page, and the lights ---------- */
-.dim { position: fixed; inset: 0; z-index: 40; pointer-events: none; background: rgba(4, 0, 10, .68); opacity: 0; transition: opacity .6s ease; }
-.lights-off .dim { opacity: 1; }
 .haunt { position: fixed; inset: 0; z-index: 45; pointer-events: none; overflow: hidden; }
 .fly { position: absolute; left: 0; top: 0; width: 84px; animation: haunt 90s ease-in-out infinite; transform: translate(62vw, 14vh); }
 @media (min-width: 760px) { .fly { width: 112px; } }
@@ -231,7 +235,7 @@ html:not(.moving) .fly, html:not(.moving) .bob { animation-play-state: paused; }
 }
 /* desktop: keep the right edge of the content clear of the collapsed rail */
 @media (min-width: 700px) {
-  .wrap, .topbar { padding-right: max(16px, calc(var(--rail) - (100vw - 1100px) / 2)); }
+  .wrap, .eg-header .topbar { padding-right: max(16px, calc(var(--rail) - (100vw - 1100px) / 2)); }
 }
 /* phones: dock at the bottom, one row of badges; tap Key to open the descriptions */
 @media (max-width: 699px) {
@@ -256,4 +260,36 @@ html:not(.moving) .fly, html:not(.moving) .bob { animation-play-state: paused; }
   /* the visitor turned the flight on by hand: honor it */
   html.moving .fly { animation: haunt 90s ease-in-out infinite !important; }
   html.moving .bob { animation: bob 3.2s ease-in-out infinite !important; }
+}
+
+/* Pagination under the grid */
+.pager { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; margin: 28px 0 8px; }
+.pager[hidden] { display: none; }
+.pager .pg {
+  min-width: 44px; min-height: 44px; padding: 6px 14px; font: 800 .95rem/1 var(--title-font); cursor: pointer;
+  color: var(--cream); background: var(--night-2); border: 2px solid var(--ink); border-radius: 999px; box-shadow: 3px 3px 0 var(--line);
+}
+.pager .pg:hover:not(:disabled) { border-color: var(--marigold); transform: translate(-1px, -1px); }
+.pager .pg[aria-current="page"] { background: var(--candle); color: var(--ink); box-shadow: 3px 3px 0 var(--marigold); }
+.pager .pg:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+.pager .gap { color: var(--muted); padding: 0 2px; }
+
+/* ---------- first-visit welcome: "Hunt the ghost" (template/header.js) ---------- */
+/* the button rides inside the flying wrapper, so it follows the ghost; >= 56 px everywhere */
+.eg-hunt { position: absolute; z-index: 2; left: 50%; top: 50%; width: 100%; height: 100%; min-width: 56px; min-height: 56px;
+  transform: translate(-50%, -50%); padding: 0; background: transparent; border: 0; border-radius: 50%; pointer-events: auto; }
+.eg-hunt:hover ~ .bob .ghost, .eg-hunt:focus-visible ~ .bob .ghost {
+  filter: drop-shadow(0 0 22px rgba(255, 210, 74, .95)) drop-shadow(0 0 6px rgba(255, 255, 255, .8)); }
+/* caught: the ghost pops to full colour while the lights come up, then settles back */
+.eg-lit .haunt .ghost { filter: none; opacity: 1; transition: none; }
+.moving.eg-lit .haunt .ghost { animation: eg-pop .7s ease-out; }
+@keyframes eg-pop { 0% { transform: scale(1); } 35% { transform: scale(1.4) rotate(-8deg); } 70% { transform: scale(.9) rotate(4deg); } 100% { transform: none; } }
+.eg-welcome-box .eg-line { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 61; white-space: nowrap; text-align: center; }
+.eg-candle-solo { position: fixed; z-index: 61; left: 50%; bottom: 84px; transform: translateX(-50%); width: 72px; height: 120px; padding: 6px 0;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 210, 74, .25), rgba(255, 210, 74, 0) 65%); border: 2px dashed rgba(255, 210, 74, .55); border-radius: 36px; }
+.eg-candle-solo:hover, .eg-candle-solo:focus-visible { border-color: var(--candle); }
+@media (max-width: 699px) {
+  .eg-welcome-box .eg-line { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+  .eg-candle-solo { bottom: calc(128px + env(safe-area-inset-bottom, 0px)); }
 }

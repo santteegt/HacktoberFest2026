@@ -24,6 +24,7 @@ def _render(tmp_path, addr, data=FIX):
 def _outside_smallprint(doc: str) -> str:
     """The page minus the small print and the link-preview tags in <head> (absolute URLs by design)."""
     doc = re.sub(r'<footer class="smallprint".*?</footer>', "", doc, flags=re.S)
+    doc = re.sub(r'<a class="copy eh-link" href="https://www\.ethereumhistory\.com/contract/0x[0-9a-f]{40}"', "", doc)
     doc = re.sub(r'<meta (property="og:|name="twitter:)[^>]*>', "", doc)
     return re.sub(r'<link rel="canonical"[^>]*>', "", doc)
 
@@ -40,7 +41,7 @@ def test_fixture_renders_key_strings(tmp_path, addr, kind, title):
     assert f">{title}</h1>" in doc
     assert addr in doc and 'data-copy="' + addr + '"' in doc
     assert R.KINDS[kind] in doc
-    assert "The storyteller spoke" in doc
+    assert "Doña Gwei spoke" in doc
     assert "Claude" not in doc and "closed model" not in doc
     assert "hand-written test fixture" in doc
     assert doc.count("<svg") >= 5  # picado, title teller + ghost, one per chapter
@@ -56,7 +57,7 @@ def test_size_and_no_external_refs(tmp_path):
         outside = _outside_smallprint(doc)
         assert not re.search(r"https?://", outside), re.findall(r".{40}https?://.{40}", outside)[:3]
         assert not re.search(r"<script[^>]+src=", doc)
-        assert not re.search(r'<link (?!rel="canonical")[^>]*href=', doc)
+        assert not re.search(r'<link (?!rel="(?:canonical|icon|apple-touch-icon|manifest)")[^>]*href=', doc)
         assert "@import" not in doc and "url(http" not in doc
         foot = re.search(r'<footer class="smallprint".*?</footer>', doc, re.S)[0]
         assert "https://eth.blockscout.com/address/" + addr in foot
@@ -100,7 +101,7 @@ def _copy(tmp_path, addr, keep=("facts.json",)):
 def test_facts_only_degrades(tmp_path):
     data, _ = _copy(tmp_path, FRIENDLY)
     _, doc = _render(tmp_path, FRIENDLY, data)
-    assert "The storyteller has not spoken yet" in doc
+    assert "Doña Gwei has not spoken yet" in doc
     assert 'data-kind="unknown"' in doc
     assert "No story yet" in doc
     assert "Not classified yet" in doc
@@ -165,12 +166,14 @@ def test_render_all(tmp_path):
 
 def test_reveal_has_unconditional_fallback(tmp_path):
     js = (R.TEMPLATE_DIR / "ghost.js").read_text()
-    assert "setTimeout(revealAll, 1500);" in js
+    fallback = "setTimeout(instant ? revealAll : revealPanels, 1500);"
+    assert fallback in js
     # the fallback sits outside the observer branch, so it runs whatever the observer does
     tail = js[js.index("panels.forEach(function (p) { io.observe(p); });"):]
-    assert tail.index("}\n") < tail.index("setTimeout(revealAll, 1500);")
+    assert tail.index("}\n") < tail.index(fallback)
+    assert "navigator.webdriver" in js  # automated (headless) visits see every balloon at once
     _, doc = _render(tmp_path, BAD)
-    assert "setTimeout(revealAll, 1500);" in doc
+    assert fallback in doc
     assert "<noscript><style>.reveal, .reveal .balloon { opacity: 1 !important; transform: none !important; }</style></noscript>" in doc
 
 

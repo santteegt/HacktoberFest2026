@@ -22,13 +22,15 @@
 <meta name="twitter:image" content="https://eth-ghosts.decentraminds.tech/assets/og.png">
 <meta name="twitter:image:alt" content="Papel picado flags over a night sky and a friendly sheet ghost carrying an address tag, with the title Ghosts in the Decentralized World Computer.">
 <meta name="theme-color" content="#1b0b2b">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 104 112'%3E%3Cpath d='M52 6C26 6 13 28 13 54v46q6 12 12 0q7 12 13 0q7 12 14 0q7 12 13 0q7 12 13 0q6 12 13 0V54C91 28 78 6 52 6z' fill='%23f6f1ff' stroke='%231d1029' stroke-width='6' stroke-linejoin='round'/%3E%3Cellipse cx='40' cy='46' rx='6' ry='8.5' fill='%231d1029'/%3E%3Cellipse cx='64' cy='46' rx='6' ry='8.5' fill='%231d1029'/%3E%3Cpath d='M42 63q10 9 20 0' stroke='%231d1029' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
 <a class="skip" href="#grid">Skip to the ghosts</a>
-<div class="dim" aria-hidden="true"></div>
-<div class="haunt" aria-hidden="true" data-kind="friendly"><div class="fly"><div class="bob">
+<div class="haunt" aria-hidden="true" data-kind="friendly"><div class="fly"><button type="button" class="eg-hunt" aria-label="Hunt the ghost: catch it to turn the lights and the music on" title="Catch the ghost" hidden></button><div class="bob">
 <svg xmlns="http://www.w3.org/2000/svg" class="ghost" viewBox="0 0 130 130" aria-hidden="true" focusable="false">
 <ellipse class="ghost-shadow" cx="52" cy="126" rx="26" ry="3" fill="#000" opacity=".18"/>
 <g class="ghost-sheet">
@@ -43,8 +45,75 @@
 <g class="ghost-tag" transform="rotate(-8 112 96)"><rect x="85" y="87" width="44" height="17" rx="3" fill="#ffd24a" stroke="#1d1029" stroke-width="2"/><circle cx="89" cy="95.5" r="1.5" fill="#1d1029"/><text x="109" y="99.5" text-anchor="middle" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9.5" font-weight="700" fill="#1d1029">0xB00</text></g>
 </svg>
 </div></div></div>
+<!-- first-visit welcome (template/header.js): the hunt line; under reduced motion a candle to light instead -->
+<div class="eg-welcome-box">
+<button type="button" class="eg-candle eg-candle-solo" aria-label="Light the candle" title="Light the candle" hidden><svg viewBox="80 68 36 70" width="54" height="105" aria-hidden="true" focusable="false"><circle class="glow" cx="98" cy="88" r="16" fill="#ffd24a" opacity=".28"/><rect x="92" y="96" width="12" height="30" rx="2" fill="#f7e3b0" stroke="#1d1029" stroke-width="2"/><path d="M86 126h24l-3 7H89z" fill="#c98a1b" stroke="#1d1029" stroke-width="2"/><path class="flame" d="M98 78c6 8 6 14 0 17c-6-3-6-9 0-17z" fill="#ffb432" stroke="#c4610a" stroke-width="1.2"/><path class="flame" d="M98 85c2.5 3 2.5 6 0 8c-2.5-2-2.5-5 0-8z" fill="#fff3b0"/></svg></button>
+<p class="eg-line" id="eg-line" aria-live="polite" data-hunt="Hunt the ghost" data-candle="Light the candle" data-hint="…or just click anywhere" hidden></p>
+</div>
 
 <header class="hero">
+<!-- header:start -->
+<style>
+/* Shared header (gallery and ghost pages): papel picado, brand or back link, About, Effects / Lights / Animation.
+   One source: render.py inlines it into every ghost page, gallery.py into web/index.html. */
+.eg-header {
+  --eg-candle: #ffd24a; --eg-marigold: #f29d1f; --eg-cream: #f7ead0; --eg-muted: #cdbbe6;
+  --eg-night-2: #2a1240; --eg-line: #5a3a8c;
+  --eg-title-font: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+}
+.eg-header .picado { display: block; width: 100%; height: 46px; }
+.eg-header .topbar { position: relative; z-index: 60; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 12px; max-width: var(--eg-max, 1100px); margin: 0 auto; padding: 6px 16px 0; font-size: .9rem; }
+.eg-left { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; min-width: 0; }
+.eg-left a { color: var(--eg-candle); text-decoration: none; font-weight: 700; }
+.eg-left a:hover { text-decoration: underline; }
+/* the brand reads like the gallery's eyebrow */
+.eg-brand { color: var(--eg-candle); font: 800 .8rem/1.2 var(--eg-title-font); letter-spacing: .16em; text-transform: uppercase; }
+.eg-header .switches { display: flex; flex-wrap: wrap; gap: 8px; }
+.eg-header .switch {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 14px;
+  font: 700 .85rem/1 var(--eg-title-font); color: var(--eg-cream); cursor: pointer;
+  background: var(--eg-night-2); border: 2px solid var(--eg-line); border-radius: 999px;
+}
+.eg-header .switch .sw-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--eg-muted); background: transparent; }
+.eg-header .switch[aria-pressed="true"] { border-color: var(--eg-candle); }
+.eg-header .switch[aria-pressed="true"] .sw-dot { background: var(--eg-candle); border-color: var(--eg-candle); box-shadow: 0 0 8px rgba(255, 210, 74, .8); }
+.eg-header .switch:hover { border-color: var(--eg-marigold); }
+.eg-header .switch:focus-visible { outline: 3px solid var(--eg-candle); outline-offset: 2px; }
+.eg-header .sw-icon { display: block; color: var(--eg-muted); }
+.eg-header .switch[aria-pressed="true"] .sw-icon { color: var(--eg-candle); filter: drop-shadow(0 0 4px rgba(255, 210, 74, .7)); }
+.eg-header .switch .sp-off, .eg-header .switch[aria-pressed="true"] .sp-on { display: inline; }
+.eg-header .switch .sp-on, .eg-header .switch[aria-pressed="true"] .sp-off { display: none; }
+.eg-header .eg-about { border-color: var(--eg-marigold); }
+/* Lights off: the page dims; each page decides what glows through */
+.eg-dim { position: fixed; inset: 0; z-index: 40; pointer-events: none; background: rgba(4, 0, 10, var(--eg-dim, .68)); opacity: 0; transition: opacity .6s ease; }
+.lights-off .eg-dim { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .eg-dim { transition: none; } }
+/* First-visit welcome (header.js): the line, the unlit candle and the flicker-in. Overlays only, no layout shift. */
+.eg-line {
+  position: absolute; z-index: 46; margin: 0; padding: 8px 14px; max-width: min(20rem, calc(100vw - 32px));
+  font: 700 1.05rem/1.3 "Chalkboard SE", "Comic Sans MS", "Comic Neue", ui-rounded, system-ui, sans-serif;
+  color: #1d1029; background: #fff; border: 2.5px solid #1d1029; border-radius: 18px;
+  box-shadow: 0 0 18px rgba(255, 210, 74, .55), 3px 3px 0 #f29d1f; pointer-events: none;
+  transition: opacity .6s ease;
+}
+.eg-line[hidden] { display: none; }
+.eg-line:empty { opacity: 0; }
+.eg-line.eg-out { opacity: 0; }
+.eg-welcome .flame, .eg-welcome .glow { opacity: 0; }
+.moving.eg-lit .flame { transform-box: fill-box; transform-origin: 50% 100%; animation: eg-flame-in .8s ease-out both; }
+@keyframes eg-flame-in {
+  0% { opacity: 0; transform: scale(.2, .1); }
+  35% { opacity: 1; transform: scale(1.2, 1.35); }
+  60% { transform: scale(.85, .9); }
+  100% { opacity: 1; transform: none; }
+}
+.eg-candle, .eg-hunt { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.eg-candle[hidden], .eg-hunt[hidden] { display: none; }
+.eg-candle:focus-visible, .eg-hunt:focus-visible { outline: 3px dashed #ffd24a; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .eg-line { transition: none; } }
+</style>
+<div class="eg-header" id="eg-header" data-assets="assets/">
+<div class="eg-dim" aria-hidden="true"></div>
 <svg xmlns="http://www.w3.org/2000/svg" class="picado" width="100%" height="46" aria-hidden="true" focusable="false">
 <defs><pattern id="picado-index" width="300" height="46" patternUnits="userSpaceOnUse">
 <path d="M0 3q150 10 300 0" stroke="#f7ead0" stroke-width="1.5" fill="none"/>
@@ -53,20 +122,197 @@
 </pattern></defs>
 <rect width="100%" height="46" fill="url(#picado-index)"/>
 </svg>
-  <nav class="topbar" aria-label="Haunting controls">
-    <span class="brand">eth-ghosts</span>
-    <span class="switches">
-      <button type="button" class="switch" id="lights" aria-pressed="true"><span class="sw-dot" aria-hidden="true"></span>Lights</button>
-      <button type="button" class="switch" id="motion" aria-pressed="true"><span class="sw-dot" aria-hidden="true"></span>Ghost flies</button>
-    </span>
-  </nav>
+<nav class="topbar" aria-label="Haunting controls">
+<span class="eg-left"><span class="eg-brand">eth-ghosts</span></span>
+<span class="switches"><button type="button" class="switch eg-about" id="about-open" aria-haspopup="dialog" aria-controls="about-dialog">About</button><button type="button" class="switch" id="effects" aria-pressed="true"><svg class="sw-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><g class="sp-on" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 9.5q1.8 2.5 0 5"/><path d="M18.6 7q3.6 5 0 10"/></g><g class="sp-off" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M16 9.5l5 5M21 9.5l-5 5"/></g></svg>Effects</button><button type="button" class="switch" id="lights" aria-pressed="true"><span class="sw-dot" aria-hidden="true"></span>Lights</button><button type="button" class="switch" id="motion" aria-pressed="true"><span class="sw-dot" aria-hidden="true"></span>Animation</button></span>
+</nav>
+</div>
+<script>
+// Shared header behaviour (gallery and ghost pages): Lights, Animation and Effects switches, the ambient loop
+// and one-shot sound effects. Exposes window.EG = { effectsOn, sfx } for the page scripts. No network beyond
+// the site's own audio files; every storage access is guarded.
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var head = document.getElementById("eg-header");
+  var base = (head && head.getAttribute("data-assets")) || "assets/";
+  function load(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+  function save(k, v) { try { window.localStorage.setItem(k, v); } catch (e) { /* private mode: keep it in memory */ } }
+  function $(id) { return document.getElementById(id); }
+
+  // Lights and Animation: same keys as before ("ghosts.lights", "ghosts.motion"), so a choice carries
+  // between the gallery and the ghost pages. Animation starts off under prefers-reduced-motion.
+  var reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  // First visit (no "eg-welcomed"): the browser's required first click becomes part of the story. The index
+  // hunts the flying ghost (.eg-hunt), ghost pages light Doña Gwei's candle (.eg-candle); reduced motion gets
+  // the candle everywhere. Automated visits (navigator.webdriver: screenshots, og, face) skip it.
+  var hunt = document.querySelector(".eg-hunt"), candle = document.querySelector(".eg-candle");
+  var target = (!reduce && hunt) || candle || null;
+  var welcome = !!target && !navigator.webdriver && load("eg-welcomed") !== "1";
+  var lights = welcome ? false : load("ghosts.lights") !== "off";
+  var stored = load("ghosts.motion");
+  var moving = stored ? stored === "on" : !reduce;
+  var bL = $("lights"), bM = $("motion"), bE = $("effects");
+  function applyView() {
+    root.classList.toggle("lights-off", !lights);
+    root.classList.toggle("moving", moving);
+    if (bL) { bL.setAttribute("aria-pressed", String(lights)); bL.title = lights ? "Turn the lights off to see the ghost" : "Turn the lights back on"; }
+    if (bM) { bM.setAttribute("aria-pressed", String(moving)); bM.title = moving ? "Stop the animation" : "Let the ghosts move"; }
+    try { root.dispatchEvent(new CustomEvent("eg:view", { detail: { lights: lights, moving: moving } })); } catch (e) { /* old browser */ }
+  }
+  if (bL) bL.addEventListener("click", function () { lights = !lights; save("ghosts.lights", lights ? "on" : "off"); applyView(); });
+  if (bM) bM.addEventListener("click", function () { moving = !moving; save("ghosts.motion", moving ? "on" : "off"); applyView(); });
+  applyView();
+
+  // Effects (default on, key "eg-effects"): the ambient loop plus one-shot effects. Browsers block audio
+  // before a user gesture; then the switch shows off until the first click on it or anywhere on the page.
+  var wanted = load("eg-effects") !== "off";
+  var blocked = false;
+  var VOL = 0.6, DUCK = 0.25, ducks = 0;
+  var ambient = null;
+  function amb() {
+    if (!ambient && window.Audio) {
+      ambient = new Audio(base + "ambient.mp3");
+      ambient.loop = true;
+      ambient.preload = "auto";
+      ambient.volume = VOL;
+      var t = parseFloat((function () { try { return window.sessionStorage.getItem("eg-ambient-t"); } catch (e) { return null; } })() || "");
+      if (t > 0) { try { ambient.currentTime = t; } catch (e) { /* not seekable yet */ } }
+    }
+    return ambient;
+  }
+  function on() { return wanted && !blocked; }
+  function applyFx() {
+    if (!bE) return;
+    bE.setAttribute("aria-pressed", String(on()));
+    bE.title = on() ? "Mute the music and sound effects" : (wanted ? "Start the music and sound effects" : "Turn the music and sound effects on");
+  }
+  function start() {
+    var a = amb();
+    if (!a || !wanted) return;
+    var p;
+    try { p = a.play(); } catch (e) { blocked = true; applyFx(); return; }
+    if (p && p.then) {
+      p.then(function () { blocked = false; applyFx(); }, function () { blocked = true; applyFx(); });
+    } else { blocked = false; applyFx(); }
+  }
+  function stop() { if (ambient) ambient.pause(); }
+  if (bE) bE.addEventListener("click", function () {
+    if (on()) { wanted = false; save("eg-effects", "off"); stop(); }
+    else { wanted = true; blocked = false; save("eg-effects", "on"); start(); }
+    applyFx();
+  });
+  // the first gesture anywhere starts the music when Effects is wanted but the browser said no
+  var welcomeEvt = null;
+  function gesture(e) {
+    if (welcome || (e && e === welcomeEvt)) return;  // the welcome handles its own click
+    if (bE && e && e.target && bE.contains(e.target)) return;
+    if (wanted && (blocked || !ambient || ambient.paused)) { blocked = false; start(); }
+  }
+  document.addEventListener("click", gesture);
+  document.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") gesture(e); });
+  window.addEventListener("pagehide", function () {
+    if (ambient) { try { window.sessionStorage.setItem("eg-ambient-t", String(ambient.currentTime || 0)); } catch (e) { /* ignore */ } }
+  });
+  applyFx();
+  if (wanted && !welcome) start();
+
+  // One-shot effect (name = file stem in assets/). duck: lower the ambient to DUCK while it plays.
+  function sfx(name, duck, onFail, onPlay) {
+    if (!wanted || !window.Audio) { if (onFail) onFail(); return false; }
+    var a = new Audio(base + name + ".mp3"), done = false, ducked = !!(duck && ambient);
+    function restore() {
+      if (done) return;
+      done = true;
+      if (ducked) { ducks = Math.max(0, ducks - 1); if (!ducks) ambient.volume = VOL; }
+      a.onended = a.onerror = null;
+    }
+    if (ducked) { ducks += 1; ambient.volume = DUCK; }
+    function fail() { restore(); if (onFail) onFail(); }
+    a.onended = restore; a.onerror = fail;
+    try {
+      var p = a.play();
+      if (p && p.then) p.then(function () { if (onPlay) onPlay(); }, fail);
+      else if (onPlay) onPlay();
+    } catch (e) { fail(); return false; }
+    return true;
+  }
+  // ---- the welcome ----
+  var WELCOME_HINT_MS = 8000, WELCOME_GIVE_UP_MS = 20000, FADE_MS = 2000;
+  var line = $("eg-line"), haunt = document.querySelector(".haunt"), timers = [];
+  function say(t) { if (line && t) line.textContent = t; }
+  function fadeIn(a) {
+    a.volume = 0;
+    var t0 = Date.now();
+    var iv = setInterval(function () {
+      var k = Math.min(1, (Date.now() - t0) / FADE_MS);
+      if (!ducks) a.volume = VOL * k;
+      if (k >= 1) clearInterval(iv);
+    }, 50);
+  }
+  function endWelcome(lit) {
+    welcome = false;
+    timers.forEach(clearTimeout);
+    document.removeEventListener("click", onWelcomeClick, true);
+    root.classList.remove("eg-welcome");
+    if (lit) { root.classList.add("eg-lit"); setTimeout(function () { root.classList.remove("eg-lit"); }, 2200); }
+    if (line) { line.classList.add("eg-out"); setTimeout(function () { line.hidden = true; }, 700); }
+    if (hunt) hunt.hidden = true;
+    if (haunt) haunt.setAttribute("aria-hidden", "true");
+    // the index's lone candle stays a moment so the flame is seen; the ghost page's button only overlays
+    if (candle) setTimeout(function () { candle.hidden = true; }, candle.classList.contains("eg-candle-solo") && lit ? 1800 : 0);
+  }
+  function onWelcomeClick(e) {
+    if (!welcome) return;
+    welcomeEvt = e;  // the event is never cancelled: the click's own action (a card, a filter, a switch) still happens
+    var t = e.target;
+    var onFx = !!(bE && t && bE.contains(t)), onLights = !!(bL && t && bL.contains(t));
+    endWelcome(true);
+    save("eg-welcomed", "1");
+    // a click on Lights: its own handler turns them on (and stores it)
+    if (!onLights) { lights = true; save("ghosts.lights", "on"); applyView(); }
+    // a click on Effects: honour it, whatever the reader chose
+    if (!onFx) {
+      wanted = true; blocked = false; save("eg-effects", "on");
+      var a = amb();
+      if (a) { fadeIn(a); start(); }
+      sfx("ghost");
+      applyFx();
+    }
+  }
+  function giveUp() {
+    // nobody clicked: lights back on, nothing plays, try once more on the next visit, then stop asking
+    var n = (parseInt(load("eg-welcome-tries") || "0", 10) || 0) + 1;
+    save("eg-welcome-tries", String(n));
+    if (n >= 2) save("eg-welcomed", "1");
+    endWelcome(false);
+    lights = true; applyView();
+    blocked = true; applyFx();
+  }
+  if (welcome) {
+    root.classList.add("eg-welcome");
+    target.hidden = false;
+    if (target === hunt && haunt) haunt.removeAttribute("aria-hidden");
+    if (line) {
+      line.hidden = false;
+      var first = line.getAttribute(target === hunt ? "data-hunt" : "data-candle");
+      setTimeout(function () { say(first); }, 60);  // set after load so the live region reads it once
+    }
+    document.addEventListener("click", onWelcomeClick, true);
+    timers.push(setTimeout(function () { say(line && line.getAttribute("data-hint")); }, WELCOME_HINT_MS));
+    timers.push(setTimeout(giveUp, WELCOME_GIVE_UP_MS));
+  }
+
+  window.EG = { effectsOn: function () { return wanted; }, sfx: sfx, moving: function () { return moving; } };
+})();
+</script>
+<!-- header:end -->
   <div class="wrap">
     <p class="eyebrow">Ghosts in the Decentralized World Computer</p>
     <h1>Ethereum Ghosts</h1>
     <p class="lede">
       These are old Ethereum contracts whose dapps are gone but whose code still answers.
       Each story is told by a local open-weight model from code-verified facts.
-      Built for the Hacktoberfest 2026 &ldquo;Ghost in the Machine&rdquo; challenge.
     </p>
   </div>
 </header>
@@ -98,11 +344,12 @@
   <p class="count" id="count" role="status" aria-live="polite"></p>
   <ul class="grid" id="grid" aria-label="Ghosts"></ul>
   <p class="empty" id="empty" hidden></p>
+  <nav class="pager" id="pager" aria-label="Pages" hidden></nav>
   <noscript><p class="empty">The gallery needs JavaScript to list the ghosts. The pages themselves are plain HTML: see <a href="sitemap.txt">the sitemap</a>.</p></noscript>
 </main>
 
 <aside class="legend" id="legend" aria-label="What the tags mean">
-  <button type="button" class="legend-toggle" id="legend-toggle" aria-expanded="false" aria-controls="legend-list">Key</button>
+  <button type="button" class="legend-toggle" id="legend-toggle" aria-expanded="false" aria-controls="legend-list">Types</button>
   <ul id="legend-list">
     <li><span class="badge k-friendly">friendly</span><span class="desc">Fell silent years ago; no fatal wounds.</span></li>
     <li><span class="badge k-lingering">lingering</span><span class="desc">The dapp died, but people still knock.</span></li>
@@ -114,12 +361,26 @@
   </ul>
 </aside>
 
-<footer class="about" id="about">
-  <div class="wrap">
-    <h2>About</h2>
+<dialog class="about-dialog" id="about-dialog" aria-labelledby="about-title">
+  <div class="about-body">
+    <button type="button" class="about-close" id="about-close" aria-label="Close About">&times;</button>
+    <h2 id="about-title">About</h2>
+    <p>Built for the Hacktoberfest 2026 &ldquo;Ghost in the Machine&rdquo; challenge.</p>
     <p>The stories are written at runtime by Gemma 4 on the author&rsquo;s Mac, an open-weight model running locally. Every date, number and name the model writes must exist in the facts, or the sentence is repaired or dropped.</p>
     <p>The data comes from online services: Ethereum History, Blockscout, Sourcify, a public Ethereum RPC and the Internet Archive. The model is local; the sources are not. Ghosts from 2018 onward have no historian prose. Vulnerability verdicts are &ldquo;suspected&rdquo; unless Slither or a documented incident backs them up.</p>
     <p>Built for the Día de los Muertos spirit of the challenge: remembering what was built, and by whom, before it fell silent.</p>
+    <h3>Thanks</h3>
+    <p><a href="https://www.ethereumhistory.com" rel="noopener">Ethereum History</a>: this project uses its REST API and its MCP server for the archive of old contracts, their birth facts, decompiled code and the historians&rsquo; notes.</p>
+    <ul class="credits">
+      <li>Music track: Haunted House by Aetheric<br>Source: <a href="https://freetouse.com/music" rel="noopener">https://freetouse.com/music</a></li>
+      <li>Scream Sound Effect by <a href="https://pixabay.com/users/jusatti890-54791219/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=490884">Jusatti890</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=490884">Pixabay</a></li>
+      <li>Ghost Woo Sound Effect by <a href="https://pixabay.com/users/shut_up_ghost-32917765/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=135543">Ghostie Graves</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=135543">Pixabay</a></li>
+    </ul>
+  </div>
+</dialog>
+
+<footer class="about" id="about">
+  <div class="wrap">
     <p class="fine">Source code: <a href="https://github.com/santteegt/HacktoberFest2026/tree/main/challenges/05-week4-ghost-in-the-machine">HacktoberFest2026 / challenges / 05-week4-ghost-in-the-machine</a> &middot; MIT license</p>
   </div>
 </footer>

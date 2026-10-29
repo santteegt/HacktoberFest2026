@@ -1,12 +1,13 @@
 /* Framework-free gallery: fetch ghosts/index.json (and featured.json), render the story of the day
-   and the cards, filter client-side; the lights / flight toggles and the floating legend.
+   and the cards, filter client-side; the About modal and the floating legend.
    Model-written text only ever goes in through textContent. */
 (function () {
   "use strict";
   var KINDS = ["friendly", "lingering", "bad", "banished", "alive"];
   var GLYPH = { friendly: "👻", lingering: "🕯️", bad: "💀", banished: "⚰️", alive: "🌼", unknown: "👻" };
   var all = [];
-  var state = { kind: "", age: "", q: "", sort: "new" };
+  var PAGE_SIZE = 15;
+  var state = { kind: "", age: "", q: "", sort: "new", page: 1 };
   var $ = function (id) { return document.getElementById(id); };
 
   function el(tag, cls, text) {
@@ -121,13 +122,67 @@
     return out;
   }
 
-  function render() {
+  function pageFromUrl() {
+    var m = /[?&]page=(\d+)/.exec(location.search);
+    return m ? parseInt(m[1], 10) : 1;
+  }
+  function syncUrl() {
+    try {
+      var u = new URL(location.href);
+      if (state.page > 1) u.searchParams.set("page", String(state.page)); else u.searchParams.delete("page");
+      history.replaceState(null, "", u.pathname + u.search + u.hash);
+    } catch (e) { /* file:// or sandboxed: the page still works */ }
+  }
+  function goPage(n, scroll) {
+    state.page = n;
+    render();
+    if (scroll) {
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      $("grid").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    }
+  }
+  function renderPager(pages) {
+    var nav = $("pager");
+    nav.textContent = "";
+    if (pages <= 1) { nav.hidden = true; return; }
+    function btn(label, n, opts) {
+      var b = el("button", "pg", label);
+      b.type = "button";
+      if (opts && opts.aria) b.setAttribute("aria-label", opts.aria);
+      if (opts && opts.disabled) b.disabled = true;
+      if (opts && opts.current) b.setAttribute("aria-current", "page");
+      else b.addEventListener("click", function () { goPage(n, true); });
+      nav.appendChild(b);
+    }
+    btn("Previous", state.page - 1, { disabled: state.page <= 1, aria: "Previous page" });
+    var last = 0;
+    for (var i = 1; i <= pages; i++) {
+      if (i === 1 || i === pages || Math.abs(i - state.page) <= 1) {
+        if (last && i - last > 1) { var gap = el("span", "gap", "…"); gap.setAttribute("aria-hidden", "true"); nav.appendChild(gap); }
+        btn(String(i), i, { current: i === state.page, aria: "Page " + i });
+        last = i;
+      }
+    }
+    btn("Next", state.page + 1, { disabled: state.page >= pages, aria: "Next page" });
+    nav.hidden = false;
+  }
+
+  // keepPage: only the pager and the first load keep the page; every filter, search or sort change resets to 1.
+  function render(keepPage) {
     var list = visible(), grid = $("grid");
+    var pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+    if (keepPage === false) state.page = 1;
+    if (!(state.page >= 1)) state.page = 1;
+    if (state.page > pages) state.page = pages;
+    var start = (state.page - 1) * PAGE_SIZE;
     grid.textContent = "";
-    list.forEach(function (g) { grid.appendChild(card(g)); });
-    $("count").textContent = all.length
-      ? "Showing " + list.length + " of " + all.length + " ghost" + (all.length === 1 ? "" : "s")
-      : "";
+    list.slice(start, start + PAGE_SIZE).forEach(function (g) { grid.appendChild(card(g)); });
+    if (!all.length) $("count").textContent = "";
+    else if (!list.length) $("count").textContent = "Showing 0 of " + all.length + " ghosts";
+    else $("count").textContent = "Showing " + (start + 1) + "-" + Math.min(start + PAGE_SIZE, list.length) + " of " +
+      list.length + " ghost" + (list.length === 1 ? "" : "s");
+    renderPager(pages);
+    syncUrl();
     var empty = $("empty");
     if (!all.length) { empty.hidden = false; empty.textContent = "No ghosts have been summoned yet. Check back after the next story."; }
     else if (!list.length) { empty.hidden = false; empty.textContent = "No ghost matches these filters."; }
@@ -136,7 +191,6 @@
       c.setAttribute("aria-pressed", String(c.dataset.kind === state.kind));
     });
   }
-
 
   function kindOf(g) { return KINDS.indexOf(g.kind) >= 0 ? g.kind : "unknown"; }
 
@@ -215,29 +269,25 @@
     box.hidden = false;
   }
 
-  // Lights and flight toggles: state in localStorage (guarded), flight off by default under reduced motion.
-  function load(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
-  function save(k, v) { try { window.localStorage.setItem(k, v); } catch (e) { /* private mode: keep it in memory */ } }
+  // The Lights / Animation / Effects switches live in the shared header (template/header.js).
 
-  function setupToggles() {
-    var root = document.documentElement;
-    var reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-    var lights = load("ghosts.lights") !== "off";
-    var stored = load("ghosts.motion");
-    var moving = stored ? stored === "on" : !reduce;
-    var bL = $("lights"), bM = $("motion");
-    function apply() {
-      root.classList.toggle("lights-off", !lights);
-      root.classList.toggle("moving", moving);
-      if (bL) { bL.setAttribute("aria-pressed", String(lights)); bL.title = lights ? "Turn the lights off to see the ghost" : "Turn the lights back on"; }
-      if (bM) { bM.setAttribute("aria-pressed", String(moving)); bM.title = moving ? "Stop the ghost" : "Let the ghost fly"; }
-    }
-    if (bL) bL.addEventListener("click", function () { lights = !lights; save("ghosts.lights", lights ? "on" : "off"); apply(); });
-    if (bM) bM.addEventListener("click", function () { moving = !moving; save("ghosts.motion", moving ? "on" : "off"); apply(); });
-    apply();
+  // About: a modal <dialog>; Esc closes it (native), so does a click on the backdrop; focus returns to the button.
+  function setupAbout() {
+    var dlg = $("about-dialog"), open = $("about-open"), close = $("about-close");
+    if (!dlg || !open) return;
+    var ok = typeof dlg.showModal === "function";
+    open.addEventListener("click", function () {
+      if (ok) dlg.showModal(); else dlg.setAttribute("open", "");
+      if (window.EG) window.EG.sfx("ghost");
+      if (close) close.focus();
+    });
+    function shut() { if (ok) dlg.close(); else { dlg.removeAttribute("open"); open.focus(); } }
+    if (close) close.addEventListener("click", shut);
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) shut(); });
+    dlg.addEventListener("close", function () { open.focus(); });
   }
 
-  // Floating legend: hover / focus expand it on desktop (CSS); the Key button toggles it (touch, keyboard).
+  // Floating legend: hover / focus expand it on desktop (CSS); the Types button toggles it (touch, keyboard).
   function setupLegend() {
     var box = $("legend"), btn = $("legend-toggle");
     if (!box || !btn) return;
@@ -263,20 +313,21 @@
         var b = el("button", "chip", d.label);
         b.type = "button"; b.dataset.kind = d.kind;
         b.appendChild(el("small", null, String(d.n)));
-        b.addEventListener("click", function () { state.kind = d.kind; render(); });
+        b.addEventListener("click", function () { state.kind = d.kind; render(false); });
         kinds.appendChild(b);
       });
     var ages = [];
     all.forEach(function (g) { if (g.age && ages.indexOf(g.age) < 0) ages.push(g.age); });
     var sel = $("age");
     ages.forEach(function (a) { var o = el("option", null, a); o.value = a; sel.appendChild(o); });
-    sel.addEventListener("change", function () { state.age = sel.value; render(); });
-    $("q").addEventListener("input", function (e) { state.q = e.target.value; render(); });
-    $("sort").addEventListener("change", function (e) { state.sort = e.target.value; render(); });
+    sel.addEventListener("change", function () { state.age = sel.value; render(false); });
+    $("q").addEventListener("input", function (e) { state.q = e.target.value; render(false); });
+    $("sort").addEventListener("change", function (e) { state.sort = e.target.value; render(false); });
   }
 
-  setupToggles();
+  setupAbout();
   setupLegend();
+  window.addEventListener("popstate", function () { if (all.length) { state.page = pageFromUrl(); render(true); } });
 
   function getJSON(url) {
     return fetch(url, { cache: "no-cache" }).then(function (r) {
@@ -290,7 +341,8 @@
     .then(function (data) {
       all = Array.isArray(data) ? data : [];
       buildControls();
-      render();
+      state.page = pageFromUrl();
+      render(true);
       return featured.then(function (f) {
         renderFeatured(f && typeof f === "object" && f.path ? f : all[0]);
       });

@@ -22,4 +22,7 @@ build-backend = "hatchling.build"
 packages = ["ghosts"]
 
 [dependency-groups]
-dev = ["pytest>=8"]
+dev = [
+    "pillow>=13.0.0",
+    "pytest>=8",
+]

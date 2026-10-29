@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The ghost of DigitalCommunityShare · DigitalCommunityShare</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <meta name="description" content="A friendly fixed-supply spirit from the Homestead era rests in silent, direct transfer.">
 <link rel="canonical" href="https://eth-ghosts.decentraminds.tech/ghosts/0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7/">
 <meta property="og:type" content="article">
@@ -42,6 +46,8 @@
   --title-font: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --body-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --eg-max: 980px;  /* shared header (template/header.css) width on story pages */
+  --eg-dim: .45;    /* Lights off dims a story page less than the gallery: the panels stay readable */
   color-scheme: dark;
 }
 *, *::before, *::after { box-sizing: border-box; }
@@ -59,11 +65,6 @@ a { color: var(--candle); }
 a:focus-visible, button:focus-visible { outline: 3px solid var(--candle); outline-offset: 2px; }
 .skip { position: absolute; left: -999px; top: 0; background: var(--candle); color: var(--ink); padding: 8px 12px; z-index: 10; }
 .skip:focus { left: 16px; }
-.picado { display: block; width: 100%; height: 46px; }
-.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; max-width: 980px; margin: 0 auto; padding: 6px 16px 0; font-size: .9rem; }
-.topbar a { text-decoration: none; font-weight: 700; }
-.topbar a:hover { text-decoration: underline; }
-.topbar .brand { color: var(--muted-night); }
 main { max-width: 980px; margin: 0 auto; padding: 12px 16px 40px; }
 
 /* ---------- panels ---------- */
@@ -133,11 +134,12 @@ h1.ghost-title {
 .badge.kind-alive { background: #1f5f99; }
 .badge.kind-unknown { background: #5a4a6e; }
 .title-stage { position: relative; height: 210px; margin-top: 8px; }
-.title-stage .teller { position: absolute; left: 12px; bottom: -6px; width: 128px; height: auto; }
+.title-stage { --tl: 12px; --tw: 128px; }
+.title-stage .teller { position: absolute; left: var(--tl); bottom: -6px; width: var(--tw); height: auto; }
 .title-stage .gravestone { position: absolute; right: 12%; bottom: 0; width: 120px; }
 @media (min-width: 720px) {
   .title-stage { height: 240px; }
-  .title-stage .teller { left: 36px; width: 150px; }
+  .title-stage { --tl: 36px; --tw: 150px; }
 }
 
 /* ---------- flying characters ---------- */
@@ -238,6 +240,11 @@ h1.ghost-title {
 .addr code { font-family: var(--mono); font-size: .9rem; word-break: break-all; }
 .copy { font: 800 .78rem/1 var(--title-font); text-transform: uppercase; letter-spacing: .08em; padding: 7px 10px; border: 2px solid var(--ink); border-radius: 6px; background: var(--candle); color: var(--ink); cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
 .copy:active { transform: translate(2px, 2px); box-shadow: none; }
+.eh-link { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 30px; padding: 0; text-decoration: none; }
+.eh-link svg { display: block; }
+.eh-link .tip { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); padding: 5px 9px; border-radius: 6px; background: var(--ink); color: var(--bone); font: 700 .74rem/1.2 var(--body-font); letter-spacing: .02em; text-transform: none; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .15s ease; z-index: 3; }
+.eh-link .tip::after { content: ""; position: absolute; left: 50%; top: 100%; margin-left: -6px; border: 6px solid transparent; border-top-color: var(--ink); }
+.eh-link:hover .tip, .eh-link:focus-visible .tip { opacity: 1; }
 .verdict-line { margin: 16px 0 0; padding: 12px 14px; border: 2.5px solid var(--ink); border-radius: 6px; background: #fff; font-weight: 600; }
 .verdict-line .badge { margin-right: 8px; vertical-align: 1px; }
 
@@ -305,26 +312,39 @@ h1.ghost-title {
 .smallprint { max-width: 980px; margin: 0 auto; padding: 0 16px 40px; font-size: .84rem; line-height: 1.55; color: var(--muted-night); }
 .smallprint p { margin: 8px 0; }
 .smallprint ul { margin: 6px 0; padding-left: 18px; }
+.smallprint .truestory { color: var(--ink); font-size: .95rem; margin-top: 8px; }
+.truestory .panel-inner p { margin: 10px 0 0; }
+.truestory .sources { margin: 8px 0 0; padding-left: 20px; }
+.truestory .sources li { margin: 4px 0; overflow-wrap: anywhere; }
+.truestory a { color: #6b2a00; }
+.smallprint .truestory .honest { padding: 10px 12px; border-left: 4px solid var(--marigold); background: #fff; color: var(--ink); }
 .smallprint .honest { padding: 10px 12px; border-left: 4px solid var(--marigold); background: rgba(255, 255, 255, .04); color: var(--bone); }
 
 /* ---------- reveal on scroll (only when JS runs) ---------- */
 .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
 .js .reveal.seen { opacity: 1; transform: none; }
+/* balloons pop in one by one as they scroll into view (ghost.js adds .shown, staggered 120 ms per panel) */
 .js .reveal .balloon { opacity: 0; transform: scale(.92); transform-origin: 0 50%; transition: opacity .45s ease, transform .45s ease; }
-.js .reveal.seen .balloon { opacity: 1; transform: none; }
-.js .reveal.seen .balloon:nth-child(2) { transition-delay: .25s; }
-.js .reveal.seen .balloon:nth-child(3) { transition-delay: .5s; }
-.js .reveal.seen .balloon:nth-child(4) { transition-delay: .75s; }
-.js .reveal.seen .balloon:nth-child(n+5) { transition-delay: 1s; }
+.js .reveal .balloon.shown { opacity: 1; transform: none; }
 .js .tilt-l.reveal.seen { transform: rotate(-.4deg); }
 .js .tilt-r.reveal.seen { transform: rotate(.4deg); }
 @media (max-width: 719px) { .js .tilt-l.reveal.seen, .js .tilt-r.reveal.seen { transform: none; } }
+
+/* Animation switch off (header.js drops html.moving): everything holds still, nothing waits for the scroll */
+.js:not(.moving) .flyer, .js:not(.moving) .bob, .js:not(.moving) .petal,
+.js:not(.moving) .teller .flame, .js:not(.moving) .teller .glow { animation-play-state: paused; }
+.js:not(.moving) .reveal, .js:not(.moving) .reveal .balloon { transition: none; }
+/* Lights off: the page dims (header.css) and the ghosts glow */
+.lights-off .flyer svg { filter: drop-shadow(0 0 14px rgba(255, 210, 74, .65)) drop-shadow(0 0 3px rgba(255, 255, 255, .5)); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .js .reveal, .js .reveal .balloon { opacity: 1; transform: none; }
   .flyer { left: auto; right: 6%; }
   .petal { display: none; }
+  /* the reader turned Animation on by hand: let the ghosts fly again */
+  html.moving .flyer { left: 4%; right: auto; animation: drift 17s ease-in-out infinite alternate !important; }
+  html.moving .flyer .bob { animation: bob 3.2s ease-in-out infinite !important; }
 }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 @media print {
@@ -337,12 +357,93 @@ h1.ghost-title {
 .fix-note { margin: 18px 0 0; padding: 12px 14px; border: 2px dashed #0f6b5c; border-radius: 6px; background: #f0fbf8; color: #0b3b34; font-size: .95rem; }
 .fix-note strong { display: block; margin-bottom: 4px; font: 800 .74rem/1.2 var(--title-font); letter-spacing: .12em; text-transform: uppercase; }
 
+/* ---------- first-visit welcome: "Light the candle" (header.js) ---------- */
+/* Doña Gwei shows through the dark; the button sits over her candle (flame centre at 98,95 of the 120x160 viewBox) */
+.eg-welcome .title-stage .teller { z-index: 41; }
+.eg-welcome .title-panel .tagline { opacity: 0; }
+.title-panel .tagline { transition: opacity .8s ease .3s; }
+.title-stage .eg-candle {
+  position: absolute; z-index: 42; width: 52px; height: 60px; padding: 0;
+  left: calc(var(--tl) + var(--tw) * .8167 - 26px); bottom: calc(var(--tw) * .5417 - 6px - 30px);
+  background: radial-gradient(circle at 50% 40%, rgba(255, 210, 74, .22), rgba(255, 210, 74, 0) 65%);
+  border: 2px dashed rgba(255, 210, 74, .55); border-radius: 26px;
+  animation: eg-beckon 2.4s ease-in-out infinite;
+}
+.title-stage .eg-candle:hover, .title-stage .eg-candle:focus-visible { border-color: #ffd24a; background: radial-gradient(circle at 50% 40%, rgba(255, 210, 74, .5), rgba(255, 210, 74, 0) 70%); }
+@keyframes eg-beckon { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 210, 74, .0); } 50% { box-shadow: 0 0 18px 4px rgba(255, 210, 74, .45); } }
+.title-stage .eg-line { left: calc(var(--tl) + var(--tw) + 4px); bottom: calc(var(--tw) * .5417 - 6px); z-index: 42; }
+.title-stage .eg-line::before { content: ""; position: absolute; left: -14px; top: 50%; margin-top: -8px; border-style: solid; border-width: 8px 14px 8px 0; border-color: transparent #1d1029 transparent transparent; }
+.title-stage .eg-line::after { content: ""; position: absolute; left: -9px; top: 50%; margin-top: -6px; border-style: solid; border-width: 6px 11px 6px 0; border-color: transparent #fff transparent transparent; }
+@media (max-width: 380px) { .title-stage .eg-line { max-width: calc(100vw - var(--tl) - var(--tw) - 48px); font-size: .95rem; } }
+/* the candle catches: a flicker-in, then the usual flicker */
+.moving.eg-lit .teller .flame { transform-box: view-box; transform-origin: 98px 95px; animation: eg-flame-in .8s ease-out both, flicker 1.4s ease-in-out .8s infinite; }
+
+/* Shared header (gallery and ghost pages): papel picado, brand or back link, About, Effects / Lights / Animation.
+   One source: render.py inlines it into every ghost page, gallery.py into web/index.html. */
+.eg-header {
+  --eg-candle: #ffd24a; --eg-marigold: #f29d1f; --eg-cream: #f7ead0; --eg-muted: #cdbbe6;
+  --eg-night-2: #2a1240; --eg-line: #5a3a8c;
+  --eg-title-font: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+}
+.eg-header .picado { display: block; width: 100%; height: 46px; }
+.eg-header .topbar { position: relative; z-index: 60; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 12px; max-width: var(--eg-max, 1100px); margin: 0 auto; padding: 6px 16px 0; font-size: .9rem; }
+.eg-left { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; min-width: 0; }
+.eg-left a { color: var(--eg-candle); text-decoration: none; font-weight: 700; }
+.eg-left a:hover { text-decoration: underline; }
+/* the brand reads like the gallery's eyebrow */
+.eg-brand { color: var(--eg-candle); font: 800 .8rem/1.2 var(--eg-title-font); letter-spacing: .16em; text-transform: uppercase; }
+.eg-header .switches { display: flex; flex-wrap: wrap; gap: 8px; }
+.eg-header .switch {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 14px;
+  font: 700 .85rem/1 var(--eg-title-font); color: var(--eg-cream); cursor: pointer;
+  background: var(--eg-night-2); border: 2px solid var(--eg-line); border-radius: 999px;
+}
+.eg-header .switch .sw-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--eg-muted); background: transparent; }
+.eg-header .switch[aria-pressed="true"] { border-color: var(--eg-candle); }
+.eg-header .switch[aria-pressed="true"] .sw-dot { background: var(--eg-candle); border-color: var(--eg-candle); box-shadow: 0 0 8px rgba(255, 210, 74, .8); }
+.eg-header .switch:hover { border-color: var(--eg-marigold); }
+.eg-header .switch:focus-visible { outline: 3px solid var(--eg-candle); outline-offset: 2px; }
+.eg-header .sw-icon { display: block; color: var(--eg-muted); }
+.eg-header .switch[aria-pressed="true"] .sw-icon { color: var(--eg-candle); filter: drop-shadow(0 0 4px rgba(255, 210, 74, .7)); }
+.eg-header .switch .sp-off, .eg-header .switch[aria-pressed="true"] .sp-on { display: inline; }
+.eg-header .switch .sp-on, .eg-header .switch[aria-pressed="true"] .sp-off { display: none; }
+.eg-header .eg-about { border-color: var(--eg-marigold); }
+/* Lights off: the page dims; each page decides what glows through */
+.eg-dim { position: fixed; inset: 0; z-index: 40; pointer-events: none; background: rgba(4, 0, 10, var(--eg-dim, .68)); opacity: 0; transition: opacity .6s ease; }
+.lights-off .eg-dim { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .eg-dim { transition: none; } }
+/* First-visit welcome (header.js): the line, the unlit candle and the flicker-in. Overlays only, no layout shift. */
+.eg-line {
+  position: absolute; z-index: 46; margin: 0; padding: 8px 14px; max-width: min(20rem, calc(100vw - 32px));
+  font: 700 1.05rem/1.3 "Chalkboard SE", "Comic Sans MS", "Comic Neue", ui-rounded, system-ui, sans-serif;
+  color: #1d1029; background: #fff; border: 2.5px solid #1d1029; border-radius: 18px;
+  box-shadow: 0 0 18px rgba(255, 210, 74, .55), 3px 3px 0 #f29d1f; pointer-events: none;
+  transition: opacity .6s ease;
+}
+.eg-line[hidden] { display: none; }
+.eg-line:empty { opacity: 0; }
+.eg-line.eg-out { opacity: 0; }
+.eg-welcome .flame, .eg-welcome .glow { opacity: 0; }
+.moving.eg-lit .flame { transform-box: fill-box; transform-origin: 50% 100%; animation: eg-flame-in .8s ease-out both; }
+@keyframes eg-flame-in {
+  0% { opacity: 0; transform: scale(.2, .1); }
+  35% { opacity: 1; transform: scale(1.2, 1.35); }
+  60% { transform: scale(.85, .9); }
+  100% { opacity: 1; transform: none; }
+}
+.eg-candle, .eg-hunt { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.eg-candle[hidden], .eg-hunt[hidden] { display: none; }
+.eg-candle:focus-visible, .eg-hunt:focus-visible { outline: 3px dashed #ffd24a; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .eg-line { transition: none; } }
+
 </style>
 <noscript><style>.reveal, .reveal .balloon { opacity: 1 !important; transform: none !important; }</style></noscript>
 </head>
 <body data-kind="friendly">
 <a class="skip" href="#story">Skip to the story</a>
 <header>
+<div class="eg-header" id="eg-header" data-assets="../../assets/">
+<div class="eg-dim" aria-hidden="true"></div>
 <svg class="picado" width="100%" height="46" aria-hidden="true" focusable="false">
 <defs><pattern id="picado-svg9" width="300" height="46" patternUnits="userSpaceOnUse">
 <path d="M0 3q150 10 300 0" stroke="#f7ead0" stroke-width="1.5" fill="none"/>
@@ -352,9 +453,10 @@ h1.ghost-title {
 <rect width="100%" height="46" fill="url(#picado-svg9)"/>
 </svg>
 <nav class="topbar" aria-label="Site">
-<a href="../../index.html">&larr; All the ghosts</a>
-<span class="brand">Ghosts in the decentralized world computer</span>
+<span class="eg-left"><a href="../../index.html">&larr; All the ghosts</a><span class="eg-brand">Ghosts in the Decentralized World Computer</span></span>
+<span class="switches"><button type="button" class="switch" id="effects" aria-pressed="true"><svg class="sw-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><g class="sp-on" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 9.5q1.8 2.5 0 5"/><path d="M18.6 7q3.6 5 0 10"/></g><g class="sp-off" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M16 9.5l5 5M21 9.5l-5 5"/></g></svg>Effects</button><button type="button" class="switch" id="lights" aria-pressed="true"><span class="sw-dot" aria-hidden="true"></span>Lights</button><button type="button" class="switch" id="motion" aria-pressed="true"><span class="sw-dot" aria-hidden="true"></span>Animation</button></span>
 </nav>
+</div>
 </header>
 <main id="story">
 <section class="panel title-panel" aria-labelledby="ghost-title">
@@ -368,7 +470,7 @@ h1.ghost-title {
 <ul class="chips" aria-label="Ghost facts at a glance"><li class="chip badge kind-friendly">Friendly ghost</li><li class="chip">Age: Homestead</li><li class="chip">Born 2016</li><li class="chip">Last seen 2017</li></ul>
 </div>
 <div class="title-stage">
-<svg class="teller" viewBox="0 0 120 160" role="img" aria-labelledby="svg1"><title id="svg1">The storyteller: a calavera in a purple hood with a marigold crown, holding a candle</title>
+<svg class="teller" viewBox="0 0 120 160" role="img" aria-labelledby="svg1"><title id="svg1">Doña Gwei, the storyteller: a calavera in a purple hood with a marigold crown, holding a candle</title>
 <g class="teller-body">
 <path d="M14 160C16 112 26 74 60 30c34 44 44 82 46 130z" fill="#3b1a5a" stroke="#1d1029" stroke-width="3"/>
 <path d="M34 92c6-36 46-36 52 0" fill="#2a1240"/>
@@ -406,13 +508,15 @@ h1.ghost-title {
 <path d="M102 74l6 14" stroke="#1d1029" stroke-width="2"/>
 <g class="ghost-tag" transform="rotate(-8 112 96)"><rect x="85" y="87" width="44" height="17" rx="3" fill="#ffd24a" stroke="#1d1029" stroke-width="2"/><circle cx="89" cy="95.5" r="1.5" fill="#1d1029"/><text x="109" y="99.5" text-anchor="middle" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9.5" font-weight="700" fill="#1d1029">0xafe6</text></g>
 </svg></div></div></div>
+<button type="button" class="eg-candle" aria-label="Light the candle" title="Light the candle" hidden></button>
+<p class="eg-line" id="eg-line" aria-live="polite" data-candle="Light the candle" data-hint="…or just click anywhere" hidden></p>
 </div>
 </section>
 <section class="panel record-panel reveal tilt-l" aria-labelledby="record-h">
 <h2 class="caption" id="record-h"><small>The ofrenda card</small>What the chain remembers</h2>
 <div class="panel-inner">
 <dl class="record">
-<div class="wide"><dt>Address</dt><dd class="addr"><code id="ghost-address">0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7</code><button type="button" class="copy" data-copy="0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7" aria-describedby="copy-status">Copy</button><span id="copy-status" class="visually-hidden" role="status" aria-live="polite"></span></dd></div>
+<div class="wide"><dt>Address</dt><dd class="addr"><code id="ghost-address">0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7</code><button type="button" class="copy" data-copy="0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7" aria-describedby="copy-status">Copy</button><a class="copy eh-link" href="https://www.ethereumhistory.com/contract/0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7" target="_blank" rel="noopener noreferrer" aria-label="Open in Ethereum History" title="Open in Ethereum History"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="tip" aria-hidden="true">Open in Ethereum History</span></a><span id="copy-status" class="visually-hidden" role="status" aria-live="polite"></span></dd></div>
 <div><dt>Name</dt><dd>DigitalCommunityShare <span class="mono">(DCS)</span><small class="aka">source name: <span class="mono">token</span></small></dd></div>
 <div><dt>Born</dt><dd>13 May 2016, block <span class="mono">1,508,894</span></dd></div>
 <div><dt>Age</dt><dd>Homestead</dd></div>
@@ -442,7 +546,7 @@ h1.ghost-title {
 </svg></div></div></div></div>
 <div class="panel-inner">
 <div class="scene">
-<svg class="teller" viewBox="0 0 120 160" role="img" aria-labelledby="svg4"><title id="svg4">The storyteller: a calavera in a purple hood with a marigold crown, holding a candle</title>
+<svg class="teller" viewBox="0 0 120 160" role="img" aria-labelledby="svg4"><title id="svg4">Doña Gwei, the storyteller: a calavera in a purple hood with a marigold crown, holding a candle</title>
 <g class="teller-body">
 <path d="M14 160C16 112 26 74 60 30c34 44 44 82 46 130z" fill="#3b1a5a" stroke="#1d1029" stroke-width="3"/>
 <path d="M34 92c6-36 46-36 52 0" fill="#2a1240"/>
@@ -469,7 +573,7 @@ h1.ghost-title {
 </g>
 </svg>
 <div class="balloons">
-<p class="speaker">The storyteller</p>
+<p class="speaker">Doña Gwei</p>
 <p class="balloon ">A candle flickers near a name written in light. On May 13, 2016, the contract was born. It is a small program that lives on Ethereum. The wallet 0xd04f…98a3 brought it into the world.</p>
 <p class="balloon ">It arrived during the Homestead era. On the day it was born, it was written into a block, one page of Ethereum&#x27;s shared record book. It was built with Solidity 0.2.0. Now it sits 10.5 years old as a fixed-supply token.</p>
 <p class="cited">Grounded in: <code>derived.age_years</code>, <code>facts.birth.deployer</code>, <code>facts.birth.timestamp</code>, <code>facts.source.compiler_version</code></p>
@@ -492,7 +596,7 @@ h1.ghost-title {
 </svg></div></div></div></div>
 <div class="panel-inner">
 <div class="scene">
-<svg class="teller" viewBox="0 0 120 160" role="img" aria-labelledby="svg6"><title id="svg6">The storyteller: a calavera in a purple hood with a marigold crown, holding a candle</title>
+<svg class="teller" viewBox="0 0 120 160" role="img" aria-labelledby="svg6"><title id="svg6">Doña Gwei, the storyteller: a calavera in a purple hood with a marigold crown, holding a candle</title>
 <g class="teller-body">
 <path d="M14 160C16 112 26 74 60 30c34 44 44 82 46 130z" fill="#3b1a5a" stroke="#1d1029" stroke-width="3"/>
 <path d="M34 92c6-36 46-36 52 0" fill="#2a1240"/>
@@ -519,7 +623,7 @@ h1.ghost-title {
 </g>
 </svg>
 <div class="balloons">
-<p class="speaker">The storyteller</p>
+<p class="speaker">Doña Gwei</p>
 <p class="balloon ">The candle flickers over a name from a tutorial. It was born as DigitalCommunityShare with the symbol DCS. The supply was fixed at the moment of its birth. No one could ever create more units. It held its balances in a public mapping for all to see.</p>
 <p class="balloon ">It moved wealth through a simple transfer. It checked for overflow and threw errors when funds were low. It had no owner and no way to give allowance to others. This was the before picture of what would become the ERC-20 standard.</p>
 <p class="balloon ">The contract sat quiet after its busy days in 2017. It saw 648 transactions in its life. People called its transfer function to move the shares.</p>
@@ -546,7 +650,7 @@ h1.ghost-title {
 </svg></div></div></div></div>
 <div class="panel-inner">
 <div class="scene">
-<svg class="teller" viewBox="0 0 120 160" role="img" aria-labelledby="svg8"><title id="svg8">The storyteller: a calavera in a purple hood with a marigold crown, holding a candle</title>
+<svg class="teller" viewBox="0 0 120 160" role="img" aria-labelledby="svg8"><title id="svg8">Doña Gwei, the storyteller: a calavera in a purple hood with a marigold crown, holding a candle</title>
 <g class="teller-body">
 <path d="M14 160C16 112 26 74 60 30c34 44 44 82 46 130z" fill="#3b1a5a" stroke="#1d1029" stroke-width="3"/>
 <path d="M34 92c6-36 46-36 52 0" fill="#2a1240"/>
@@ -573,7 +677,7 @@ h1.ghost-title {
 </g>
 </svg>
 <div class="balloons">
-<p class="speaker">The storyteller</p>
+<p class="speaker">Doña Gwei</p>
 <p class="balloon ">The code still rests on the chain like a shadow. It has sat in the silence for 9.3 years. No one has called it since July 10, 2017.</p>
 <p class="balloon ">The last call was a simple transfer. Now, it holds 0.0 ETH. It waits in the stillness with nothing left inside.</p>
 <p class="cited">Grounded in: <code>facts.eh.token.token_decimals</code>, <code>facts.life.last_tx.timestamp</code>, <code>verdict.activity.silent_years</code></p>
@@ -591,44 +695,275 @@ h1.ghost-title {
 </div>
 </section>
 <section class="panel closing reveal" aria-labelledby="close-h">
-<h2 class="caption" id="close-h"><small>Counting the candles</small>What the storyteller was allowed to say</h2>
+<h2 class="caption" id="close-h"><small>Counting the candles</small>What Doña Gwei was allowed to say</h2>
 <div class="panel-inner">
 <ul class="tally"><li><b>28</b><span>sentences</span></li><li><b>27</b><span>grounded</span></li><li><b>0</b><span>repaired</span></li><li><b>1</b><span>dropped</span></li></ul>
-<p class="tally-line">The storyteller spoke 28 sentences; 27 grounded, 0 repaired, 1 dropped.</p>
+<p class="tally-line">Doña Gwei spoke 28 sentences; 27 grounded, 0 repaired, 1 dropped.</p>
 <p>Struck from the story, because a date, number or name in it is not in the facts:</p><ul class="dropped"><li><s>The Echo of Shared Tokens</s></li></ul>
 </div>
 </section>
 </main>
 <footer class="smallprint" id="smallprint">
-<h2 class="visually-hidden">Small print</h2>
+<section class="panel truestory" aria-labelledby="true-h">
+<h2 class="caption" id="true-h"><small>Doña Gwei checked facts</small>Based on a True Story</h2>
+<div class="panel-inner">
 <p>Story written by gemma4:12b-it-qat running locally through Ollama, thinking off, 14.0 s, 448 output tokens.</p>
 <p class="honest">The words on this page were written at runtime by gemma4:12b-it-qat on the author&#x27;s Mac, and code checked every date, number and name it wrote against the facts on this page; sentences that failed were repaired or dropped.</p>
 <p>Sources used for this ghost:</p>
-<ul><li><a href="https://www.ethereumhistory.com/contract/0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7" rel="noopener">Ethereum History: the contract&#x27;s page</a></li><li><a href="https://eth.blockscout.com/address/0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7" rel="noopener">Blockscout: transactions, balance and verification</a></li><li><a href="https://repo.sourcify.dev/1/0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7" rel="noopener">Sourcify: verified source</a></li><li>A public Ethereum JSON-RPC node: is the code still there, and the balance</li></ul>
+<ul class="sources"><li><a href="https://www.ethereumhistory.com/contract/0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7" rel="noopener">Ethereum History: the contract&#x27;s page</a></li><li><a href="https://eth.blockscout.com/address/0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7" rel="noopener">Blockscout: transactions, balance and verification</a></li><li><a href="https://repo.sourcify.dev/1/0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7" rel="noopener">Sourcify: verified source</a></li><li>A public Ethereum JSON-RPC node: is the code still there, and the balance</li></ul>
+</div>
+</section>
+<h2 class="visually-hidden">Small print</h2>
 <p>Generated 29 Oct 2026. Address 0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7 on Ethereum mainnet (chain 1).</p>
 </footer>
 <script>
-// Ghost page behavior: reveal panels on scroll, copy the address. No network, no dependencies.
+// Shared header behaviour (gallery and ghost pages): Lights, Animation and Effects switches, the ambient loop
+// and one-shot sound effects. Exposes window.EG = { effectsOn, sfx } for the page scripts. No network beyond
+// the site's own audio files; every storage access is guarded.
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var head = document.getElementById("eg-header");
+  var base = (head && head.getAttribute("data-assets")) || "assets/";
+  function load(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+  function save(k, v) { try { window.localStorage.setItem(k, v); } catch (e) { /* private mode: keep it in memory */ } }
+  function $(id) { return document.getElementById(id); }
+
+  // Lights and Animation: same keys as before ("ghosts.lights", "ghosts.motion"), so a choice carries
+  // between the gallery and the ghost pages. Animation starts off under prefers-reduced-motion.
+  var reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  // First visit (no "eg-welcomed"): the browser's required first click becomes part of the story. The index
+  // hunts the flying ghost (.eg-hunt), ghost pages light Doña Gwei's candle (.eg-candle); reduced motion gets
+  // the candle everywhere. Automated visits (navigator.webdriver: screenshots, og, face) skip it.
+  var hunt = document.querySelector(".eg-hunt"), candle = document.querySelector(".eg-candle");
+  var target = (!reduce && hunt) || candle || null;
+  var welcome = !!target && !navigator.webdriver && load("eg-welcomed") !== "1";
+  var lights = welcome ? false : load("ghosts.lights") !== "off";
+  var stored = load("ghosts.motion");
+  var moving = stored ? stored === "on" : !reduce;
+  var bL = $("lights"), bM = $("motion"), bE = $("effects");
+  function applyView() {
+    root.classList.toggle("lights-off", !lights);
+    root.classList.toggle("moving", moving);
+    if (bL) { bL.setAttribute("aria-pressed", String(lights)); bL.title = lights ? "Turn the lights off to see the ghost" : "Turn the lights back on"; }
+    if (bM) { bM.setAttribute("aria-pressed", String(moving)); bM.title = moving ? "Stop the animation" : "Let the ghosts move"; }
+    try { root.dispatchEvent(new CustomEvent("eg:view", { detail: { lights: lights, moving: moving } })); } catch (e) { /* old browser */ }
+  }
+  if (bL) bL.addEventListener("click", function () { lights = !lights; save("ghosts.lights", lights ? "on" : "off"); applyView(); });
+  if (bM) bM.addEventListener("click", function () { moving = !moving; save("ghosts.motion", moving ? "on" : "off"); applyView(); });
+  applyView();
+
+  // Effects (default on, key "eg-effects"): the ambient loop plus one-shot effects. Browsers block audio
+  // before a user gesture; then the switch shows off until the first click on it or anywhere on the page.
+  var wanted = load("eg-effects") !== "off";
+  var blocked = false;
+  var VOL = 0.6, DUCK = 0.25, ducks = 0;
+  var ambient = null;
+  function amb() {
+    if (!ambient && window.Audio) {
+      ambient = new Audio(base + "ambient.mp3");
+      ambient.loop = true;
+      ambient.preload = "auto";
+      ambient.volume = VOL;
+      var t = parseFloat((function () { try { return window.sessionStorage.getItem("eg-ambient-t"); } catch (e) { return null; } })() || "");
+      if (t > 0) { try { ambient.currentTime = t; } catch (e) { /* not seekable yet */ } }
+    }
+    return ambient;
+  }
+  function on() { return wanted && !blocked; }
+  function applyFx() {
+    if (!bE) return;
+    bE.setAttribute("aria-pressed", String(on()));
+    bE.title = on() ? "Mute the music and sound effects" : (wanted ? "Start the music and sound effects" : "Turn the music and sound effects on");
+  }
+  function start() {
+    var a = amb();
+    if (!a || !wanted) return;
+    var p;
+    try { p = a.play(); } catch (e) { blocked = true; applyFx(); return; }
+    if (p && p.then) {
+      p.then(function () { blocked = false; applyFx(); }, function () { blocked = true; applyFx(); });
+    } else { blocked = false; applyFx(); }
+  }
+  function stop() { if (ambient) ambient.pause(); }
+  if (bE) bE.addEventListener("click", function () {
+    if (on()) { wanted = false; save("eg-effects", "off"); stop(); }
+    else { wanted = true; blocked = false; save("eg-effects", "on"); start(); }
+    applyFx();
+  });
+  // the first gesture anywhere starts the music when Effects is wanted but the browser said no
+  var welcomeEvt = null;
+  function gesture(e) {
+    if (welcome || (e && e === welcomeEvt)) return;  // the welcome handles its own click
+    if (bE && e && e.target && bE.contains(e.target)) return;
+    if (wanted && (blocked || !ambient || ambient.paused)) { blocked = false; start(); }
+  }
+  document.addEventListener("click", gesture);
+  document.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") gesture(e); });
+  window.addEventListener("pagehide", function () {
+    if (ambient) { try { window.sessionStorage.setItem("eg-ambient-t", String(ambient.currentTime || 0)); } catch (e) { /* ignore */ } }
+  });
+  applyFx();
+  if (wanted && !welcome) start();
+
+  // One-shot effect (name = file stem in assets/). duck: lower the ambient to DUCK while it plays.
+  function sfx(name, duck, onFail, onPlay) {
+    if (!wanted || !window.Audio) { if (onFail) onFail(); return false; }
+    var a = new Audio(base + name + ".mp3"), done = false, ducked = !!(duck && ambient);
+    function restore() {
+      if (done) return;
+      done = true;
+      if (ducked) { ducks = Math.max(0, ducks - 1); if (!ducks) ambient.volume = VOL; }
+      a.onended = a.onerror = null;
+    }
+    if (ducked) { ducks += 1; ambient.volume = DUCK; }
+    function fail() { restore(); if (onFail) onFail(); }
+    a.onended = restore; a.onerror = fail;
+    try {
+      var p = a.play();
+      if (p && p.then) p.then(function () { if (onPlay) onPlay(); }, fail);
+      else if (onPlay) onPlay();
+    } catch (e) { fail(); return false; }
+    return true;
+  }
+  // ---- the welcome ----
+  var WELCOME_HINT_MS = 8000, WELCOME_GIVE_UP_MS = 20000, FADE_MS = 2000;
+  var line = $("eg-line"), haunt = document.querySelector(".haunt"), timers = [];
+  function say(t) { if (line && t) line.textContent = t; }
+  function fadeIn(a) {
+    a.volume = 0;
+    var t0 = Date.now();
+    var iv = setInterval(function () {
+      var k = Math.min(1, (Date.now() - t0) / FADE_MS);
+      if (!ducks) a.volume = VOL * k;
+      if (k >= 1) clearInterval(iv);
+    }, 50);
+  }
+  function endWelcome(lit) {
+    welcome = false;
+    timers.forEach(clearTimeout);
+    document.removeEventListener("click", onWelcomeClick, true);
+    root.classList.remove("eg-welcome");
+    if (lit) { root.classList.add("eg-lit"); setTimeout(function () { root.classList.remove("eg-lit"); }, 2200); }
+    if (line) { line.classList.add("eg-out"); setTimeout(function () { line.hidden = true; }, 700); }
+    if (hunt) hunt.hidden = true;
+    if (haunt) haunt.setAttribute("aria-hidden", "true");
+    // the index's lone candle stays a moment so the flame is seen; the ghost page's button only overlays
+    if (candle) setTimeout(function () { candle.hidden = true; }, candle.classList.contains("eg-candle-solo") && lit ? 1800 : 0);
+  }
+  function onWelcomeClick(e) {
+    if (!welcome) return;
+    welcomeEvt = e;  // the event is never cancelled: the click's own action (a card, a filter, a switch) still happens
+    var t = e.target;
+    var onFx = !!(bE && t && bE.contains(t)), onLights = !!(bL && t && bL.contains(t));
+    endWelcome(true);
+    save("eg-welcomed", "1");
+    // a click on Lights: its own handler turns them on (and stores it)
+    if (!onLights) { lights = true; save("ghosts.lights", "on"); applyView(); }
+    // a click on Effects: honour it, whatever the reader chose
+    if (!onFx) {
+      wanted = true; blocked = false; save("eg-effects", "on");
+      var a = amb();
+      if (a) { fadeIn(a); start(); }
+      sfx("ghost");
+      applyFx();
+    }
+  }
+  function giveUp() {
+    // nobody clicked: lights back on, nothing plays, try once more on the next visit, then stop asking
+    var n = (parseInt(load("eg-welcome-tries") || "0", 10) || 0) + 1;
+    save("eg-welcome-tries", String(n));
+    if (n >= 2) save("eg-welcomed", "1");
+    endWelcome(false);
+    lights = true; applyView();
+    blocked = true; applyFx();
+  }
+  if (welcome) {
+    root.classList.add("eg-welcome");
+    target.hidden = false;
+    if (target === hunt && haunt) haunt.removeAttribute("aria-hidden");
+    if (line) {
+      line.hidden = false;
+      var first = line.getAttribute(target === hunt ? "data-hunt" : "data-candle");
+      setTimeout(function () { say(first); }, 60);  // set after load so the live region reads it once
+    }
+    document.addEventListener("click", onWelcomeClick, true);
+    timers.push(setTimeout(function () { say(line && line.getAttribute("data-hint")); }, WELCOME_HINT_MS));
+    timers.push(setTimeout(giveUp, WELCOME_GIVE_UP_MS));
+  }
+
+  window.EG = { effectsOn: function () { return wanted; }, sfx: sfx, moving: function () { return moving; } };
+})();
+
+// Ghost page behavior: reveal panels and story balloons on scroll, the scream, copy the address.
+// No network beyond the site's own audio (template/header.js), no dependencies.
 (function () {
   var doc = document.documentElement;
   doc.classList.add("js");
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var still = function () { return !!(window.EG && !window.EG.moving()); };
   var panels = document.querySelectorAll(".reveal");
-  function revealAll() { panels.forEach(function (p) { p.classList.add("seen"); }); }
-  if (reduce || !("IntersectionObserver" in window)) {
+  var balloons = document.querySelectorAll(".reveal .balloon");
+  function showBalloons() { balloons.forEach(function (b) { b.style.transitionDelay = ""; b.classList.add("shown"); }); }
+  function revealAll() { panels.forEach(function (p) { p.classList.add("seen"); }); showBalloons(); }
+  // Automation (headless screenshots), reduced motion, Animation off or no observer: show everything now.
+  var instant = reduce || still() || navigator.webdriver || !("IntersectionObserver" in window);
+  var io = null, bo = null;
+  if (instant) {
     revealAll();
   } else {
-    var io = new IntersectionObserver(function (entries) {
+    io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) { e.target.classList.add("seen"); io.unobserve(e.target); }
       });
     }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
     panels.forEach(function (p) { io.observe(p); });
+    // Each balloon pops in as it enters the view, 120 ms after the previous one of the same panel.
+    var alive = false;
+    bo = new IntersectionObserver(function (entries) {
+      alive = true;
+      var perPanel = new Map();
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var panel = e.target.closest(".reveal");
+        var n = perPanel.get(panel) || 0;
+        perPanel.set(panel, n + 1);
+        if (panel) panel.classList.add("seen");
+        e.target.style.transitionDelay = (n * 120) + "ms";
+        e.target.classList.add("shown");
+        bo.unobserve(e.target);
+      });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.2 });
+    balloons.forEach(function (b) { bo.observe(b); });
+    // an observer that never reports at all is treated as broken
+    setTimeout(function () { if (!alive) showBalloons(); }, 1500);
   }
   // Unconditional fallback: whatever the observer did, every panel is visible after 1.5 s
-  // (full-page screenshots, print, readers, observers that never fire).
-  setTimeout(revealAll, 1500);
+  // (full-page screenshots, print, readers, observers that never fire). Balloons keep waiting for the
+  // scroll unless the balloon observer never reported (above) or the page is automated (instant).
+  function revealPanels() { panels.forEach(function (p) { p.classList.add("seen"); }); }
+  setTimeout(instant ? revealAll : revealPanels, 1500);
   window.addEventListener("beforeprint", revealAll);
+  // Animation switched off mid-read: stop waiting for the scroll and show the rest.
+  doc.addEventListener("eg:view", function (ev) { if (ev.detail && !ev.detail.moving) revealAll(); });
+
+  // The scream: a bad ghost's vulnerable snippet (.code-card that is not the fix), the first time it enters the view, if Effects is on.
+  var guilty = document.body.getAttribute("data-kind") === "bad" &&
+    (document.querySelector(".code-card:not(.fix)") || document.querySelector(".wounds"));
+  if (guilty && "IntersectionObserver" in window) {
+    var screamed = false;
+    var so = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting || screamed) return;
+        if (window.EG && window.EG.effectsOn()) {
+          // once per page load; if the browser refuses (no click yet), try again next time it enters the view
+          screamed = true;
+          window.EG.sfx("scream", true, function () { screamed = false; }, function () { so.disconnect(); });
+        }
+      });
+    }, { threshold: 0.35 });
+    so.observe(guilty);
+  }
 
   function fallbackCopy(text) {
     var ta = document.createElement("textarea");

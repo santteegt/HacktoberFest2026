@@ -26,6 +26,8 @@ DEFAULT_OUT = config.ROOT / "web" / "ghosts"
 SIZE_LIMIT = 300_000  # bytes, page without screenshots
 DEFAULT_SITE_URL = "https://eth-ghosts.decentraminds.tech"  # the coordinator may move this to config.py
 SITE_NAME = "Ghosts in the Decentralized World Computer"
+# The narrator's name on every page (speaker lines, the closing caption, the true-story card): change it here only.
+STORYTELLER_NAME = "Doña Gwei"
 
 
 def site_url() -> str:
@@ -136,6 +138,7 @@ class _Tpl:
         self.master = Template((root / "ghost.html").read_text(encoding="utf-8"))
         self.css = (root / "ghost.css").read_text(encoding="utf-8")
         self.js = (root / "ghost.js").read_text(encoding="utf-8")
+        self.header = Header(root)
         self.parts: dict[str, Template] = {}
         raw = (root / "panels.html").read_text(encoding="utf-8")
         for m in re.finditer(r"<!--@ (\w+) -->\n(.*?)(?=<!--@ |\Z)", raw, re.S):
@@ -147,7 +150,49 @@ class _Tpl:
             self.svgs[p.stem] = Template(s)
 
     def part(self, name: str, **kw) -> str:
-        return self.parts[name].substitute(**kw)
+        return self.parts[name].substitute(storyteller=e(STORYTELLER_NAME), **kw)
+
+
+class Header:
+    """The shared header (template/header.html, header.css, header.js): one source for both pages.
+
+    Ghost pages get it inlined by render(); web/index.html gets it between the header markers by
+    ghosts.gallery.build(). `assets` is the path to web/assets/ from the page ("assets/" or "../../assets/").
+    """
+
+    START, END = "<!-- header:start -->", "<!-- header:end -->"
+
+    def __init__(self, root: Path = TEMPLATE_DIR):
+        self.html = Template((root / "header.html").read_text(encoding="utf-8").strip("\n"))
+        self.css = (root / "header.css").read_text(encoding="utf-8")
+        self.js = (root / "header.js").read_text(encoding="utf-8")
+        svg = (root / "characters" / "papel-picado.svg").read_text(encoding="utf-8")
+        self.picado = Template(svg.strip())  # web/index.html keeps the xmlns, as it always had
+        self.picado_inline = Template(re.sub(r'\s+xmlns="[^"]*"', "", svg, count=1).strip())  # ghost pages: no URL in the body
+
+    def markup(self, assets: str, uid: str, left: str, about: str = "", nav_label: str = "Site", inline: bool = False) -> str:
+        picado = (self.picado_inline if inline else self.picado).substitute(uid=uid, tag="")
+        return self.html.substitute(assets=e(assets), picado=picado,
+                                    left=left, about=about, nav_label=e(nav_label))
+
+    def ghost_page(self, uid: str) -> str:
+        left = ('<a href="../../index.html">&larr; All the ghosts</a>'
+                f'<span class="eg-brand">{e(SITE_NAME)}</span>')
+        return self.markup("../../assets/", uid, left, inline=True)
+
+    def index_block(self) -> str:
+        """The block gallery.build() writes between the markers in web/index.html: style, markup, script."""
+        about = ('<button type="button" class="switch eg-about" id="about-open" aria-haspopup="dialog" '
+                 'aria-controls="about-dialog">About</button>')
+        markup = self.markup("assets/", "index", '<span class="eg-brand">eth-ghosts</span>', about, "Haunting controls")
+        return f"{self.START}\n<style>\n{self.css}</style>\n{markup}\n<script>\n{self.js}</script>\n{self.END}"
+
+    def inject(self, page: str) -> str:
+        """Replace everything between the markers in `page` with a fresh block (no markers: unchanged)."""
+        i, j = page.find(self.START), page.find(self.END)
+        if i < 0 or j < i:
+            return page
+        return page[:i] + self.index_block() + page[j + len(self.END):]
 
 
 # ---------------------------------------------------------------- the renderer
@@ -419,8 +464,8 @@ class _Page:
         if buster and "buster" not in ids:
             chapters.append({"id": "buster", "heading": "Who you gonna call", "paragraphs": []})
         if not chapters:
-            return self.chapter_panel(0, "waiting", "The storyteller has not spoken yet",
-                                      [("whisper", "The storyteller has not spoken yet. Until the candle is lit, the chain's own record below is all this ghost will say.")], [])
+            return self.chapter_panel(0, "waiting", f"{STORYTELLER_NAME} has not spoken yet",
+                                      [("whisper", f"{STORYTELLER_NAME} has not spoken yet. Until the candle is lit, the chain's own record below is all this ghost will say.")], [])
         out = []
         for i, c in enumerate(chapters, 1):
             cid = str(c.get("id") or f"chapter{i}")
@@ -434,7 +479,7 @@ class _Page:
                 balloons += [("buster", p) for p in _l(buster.get("paragraphs")) if isinstance(p, str) and p.strip() and p not in paras]
                 extra = self.buster_extra()
             if not balloons:
-                balloons = [("whisper", "The storyteller has not spoken this part yet.")]
+                balloons = [("whisper", f"{STORYTELLER_NAME} has not spoken this part yet.")]
             heading = c.get("heading") or CHAPTER_NAMES.get(cid, cid.capitalize())
             out.append(self.chapter_panel(i, cid, heading, balloons, [str(x) for x in _l(c.get("facts_cited"))], extra, c.get("variant")))
         return "\n".join(out)
@@ -518,10 +563,10 @@ class _Page:
         s = _d(self.s)
         vf = _d(s.get("verifier"))
         if not s:
-            return self.t.part("closing", tally="", tally_line=e("The storyteller has not spoken yet, so there is nothing to count."), dropped="")
+            return self.t.part("closing", tally="", tally_line=e(f"{STORYTELLER_NAME} has not spoken yet, so there is nothing to count."), dropped="")
         n = {k: int(vf.get(k) or 0) for k in ("sentences", "grounded", "repaired", "dropped")}
         tally = "".join(f"<li><b>{n[k]}</b><span>{k}</span></li>" for k in ("sentences", "grounded", "repaired", "dropped"))
-        line = (f"The storyteller spoke {_plural(n['sentences'], 'sentence')}; {n['grounded']} grounded, "
+        line = (f"{STORYTELLER_NAME} spoke {_plural(n['sentences'], 'sentence')}; {n['grounded']} grounded, "
                 f"{n['repaired']} repaired, {n['dropped']} dropped.")
         dropped_text = [t for t in _l(vf.get("dropped_text")) if isinstance(t, str) and t.strip()]
         dropped = ""
@@ -628,9 +673,9 @@ class _Page:
             og_image_alt=e(m["image_alt"]),
             model_id=e(_d(s.get("model")).get("id") or "no model yet"),
             kind=self.kind,
-            css=self.t.css,
-            js=self.t.js,
-            picado=self.svg("papel-picado"),
+            css=self.t.css + "\n" + self.t.header.css,
+            js=self.t.header.js + "\n" + self.t.js,
+            header=self.t.header.ghost_page(f"svg{next(self._ids)}"),
             panels="\n".join(p for p in panels if p),
             smallprint=self.smallprint(),
         )

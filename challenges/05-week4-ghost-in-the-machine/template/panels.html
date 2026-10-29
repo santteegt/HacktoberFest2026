@@ -11,6 +11,8 @@
 </div>
 <div class="title-stage">
 $stage
+<button type="button" class="eg-candle" aria-label="Light the candle" title="Light the candle" hidden></button>
+<p class="eg-line" id="eg-line" aria-live="polite" data-candle="Light the candle" data-hint="…or just click anywhere" hidden></p>
 </div>
 </section>
 <!--@ cover -->
@@ -24,7 +26,7 @@ $stage
 <h2 class="caption" id="record-h"><small>The ofrenda card</small>What the chain remembers</h2>
 <div class="panel-inner">
 <dl class="record">
-<div class="wide"><dt>Address</dt><dd class="addr"><code id="ghost-address">$address</code><button type="button" class="copy" data-copy="$address" aria-describedby="copy-status">Copy</button><span id="copy-status" class="visually-hidden" role="status" aria-live="polite"></span></dd></div>
+<div class="wide"><dt>Address</dt><dd class="addr"><code id="ghost-address">$address</code><button type="button" class="copy" data-copy="$address" aria-describedby="copy-status">Copy</button><a class="copy eh-link" href="https://www.ethereumhistory.com/contract/$address" target="_blank" rel="noopener noreferrer" aria-label="Open in Ethereum History" title="Open in Ethereum History"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="tip" aria-hidden="true">Open in Ethereum History</span></a><span id="copy-status" class="visually-hidden" role="status" aria-live="polite"></span></dd></div>
 $rows
 </dl>
 <p class="verdict-line">$verdict</p>
@@ -38,7 +40,7 @@ $rows
 <div class="scene">
 $teller
 <div class="balloons">
-<p class="speaker">The storyteller</p>
+<p class="speaker">$storyteller</p>
 $balloons
 </div>
 </div>
@@ -56,7 +58,7 @@ $extra
 </section>
 <!--@ closing -->
 <section class="panel closing reveal" aria-labelledby="close-h">
-<h2 class="caption" id="close-h"><small>Counting the candles</small>What the storyteller was allowed to say</h2>
+<h2 class="caption" id="close-h"><small>Counting the candles</small>What $storyteller was allowed to say</h2>
 <div class="panel-inner">
 <ul class="tally">$tally</ul>
 <p class="tally-line">$tally_line</p>
@@ -64,9 +66,14 @@ $dropped
 </div>
 </section>
 <!--@ smallprint -->
-<h2 class="visually-hidden">Small print</h2>
+<section class="panel truestory" aria-labelledby="true-h">
+<h2 class="caption" id="true-h"><small>$storyteller checked facts</small>Based on a True Story</h2>
+<div class="panel-inner">
 <p>$model_line</p>
 <p class="honest">$honest</p>
 <p>Sources used for this ghost:</p>
-<ul>$sources</ul>
+<ul class="sources">$sources</ul>
+</div>
+</section>
+<h2 class="visually-hidden">Small print</h2>
 <p>Generated $generated. Address $address on Ethereum mainnet (chain $chain_id).</p>

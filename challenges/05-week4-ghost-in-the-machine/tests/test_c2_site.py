@@ -38,9 +38,11 @@ def test_toggles_legend_and_featured_slot():
     for tag in ("friendly", "lingering", "bad", "banished", "alive", "scarred", "never called"):
         assert f">{tag}</span>" in legend
     assert "kind-legend" not in HTML  # moved out of the About footer
-    assert "ghosts/featured.json" in JS and "localStorage" in JS
-    assert JS.count("try {") >= 2  # storage access is guarded
-    assert "prefers-reduced-motion" in JS and "prefers-reduced-motion" in CSS
+    hjs = (WEB.parent / "template" / "header.js").read_text()  # the switches moved to the shared header
+    assert hjs in HTML  # inlined by `ghosts gallery build`
+    assert "ghosts/featured.json" in JS and "localStorage" in hjs
+    assert hjs.count("try {") >= 2  # storage access is guarded
+    assert "prefers-reduced-motion" in hjs and "prefers-reduced-motion" in CSS
 
 
 def test_self_contained_and_text_only_dom():
@@ -78,7 +80,7 @@ def test_link_preview_tags():
     assert meta("property", "og:image:alt") and meta("name", "twitter:image:alt")
     assert meta("name", "twitter:card") == "summary_large_image"
     assert f'<link rel="canonical" href="{SITE}/">' in HTML
-    assert '<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,' in HTML
+    assert '<link rel="icon" type="image/svg+xml" href="/favicon.svg">' in HTML
 
 
 def test_og_image_and_its_source():

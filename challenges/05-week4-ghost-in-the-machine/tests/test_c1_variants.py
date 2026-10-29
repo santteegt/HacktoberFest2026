@@ -42,6 +42,7 @@ def test_fix_null_shows_reason_not_code(tmp_path):
     assert "code-card fix" not in doc and "compiled:" not in doc
     assert "CreamFinance" in doc and "about $130,000,000 lost" in doc
     body = doc.split("<body", 1)[1]  # <head> holds the absolute link-preview URLs by design
+    body = re.sub(r'<a class="copy eh-link" href="https://www\.ethereumhistory\.com/contract/0x[0-9a-f]{40}"', "", body)  # the ofrenda's one link
     assert not re.search(r"https?://", re.sub(r'<footer class="smallprint".*?</footer>', "", body, flags=re.S))
 
 

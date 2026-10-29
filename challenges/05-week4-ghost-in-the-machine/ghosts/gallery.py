@@ -112,10 +112,28 @@ def build() -> Path:
     index.write_text(json.dumps(entries, indent=1, ensure_ascii=False) + "\n")
     featured = dict(rows[0][1], generated_at=rows[0][0]) if rows else None
     (ghosts_web / "featured.json").write_text(json.dumps(featured, indent=1, ensure_ascii=False) + "\n")
+    inject_header(web / "index.html")
     site = site_url()
     urls = [site + "/"] + [f"{site}/{e['path']}" for e in entries]
     (web / "sitemap.txt").write_text("\n".join(urls) + "\n")
     return index
+
+
+def inject_header(page: Path) -> bool:
+    """Write the shared header (template/header.*) between the header markers of web/index.html.
+
+    Returns True when the file changed. A page without the markers (or no page) is left alone.
+    """
+    from .render import Header
+
+    if not page.is_file():
+        return False
+    old = page.read_text(encoding="utf-8")
+    new = Header().inject(old)
+    if new == old:
+        return False
+    page.write_text(new, encoding="utf-8")
+    return True
 
 
 def og_index() -> Path | None:

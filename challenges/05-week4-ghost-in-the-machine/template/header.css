@@ -1,0 +1,57 @@
+/* Shared header (gallery and ghost pages): papel picado, brand or back link, About, Effects / Lights / Animation.
+   One source: render.py inlines it into every ghost page, gallery.py into web/index.html. */
+.eg-header {
+  --eg-candle: #ffd24a; --eg-marigold: #f29d1f; --eg-cream: #f7ead0; --eg-muted: #cdbbe6;
+  --eg-night-2: #2a1240; --eg-line: #5a3a8c;
+  --eg-title-font: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+}
+.eg-header .picado { display: block; width: 100%; height: 46px; }
+.eg-header .topbar { position: relative; z-index: 60; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 12px; max-width: var(--eg-max, 1100px); margin: 0 auto; padding: 6px 16px 0; font-size: .9rem; }
+.eg-left { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; min-width: 0; }
+.eg-left a { color: var(--eg-candle); text-decoration: none; font-weight: 700; }
+.eg-left a:hover { text-decoration: underline; }
+/* the brand reads like the gallery's eyebrow */
+.eg-brand { color: var(--eg-candle); font: 800 .8rem/1.2 var(--eg-title-font); letter-spacing: .16em; text-transform: uppercase; }
+.eg-header .switches { display: flex; flex-wrap: wrap; gap: 8px; }
+.eg-header .switch {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 14px;
+  font: 700 .85rem/1 var(--eg-title-font); color: var(--eg-cream); cursor: pointer;
+  background: var(--eg-night-2); border: 2px solid var(--eg-line); border-radius: 999px;
+}
+.eg-header .switch .sw-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--eg-muted); background: transparent; }
+.eg-header .switch[aria-pressed="true"] { border-color: var(--eg-candle); }
+.eg-header .switch[aria-pressed="true"] .sw-dot { background: var(--eg-candle); border-color: var(--eg-candle); box-shadow: 0 0 8px rgba(255, 210, 74, .8); }
+.eg-header .switch:hover { border-color: var(--eg-marigold); }
+.eg-header .switch:focus-visible { outline: 3px solid var(--eg-candle); outline-offset: 2px; }
+.eg-header .sw-icon { display: block; color: var(--eg-muted); }
+.eg-header .switch[aria-pressed="true"] .sw-icon { color: var(--eg-candle); filter: drop-shadow(0 0 4px rgba(255, 210, 74, .7)); }
+.eg-header .switch .sp-off, .eg-header .switch[aria-pressed="true"] .sp-on { display: inline; }
+.eg-header .switch .sp-on, .eg-header .switch[aria-pressed="true"] .sp-off { display: none; }
+.eg-header .eg-about { border-color: var(--eg-marigold); }
+/* Lights off: the page dims; each page decides what glows through */
+.eg-dim { position: fixed; inset: 0; z-index: 40; pointer-events: none; background: rgba(4, 0, 10, var(--eg-dim, .68)); opacity: 0; transition: opacity .6s ease; }
+.lights-off .eg-dim { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .eg-dim { transition: none; } }
+/* First-visit welcome (header.js): the line, the unlit candle and the flicker-in. Overlays only, no layout shift. */
+.eg-line {
+  position: absolute; z-index: 46; margin: 0; padding: 8px 14px; max-width: min(20rem, calc(100vw - 32px));
+  font: 700 1.05rem/1.3 "Chalkboard SE", "Comic Sans MS", "Comic Neue", ui-rounded, system-ui, sans-serif;
+  color: #1d1029; background: #fff; border: 2.5px solid #1d1029; border-radius: 18px;
+  box-shadow: 0 0 18px rgba(255, 210, 74, .55), 3px 3px 0 #f29d1f; pointer-events: none;
+  transition: opacity .6s ease;
+}
+.eg-line[hidden] { display: none; }
+.eg-line:empty { opacity: 0; }
+.eg-line.eg-out { opacity: 0; }
+.eg-welcome .flame, .eg-welcome .glow { opacity: 0; }
+.moving.eg-lit .flame { transform-box: fill-box; transform-origin: 50% 100%; animation: eg-flame-in .8s ease-out both; }
+@keyframes eg-flame-in {
+  0% { opacity: 0; transform: scale(.2, .1); }
+  35% { opacity: 1; transform: scale(1.2, 1.35); }
+  60% { transform: scale(.85, .9); }
+  100% { opacity: 1; transform: none; }
+}
+.eg-candle, .eg-hunt { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.eg-candle[hidden], .eg-hunt[hidden] { display: none; }
+.eg-candle:focus-visible, .eg-hunt:focus-visible { outline: 3px dashed #ffd24a; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .eg-line { transition: none; } }

@@ -17,6 +17,8 @@
   --title-font: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --body-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --eg-max: 980px;  /* shared header (template/header.css) width on story pages */
+  --eg-dim: .45;    /* Lights off dims a story page less than the gallery: the panels stay readable */
   color-scheme: dark;
 }
 *, *::before, *::after { box-sizing: border-box; }
@@ -34,11 +36,6 @@ a { color: var(--candle); }
 a:focus-visible, button:focus-visible { outline: 3px solid var(--candle); outline-offset: 2px; }
 .skip { position: absolute; left: -999px; top: 0; background: var(--candle); color: var(--ink); padding: 8px 12px; z-index: 10; }
 .skip:focus { left: 16px; }
-.picado { display: block; width: 100%; height: 46px; }
-.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; max-width: 980px; margin: 0 auto; padding: 6px 16px 0; font-size: .9rem; }
-.topbar a { text-decoration: none; font-weight: 700; }
-.topbar a:hover { text-decoration: underline; }
-.topbar .brand { color: var(--muted-night); }
 main { max-width: 980px; margin: 0 auto; padding: 12px 16px 40px; }
 
 /* ---------- panels ---------- */
@@ -108,11 +105,12 @@ h1.ghost-title {
 .badge.kind-alive { background: #1f5f99; }
 .badge.kind-unknown { background: #5a4a6e; }
 .title-stage { position: relative; height: 210px; margin-top: 8px; }
-.title-stage .teller { position: absolute; left: 12px; bottom: -6px; width: 128px; height: auto; }
+.title-stage { --tl: 12px; --tw: 128px; }
+.title-stage .teller { position: absolute; left: var(--tl); bottom: -6px; width: var(--tw); height: auto; }
 .title-stage .gravestone { position: absolute; right: 12%; bottom: 0; width: 120px; }
 @media (min-width: 720px) {
   .title-stage { height: 240px; }
-  .title-stage .teller { left: 36px; width: 150px; }
+  .title-stage { --tl: 36px; --tw: 150px; }
 }
 
 /* ---------- flying characters ---------- */
@@ -213,6 +211,11 @@ h1.ghost-title {
 .addr code { font-family: var(--mono); font-size: .9rem; word-break: break-all; }
 .copy { font: 800 .78rem/1 var(--title-font); text-transform: uppercase; letter-spacing: .08em; padding: 7px 10px; border: 2px solid var(--ink); border-radius: 6px; background: var(--candle); color: var(--ink); cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
 .copy:active { transform: translate(2px, 2px); box-shadow: none; }
+.eh-link { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 30px; padding: 0; text-decoration: none; }
+.eh-link svg { display: block; }
+.eh-link .tip { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); padding: 5px 9px; border-radius: 6px; background: var(--ink); color: var(--bone); font: 700 .74rem/1.2 var(--body-font); letter-spacing: .02em; text-transform: none; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .15s ease; z-index: 3; }
+.eh-link .tip::after { content: ""; position: absolute; left: 50%; top: 100%; margin-left: -6px; border: 6px solid transparent; border-top-color: var(--ink); }
+.eh-link:hover .tip, .eh-link:focus-visible .tip { opacity: 1; }
 .verdict-line { margin: 16px 0 0; padding: 12px 14px; border: 2.5px solid var(--ink); border-radius: 6px; background: #fff; font-weight: 600; }
 .verdict-line .badge { margin-right: 8px; vertical-align: 1px; }
 
@@ -280,26 +283,39 @@ h1.ghost-title {
 .smallprint { max-width: 980px; margin: 0 auto; padding: 0 16px 40px; font-size: .84rem; line-height: 1.55; color: var(--muted-night); }
 .smallprint p { margin: 8px 0; }
 .smallprint ul { margin: 6px 0; padding-left: 18px; }
+.smallprint .truestory { color: var(--ink); font-size: .95rem; margin-top: 8px; }
+.truestory .panel-inner p { margin: 10px 0 0; }
+.truestory .sources { margin: 8px 0 0; padding-left: 20px; }
+.truestory .sources li { margin: 4px 0; overflow-wrap: anywhere; }
+.truestory a { color: #6b2a00; }
+.smallprint .truestory .honest { padding: 10px 12px; border-left: 4px solid var(--marigold); background: #fff; color: var(--ink); }
 .smallprint .honest { padding: 10px 12px; border-left: 4px solid var(--marigold); background: rgba(255, 255, 255, .04); color: var(--bone); }
 
 /* ---------- reveal on scroll (only when JS runs) ---------- */
 .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
 .js .reveal.seen { opacity: 1; transform: none; }
+/* balloons pop in one by one as they scroll into view (ghost.js adds .shown, staggered 120 ms per panel) */
 .js .reveal .balloon { opacity: 0; transform: scale(.92); transform-origin: 0 50%; transition: opacity .45s ease, transform .45s ease; }
-.js .reveal.seen .balloon { opacity: 1; transform: none; }
-.js .reveal.seen .balloon:nth-child(2) { transition-delay: .25s; }
-.js .reveal.seen .balloon:nth-child(3) { transition-delay: .5s; }
-.js .reveal.seen .balloon:nth-child(4) { transition-delay: .75s; }
-.js .reveal.seen .balloon:nth-child(n+5) { transition-delay: 1s; }
+.js .reveal .balloon.shown { opacity: 1; transform: none; }
 .js .tilt-l.reveal.seen { transform: rotate(-.4deg); }
 .js .tilt-r.reveal.seen { transform: rotate(.4deg); }
 @media (max-width: 719px) { .js .tilt-l.reveal.seen, .js .tilt-r.reveal.seen { transform: none; } }
+
+/* Animation switch off (header.js drops html.moving): everything holds still, nothing waits for the scroll */
+.js:not(.moving) .flyer, .js:not(.moving) .bob, .js:not(.moving) .petal,
+.js:not(.moving) .teller .flame, .js:not(.moving) .teller .glow { animation-play-state: paused; }
+.js:not(.moving) .reveal, .js:not(.moving) .reveal .balloon { transition: none; }
+/* Lights off: the page dims (header.css) and the ghosts glow */
+.lights-off .flyer svg { filter: drop-shadow(0 0 14px rgba(255, 210, 74, .65)) drop-shadow(0 0 3px rgba(255, 255, 255, .5)); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .js .reveal, .js .reveal .balloon { opacity: 1; transform: none; }
   .flyer { left: auto; right: 6%; }
   .petal { display: none; }
+  /* the reader turned Animation on by hand: let the ghosts fly again */
+  html.moving .flyer { left: 4%; right: auto; animation: drift 17s ease-in-out infinite alternate !important; }
+  html.moving .flyer .bob { animation: bob 3.2s ease-in-out infinite !important; }
 }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 @media print {
@@ -311,3 +327,24 @@ h1.ghost-title {
 .chips .chip.tag { margin: 0; font-size: .8rem; padding: 4px 11px; }
 .fix-note { margin: 18px 0 0; padding: 12px 14px; border: 2px dashed #0f6b5c; border-radius: 6px; background: #f0fbf8; color: #0b3b34; font-size: .95rem; }
 .fix-note strong { display: block; margin-bottom: 4px; font: 800 .74rem/1.2 var(--title-font); letter-spacing: .12em; text-transform: uppercase; }
+
+/* ---------- first-visit welcome: "Light the candle" (header.js) ---------- */
+/* Doña Gwei shows through the dark; the button sits over her candle (flame centre at 98,95 of the 120x160 viewBox) */
+.eg-welcome .title-stage .teller { z-index: 41; }
+.eg-welcome .title-panel .tagline { opacity: 0; }
+.title-panel .tagline { transition: opacity .8s ease .3s; }
+.title-stage .eg-candle {
+  position: absolute; z-index: 42; width: 52px; height: 60px; padding: 0;
+  left: calc(var(--tl) + var(--tw) * .8167 - 26px); bottom: calc(var(--tw) * .5417 - 6px - 30px);
+  background: radial-gradient(circle at 50% 40%, rgba(255, 210, 74, .22), rgba(255, 210, 74, 0) 65%);
+  border: 2px dashed rgba(255, 210, 74, .55); border-radius: 26px;
+  animation: eg-beckon 2.4s ease-in-out infinite;
+}
+.title-stage .eg-candle:hover, .title-stage .eg-candle:focus-visible { border-color: #ffd24a; background: radial-gradient(circle at 50% 40%, rgba(255, 210, 74, .5), rgba(255, 210, 74, 0) 70%); }
+@keyframes eg-beckon { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 210, 74, .0); } 50% { box-shadow: 0 0 18px 4px rgba(255, 210, 74, .45); } }
+.title-stage .eg-line { left: calc(var(--tl) + var(--tw) + 4px); bottom: calc(var(--tw) * .5417 - 6px); z-index: 42; }
+.title-stage .eg-line::before { content: ""; position: absolute; left: -14px; top: 50%; margin-top: -8px; border-style: solid; border-width: 8px 14px 8px 0; border-color: transparent #1d1029 transparent transparent; }
+.title-stage .eg-line::after { content: ""; position: absolute; left: -9px; top: 50%; margin-top: -6px; border-style: solid; border-width: 6px 11px 6px 0; border-color: transparent #fff transparent transparent; }
+@media (max-width: 380px) { .title-stage .eg-line { max-width: calc(100vw - var(--tl) - var(--tw) - 48px); font-size: .95rem; } }
+/* the candle catches: a flicker-in, then the usual flicker */
+.moving.eg-lit .teller .flame { transform-box: view-box; transform-origin: 98px 95px; animation: eg-flame-in .8s ease-out both, flicker 1.4s ease-in-out .8s infinite; }

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128"><title>Ethereum Ghosts</title>
+<rect width="128" height="128" rx="26" fill="#1b0b2b"/>
+<g transform="translate(5 12) scale(.92)">
+<path d="M52 6C26 6 13 28 13 54v46q6 12 12 0q7 12 13 0q7 12 14 0q7 12 13 0q7 12 13 0q6 12 13 0V54C91 28 78 6 52 6z" fill="#f6f1ff" stroke="#1d1029" stroke-width="4" stroke-linejoin="round"/>
+<path d="M16 64q-10 4-8 14q6-2 9-6M88 62q10 2 14 12" fill="#f6f1ff" stroke="#1d1029" stroke-width="4" stroke-linecap="round"/>
+<ellipse cx="40" cy="46" rx="5" ry="7" fill="#1d1029"/><ellipse cx="64" cy="46" rx="5" ry="7" fill="#1d1029"/><circle cx="41.5" cy="43.5" r="1.7" fill="#fff"/><circle cx="65.5" cy="43.5" r="1.7" fill="#fff"/><path d="M42 61q10 9 20 0" stroke="#1d1029" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="32" cy="58" r="4" fill="#ff9ab8" opacity=".8"/><circle cx="72" cy="58" r="4" fill="#ff9ab8" opacity=".8"/>
+<path d="M102 74l6 14" stroke="#1d1029" stroke-width="2"/>
+<g transform="rotate(-8 112 96)"><rect x="83" y="85" width="48" height="21" rx="3" fill="#ffd24a" stroke="#1d1029" stroke-width="2.5"/><text x="107" y="100" text-anchor="middle" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="11" font-weight="700" fill="#1d1029">0xB00</text></g>
+</g>
+</svg>
