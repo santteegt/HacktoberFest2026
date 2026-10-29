@@ -1,0 +1,94 @@
+{
+ "address": "0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+ "name": "Rubixi",
+ "kind": "bad",
+ "title": "The pyramid that forgot its own name",
+ "tagline": "It changed its name and kept the old key under the mat. Strangers still use it.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "A pyramid in March",
+   "paragraphs": [
+    "Rubixi was born on the 14th of March 2016, in block 1,150,481, in the Homestead age.",
+    "It promised to pay early players from the coins of later ones, and to keep a fee for its creator."
+   ],
+   "facts_cited": [
+    "birth.timestamp",
+    "birth.block",
+    "age.hardfork"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "712 visitors",
+   "paragraphs": [
+    "The chain counts 712 transactions against it. Some came to play. Others came for the fee."
+   ],
+   "facts_cited": [
+    "life.tx_count"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The key under the mat",
+   "paragraphs": [
+    "Before it was Rubixi, it was DynamicPyramid. When the name changed, one function did not."
+   ],
+   "facts_cited": [
+    "wounds.findings.0.title"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "Who you gonna call",
+   "paragraphs": [
+    "The ghost buster does not chase the ghost. She changes the lock."
+   ],
+   "facts_cited": []
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "In Solidity 0.2.1 a constructor is the function that shares the contract's name. DynamicPyramid() no longer matched, so it never ran at birth.",
+   "It became a door anyone can open. Call it, and you are the creator; the fees are yours. The last call on the 13th of October 2026 was exactly that: DynamicPyramid."
+  ],
+  "snippet": {
+   "file": "Rubixi.sol",
+   "lines": [
+    12,
+    15
+   ],
+   "code": "        //Sets creator\n        function DynamicPyramid() {\n                creator = msg.sender;\n        }"
+  }
+ },
+ "buster": {
+  "paragraphs": [
+   "In Solidity 0.8.38 the constructor has its own keyword, so a rename cannot turn it into a public door.",
+   "The owner check reverts instead of quietly skipping, and the creator is set once, at birth, and never again."
+  ],
+  "fix": {
+   "language": "solidity",
+   "version": "0.8.38",
+   "compiled": false,
+   "compiler_output": "fixture: not compiled",
+   "code": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.38;\n\ncontract Rubixi {\n    address private immutable creator;\n\n    constructor() {\n        creator = msg.sender;\n    }\n\n    modifier onlyowner() {\n        require(msg.sender == creator, \"not the creator\");\n        _;\n    }\n}"
+  }
+ },
+ "model": {
+  "id": "fixture (hand-written by Lane C1, not a model)",
+  "think": false,
+  "seconds": 0.0,
+  "prompt_tokens": 0,
+  "output_tokens": 0
+ },
+ "verifier": {
+  "sentences": 14,
+  "grounded": 12,
+  "repaired": 1,
+  "dropped": 1,
+  "dropped_text": [
+   "Its creator lost 40 ether in a single night."
+  ]
+ },
+ "generated_at": "2026-10-29T05:12:00Z"
+}

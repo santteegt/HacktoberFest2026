@@ -1,0 +1,28 @@
+{
+ "address": "0xfcb0818c0b79a98686b2f56d4623d0b6c0243c55",
+ "kind": "friendly",
+ "reasons": [
+  "never called after its birth 10.1 years ago",
+  "1 suspected wound(s), none confirmed at Medium+"
+ ],
+ "activity": {
+  "lifetime_txs": 0,
+  "last_tx": null,
+  "last_12m_txs": 0,
+  "last_12m_capped": false,
+  "silent_years": null
+ },
+ "wounds": {
+  "count": 1,
+  "confirmed": 0,
+  "worst_impact": "Medium",
+  "scars": 0,
+  "fatal": 0
+ },
+ "labels": {
+  "historian_story": true,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

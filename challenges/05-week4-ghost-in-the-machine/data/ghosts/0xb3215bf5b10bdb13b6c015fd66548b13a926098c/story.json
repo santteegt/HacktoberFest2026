@@ -1,0 +1,164 @@
+{
+ "address": "0xb3215bf5b10bdb13b6c015fd66548b13a926098c",
+ "name": "UserWallet",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The Ghost of Ignored Returns",
+ "tagline": "A Byzantium soul haunted by a transfer that never asked for permission.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of UserWallet",
+   "paragraphs": [
+    "A single candle flickers over the name UserWallet. It came into the world on February 22, 2018. This small program that lives on Ethereum was born into the Byzantium era. On the day it was born it was written into a block, one page of Ethereum's shared record book.",
+    "A shadow moves as the story unfolds. The wallet 0x17bc…3d61 brought it into being. It was written in Solidity 0.4.16. Now it has lived for about 9 years."
+   ],
+   "facts_cited": [
+    "facts.birth.deployer",
+    "facts.birth.timestamp",
+    "facts.blockscout.name",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The silent failure",
+   "paragraphs": [
+    "I am UserWallet. I carry a wound that stays hidden in the dark. My collectToken function takes a token and tries to move my balance to the owner.",
+    "I do not check if the transfer succeeds. A failure passes by me like a ghost in the night. This unchecked-transfer is a high impact scar on my soul.",
+    "Nobody ever called me. My wound remains a secret, a silent mistake in my own body."
+   ],
+   "facts_cited": [
+    "facts.blockscout.name",
+    "verdict.reasons[0]"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "The cure of the watchful eye",
+   "paragraphs": [
+    "The ghost of UserWallet lingers in the shadows of a mistake. It failed because it did not listen to the answer of the transfer. It moved the money but ignored the truth of the return.",
+    "The cure is a simple habit. The code must read the answer of every call. In Solidity 0.8.38, it checks the boolean and reverts if the payment fails. This way, one stubborn wallet cannot block the path for everyone else."
+   ],
+   "facts_cited": [
+    "facts.blockscout.name",
+    "recipe.solc_version"
+   ]
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I am UserWallet. I carry a wound that stays hidden in the dark. My collectToken function takes a token and tries to move my balance to the owner.",
+   "I do not check if the transfer succeeds. A failure passes by me like a ghost in the night. This unchecked-transfer is a high impact scar on my soul.",
+   "Nobody ever called me. My wound remains a secret, a silent mistake in my own body."
+  ],
+  "snippet": {
+   "file": "UserWallet.sol",
+   "lines": [
+    23,
+    27
+   ],
+   "code": "    function collectToken(address token) onlyOwner {\n        Token t = Token(token);\n        uint256 balance = t.balanceOf(this);\n        t.transfer(owner, balance);\n    }"
+  },
+  "finding": {
+   "id": "w1",
+   "check": "unchecked-transfer",
+   "swc": "SWC-104",
+   "title": "UserWallet.collectToken(address) ignores return value by t.transfer(owner,balance)",
+   "impact": "High",
+   "confidence": "Medium",
+   "confirmed": true,
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer"
+  },
+  "incident": null
+ },
+ "buster": {
+  "paragraphs": [
+   "The ghost of UserWallet lingers in the shadows of a mistake. It failed because it did not listen to the answer of the transfer. It moved the money but ignored the truth of the return.",
+   "The cure is a simple habit. The code must read the answer of every call. In Solidity 0.8.38, it checks the boolean and reverts if the payment fails. This way, one stubborn wallet cannot block the path for everyone else."
+  ],
+  "fix": {
+   "language": "solidity",
+   "version": "0.8.38",
+   "code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.38;\n\ncontract UserWallet {\n    mapping(address => uint256) public balance;\n\n    function credit(address who) external payable {\n        balance[who] += msg.value;\n    }\n\n    // Pull, don't push: each recipient withdraws, and a failed transfer reverts instead of vanishing.\n    function claim() external {\n        uint256 amount = balance[msg.sender];\n        require(amount > 0, \"nothing owed\");\n        balance[msg.sender] = 0;\n        (bool ok, ) = payable(msg.sender).call{value: amount}(\"\");\n        require(ok, \"transfer failed\");\n    }\n}\n",
+   "compiled": true,
+   "compiler_output": "solc 0.8.38 --bin: OK (UserWallet 1290 bytes)",
+   "adapted": true,
+   "renames": {
+    "Payouts": "UserWallet",
+    "owed": "balance"
+   },
+   "recipe": "unchecked-lowlevel",
+   "attempts": 2,
+   "note": "the recipe with names chosen by the model from the old contract; renamed and checked by code, compiled by solc",
+   "ignored_renames": [
+    "collect takes 0 argument(s) in the old contract but credit takes 1",
+    "collectToken takes 1 argument(s) in the old contract but claim takes 0"
+   ],
+   "failed_attempts": [
+    {
+     "ok": false,
+     "renames": {
+      "Payouts": "UserWallet",
+      "owed": "balance",
+      "credit": "collect",
+      "claim": "collectToken"
+     },
+     "rename_problems": [
+      "collect takes 0 argument(s) in the old contract but credit takes 1",
+      "collectToken takes 1 argument(s) in the old contract but claim takes 0"
+     ],
+     "meaning_problems": [],
+     "output": "solc 0.8.38 --bin: OK (UserWallet 1290 bytes)"
+    }
+   ]
+  },
+  "fix_reason": null,
+  "recipe": {
+   "check": "unchecked-lowlevel",
+   "title": "Read the answer of every call",
+   "explain": "Old `send` and low-level `call` return false instead of failing, so a contract that ignores the answer keeps going as if the money arrived. Modern Solidity code checks the boolean that `call` returns and reverts on failure, and it lets each recipient pull its own payment so one stubborn wallet cannot block everyone else.",
+   "compiler_enforced": false
+  },
+  "mitigation": null
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 16.6,
+  "model_seconds": 16.5,
+  "calls": 6,
+  "prompt_tokens": 3059,
+  "output_tokens": 523
+ },
+ "verifier": {
+  "sentences": 25,
+  "grounded": 25,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "never_called": true,
+  "born_on": "February 22, 2018",
+  "born_year": 2018,
+  "age_years": 8.7,
+  "age_years_whole": 8,
+  "balance_eth": 0.0,
+  "deployer_short": "0x17bc…3d61",
+  "address_short": "0xb321…098c",
+  "compiler_label": "Solidity 0.4.16"
+ },
+ "notes": [
+  "never called (life.never_called): no life chapter, no last call"
+ ],
+ "generated_at": "2026-10-29T05:52:21Z"
+}

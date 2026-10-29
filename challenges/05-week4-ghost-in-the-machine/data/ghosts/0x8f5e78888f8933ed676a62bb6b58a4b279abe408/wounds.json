@@ -1,0 +1,28 @@
+{
+ "address": "0x8f5e78888f8933ed676a62bb6b58a4b279abe408",
+ "tier": "slither",
+ "compiler_version": "0.6.8+commit.0bbfe453",
+ "analyzed_files": [
+  "@openzeppelin/contracts/utils/Address.sol",
+  "contracts/proxy/AdminUpgradeabilityProxy.sol",
+  "contracts/proxy/Proxy.sol",
+  "contracts/proxy/UpgradeabilityProxy.sol"
+ ],
+ "source_origin": "src",
+ "findings": [],
+ "incident": null,
+ "slither_raw": "data/ghosts/0x8f5e78888f8933ed676a62bb6b58a4b279abe408/slither.json",
+ "catalog_entry": null,
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 3.58
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.6.8"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:41:29Z"
+}

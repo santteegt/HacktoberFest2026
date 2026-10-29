@@ -1,0 +1,82 @@
+{
+ "address": "0x3d5bc3c8d13dcb8bf317092d84783c2697ae9258",
+ "name": "Unitroller",
+ "kind": "bad",
+ "title": "The front door of a drained house",
+ "tagline": "It only passed calls along. The record still lists it at the scene.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "A door is hung",
+   "paragraphs": [
+    "Unitroller was born on the 2nd of August 2020, in block 10,579,797, in the Muir Glacier age."
+   ],
+   "facts_cited": [
+    "birth.timestamp",
+    "birth.block"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "Many hands on the handle",
+   "paragraphs": [
+    "The chain counts 24,108 calls. The last one, claimComp, came on the 3rd of May 2024."
+   ],
+   "facts_cited": [
+    "life.tx_count",
+    "life.last_tx"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The night of the price",
+   "paragraphs": [
+    "Its address sits in the DeFiHackLabs record of the CreamFinance incident."
+   ],
+   "facts_cited": [
+    "wounds.incident"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "Who you gonna call",
+   "paragraphs": [
+    "Read prices from a time-weighted average or several independent sources."
+   ],
+   "facts_cited": []
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "On the 27th of October 2021 the prices lied, and the house was emptied."
+  ],
+  "snippet": null
+ },
+ "buster": {
+  "paragraphs": [
+   "Cap how far a price may move in one block, and pause borrowing when it jumps."
+  ],
+  "fix": null,
+  "fix_reason": "No compiler version fixes this wound: it is a price oracle flaw (cause in the record: 'Price Manipulation'). The buster's advice is a general mitigation for that kind of flaw, written by hand, not taken from the incident's references.",
+  "recipe": null,
+  "mitigation": {
+   "flaw_kind": "price oracle",
+   "advice": "Read prices from a time-weighted average."
+  }
+ },
+ "model": {
+  "id": "fixture (hand-written by Lane C1, not a model)",
+  "think": false,
+  "seconds": 0.0,
+  "prompt_tokens": 0,
+  "output_tokens": 0
+ },
+ "verifier": {
+  "sentences": 7,
+  "grounded": 7,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": []
+ },
+ "generated_at": "2026-10-29T12:06:00Z"
+}

@@ -1,0 +1,71 @@
+{
+ "address": "0xc9fa8f4cfd11559b50c5c7f6672b9eea2757e1bd",
+ "tier": "slither",
+ "compiler_version": "0.6.12+commit.27d51765",
+ "analyzed_files": [
+  "QUATERNION.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "QTNToken",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": null,
+   "lines": null,
+   "snippet": null,
+   "description": "business logic flaw",
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2023-01/QTN_exp.sol"
+  },
+  {
+   "id": "w2",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "QUATERNION._transfer(address,address,uint256) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "QUATERNION.sol",
+   "lines": [
+    273,
+    311
+   ],
+   "snippet": "    function _transfer(address from, address to, uint256 amount) private {\n        require(from != address(0), \"ERC20: transfer from the zero address\");\n        require(to != address(0), \"ERC20: transfer to the zero address\");\n        require(amount > 0, \"ERC20: Transfer amount must be greater than zero\");\n        \n        if (from != owner() && to != owner()) {\n            uint256 txLimitAmount = _totalSupply.mul(_percentForTxLimit).div(100);\n            \n            require(amount <= txLimitAmount, \"ERC20: amount exceeds the max tx limit.\");\n            \n            if(from != uniswapV2Pair) {\n                require(!blacklist[from] && !blacklist[to], 'ERC20: the transaction was blocked.');\n                require(_buyInfo[from] == 0 || _buyInfo[from].add(_timeLimitFromLastBuy) < now, \"ERC20: Tx not allowed yet.\");\n                \n                if(to != address(uniswapV2Router) && to != uniswapV2Pair)\n                    _tokenTransfer(from, to, amount, 0);\n                else\n                    _tokenTransfer(from, to, amount, 0);\n            }\n            else {\n                if(!_live)\n                    blacklist[to] = true;\n                \n                require(balanceOf(to) <= txLimitAmount, 'ERC20: current balance exceeds the max limit.');\n                \n                _buyInfo[to] = now;\n                _tokenTransfer(from, to, amount, 0);\n\n                uint256 rebaseLimitAmount = _totalSupply.mul(_percentForRebase).div(100);\n                uint256 currentBalance = balanceOf(to);\n                uint256 newBalance = currentBalance.add(amount);\n                if(currentBalance < rebaseLimitAmount && newBalance < rebaseLimitAmount) {\n                    rebasePlus(amount);\n                }\n            }\n        } else {\n            _tokenTransfer(from, to, amount, 0);\n        }\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: QUATERNION._transfer(address,address,uint256) (QUATERNION.sol#273-311) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool,string)(_buyInfo[from] == 0 || _buyInfo[from].add(_timeLimitFromLastBuy) < now,ERC20: Tx not allowed yet.) (QUATERNION.sol#285)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  }
+ ],
+ "incident": {
+  "id": "defihacklabs-2023-01-18-qtntoken",
+  "name": "QTNToken",
+  "date": "2023-01-18",
+  "loss_usd": null,
+  "loss_eth": null,
+  "loss_note": "~2ETH",
+  "cause": "business logic flaw",
+  "swc": null,
+  "summary": "QTNToken (2023-01-18), documented in the DeFiHackLabs repository: business logic flaw. Reported loss: ~2ETH.",
+  "references": [
+   "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2023-01/QTN_exp.sol",
+   "https://twitter.com/BlockSecTeam/status/1615625901739511809"
+  ]
+ },
+ "slither_raw": "data/ghosts/0xc9fa8f4cfd11559b50c5c7f6672b9eea2757e1bd/slither.json",
+ "catalog_entry": "defihacklabs-2023-01-18-qtntoken",
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 3.32
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.6.12"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:29:14Z"
+}

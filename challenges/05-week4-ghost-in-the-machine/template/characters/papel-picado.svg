@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="picado" width="100%" height="46" aria-hidden="true" focusable="false">
+<defs><pattern id="picado-$uid" width="300" height="46" patternUnits="userSpaceOnUse">
+<path d="M0 3q150 10 300 0" stroke="#f7ead0" stroke-width="1.5" fill="none"/>
+<g stroke="#1d1029" stroke-width="1"><path d="M4 5h52v30l-6.5 6l-6.5-6l-6.5 6l-6.5-6l-6.5 6l-6.5-6l-6.5 6l-6.5-6z" fill="#f29d1f"/><path d="M64 7h52v30l-6.5 6l-6.5-6l-6.5 6l-6.5-6l-6.5 6l-6.5-6l-6.5 6l-6.5-6z" fill="#e8457a"/><path d="M124 8h52v30l-6.5 6l-6.5-6l-6.5 6l-6.5-6l-6.5 6l-6.5-6l-6.5 6l-6.5-6z" fill="#2bb3a3"/><path d="M184 7h52v30l-6.5 6l-6.5-6l-6.5 6l-6.5-6l-6.5 6l-6.5-6l-6.5 6l-6.5-6z" fill="#ffd24a"/><path d="M244 5h52v30l-6.5 6l-6.5-6l-6.5 6l-6.5-6l-6.5 6l-6.5-6l-6.5 6l-6.5-6z" fill="#b48be0"/></g>
+<g fill="#1b0b2b"><circle cx="30" cy="18" r="5"/><path d="M14 12l4 4l-4 4l-4-4zM46 12l4 4l-4 4l-4-4zM30 28l3 3l-3 3l-3-3z"/><path d="M90 14l6 6l-6 6l-6-6z"/><circle cx="74" cy="14" r="2.5"/><circle cx="106" cy="14" r="2.5"/><circle cx="74" cy="28" r="2.5"/><circle cx="106" cy="28" r="2.5"/><path d="M150 13q6 6 0 12q-6-6 0-12zM138 20h-6M168 20h-6"/><circle cx="150" cy="32" r="2"/><circle cx="210" cy="19" r="6"/><circle cx="210" cy="19" r="2.5" fill="#ffd24a"/><path d="M194 12l3 3l-3 3l-3-3zM226 12l3 3l-3 3l-3-3zM194 28l3 3l-3 3l-3-3zM226 28l3 3l-3 3l-3-3z"/><path d="M262 14h16v4h-16zM268 10h4v14h-4z"/><circle cx="270" cy="30" r="2.5"/></g>
+</pattern></defs>
+<rect width="100%" height="46" fill="url(#picado-$uid)"/>
+</svg>

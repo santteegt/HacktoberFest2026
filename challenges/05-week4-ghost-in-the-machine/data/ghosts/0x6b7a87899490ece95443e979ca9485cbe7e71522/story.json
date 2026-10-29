@@ -1,0 +1,162 @@
+{
+ "address": "0x6b7a87899490ece95443e979ca9485cbe7e71522",
+ "name": "AnyswapV4Router",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The Haunted Router of Berlin",
+ "tagline": "A wounded multichain ghost lingers within the AnyswapV4Router from the Berlin era.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of the router",
+   "paragraphs": [
+    "A single candle flickers near the altar. On June 18, 2021, a wallet ending in 9251 brought the AnyswapV4Router into the world. It was born as a small program that lives on Ethereum. The contract took its first breath during the Berlin era.",
+    "The code was written in Solidity 0.8.1. On the day it was born, it was written into a block, one page of Ethereum's shared record book. It has lived for 5.4 years since that first light."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.birth.timestamp",
+    "facts.blockscout.creator",
+    "facts.blockscout.name",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The heavy toll of the router",
+   "paragraphs": [
+    "The AnyswapV4Router moved with a heavy pace. It has seen 237477 transactions in its life. People called upon it for many things. They used anySwapOut and anySwapOutNative. Others reached for anySwapOutUnderlying and anySwapOutUnderlyingWithPermit. Some only checked the balanceOf or took a withdrawVault.",
+    "The ghost remains active every year since 2023. It lived in the shadow of Multichain (Anyswap) (2022-01-18). The DeFiHackLabs repository holds its secrets. The records speak of a deep wound called Insufficient Token Validation."
+   ],
+   "facts_cited": [
+    "facts.blockscout.name",
+    "facts.life.last_tx.method",
+    "facts.life.recent_methods[2]",
+    "facts.life.recent_methods[5]",
+    "facts.life.recent_methods[6]",
+    "facts.life.recent_years[0]",
+    "facts.life.tx_count",
+    "verdict.reasons[0]",
+    "wounds.findings[0].description",
+    "wounds.findings[0].reference_url"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The validation failure",
+   "paragraphs": [
+    "I am the router. My address sits in the DeFiHackLabs record of the Multichain incident. The record stays silent on my part. The loss belongs to Multichain as a whole.",
+    "The wound is deep. It is a failure of insufficient token validation. On January 18, 2022, the breach happened. It left a mark of $1.4 million.",
+    "The ghost of that day lingers in my code. The impact is high. It is a confirmed truth in the catalog."
+   ],
+   "facts_cited": [
+    "verdict.reasons[0]",
+    "wounds.findings[0].reference_url",
+    "wounds.incident.loss_usd"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "The lingering shadow",
+   "paragraphs": [
+    "The candle light trembles against the AnyswapV4Router. This ghost carries a deep wound from the Multichain. It was born of a design flaw in input validation. No compiler version and no Solidity upgrade can heal this mark.",
+    "The spirit warns us to check every address, token, and amount a caller passes in. Only accept tokens and contracts the protocol has approved. Never take a token's own answer about moving funds. Verify approvals and permits against the real owner."
+   ],
+   "facts_cited": [
+    "facts.blockscout.name"
+   ]
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I am the router. My address sits in the DeFiHackLabs record of the Multichain incident. The record stays silent on my part. The loss belongs to Multichain as a whole.",
+   "The wound is deep. It is a failure of insufficient token validation. On January 18, 2022, the breach happened. It left a mark of $1.4 million.",
+   "The ghost of that day lingers in my code. The impact is high. It is a confirmed truth in the catalog."
+  ],
+  "snippet": null,
+  "finding": {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "Multichain (Anyswap)",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-01/Anyswap_exp.sol"
+  },
+  "incident": {
+   "id": "defihacklabs-2022-01-18-multichain-anyswap",
+   "name": "Multichain (Anyswap)",
+   "date": "2022-01-18",
+   "loss_usd": 1400000,
+   "loss_eth": null,
+   "loss_note": "$1.4 million",
+   "cause": "Insufficient Token Validation",
+   "swc": null,
+   "summary": "Multichain (Anyswap) (2022-01-18), documented in the DeFiHackLabs repository: Insufficient Token Validation. Reported loss: $1.4 million.",
+   "references": [
+    "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-01/Anyswap_exp.sol",
+    "https://medium.com/zengo/without-permit-multichains-exploit-explained-8417e8c1639b",
+    "https://twitter.com/PeckShieldAlert/status/1483363515411099651",
+    "https://etherscan.io/tx/0xe50ed602bd916fc304d53c4fed236698b71691a95774ff0aeeb74b699c6227f7"
+   ]
+  }
+ },
+ "buster": {
+  "paragraphs": [
+   "The candle light trembles against the AnyswapV4Router. This ghost carries a deep wound from the Multichain. It was born of a design flaw in input validation. No compiler version and no Solidity upgrade can heal this mark.",
+   "The spirit warns us to check every address, token, and amount a caller passes in. Only accept tokens and contracts the protocol has approved. Never take a token's own answer about moving funds. Verify approvals and permits against the real owner."
+  ],
+  "fix": null,
+  "fix_reason": "No compiler version fixes this wound: it is a input validation flaw (cause in the record: 'Insufficient Token Validation'). The buster's advice is a general mitigation for that kind of flaw, written by hand, not taken from the incident's references.",
+  "recipe": null,
+  "mitigation": {
+   "flaw_kind": "input validation",
+   "advice": "Check every address, token and amount a caller passes in, and accept only tokens and contracts the protocol has approved. Never take a token's own answer about who may move funds; verify approvals and permits against the real owner."
+  }
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 17.5,
+  "model_seconds": 17.4,
+  "calls": 5,
+  "prompt_tokens": 2732,
+  "output_tokens": 619
+ },
+ "verifier": {
+  "sentences": 38,
+  "grounded": 38,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "June 18, 2021",
+  "born_year": 2021,
+  "age_years": 5.4,
+  "age_years_whole": 5,
+  "last_seen_on": "July 14, 2026",
+  "last_seen_year": 2026,
+  "silent_years": 0.3,
+  "silent_days": 107,
+  "active_days": 1851,
+  "balance_eth": 0.0,
+  "deployer_short": "0xfa9d…9251",
+  "address_short": "0x6b7a…1522",
+  "compiler_label": "Solidity 0.8.1",
+  "activity_label": "active every year since 2023"
+ },
+ "notes": [
+  "no recipe matches the wound: buster tells the general mitigation, no code"
+ ],
+ "generated_at": "2026-10-29T05:59:53Z"
+}

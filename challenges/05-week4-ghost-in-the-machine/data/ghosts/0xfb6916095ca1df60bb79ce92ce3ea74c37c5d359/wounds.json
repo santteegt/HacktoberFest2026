@@ -1,0 +1,33 @@
+{
+ "address": "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",
+ "tier": "regex",
+ "compiler_version": null,
+ "analyzed_files": [
+  "source.eh.sol"
+ ],
+ "source_origin": "eh",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "call-value",
+   "swc": "SWC-107",
+   "title": "call.value() with all remaining gas in executeProposal()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "source.eh.sol",
+   "lines": [
+    199,
+    203
+   ],
+   "snippet": "                if (p.currentResult > majorityMargin) {\n                        /* If difference between support and opposition is larger than margin */\n                        p.recipient.call.value(p.amount)(transactionBytecode);\n                        p.executed = true;\n                        p.proposalPassed = true;",
+   "description": "A low-level call.value() forwards all remaining gas to the recipient, which can run code and call back in before this function finishes.",
+   "reference_url": null
+  }
+ ],
+ "incident": null,
+ "slither_raw": null,
+ "catalog_entry": null,
+ "run": null,
+ "analyzed_at": "2026-10-29T05:33:02Z"
+}

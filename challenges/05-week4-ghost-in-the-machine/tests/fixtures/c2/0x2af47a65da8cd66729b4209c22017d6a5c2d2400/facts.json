@@ -1,0 +1,167 @@
+{
+ "address": "0x2af47a65da8cd66729b4209c22017d6a5c2d2400",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T04:32:57Z",
+ "eh": {
+  "layer": "documented",
+  "era_id": "byzantium",
+  "era_name": "Byzantium",
+  "name": null,
+  "token": {
+   "token_name": null,
+   "token_symbol": null,
+   "token_decimals": null
+  },
+  "heuristics": {
+   "contract_type": "token",
+   "confidence": 0.5,
+   "is_proxy": false,
+   "has_selfdestruct": false,
+   "is_erc20_like": true
+  },
+  "decompilation_success": true,
+  "code_size_bytes": 16675,
+  "short_description": null,
+  "description": null,
+  "historical_significance": null,
+  "historical_context": null,
+  "verification_status": "decompiled",
+  "verification_method": null,
+  "links": [],
+  "metadata": [
+   {
+    "key": "tx_counts_by_year_external_to_v1",
+    "value": null,
+    "json_value": {
+     "counts": {
+      "2017": 8,
+      "2018": 7664,
+      "2019": 8491,
+      "2020": 3079,
+      "2021": 60,
+      "2022": 23,
+      "2023": 1,
+      "2024": 2,
+      "2025": 7
+     },
+     "truncated": false
+    },
+    "source_url": "alchemy_getAssetTransfers",
+    "created_at": "2026-03-31T07:21:16.140Z"
+   }
+  ],
+  "has_source": false,
+  "has_abi": false
+ },
+ "birth": {
+  "block": 4756336,
+  "timestamp": "2017-12-18T20:57:36.000Z",
+  "tx": "0x2929b98c2e0da944901b2ce9c3447f2b943c6f6e747baba3599fd0c2bd461ee0",
+  "deployer": "0xbfdb50dc66c8df9fd9688d8fe5a0c34126427645"
+ },
+ "blockscout": {
+  "name": "StandardBounties",
+  "is_contract": true,
+  "is_verified": true,
+  "ens": null,
+  "creation_tx": "0x2929b98c2e0da944901b2ce9c3447f2b943c6f6e747baba3599fd0c2bd461ee0",
+  "creator": "0xbfDb50Dc66C8Df9fd9688D8fe5A0C34126427645",
+  "has_logs": true
+ },
+ "life": {
+  "tx_count": 19461,
+  "token_transfers": 4875,
+  "gas_used": 2425858453,
+  "last_tx": {
+   "timestamp": "2026-10-29T02:57:47.000000Z",
+   "method": "killBounty",
+   "status": "ok",
+   "hash": "0x274043e7edd8d480d2365a8e62cc20eb6ccc30e08caca44f4b1719f3d9521516"
+  },
+  "recent_methods": [
+   "0x73196d90",
+   "fulfillBounty",
+   "killBounty"
+  ],
+  "recent_years": [
+   "2022",
+   "2023",
+   "2024",
+   "2025",
+   "2026"
+  ],
+  "balance_wei": 83001304100000000275,
+  "balance_eth": 83.001304
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 16675,
+  "balance_wei": 83001304100000000275,
+  "balance_eth": 83.001304
+ },
+ "source": {
+  "provider": "sourcify",
+  "match": "match",
+  "name": "StandardBounties",
+  "compiler_version": "0.4.18+commit.9cf6e910",
+  "language": "Solidity",
+  "files": [
+   "StandardBounties.sol"
+  ],
+  "dir": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/05-week4-ghost-in-the-machine/data/ghosts/0x2af47a65da8cd66729b4209c22017d6a5c2d2400/src"
+ },
+ "age": {
+  "hardfork": "Byzantium",
+  "eh_era": "Byzantium"
+ },
+ "sites": [
+  {
+   "host": "bounties.network",
+   "captures": 79,
+   "first_capture": "20170923162827",
+   "first_ok": "20170923162827",
+   "last_ok": "20260607001844",
+   "last_capture": "20260705210724",
+   "years_alive": [
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "host": "gitcoin.co",
+   "captures": 112,
+   "first_capture": "20150801151405",
+   "first_ok": "20171005074903",
+   "last_ok": "20261007200520",
+   "last_capture": "20261007200520",
+   "years_alive": [
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  }
+ ],
+ "name": "StandardBounties",
+ "sources_used": [
+  "blockscout",
+  "ethereumhistory",
+  "rpc",
+  "sourcify",
+  "wayback"
+ ]
+}

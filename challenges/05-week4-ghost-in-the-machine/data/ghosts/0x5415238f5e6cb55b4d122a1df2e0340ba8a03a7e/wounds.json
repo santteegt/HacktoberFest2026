@@ -1,0 +1,29 @@
+{
+ "address": "0x5415238f5e6cb55b4d122a1df2e0340ba8a03a7e",
+ "tier": "slither",
+ "compiler_version": "0.8.7+commit.e28d00a7",
+ "analyzed_files": [
+  "@openzeppelin/contracts/proxy/Proxy.sol",
+  "@openzeppelin/contracts/utils/Address.sol",
+  "@openzeppelin/contracts/utils/StorageSlot.sol",
+  "contracts/DSTP.sol",
+  "contracts/ERC721Creator.sol"
+ ],
+ "source_origin": "src",
+ "findings": [],
+ "incident": null,
+ "slither_raw": "data/ghosts/0x5415238f5e6cb55b4d122a1df2e0340ba8a03a7e/slither.json",
+ "catalog_entry": null,
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 3.85
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.8.7"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:38:41Z"
+}

@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "error": null,
+  "results": {
+    "detectors": [
+      {
+        "elements": [],
+        "description": "solc-0.4.11 is an outdated solc version. Use a more recent version (at least 0.8.0), if possible.\n",
+        "markdown": "solc-0.4.11 is an outdated solc version. Use a more recent version (at least 0.8.0), if possible.\n",
+        "first_markdown_element": "",
+        "id": "5d99fc54f41e89042793ebb7ff5ab5238d4e5cc061349a85110615bcf29410b3",
+        "check": "solc-version",
+        "impact": "Informational",
+        "confidence": "High",
+        "reference": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity"
+      }
+    ]
+  }
+}

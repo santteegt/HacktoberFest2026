@@ -1,0 +1,64 @@
+{
+ "address": "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",
+ "started_at": "2026-10-29T05:33:57Z",
+ "finished_at": "2026-10-29T05:34:17Z",
+ "kind": "lingering",
+ "title": "The Ghost of the Unicorn",
+ "name": "FoundationTipJar",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists",
+   "skipped": true
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists",
+   "skipped": true
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists",
+   "skipped": true
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.1,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 20.7,
+   "note": "20.7 s, 4 calls; verifier 27/27 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "48,912 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "12 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "gallery_path": "web/ghosts/0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359/"
+}

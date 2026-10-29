@@ -1,0 +1,1098 @@
+[
+ {
+  "date": "2023-12-31",
+  "name": "Channels",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-30",
+  "name": "ChannelsFinance",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-28",
+  "name": "CCV",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-28",
+  "name": "DominoTT",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-25",
+  "name": "Telcoin",
+  "why": "not mainnet",
+  "chains": [
+   "polygon"
+  ]
+ },
+ {
+  "date": "2023-12-20",
+  "name": "TransitFinance",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-17",
+  "name": "Bob",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-16",
+  "name": "KEST",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-14",
+  "name": "PHIL",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-09",
+  "name": "BCT",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-07",
+  "name": "HNet",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-06",
+  "name": "ElephantStatus",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-05",
+  "name": "MAMO",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-05",
+  "name": "BEARNDAO",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-12-01",
+  "name": "UnverifiedContr_0x431abb",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-30",
+  "name": "EEE",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-30",
+  "name": "CAROLProtocol",
+  "why": "not mainnet",
+  "chains": [
+   "base"
+  ]
+ },
+ {
+  "date": "2023-11-29",
+  "name": "AIS",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-28",
+  "name": "FiberRouter",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-17",
+  "name": "Token8633_9419",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-17",
+  "name": "ShibaToken",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-16",
+  "name": "WECO",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-15",
+  "name": "EHX",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-15",
+  "name": "XAI",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-15",
+  "name": "LinkDAO",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-14",
+  "name": "OKC Project",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-12",
+  "name": "MEVBot_0x8c2d",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-06",
+  "name": "TrustPad",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-06",
+  "name": "KR",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-06",
+  "name": "TheStandard_io",
+  "why": "not mainnet",
+  "chains": [
+   "arbitrum"
+  ]
+ },
+ {
+  "date": "2023-11-02",
+  "name": "BRAND",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-02",
+  "name": "3913Token",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-11-01",
+  "name": "SwampFinance",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-10-30",
+  "name": "LaEeb",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-10-22",
+  "name": "OpenLeverage",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-10-18",
+  "name": "MicDao",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-10-13",
+  "name": "BelugaDex",
+  "why": "not mainnet",
+  "chains": [
+   "arbitrum"
+  ]
+ },
+ {
+  "date": "2023-10-12",
+  "name": "Platypus",
+  "why": "not mainnet",
+  "chains": [
+   "avalanche"
+  ]
+ },
+ {
+  "date": "2023-10-11",
+  "name": "BH",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-10-08",
+  "name": "ZS",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-10-07",
+  "name": "StarsArena",
+  "why": "not mainnet",
+  "chains": [
+   "avalanche"
+  ]
+ },
+ {
+  "date": "2023-09-30",
+  "name": "FireBirdPair",
+  "why": "not mainnet",
+  "chains": [
+   "polygon"
+  ]
+ },
+ {
+  "date": "2023-09-29",
+  "name": "DEXRouter",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-09-26",
+  "name": "XSDWETHpool",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-09-24",
+  "name": "KubSplit",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-09-09",
+  "name": "BFCToken",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-09-08",
+  "name": "APIG",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-09-07",
+  "name": "HCT",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-08-29",
+  "name": "EAC",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-08-26",
+  "name": "SVT",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-08-24",
+  "name": "GSS",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-08-18",
+  "name": "ExactlyProtocol",
+  "why": "not mainnet",
+  "chains": [
+   "optimism"
+  ]
+ },
+ {
+  "date": "2023-08-01",
+  "name": "NeutraFinance",
+  "why": "not mainnet",
+  "chains": [
+   "arbitrum"
+  ]
+ },
+ {
+  "date": "2023-08-01",
+  "name": "LeetSwap",
+  "why": "not mainnet",
+  "chains": [
+   "base"
+  ]
+ },
+ {
+  "date": "2023-07-31",
+  "name": "GYMNET",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-07-26",
+  "name": "Carson",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-07-24",
+  "name": "Palmswap",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-07-23",
+  "name": "MintoFinance",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-07-21",
+  "name": "SUT",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-07-20",
+  "name": "Utopia",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-07-20",
+  "name": "FFIST",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-07-18",
+  "name": "APEDAO",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-07-18",
+  "name": "BNO",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-07-17",
+  "name": "NewFi",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-07-12",
+  "name": "Platypus",
+  "why": "not mainnet",
+  "chains": [
+   "avalanche"
+  ]
+ },
+ {
+  "date": "2023-07-12",
+  "name": "WGPT",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-07-11",
+  "name": "RodeoFinance",
+  "why": "not mainnet",
+  "chains": [
+   "arbitrum"
+  ]
+ },
+ {
+  "date": "2023-07-11",
+  "name": "Libertify",
+  "why": "not mainnet",
+  "chains": [
+   "polygon"
+  ]
+ },
+ {
+  "date": "2023-07-10",
+  "name": "ArcadiaFi",
+  "why": "not mainnet",
+  "chains": [
+   "optimism"
+  ]
+ },
+ {
+  "date": "2023-07-07",
+  "name": "LUSD",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-07-04",
+  "name": "BambooIA",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-30",
+  "name": "Biswap",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-30",
+  "name": "MyAi",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-28",
+  "name": "Themis",
+  "why": "not mainnet",
+  "chains": [
+   "arbitrum"
+  ]
+ },
+ {
+  "date": "2023-06-27",
+  "name": "UnverifiedContr_9ad32",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-27",
+  "name": "STRAC",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-23",
+  "name": "SHIDO",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-21",
+  "name": "BabyDogeCoin02",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-21",
+  "name": "BUNN",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-18",
+  "name": "ARA",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-17",
+  "name": "MidasCapitalXYZ",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-15",
+  "name": "CFC",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-11",
+  "name": "SellToken04",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-06",
+  "name": "UN",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-02",
+  "name": "NST Simple Swap",
+  "why": "not mainnet",
+  "chains": [
+   "polygon"
+  ]
+ },
+ {
+  "date": "2023-06-01",
+  "name": "DDCoin",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-06-01",
+  "name": "Cellframenet",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-29",
+  "name": "Jimbo",
+  "why": "not mainnet",
+  "chains": [
+   "arbitrum"
+  ]
+ },
+ {
+  "date": "2023-05-29",
+  "name": "BabyDogeCoin",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-29",
+  "name": "FAPEN",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-25",
+  "name": "GPT Token",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-24",
+  "name": "Local Trade LCT",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-24",
+  "name": "CS Token",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-23",
+  "name": "LFI Token",
+  "why": "not mainnet",
+  "chains": [
+   "polygon"
+  ]
+ },
+ {
+  "date": "2023-05-14",
+  "name": "landNFT",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-14",
+  "name": "SellToken03",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-13",
+  "name": "Bitpaidio",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-12",
+  "name": "LW",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-13",
+  "name": "SellToken02",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-11",
+  "name": "SellToken01",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-10",
+  "name": "SNK",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-06",
+  "name": "Melo",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-05",
+  "name": "DEI",
+  "why": "not mainnet",
+  "chains": [
+   "arbitrum"
+  ]
+ },
+ {
+  "date": "2023-05-03",
+  "name": "NeverFall",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-05-02",
+  "name": "Level",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-04-28",
+  "name": "0vix",
+  "why": "not mainnet",
+  "chains": [
+   "polygon"
+  ]
+ },
+ {
+  "date": "2023-04-24",
+  "name": "Axioma",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-04-19",
+  "name": "OLIFE",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-04-15",
+  "name": "HundredFinance",
+  "why": "not mainnet",
+  "chains": [
+   "optimism"
+  ]
+ },
+ {
+  "date": "2023-04-12",
+  "name": "MetaPoint",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-04-11",
+  "name": "Paribus",
+  "why": "not mainnet",
+  "chains": [
+   "arbitrum"
+  ]
+ },
+ {
+  "date": "2023-04-05",
+  "name": "Sentiment",
+  "why": "not mainnet",
+  "chains": [
+   "arbitrum"
+  ]
+ },
+ {
+  "date": "2023-04-02",
+  "name": "Allbridge",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-03-28",
+  "name": "SafeMoon Hack",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-03-28",
+  "name": "Thena",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-03-25",
+  "name": "DBW",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-03-22",
+  "name": "BIGFI",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-03-15",
+  "name": "Poolz",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-03-08",
+  "name": "DKP",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-03-07",
+  "name": "Phoenix",
+  "why": "not mainnet",
+  "chains": [
+   "polygon"
+  ]
+ },
+ {
+  "date": "2023-02-27",
+  "name": "LaunchZone",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-02-27",
+  "name": "swapX",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-02-22",
+  "name": "DYNA",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-02-17",
+  "name": "Starlink",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-02-17",
+  "name": "Platypusdefi",
+  "why": "not mainnet",
+  "chains": [
+   "avalanche"
+  ]
+ },
+ {
+  "date": "2023-02-10",
+  "name": "Sheep",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-02-10",
+  "name": "dForce",
+  "why": "not mainnet",
+  "chains": [
+   "arbitrum"
+  ]
+ },
+ {
+  "date": "2023-02-06",
+  "name": "FDP",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-02-03",
+  "name": "Spherax USDs",
+  "why": "not mainnet",
+  "chains": [
+   "arbitrum"
+  ]
+ },
+ {
+  "date": "2023-02-02",
+  "name": "BonqDAO",
+  "why": "not mainnet",
+  "chains": [
+   "polygon"
+  ]
+ },
+ {
+  "date": "2023-01-30",
+  "name": "BEVO",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-01-19",
+  "name": "ThoreumFinance",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-01-17",
+  "name": "OmniEstate",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-01-16",
+  "name": "MidasCapital",
+  "why": "not mainnet",
+  "chains": [
+   "polygon"
+  ]
+ },
+ {
+  "date": "2023-01-11",
+  "name": "UFDao",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-01-10",
+  "name": "BRA",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2023-01-03",
+  "name": "GDS",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ }
+]

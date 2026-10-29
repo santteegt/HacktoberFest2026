@@ -1,0 +1,32 @@
+{
+ "address": "0x3d5bc3c8d13dcb8bf317092d84783c2697ae9258",
+ "tier": "catalog",
+ "compiler_version": "0.5.17+commit.d19bba13",
+ "analyzed_files": [],
+ "findings": [
+  {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "CreamFinance",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": null,
+   "lines": null,
+   "snippet": null,
+   "description": "Price Manipulation",
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-10/Cream_2_exp.sol"
+  }
+ ],
+ "incident": {
+  "name": "CreamFinance",
+  "date": "2021-10-27",
+  "loss_usd": 130000000,
+  "summary": "Price Manipulation.",
+  "references": [
+   "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-10/Cream_2_exp.sol"
+  ]
+ },
+ "slither_raw": null
+}

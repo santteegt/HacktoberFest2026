@@ -1,0 +1,25 @@
+{
+ "address": "0xbb9bc244d798123fde783fcc1c72d3bb8c189413",
+ "kind": "bad",
+ "reasons": [
+  "catalog incident: The DAO hack"
+ ],
+ "activity": {
+  "lifetime_txs": 175183,
+  "last_tx": "2026-10-28T02:49:47Z",
+  "last_12m_txs": 500,
+  "last_12m_capped": true,
+  "silent_years": 0.0
+ },
+ "wounds": {
+  "count": 0,
+  "confirmed": 0,
+  "worst_impact": null
+ },
+ "labels": {
+  "historian_story": true,
+  "verified_source": false,
+  "site_known": true
+ },
+ "decided_at": "2026-10-29T05:00:00Z"
+}

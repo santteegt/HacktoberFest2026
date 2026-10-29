@@ -1,0 +1,154 @@
+[
+ {
+  "date": "2021-12-18",
+  "name": "Grim Finance",
+  "why": "not mainnet",
+  "chains": [
+   "fantom"
+  ]
+ },
+ {
+  "date": "2021-12-14",
+  "name": "Nerve Bridge",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-11-23",
+  "name": "Ploutoz",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-09-12",
+  "name": "ZABU Finance",
+  "why": "not mainnet",
+  "chains": [
+   "avalanche"
+  ]
+ },
+ {
+  "date": "2021-08-17",
+  "name": "XSURGE",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-08-04",
+  "name": "WaultFinace",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-07-28",
+  "name": "Levyathan Finance",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-07-10",
+  "name": "Chainswap",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-06-28",
+  "name": "SafeDollar",
+  "why": "not mainnet",
+  "chains": [
+   "polygon"
+  ]
+ },
+ {
+  "date": "2021-06-25",
+  "name": "xWin Finance",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-06-22",
+  "name": "Eleven Finance",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-06-03",
+  "name": "PancakeHunny",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-05-27",
+  "name": "JulSwap",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-05-27",
+  "name": "BurgerSwap",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-05-19",
+  "name": "PancakeBunny",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-05-16",
+  "name": "bEarn",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-05-08",
+  "name": "Value Defi",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-05-02",
+  "name": "Spartan",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ },
+ {
+  "date": "2021-04-28",
+  "name": "Uranium",
+  "why": "not mainnet",
+  "chains": [
+   "bsc"
+  ]
+ }
+]

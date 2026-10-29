@@ -1,0 +1,28 @@
+{
+ "address": "0x5415238f5e6cb55b4d122a1df2e0340ba8a03a7e",
+ "kind": "friendly",
+ "reasons": [
+  "last successful call 2022-02-06, 4.7 years ago",
+  "no wounds"
+ ],
+ "activity": {
+  "lifetime_txs": 1,
+  "last_tx": "2022-02-06T11:30:48Z",
+  "last_12m_txs": 0,
+  "last_12m_capped": false,
+  "silent_years": 4.7
+ },
+ "wounds": {
+  "count": 0,
+  "confirmed": 0,
+  "worst_impact": null,
+  "scars": 0,
+  "fatal": 0
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

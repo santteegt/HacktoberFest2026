@@ -1,0 +1,95 @@
+{
+ "address": "0x053407dfa30267f6332f3c94a9e9f704a55e62cd",
+ "name": "PolygonL1Switchboard",
+ "kind": "lingering",
+ "kind_source": "verdict.json",
+ "title": "The Ghost of Shanghai's Switchboard",
+ "tagline": "A lingering spirit born in November, silent since its final call on the chain.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The ghost of the switchboard",
+   "paragraphs": [
+    "Candles flicker over the memory of November 16, 2023. A wallet ending in 6d34 brought the PolygonL1Switchboard into the world. It is a small program that lives on Ethereum. On the day it was born, it was written into a block, one page of Ethereum's shared record book.",
+    "The Shanghai era was its cradle. It was written in Solidity 0.8.19. Now it sits quietly at about 2.9 years old. It remains a still shadow in the long chain."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.birth.timestamp",
+    "facts.blockscout.name",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The pulse of the switchboard",
+   "paragraphs": [
+    "The contract sits in the light of 2024. It stays active every year. People reached out to it with 1159 transactions.",
+    "They used it to nominateOwner. They used it to setFees. It remains a steady presence on the chain."
+   ],
+   "facts_cited": [
+    "facts.life.last_tx.method",
+    "facts.life.recent_methods[1]",
+    "facts.life.recent_years[0]",
+    "facts.life.tx_count"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The knocking",
+   "paragraphs": [
+    "The contract sits in the dark. It holds 0.0 ETH for the world. It remains on the chain like a stone in a river.",
+    "People still reach out to it. They nominate a new owner or change the fees. These voices are quiet now.",
+    "It carries two old scars. A door left open for a caller to step back in mid-call and a clock the block maker can nudge. The ghost buster says to close the door for the whole function and use a commit-reveal scheme."
+   ],
+   "facts_cited": [
+    "facts.life.token_transfers"
+   ],
+   "variant": "the knocking"
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 12.1,
+  "model_seconds": 12.0,
+  "calls": 4,
+  "prompt_tokens": 2011,
+  "output_tokens": 410
+ },
+ "verifier": {
+  "sentences": 25,
+  "grounded": 25,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "November 16, 2023",
+  "born_year": 2023,
+  "age_years": 2.9,
+  "age_years_whole": 2,
+  "last_seen_on": "January 4, 2025",
+  "last_seen_year": 2025,
+  "silent_years": 1.8,
+  "silent_days": 662,
+  "active_days": 415,
+  "balance_eth": 0.0,
+  "deployer_short": "0x5fd7…6d34",
+  "address_short": "0x0534…62cd",
+  "compiler_label": "Solidity 0.8.19",
+  "activity_label": "active every year since 2024"
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:39:13Z"
+}

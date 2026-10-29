@@ -1,0 +1,81 @@
+{
+ "address": "0xdc59ac4fefa32293a95889dc396682858d52e5db",
+ "started_at": "2026-10-29T05:41:41Z",
+ "finished_at": "2026-10-29T05:42:06Z",
+ "kind": "bad",
+ "title": "The Ghost of Beanstalk Farms",
+ "name": "Bean",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 0.1,
+   "note": "incident: victim of BeanstalkFarms (2022-04-16): DAO + Flashloan, about $182,000,000 lost"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 4.9,
+   "note": "Bean; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 2.5,
+   "note": "tier slither, 1 finding(s), incident: BeanstalkFarms"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "bad"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 17.9,
+   "note": "17.9 s, 9 calls; verifier 26/30 grounded, 4 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "55,494 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "22 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "incident",
+  "reason": "victim of BeanstalkFarms (2022-04-16): DAO + Flashloan, about $182,000,000 lost",
+  "name": "Bean",
+  "year": 2022,
+  "hint": true
+ },
+ "incident_hint": {
+  "id": "defihacklabs-2022-04-16-beanstalkfarms",
+  "name": "BeanstalkFarms",
+  "date": "2022-04-16",
+  "cause": "DAO + Flashloan",
+  "loss_note": "$182 million"
+ },
+ "gallery_path": "web/ghosts/0xdc59ac4fefa32293a95889dc396682858d52e5db/"
+}

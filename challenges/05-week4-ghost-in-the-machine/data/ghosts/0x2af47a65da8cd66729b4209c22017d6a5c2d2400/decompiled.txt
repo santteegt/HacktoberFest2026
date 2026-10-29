@@ -1,0 +1,471 @@
+# Palkeoramix decompiler. 
+
+def storage:
+  owner is address at storage 0
+  bountyArbiter is array of struct at storage 1
+  fulfillment is array of struct at storage 2
+  stor3 is mapping of uint256 at storage 3
+  bountyToken is mapping of address at storage 4
+
+def getBountyToken(uint256 _bountyId): # not payable
+  require _bountyId < bountyArbiter.length
+  return bountyToken[_bountyId]
+
+def getNumBounties(): # not payable
+  return bountyArbiter.length
+
+def getBountyArbiter(uint256 _bountyId): # not payable
+  require _bountyId < bountyArbiter.length
+  return address(bountyArbiter[_bountyId].field_1024)
+
+def owner(): # not payable
+  return owner
+
+def getBountyData(uint256 _bountyId): # not payable
+  return uint256(stor[(6 * _bountyId) + ('name', 'bountyArbiter', 1) + 2][0 len stor[(6 * _bountyId) + ('name', 'bountyArbiter', 1) + 2].length].field_0)
+
+def getFulfillment(uint256 _bountyId, uint256 _fulfillmentId): # not payable
+  require _bountyId < bountyArbiter.length
+  require _fulfillmentId < uint256(fulfillment[_bountyId].field_0)
+  require _fulfillmentId < uint256(fulfillment[_bountyId].field_0)
+  require _fulfillmentId < uint256(fulfillment[_bountyId].field_0)
+  require _fulfillmentId < uint256(fulfillment[_bountyId].field_0)
+  mem[160] = uint256(stor[sha3((2 * _fulfillmentId) + ('map', ('param', '_bountyId'), ('name', 'fulfillment', 2)) + 1)].field_0)
+  idx = 160
+  s = 0
+  while stor[(2 * _fulfillmentId) + ('map', ('param', '_bountyId'), ('name', 'fulfillment', 2)) + 1].length + 128 > idx:
+      mem[idx + 32] = uint256(stor[s + sha3((2 * _fulfillmentId) + ('map', ('param', '_bountyId'), ('name', 'fulfillment', 2)) + 1)].field_256)
+      idx = idx + 32
+      s = s + 1
+      continue 
+  return bool(uint8(fulfillment[_bountyId][_fulfillmentId].field_0)), 
+         address(fulfillment[_bountyId][_fulfillmentId].field_0),
+         Array(len=stor[(2 * _fulfillmentId) + ('map', ('param', '_bountyId'), ('name', 'fulfillment', 2)) + 1].length, data=mem[160 len stor[(2 * _fulfillmentId) + ('map', ('param', '_bountyId'), ('name', 'fulfillment', 2)) + 1].length])
+
+def bounties(uint256 _param1): # not payable
+  require _param1 < bountyArbiter.length
+  require uint8(bountyArbiter[_param1].field_1192) <= 2
+  mem[384] = uint256(stor[sha3((6 * _param1) + ('name', 'bountyArbiter', 1) + 2)].field_0)
+  idx = 384
+  s = 0
+  while stor[(6 * _param1) + ('name', 'bountyArbiter', 1) + 2].length + 384 > idx + 32:
+      mem[idx + 32] = uint256(stor[s + sha3((6 * _param1) + ('name', 'bountyArbiter', 1) + 2)].field_256)
+      idx = idx + 32
+      s = s + 1
+      continue 
+  return address(bountyArbiter[_param1].field_0), 
+         uint256(bountyArbiter[_param1].field_256),
+         Array(len=stor[(6 * _param1) + ('name', 'bountyArbiter', 1) + 2].length, data=mem[384 len stor[(6 * _param1) + ('name', 'bountyArbiter', 1) + 2].length + (floor32(stor[(6 * _param1) + ('name', 'bountyArbiter', 1) + 2].length - 1) + -stor[(6 * _param1) + ('name', 'bountyArbiter', 1) + 2].length + 32 % 32)]),
+         uint256(bountyArbiter[_param1].field_768),
+         address(bountyArbiter[_param1].field_1024),
+         bool(uint8(bountyArbiter[_param1].field_1184)),
+         uint8(bountyArbiter[_param1].field_1024),
+         uint256(bountyArbiter[_param1].field_1280)
+
+def getBounty(uint256 nodeIndex): # not payable
+  require nodeIndex < bountyArbiter.length
+  require uint8(bountyArbiter[nodeIndex].field_1192) <= 2
+  require nodeIndex < bountyArbiter.length
+  return address(bountyArbiter[nodeIndex].field_0), 
+         uint256(bountyArbiter[nodeIndex].field_256),
+         uint256(bountyArbiter[nodeIndex].field_768),
+         bool(uint8(bountyArbiter[nodeIndex].field_1184)),
+         uint8(bountyArbiter[nodeIndex].field_1192),
+         uint256(bountyArbiter[nodeIndex].field_1280)
+
+def getNumFulfillments(uint256 _bountyId): # not payable
+  require _bountyId < bountyArbiter.length
+  return uint256(fulfillment[_bountyId].field_0)
+
+#
+#  Regular functions
+#
+
+def _fallback(?) payable: # default function
+  revert
+
+def transferIssuer(uint256 _bountyId, address _newIssuer): # not payable
+  require _bountyId < bountyArbiter.length
+  require caller == address(bountyArbiter[_bountyId].field_0)
+  require _bountyId < bountyArbiter.length
+  address(bountyArbiter[_bountyId].field_0) = _newIssuer
+  log IssuerTransferred(
+        uint256 _bountyId=_bountyId,
+        address _newIssuer=_newIssuer)
+
+def extendDeadline(uint256 _bountyId, uint256 _newDeadline): # not payable
+  require _bountyId < bountyArbiter.length
+  require caller == address(bountyArbiter[_bountyId].field_0)
+  require _bountyId < bountyArbiter.length
+  require _newDeadline > uint256(bountyArbiter[_bountyId].field_256)
+  require _bountyId < bountyArbiter.length
+  uint256(bountyArbiter[_bountyId].field_256) = _newDeadline
+  log DeadlineExtended(
+        uint256 bountyId=_bountyId,
+        uint256 newDeadline=_newDeadline)
+
+def changeBountyArbiter(uint256 _bountyId, address _newArbiter): # not payable
+  require _bountyId < bountyArbiter.length
+  require caller == address(bountyArbiter[_bountyId].field_0)
+  require _bountyId < bountyArbiter.length
+  require uint8(bountyArbiter[_bountyId].field_1192) <= 2
+  require not uint8(bountyArbiter[_bountyId].field_1192)
+  require _bountyId < bountyArbiter.length
+  address(bountyArbiter[_bountyId].field_1024) = _newArbiter
+  log BountyChanged(uint256 bountyId=_bountyId)
+
+def changeBountyFulfillmentAmount(uint256 _bountyId, uint256 _newFulfillmentAmount): # not payable
+  require _bountyId < bountyArbiter.length
+  require caller == address(bountyArbiter[_bountyId].field_0)
+  require _bountyId < bountyArbiter.length
+  require uint8(bountyArbiter[_bountyId].field_1192) <= 2
+  require not uint8(bountyArbiter[_bountyId].field_1192)
+  require _bountyId < bountyArbiter.length
+  uint256(bountyArbiter[_bountyId].field_768) = _newFulfillmentAmount
+  log BountyChanged(uint256 bountyId=_bountyId)
+
+def changeBountyDeadline(uint256 _bountyId, uint256 _newDeadline): # not payable
+  require _bountyId < bountyArbiter.length
+  require caller == address(bountyArbiter[_bountyId].field_0)
+  require _newDeadline > block.timestamp
+  require _bountyId < bountyArbiter.length
+  require uint8(bountyArbiter[_bountyId].field_1192) <= 2
+  require not uint8(bountyArbiter[_bountyId].field_1192)
+  require _bountyId < bountyArbiter.length
+  uint256(bountyArbiter[_bountyId].field_256) = _newDeadline
+  log BountyChanged(uint256 bountyId=_bountyId)
+
+def changeBountyData(uint256 _bountyId, string _newData): # not payable
+  require _bountyId < bountyArbiter.length
+  require caller == address(bountyArbiter[_bountyId].field_0)
+  require _bountyId < bountyArbiter.length
+  require uint8(bountyArbiter[_bountyId].field_1192) <= 2
+  require not uint8(bountyArbiter[_bountyId].field_1192)
+  require _bountyId < bountyArbiter.length
+  uint256(stor[sha3((6 * _bountyId) + ('name', 'bountyArbiter', 1) + 2)][].field_0) = Array(len=_newData.length, data=_newData[all])
+  log BountyChanged(uint256 bountyId=_bountyId)
+
+def updateFulfillment(uint256 _bountyId, uint256 _fulfillmentId, string _data): # not payable
+  require _bountyId < bountyArbiter.length
+  require _fulfillmentId < uint256(fulfillment[_bountyId].field_0)
+  require _fulfillmentId < uint256(fulfillment[_bountyId].field_0)
+  require caller == address(fulfillment[_bountyId][_fulfillmentId].field_8)
+  require _fulfillmentId < uint256(fulfillment[_bountyId].field_0)
+  require not uint8(fulfillment[_bountyId][_fulfillmentId].field_0)
+  require _fulfillmentId < uint256(fulfillment[_bountyId].field_0)
+  uint256(stor[sha3((2 * _fulfillmentId) + ('map', ('param', '_bountyId'), ('name', 'fulfillment', 2)) + 1)][].field_0) = Array(len=_data.length, data=_data[all])
+  log FulfillmentUpdated(
+        uint256 _bountyId=_bountyId,
+        uint256 _fulfillmentId=_fulfillmentId)
+
+def killBounty(uint256 _bountyId): # not payable
+  require _bountyId < bountyArbiter.length
+  require caller == address(bountyArbiter[_bountyId].field_0)
+  require _bountyId < bountyArbiter.length
+  uint8(bountyArbiter[_bountyId].field_1192) = 2
+  require _bountyId < bountyArbiter.length
+  uint256(bountyArbiter[_bountyId].field_1280) = 0
+  if uint256(bountyArbiter[_bountyId].field_1280) > 0:
+      require _bountyId < bountyArbiter.length
+      require _bountyId < bountyArbiter.length
+      if not uint8(bountyArbiter[_bountyId].field_1184):
+          call address(bountyArbiter[_bountyId].field_0) with:
+             value uint256(bountyArbiter[_bountyId].field_1280) wei
+               gas 2300 * is_zero(value) wei
+          require ext_call.success
+      else:
+          require ext_code.size(bountyToken[_bountyId])
+          call bountyToken[_bountyId].transfer(address recipient, uint256 amount) with:
+               gas gas_remaining - 710 wei
+              args address(bountyArbiter[_bountyId].field_0), uint256(bountyArbiter[_bountyId].field_1280)
+          require ext_call.success
+          require ext_call.return_data[0]
+  log BountyKilled(
+        uint256 bountyId=_bountyId,
+        address issuer=caller)
+
+def contribute(uint256 amount, uint256 commune) payable: 
+  require amount < bountyArbiter.length
+  require block.timestamp < uint256(bountyArbiter[amount].field_256)
+  require amount < bountyArbiter.length
+  require uint8(bountyArbiter[amount].field_1192) <= 2
+  require uint8(bountyArbiter[amount].field_1192) != 2
+  require commune
+  require amount < bountyArbiter.length
+  if not uint8(bountyArbiter[amount].field_1184):
+      require commune == call.value
+  else:
+      require not call.value
+      require ext_code.size(bountyToken[amount])
+      call bountyToken[amount].balanceOf(address account) with:
+           gas gas_remaining - 710 wei
+          args this.address
+      require ext_call.success
+      require ext_code.size(bountyToken[amount])
+      if commune:
+          call bountyToken[amount].transferFrom(address sender, address recipient, uint256 amount) with:
+               gas gas_remaining - 710 wei
+              args caller, address(this.address), commune
+          require ext_call.success
+          require ext_call.return_data[0]
+      call bountyToken[amount].balanceOf(address account) with:
+           gas gas_remaining - 710 wei
+          args this.address
+      require ext_call.success
+      require not commune
+  require amount < bountyArbiter.length
+  uint256(bountyArbiter[amount].field_1280) += commune
+  log ContributionAdded(
+        uint256 bountyId=amount,
+        address contributor=commune,
+        uint256 value=caller)
+
+def increasePayout(uint256 _bountyId, uint256 _newFulfillmentAmount, uint256 _value) payable: 
+  require _bountyId < bountyArbiter.length
+  require caller == address(bountyArbiter[_bountyId].field_0)
+  require _bountyId < bountyArbiter.length
+  require uint256(bountyArbiter[_bountyId].field_768) < _newFulfillmentAmount
+  require _bountyId < bountyArbiter.length
+  if not uint8(bountyArbiter[_bountyId].field_1184):
+      require _value == call.value
+  else:
+      require not call.value
+      require ext_code.size(bountyToken[_bountyId])
+      call bountyToken[_bountyId].balanceOf(address account) with:
+           gas gas_remaining - 710 wei
+          args this.address
+      require ext_call.success
+      require ext_code.size(bountyToken[_bountyId])
+      if _value:
+          call bountyToken[_bountyId].transferFrom(address sender, address recipient, uint256 amount) with:
+               gas gas_remaining - 710 wei
+              args caller, address(this.address), _value
+          require ext_call.success
+          require ext_call.return_data[0]
+      call bountyToken[_bountyId].balanceOf(address account) with:
+           gas gas_remaining - 710 wei
+          args this.address
+      require ext_call.success
+      require not _value
+  require _bountyId < bountyArbiter.length
+  uint256(bountyArbiter[_bountyId].field_1280) += _value
+  require uint256(bountyArbiter[_bountyId].field_1280) >= _newFulfillmentAmount
+  require _bountyId < bountyArbiter.length
+  uint256(bountyArbiter[_bountyId].field_768) = _newFulfillmentAmount
+  log PayoutIncreased(
+        uint256 _bountyId=_bountyId,
+        uint256 _newFulfillmentAmount=_newFulfillmentAmount)
+
+def activateBounty(uint256 _bountyId, uint256 _value) payable: 
+  require _bountyId < bountyArbiter.length
+  require block.timestamp < uint256(bountyArbiter[_bountyId].field_256)
+  require _bountyId < bountyArbiter.length
+  require caller == address(bountyArbiter[_bountyId].field_0)
+  require _bountyId < bountyArbiter.length
+  if not uint8(bountyArbiter[_bountyId].field_1184):
+      require _value == call.value
+  else:
+      require not call.value
+      require ext_code.size(bountyToken[_bountyId])
+      call bountyToken[_bountyId].balanceOf(address account) with:
+           gas gas_remaining - 710 wei
+          args this.address
+      require ext_call.success
+      require ext_code.size(bountyToken[_bountyId])
+      if _value:
+          call bountyToken[_bountyId].transferFrom(address sender, address recipient, uint256 amount) with:
+               gas gas_remaining - 710 wei
+              args caller, address(this.address), _value
+          require ext_call.success
+          require ext_call.return_data[0]
+      call bountyToken[_bountyId].balanceOf(address account) with:
+           gas gas_remaining - 710 wei
+          args this.address
+      require ext_call.success
+      require not _value
+  require _bountyId < bountyArbiter.length
+  uint256(bountyArbiter[_bountyId].field_1280) += _value
+  require uint256(bountyArbiter[_bountyId].field_1280) >= uint256(bountyArbiter[_bountyId].field_768)
+  require _bountyId < bountyArbiter.length
+  uint8(bountyArbiter[_bountyId].field_1192) = 1
+  log ContributionAdded(
+        uint256 bountyId=_bountyId,
+        address contributor=_value,
+        uint256 value=caller)
+  log BountyActivated(
+        uint256 bountyId=_bountyId,
+        address issuer=caller)
+
+def acceptFulfillment(uint256 _bountyId, uint256 _fulfillmentId): # not payable
+  require _bountyId < bountyArbiter.length
+  require _fulfillmentId < uint256(fulfillment[_bountyId].field_0)
+  require _bountyId < bountyArbiter.length
+  require _bountyId < bountyArbiter.length
+  if address(bountyArbiter[_bountyId].field_0) != caller:
+      require caller == address(bountyArbiter[_bountyId].field_1024)
+      require _bountyId < bountyArbiter.length
+      require address(bountyArbiter[_bountyId].field_1024)
+  require uint8(bountyArbiter[_bountyId].field_1192) <= 2
+  require uint8(bountyArbiter[_bountyId].field_1192) == 1
+  require _fulfillmentId < uint256(fulfillment[_bountyId].field_0)
+  require not uint8(fulfillment[_bountyId][_fulfillmentId].field_0)
+  require _bountyId < bountyArbiter.length
+  require uint256(bountyArbiter[_bountyId].field_1280) >= uint256(bountyArbiter[_bountyId].field_768)
+  require _fulfillmentId < uint256(fulfillment[_bountyId].field_0)
+  uint8(fulfillment[_bountyId][_fulfillmentId].field_0) = 1
+  stor3[_bountyId]++
+  require _bountyId < bountyArbiter.length
+  uint256(bountyArbiter[_bountyId].field_1280) -= uint256(bountyArbiter[_bountyId].field_768)
+  require _fulfillmentId < uint256(fulfillment[_bountyId].field_0)
+  require _bountyId < bountyArbiter.length
+  if not uint8(bountyArbiter[_bountyId].field_1184):
+      call address(fulfillment[_bountyId][_fulfillmentId].field_8) with:
+         value uint256(bountyArbiter[_bountyId].field_768) wei
+           gas 2300 * is_zero(value) wei
+      require ext_call.success
+  else:
+      require ext_code.size(bountyToken[_bountyId])
+      call bountyToken[_bountyId].transfer(address recipient, uint256 amount) with:
+           gas gas_remaining - 710 wei
+          args address(fulfillment[_bountyId][_fulfillmentId].field_0), uint256(bountyArbiter[_bountyId].field_768)
+      require ext_call.success
+      require ext_call.return_data[0]
+  log FulfillmentAccepted(
+        uint256 bountyId=_bountyId,
+        address fulfiller=caller,
+        uint256 _fulfillmentId=_fulfillmentId)
+
+def issueBounty(address _issuer, uint256 _deadline, string _data, uint256 _fulfillmentAmount, address _arbiter, bool _paysTokens, address _tokenContract): # not payable
+  require _deadline > block.timestamp
+  require _fulfillmentAmount
+  require bountyArbiter.length + 1 > bountyArbiter.length
+  bountyArbiter.length++
+  if not bountyArbiter.length <= bountyArbiter.length + 1:
+      mem[0] = 1
+      idx = (6 * bountyArbiter.length) + 6
+      while sha3(1) + (6 * bountyArbiter.length) > idx + sha3(mem[0]):
+          address(stor[idx + sha3(mem[0])].field_0) = 0
+          uint256(stor[idx + sha3(mem[0]) + 1].field_0) = 0
+          uint256(stor[idx + sha3(mem[0]) + 2].field_0) = 0
+          if 31 < stor[idx + sha3(mem[0]) + 2].length:
+              mem[0] = idx + sha3(mem[0]) + 2
+              s = sha3(idx + sha3(mem[0]) + 2)
+              while sha3(idx + sha3(mem[0]) + 2) + (stor[idx + sha3(mem[0]) + 2].length + 31 / 32) > s:
+                  uint256(stor[s].field_0) = 0
+                  s = s + 1
+                  continue 
+          uint256(stor[idx + sha3(mem[0]) + 3].field_0) = 0
+          address(stor[idx + sha3(mem[0]) + 4].field_0) = 0
+          uint8(stor[idx + sha3(mem[0]) + 4].field_160) = 0
+          uint8(stor[idx + sha3(mem[0]) + 4].field_168) = 0
+          uint256(stor[idx + sha3(mem[0]) + 5].field_0) = 0
+          idx = idx + 6
+          continue 
+  address(bountyArbiter[bountyArbiter.length].field_0) = _issuer
+  uint256(bountyArbiter[bountyArbiter.length].field_256) = _deadline
+  uint256(stor[sha3((6 * bountyArbiter.length) + ('name', 'bountyArbiter', 1) + 2)][].field_0) = Array(len=_data.length, data=_data[all])
+  uint256(bountyArbiter[bountyArbiter.length].field_768) = _fulfillmentAmount
+  address(bountyArbiter[bountyArbiter.length].field_1024) = _arbiter
+  Mask(96, 0, bountyArbiter[bountyArbiter.length].field_1184) = Mask(96, 0, _paysTokens)
+  uint8(bountyArbiter[bountyArbiter.length].field_1192) = 0
+  bountyArbiter[bountyArbiter.length].field_1280 % 1 = 0
+  uint256(bountyArbiter[bountyArbiter.length].field_1280) = 0
+  if _paysTokens:
+      bountyToken[stor1.length - 1] = _tokenContract
+  log BountyIssued(uint256 bountyId=(bountyArbiter.length - 1))
+  return (bountyArbiter.length - 1)
+
+def fulfillBounty(uint256 _bountyId, string _data): # not payable
+  require _bountyId < bountyArbiter.length
+  require uint256(fulfillment[_bountyId].field_0) + 1 > uint256(fulfillment[_bountyId].field_0)
+  require _bountyId < bountyArbiter.length
+  require uint8(bountyArbiter[_bountyId].field_1192) <= 2
+  require uint8(bountyArbiter[_bountyId].field_1192) == 1
+  require _bountyId < bountyArbiter.length
+  require block.timestamp < uint256(bountyArbiter[_bountyId].field_256)
+  require _bountyId < bountyArbiter.length
+  require address(bountyArbiter[_bountyId].field_0) != caller
+  require _bountyId < bountyArbiter.length
+  require address(bountyArbiter[_bountyId].field_1024) != caller
+  uint256(fulfillment[_bountyId].field_0)++
+  if not uint256(fulfillment[_bountyId].field_0) <= uint256(fulfillment[_bountyId].field_0) + 1:
+      mem[0] = sha3(_bountyId, 2)
+      idx = 2 * uint256(fulfillment[_bountyId].field_0) + 1
+      while sha3(sha3(_bountyId, 2)) + (2 * uint256(fulfillment[_bountyId].field_0)) > idx + sha3(mem[0]):
+          uint8(stor[idx + sha3(mem[0])].field_0) = 0
+          address(stor[idx + sha3(mem[0])].field_8) = 0
+          uint256(stor[idx + sha3(mem[0]) + 1].field_0) = 0
+          if 31 < stor[idx + sha3(mem[0]) + 1].length:
+              mem[0] = idx + sha3(mem[0]) + 1
+              s = sha3(idx + sha3(mem[0]) + 1)
+              while sha3(idx + sha3(mem[0]) + 1) + (stor[idx + sha3(mem[0]) + 1].length + 31 / 32) > s:
+                  uint256(stor[s].field_0) = 0
+                  s = s + 1
+                  continue 
+          idx = idx + 2
+          continue 
+  uint8(fulfillment[_bountyId][uint256(fulfillment[_bountyId].field_0)].field_0) = 0
+  address(fulfillment[_bountyId][uint256(fulfillment[_bountyId].field_0)].field_8) = caller
+  uint256(stor[sha3((2 * uint256(fulfillment[_bountyId].field_0)) + ('map', ('param', '_bountyId'), ('name', 'fulfillment', 2)) + 1)][].field_0) = Array(len=_data.length, data=_data[all])
+  log BountyFulfilled(
+        uint256 bountyId=_bountyId,
+        address fulfiller=caller,
+        uint256 _fulfillmentId=uint256(fulfillment[_bountyId].field_0) - 1)
+
+def issueAndActivateBounty(address _issuer, uint256 _deadline, string _data, uint256 _fulfillmentAmount, address _arbiter, bool _paysTokens, address _tokenContract, uint256 _value) payable: 
+  require _deadline > block.timestamp
+  require _fulfillmentAmount
+  require bountyArbiter.length + 1 > bountyArbiter.length
+  require _value >= _fulfillmentAmount
+  if not _paysTokens:
+      require _value == call.value
+  else:
+      require not call.value
+      bountyToken[stor1.length] = _tokenContract
+      require ext_code.size(bountyToken[stor1.length])
+      call bountyToken[stor1.length].transferFrom(address sender, address recipient, uint256 amount) with:
+           gas gas_remaining - 710 wei
+          args caller, address(this.address), _value
+      require ext_call.success
+      require ext_call.return_data[0]
+  bountyArbiter.length++
+  if not bountyArbiter.length <= bountyArbiter.length + 1:
+      mem[0] = 1
+      idx = (6 * bountyArbiter.length) + 6
+      while sha3(1) + (6 * bountyArbiter.length) > idx + sha3(mem[0]):
+          address(stor[idx + sha3(mem[0])].field_0) = 0
+          uint256(stor[idx + sha3(mem[0]) + 1].field_0) = 0
+          uint256(stor[idx + sha3(mem[0]) + 2].field_0) = 0
+          if 31 < stor[idx + sha3(mem[0]) + 2].length:
+              mem[0] = idx + sha3(mem[0]) + 2
+              s = sha3(idx + sha3(mem[0]) + 2)
+              while sha3(idx + sha3(mem[0]) + 2) + (stor[idx + sha3(mem[0]) + 2].length + 31 / 32) > s:
+                  uint256(stor[s].field_0) = 0
+                  s = s + 1
+                  continue 
+          uint256(stor[idx + sha3(mem[0]) + 3].field_0) = 0
+          address(stor[idx + sha3(mem[0]) + 4].field_0) = 0
+          uint8(stor[idx + sha3(mem[0]) + 4].field_160) = 0
+          uint8(stor[idx + sha3(mem[0]) + 4].field_168) = 0
+          uint256(stor[idx + sha3(mem[0]) + 5].field_0) = 0
+          idx = idx + 6
+          continue 
+  address(bountyArbiter[bountyArbiter.length].field_0) = _issuer
+  uint256(bountyArbiter[bountyArbiter.length].field_256) = _deadline
+  uint256(stor[sha3((6 * bountyArbiter.length) + ('name', 'bountyArbiter', 1) + 2)][].field_0) = Array(len=_data.length, data=_data[all])
+  uint256(bountyArbiter[bountyArbiter.length].field_768) = _fulfillmentAmount
+  address(bountyArbiter[bountyArbiter.length].field_1024) = _arbiter
+  Mask(96, 0, bountyArbiter[bountyArbiter.length].field_1184) = Mask(96, 0, _paysTokens)
+  uint8(bountyArbiter[bountyArbiter.length].field_1192) = 1
+  uint256(bountyArbiter[bountyArbiter.length].field_1280) = _value
+  log BountyIssued(uint256 bountyId=(bountyArbiter.length - 1))
+  log ContributionAdded(
+        uint256 bountyId=bountyArbiter.length - 1,
+        address contributor=_value,
+        uint256 value=caller)
+  log BountyActivated(
+        uint256 bountyId=bountyArbiter.length - 1,
+        address issuer=caller)
+  return (bountyArbiter.length - 1)
+
+

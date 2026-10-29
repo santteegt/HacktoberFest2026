@@ -1,0 +1,1713 @@
+[
+ {
+  "date": "2022-12-29",
+  "name": "JAY",
+  "cause": "Insufficient validation + Reentrancy",
+  "loss_usd": null,
+  "loss_text": "~15.32 ETH",
+  "poc_path": "src/test/2022-12/JAY_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-12/JAY_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/BlockSecTeam/status/1608372475225866240"
+  ],
+  "victim_addresses": [
+   "0x0348d20b74ddc0ac9bfc3626e06d30bb6fac213b",
+   "0xed42cb11b9d03c807ed1ba9c2ed1d3ba5bf37340",
+   "0xf2919d1d80aff2940274014bef534f7791906ff2",
+   "0xce88686553686da562ce7cea497ce749da109f9f"
+  ],
+  "ignored_well_known": [
+   "0xba12222222228d8ba445958a75a0704d566bf2c8",
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+  ],
+  "primary": "0xf2919d1d80aff2940274014bef534f7791906ff2",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "JAY"
+ },
+ {
+  "date": "2022-12-25",
+  "name": "Rubic",
+  "cause": "Arbitrary External Call Vulnerability",
+  "loss_usd": 1500000,
+  "loss_text": "$1.5M",
+  "poc_path": "src/test/2022-12/Rubic_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-12/Rubic_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/BlockSecTeam/status/1606993118901198849",
+   "https://twitter.com/peckshield/status/1606937055761952770"
+  ],
+  "victim_addresses": [
+   "0x3335a88bb18fd3b6824b59af62b50ce494143333",
+   "0x33388cf69e032c6f60a420b37e44b1f5443d3333",
+   "0x677d6ec74fa352d4ef9b1886f6155384acd70d90",
+   "0x6b8d6e89590e41fa7484691fa372c3552e93e91b",
+   "0x036b5805f9175297ec2ade91678d6ea0a1e2272a",
+   "0xed9c18c5311dbb2b757b6913fb3fe6aa22b1a5b0",
+   "0xff266f62a0152f39fcf123b7086012ceb292516a",
+   "0x90d9b9cc1bfb77d96f9a44731159ddbca824c63d",
+   "0x1daeb36442d0b0b28e5c018078b672cf9ee9753b",
+   "0xf2e3628f7a85f03f0800712df3c2ebc5bdb33981",
+   "0xf3f4470d71b94cd74435e2e0f0de0dad11ec7c5a",
+   "0x915e88322edfa596d29bdf163b5197c53cdb1a68",
+   "0xd6ad4bcbb33215c4b63deda55de599d0d56bcdf5",
+   "0x2afef7d7de9e1a991c385a78fb6c950aa3487dba",
+   "0x21febbff2da0f3195b61ec0ca1b38aa1f7105cdb",
+   "0xdbddb2d6f3d387c0dda16e197cd1e490543354e1",
+   "0x58709c660b2d908098fe95758c8a872a3caa6635",
+   "0xd2c919d3bf4557419cbb519b1bc272b510bc59d9",
+   "0xfe243903c13b53a57376d27ca91360c6e6b3ffac",
+   "0xd5bd9464eb1a73cca1970655708ae4f560efc6d1",
+   "0xd6389e37f7c2db6de56b92f430735d08d702111e",
+   "0x9f3119bee3766b2cd25bf3808a8646a7f22ccddc",
+   "0x8a4295b205dd78bf3948d2d38a08baad4d28cb37",
+   "0xf4ba068f3f79acbf148b43ae8f1db31f04e53861",
+   "0x48327499e4d71ed983dc7e024dded4ebb19bdb28",
+   "0x192fcf067d36a8bc9322b96bb66866c52c43b43f",
+   "0x82bdfc6abe9d1dfa205f33869e1eadb729590805",
+   "0x44a59a1d38718c5ca8cb6e8aa7956859d947344b",
+   "0xd0245a08f5f5c54a24907249651bee39f3fe7014"
+  ],
+  "ignored_well_known": [
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x3335a88bb18fd3b6824b59af62b50ce494143333",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "RubicProxy"
+ },
+ {
+  "date": "2022-12-11",
+  "name": "MEVbot_0x28d9",
+  "cause": "Insufficient validation",
+  "loss_usd": 2000,
+  "loss_text": "$2k $USDT",
+  "poc_path": "src/test/2022-12/MEVbot_0x28d9_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-12/MEVbot_0x28d9_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://x.com/8olidity/status/1601795241433964544"
+  ],
+  "victim_addresses": [
+   "0xb61e7f192a9ad5d11e2452f53d0ddf91b58239dc",
+   "0x0757d02596ef9840048def00eeb8e0f3862cc7ca",
+   "0x28d949fdfb5d9ea6b604fa6fee3d6548ea779f17",
+   "0x3058ef90929cb8180174d74c507176cca6835d73"
+  ],
+  "ignored_well_known": [
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0xdac17f958d2ee523a2206206994597c13d831ec7"
+  ],
+  "primary": "0xb61e7f192a9ad5d11e2452f53d0ddf91b58239dc",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": false,
+  "primary_name": null
+ },
+ {
+  "date": "2022-11-23",
+  "name": "NUM",
+  "cause": "Protocol Token incompatible",
+  "loss_usd": 13000,
+  "loss_text": "$13k",
+  "poc_path": "src/test/2022-11/NUM_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-11/NUM_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/BlockSecTeam/status/1595346020237352960"
+  ],
+  "victim_addresses": [
+   "0x3496b523e5c00a4b4150d6721320cddb234c3079",
+   "0x765277eebeca2e31912c9946eae1021199b39c61",
+   "0x78ac2624a2cd193e8defe9f39a9528e8bd4a368c"
+  ],
+  "ignored_well_known": [
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x3496b523e5c00a4b4150d6721320cddb234c3079",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "TokenProxy"
+ },
+ {
+  "date": "2022-11-10",
+  "name": "DFXFinance",
+  "cause": "Reentrancy",
+  "loss_usd": 4000000,
+  "loss_text": "$4M",
+  "poc_path": "src/test/2022-11/DFX_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-11/DFX_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/BlockSecTeam/status/1590960299246780417",
+   "https://twitter.com/BeosinAlert/status/1591012525914861570",
+   "https://twitter.com/AnciliaInc/status/1590839104731684865",
+   "https://twitter.com/peckshield/status/1590831589004816384"
+  ],
+  "victim_addresses": [
+   "0xebf2096e01455108badcbaf86ce30b6e5a72aa52",
+   "0x46161158b1947d9149e066d6d31af1283b2d377c"
+  ],
+  "ignored_well_known": [
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0xe592427a0aece92de3edee1f18e0157c05861564",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xebf2096e01455108badcbaf86ce30b6e5a72aa52",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "FiatTokenProxy"
+ },
+ {
+  "date": "2022-11-09",
+  "name": "BrahTOPG",
+  "cause": "Arbitrary External Call Vulnerability",
+  "loss_usd": 89000,
+  "loss_text": "$89k",
+  "poc_path": "src/test/2022-11/BrahTOPG_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-11/BrahTOPG_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/SlowMist_Team/status/1590685173477101570"
+  ],
+  "victim_addresses": [
+   "0xd248b30a3207a766d318c7a87f5cf334a439446d",
+   "0x853d955acef822db058eb8505911ed77f175b99e",
+   "0xa19789f57d0e0225a82eeff0fecb9f3776f276a3"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xd248b30a3207a766d318c7a87f5cf334a439446d",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "Zapper"
+ },
+ {
+  "date": "2022-11-08",
+  "name": "MEV_0ad8",
+  "cause": "Arbitrary call",
+  "loss_usd": 282000,
+  "loss_text": "$282k",
+  "poc_path": "src/test/2022-11/MEV_0ad8_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-11/MEV_0ad8_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/Supremacy_CA/status/1590337718755954690"
+  ],
+  "victim_addresses": [
+   "0xae39a6c2379bef53334ea968f4c711c8cf3898b6",
+   "0x0ad8229d4bc84135786ae752b9a9d53392a8afd4",
+   "0x211b6a1137bf539b2750e02b9e525cf5757a35ae"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+  ],
+  "primary": "0xae39a6c2379bef53334ea968f4c711c8cf3898b6",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": false,
+  "primary_name": null
+ },
+ {
+  "date": "2022-11-08",
+  "name": "Kashi",
+  "cause": "Price-caching Design Defect",
+  "loss_usd": 110000,
+  "loss_text": "$110k",
+  "poc_path": "src/test/2022-11/Kashi_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-11/Kashi_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://eigenphi.substack.com/p/casting-a-magic-spell-on-abracadabra",
+   "https://twitter.com/BlockSecTeam/status/1603633067876155393"
+  ],
+  "victim_addresses": [
+   "0xf5bce5077908a1b7370b9ae04adc565ebd643966",
+   "0xbb02a884621fb8f5bfd263a67f58b65df5b090f3",
+   "0x8798249c2e607446efb7ad49ec89dd1865ff4272",
+   "0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3",
+   "0x4a9cb5d0b755275fd188f87c0a8df531b0c7c7d2"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0xd9e1ce17f2641f24ae83637ab66a2cca9c378b9f",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xf5bce5077908a1b7370b9ae04adc565ebd643966",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "BentoBoxV1"
+ },
+ {
+  "date": "2022-10-27",
+  "name": "Team Finance",
+  "cause": "Liquidity Migration Exploit",
+  "loss_usd": 15800000,
+  "loss_text": "Multiple Tokens ~$15.8M US$",
+  "poc_path": "src/test/2022-10/TeamFinance_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/TeamFinance_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/TeamFinance_/status/1585770918873542656",
+   "https://twitter.com/peckshield/status/1585587858978623491",
+   "https://twitter.com/solid_group_1/status/1585643249305518083",
+   "https://twitter.com/BeosinAlert/status/1585578499125178369"
+  ],
+  "victim_addresses": [
+   "0x161cebb807ac181d5303a4ccec2fc580cc5899fd",
+   "0xcff07c4e6aa9e2fec04daaf5f41d1b10f3adadf4",
+   "0x48d118c9185e4dbafe7f3813f8f29ec8a6248359",
+   "0xe2fe530c047f2d85298b07d9333c05737f1435fb",
+   "0xf3b9569f82b18aef890de263b84189bd33ebe452",
+   "0xc5fb36dd2fb59d3b98deff88425a3f425ee469ed",
+   "0x2d4abfdcd1385951df4317f9f3463fb11b9a31df",
+   "0x854373387e41371ac6e307a1f29603c6fa10d872",
+   "0x7a809081f991ecfe0ab2727c7e90d2ad7c2e411e",
+   "0x67cea36eeb36ace126a3ca6e21405258130cf33c",
+   "0x9267c29e4f517ce9f6d603a15b50aa47ce32278d",
+   "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d",
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0x6b175474e89094c44da98b954eedeac495271d0f"
+  ],
+  "primary": "0x48d118c9185e4dbafe7f3813f8f29ec8a6248359",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "LockToken"
+ },
+ {
+  "date": "2022-10-26",
+  "name": "N00d Token",
+  "cause": "Reentrancy",
+  "loss_usd": 29000,
+  "loss_text": "$29k",
+  "poc_path": "src/test/2022-10/N00d_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/N00d_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/BlockSecTeam/status/1584959295829180416",
+   "https://twitter.com/AnciliaInc/status/1584955717877784576"
+  ],
+  "victim_addresses": [
+   "0x2321537fd8ef4644bacdceec54e5f35bf44311fa",
+   "0x5476db8b72337d44a6724277083b1a927c82a389",
+   "0x3561081260186e69369e6c32f280836554292e08",
+   "0x1820a4b7618bde71dce8cdc73aab6c95905fad24"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x2321537fd8ef4644bacdceec54e5f35bf44311fa",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "n00dToken"
+ },
+ {
+  "date": "2022-10-21",
+  "name": "OlympusDAO",
+  "cause": "No input validation",
+  "loss_usd": 292000,
+  "loss_text": "~$292K (30500 OHM)",
+  "poc_path": "src/test/2022-10/OlympusDao_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/OlympusDao_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/peckshield/status/1583416829237526528"
+  ],
+  "victim_addresses": [
+   "0x443cf223e209e5a2c08114a2501d8f0f9ec7d9be",
+   "0xa29e4fe451ccfa5e7def35188919ad7077a4de8f",
+   "0x007fe7c498a2cf30971ad8f2cbc36bd14ac51156",
+   "0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5"
+  ],
+  "ignored_well_known": [],
+  "primary": "0x007fe7c498a2cf30971ad8f2cbc36bd14ac51156",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "BondFixedExpiryTeller"
+ },
+ {
+  "date": "2022-10-17",
+  "name": "Uerii Token",
+  "cause": "Access Control",
+  "loss_usd": 2400,
+  "loss_text": "$2.4 k",
+  "poc_path": "src/test/2022-10/Uerii_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/Uerii_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/peckshield/status/1581988895142526976"
+  ],
+  "victim_addresses": [
+   "0xcc1a341d0f2a06eaba436935399793f05c2bbe92",
+   "0xfd4dccd754eaaa8c9196998c5bb06a56df6a1d95",
+   "0x418c24191ae947a78c99fdc0e45a1f96afb254be",
+   "0x5ffaf1b4da96d6cfd4045035a94a924fc39631dc",
+   "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640"
+  ],
+  "ignored_well_known": [
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0xe592427a0aece92de3edee1f18e0157c05861564"
+  ],
+  "primary": "0x418c24191ae947a78c99fdc0e45a1f96afb254be",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "Token"
+ },
+ {
+  "date": "2022-10-14",
+  "name": "EFLeverVault",
+  "cause": "Verify flashLoan Callback",
+  "loss_usd": null,
+  "loss_text": "750 ETH",
+  "poc_path": "src/test/2022-10/EFLeverVault_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/EFLeverVault_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/Supremacy_CA/status/1581012823701786624",
+   "https://twitter.com/MevRefund/status/1580917351217627136",
+   "https://twitter.com/danielvf/status/1580936010556661761"
+  ],
+  "victim_addresses": [
+   "0xdf31f4c8dc9548eb4c416af26dc396a25fde4d5f",
+   "0x140cca423081ed0366765f18fc9f5ed299699388",
+   "0x8663fbfc41a0bac88e7cd4b128b7a77381e77781",
+   "0xe39fd820b58f83205db1d9225f28105971c3d309",
+   "0xbae7ec1baaae7d5801ad41691a2175aa11bcba19",
+   "0x071108ad85d7a766b41e0f5e5195537a8fc8e74d",
+   "0x030ba81f1c18d280636f32af80b9aad02cf0854e",
+   "0x1982b2f5814301d4e9a8b0201555376e62f82428",
+   "0xf63b34710400cad3e044cffdcab00a0f32e33ecf",
+   "0xa50ba011c48153de246e5192c8f9258a2ba79ca9",
+   "0xdc24316b9ae028f1497c275eb9192a3ea0f67022"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0xba12222222228d8ba445958a75a0704d566bf2c8",
+   "0xae7ab96520de3a18e5e111b5eaab095312d7fe84",
+   "0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9"
+  ],
+  "primary": "0xdf31f4c8dc9548eb4c416af26dc396a25fde4d5f",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": false,
+  "primary_name": null
+ },
+ {
+  "date": "2022-10-14",
+  "name": "MEVBOTa47b",
+  "cause": "Price Oracle Manipulation",
+  "loss_usd": null,
+  "loss_text": "~187.75 WETH",
+  "poc_path": "src/test/2022-10/MEVa47b_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/MEVa47b_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/BlockSecTeam/status/1580779311862190080",
+   "https://twitter.com/AnciliaInc/status/1580705036400611328",
+   "https://etherscan.io/tx/0x35ecf595864400696853c53edf3e3d60096639b6071cadea6076c9c6ceb921c1"
+  ],
+  "victim_addresses": [
+   "0x1dc90b5b7fe74715c2056e5158641c0af7d28865",
+   "0x4b77c789fa35b54dacb5f6bb2daaa01554299d6c",
+   "0x00000000000a47b1298f18cf67de547bbe0d723f",
+   "0x397ff1542f962076d0bfe58ea045ffa2d347aca0",
+   "0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8",
+   "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
+   "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0xba12222222228d8ba445958a75a0704d566bf2c8",
+   "0xe592427a0aece92de3edee1f18e0157c05861564"
+  ],
+  "primary": "0x00000000000a47b1298f18cf67de547bbe0d723f",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "Proxy"
+ },
+ {
+  "date": "2022-10-11",
+  "name": "Rabby Wallet SwapRouter",
+  "cause": "Arbitrary External Call Vulnerability",
+  "loss_usd": 200000,
+  "loss_text": "~200,000 US$",
+  "poc_path": "src/test/2022-10/RabbyWallet_SwapRouter_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/RabbyWallet_SwapRouter_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/Supremacy_CA/status/1579813933669486592",
+   "https://twitter.com/SlowMist_Team/status/1579839744128978945",
+   "https://twitter.com/BeosinAlert/status/1579856733178331139"
+  ],
+  "victim_addresses": [
+   "0xb687550842a24d7fbc6aad238fd7e0687ed59d55",
+   "0x9682f31b3f572988f93c2b8382586ca26a866475",
+   "0x6eb211caf6d304a76efe37d9abdfaddc2d4363d1",
+   "0x94228872bb16cbcdfe010c42a8e456d15b366bf1",
+   "0x6a3bcee1ebebdaa099a46d21a355d0ff1c521fcb",
+   "0xdaccce559a0571083556f39d05b177579613d83b",
+   "0x720610ed4925676d971b0ae5b3080bd233e19038",
+   "0xf9e1d1e9f22c96752356adfd377231528c7e851e",
+   "0xaf22b1692dee5929952cfba4d9a74c0952c712c8",
+   "0xfcdb212e7e7588d2dd2cc44c30f6c79fb507db4b",
+   "0x9a93c5f7680724f6b7097085b0052a56d80615bd",
+   "0x491968b05d95979ba3a52d73d8a39ea96693f011",
+   "0xc64284527b04a48c6673df62f5b48188ccfdf658",
+   "0x9df99a08710615fabcb16ea0b05ed039e8a5f644",
+   "0xc897967bab363cadd4f3001d51506bcc5dd6f6c2",
+   "0x48aa9d67cb713804c005516bca7769c159d7897c",
+   "0xb9afb68de4e1f89aca813ca75d87bd86a1a17aa3",
+   "0xc10898eda672fdfc4ac0228bb1da9b2bf54c768f",
+   "0x73b37009778048f6db88fd602582473e74e5019a",
+   "0xbb4b297cc5257d8ab7f280361c96b3a27014ebbb",
+   "0x5be2539baa7622865fdc401ba26adb636d78f5bf",
+   "0x25939e70dc19ef0aa2819f5c6544712a36eebfa7",
+   "0x5853ed4f26a3fcea565b3fbc698bb19cdf6deb85",
+   "0x73a6b16ad155acd15f1a69e61369db883dfc0b0b",
+   "0xe451dc0948f33b1261c585f0db84cca9ab69f3a4",
+   "0xd38023d7ee559672fa00ea5156734710bcc0e781",
+   "0x059c1592696d430e7ba8cccc984ba9639b8cf90b",
+   "0x69afe88f22f416ffb7d2bf119b31ebc0d0d85325",
+   "0xd506fb416b0ad8dbf7859b9b38c435405e3d1110",
+   "0xe7b6804a9fe8adeb109112a8a2cf40093e0d55fc",
+   "0xeebbaf298bb8b5076723d69af61bf75a5c2ad8d6",
+   "0x1fc550e98ad3021e32c47a84019f77a0792c60b7"
+  ],
+  "ignored_well_known": [
+   "0xdac17f958d2ee523a2206206994597c13d831ec7",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+  ],
+  "primary": "0xb687550842a24d7fbc6aad238fd7e0687ed59d55",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": false,
+  "primary_name": null
+ },
+ {
+  "date": "2022-10-11",
+  "name": "Templedao",
+  "cause": "Insufficient access control",
+  "loss_usd": 2300000,
+  "loss_text": "$2.3 million",
+  "poc_path": "src/test/2022-10/Templedao_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/Templedao_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/BlockSecTeam/status/1579843881893769222",
+   "https://etherscan.io/tx/0x8c3f442fc6d640a6ff3ea0b12be64f1d4609ea94edd2966f42c01cd9bdcf04b5"
+  ],
+  "victim_addresses": [
+   "0x9c9fb3100a2a521985f0c47de3b4598dafd25b01",
+   "0x2df9c154fe24d081cfe568645fb4075d725431e0",
+   "0xd2869042e12a3506100af1d192b5b04d65137941",
+   "0xbcb8b7fc9197feda75c101fa69d3211b5a30dcd9"
+  ],
+  "ignored_well_known": [],
+  "primary": "0xd2869042e12a3506100af1d192b5b04d65137941",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "StaxLPStaking"
+ },
+ {
+  "date": "2022-10-09",
+  "name": "Xave Finance",
+  "cause": "Malicious Proposal Mint & Transfer Ownership",
+  "loss_usd": null,
+  "loss_text": "100,000,000,000,000 RNBW",
+  "poc_path": "src/test/2022-10/XaveFinance_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/XaveFinance_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/BeosinAlert/status/1579040051853303808",
+   "https://etherscan.io/tx/0xc18ec2eb7d41638d9982281e766945d0428aaeda6211b4ccb6626ea7cff31f4a"
+  ],
+  "victim_addresses": [
+   "0x0f44f3489d17e42ab13a6beb76e57813081fc1e2",
+   "0xe167cdaac8718b90c03cf2cb75dc976e24ee86d3",
+   "0x8f9036732b9aa9b82d8f35e54b71faeb2f573e2f",
+   "0xe94b97b6b43639e238c851a7e693f50033efd75c",
+   "0x6335a2e4a2e304401fca4fc0deaff066b813d055",
+   "0x579270f151d142eb8bdc081043a983307aa15786",
+   "0x325a2e0f3cca2ddbaebb4dfc38df8d19ca165b47",
+   "0x7eae370e6a76407c3955a2f0bbca853c38e6454e"
+  ],
+  "ignored_well_known": [],
+  "primary": "0x8f9036732b9aa9b82d8f35e54b71faeb2f573e2f",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "DaoModule"
+ },
+ {
+  "date": "2022-09-28",
+  "name": "MEVBOT",
+  "cause": "Arbitrary Call",
+  "loss_usd": 1469700,
+  "loss_text": "$1,469,700",
+  "poc_path": "src/test/2022-09/MEVbadc0de_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-09/MEVbadc0de_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://rekt.news/ripmevbot/",
+   "https://etherscan.io/tx/0x59ddcf5ee5c687af2cbf291c3ac63bf28316a8ecbb621d9f62d07fa8a5b8ef4e"
+  ],
+  "victim_addresses": [
+   "0x1e0447b19bb6ecfdae1e4ae1694b0c3659614e4e",
+   "0xbadc0defafcf6d4239bdf0b66da4d7bd36fcf05a"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x1e0447b19bb6ecfdae1e4ae1694b0c3659614e4e",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "SoloMargin"
+ },
+ {
+  "date": "2022-09-02",
+  "name": "Bad Guys by RPF",
+  "cause": "Business Logic Flaw : Missing Check For Number of NFT to Mint",
+  "loss_usd": null,
+  "loss_text": "Bad Guys by RPF(400 NFTs)",
+  "poc_path": "src/test/2022-09/BadGuysbyRPF_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-09/BadGuysbyRPF_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/RugDoctorApe/status/1565739119606890498",
+   "https://etherscan.io/tx/0x27e64a8215ae1528245c912bcca09883fdd7cce69249bd5d5d1c0eecf5297b96"
+  ],
+  "victim_addresses": [
+   "0x09eff2449882f9e727a8e9498787f8ff81465ade",
+   "0xbd8a137e79c90063cd5c0db3dbabd5ca2ec7e83e",
+   "0xb84cbaf116eb90fd445dd5aeadfab3e807d2cbac"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xb84cbaf116eb90fd445dd5aeadfab3e807d2cbac",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "Bad Guys by RPF"
+ },
+ {
+  "date": "2022-08-24",
+  "name": "LuckyTiger NFT",
+  "cause": "Predicting Random Numbers",
+  "loss_usd": null,
+  "loss_text": null,
+  "poc_path": "src/test/2022-08/LuckyTiger_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-08/LuckyTiger_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/1nf0s3cpt/status/1576117129589317633",
+   "https://etherscan.io/tx/0x804ff3801542bff435a5d733f4d8a93a535d73d0de0f843fd979756a7eab26af"
+  ],
+  "victim_addresses": [
+   "0x3392c91403f09ad3b7e7243dbd4441436c7f443c",
+   "0x9c87a5726e98f2f404cdd8ac8968e9b2c80c0967"
+  ],
+  "ignored_well_known": [],
+  "primary": "0x9c87a5726e98f2f404cdd8ac8968e9b2c80c0967",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "luckytiger"
+ },
+ {
+  "date": "2022-08-16",
+  "name": "Circle",
+  "cause": "Price Manipulation",
+  "loss_usd": 151600,
+  "loss_text": "~$151.6K",
+  "poc_path": "src/test/2022-08/Circle_exp2.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-08/Circle_exp2.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://app.blocksec.com/explorer/tx/eth/0xf1818f62c635e5c80ef16b7857da812c74ce330ebed46682b4d173bffe84c666?line=74"
+  ],
+  "victim_addresses": [
+   "0xdfdea277f6b44270bcb804997d1e6cc4ad8407db",
+   "0xfd51531b26f9be08240f7459eea5be80d5b047d9",
+   "0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5",
+   "0x1eb4cf3a948e7d72a198fe073ccb8c7a948cd853",
+   "0x57ab1ec28d129707052df4df418d58a2d46d5f51",
+   "0x5ef30b9986345249bc32d8928b7ee64de9435e39",
+   "0x9759a6ac90977b93b58547b4a71c78317f391a28",
+   "0x35d1b3f3d7966a1dfe207aa4514c12a259a0492b",
+   "0xa81598667ac561986b70ae11bbe2dd5348ed4327",
+   "0x89b78cfa322f6c5de0abceecab66aee45393cc5a",
+   "0x0a59649758aa4d66e25f08dd01271e891fe52199"
+  ],
+  "ignored_well_known": [
+   "0x6b175474e89094c44da98b954eedeac495271d0f",
+   "0xdac17f958d2ee523a2206206994597c13d831ec7",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "JamUniswapV2Pair"
+ },
+ {
+  "date": "2022-08-13",
+  "name": "Circle",
+  "cause": "Price Manipulation",
+  "loss_usd": 50500,
+  "loss_text": "~$50.5K",
+  "poc_path": "src/test/2022-08/Circle_exp1.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-08/Circle_exp1.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://app.blocksec.com/explorer/tx/eth/0xa4e650772f6e6b7ecc0964fe4c3854850669d1467570a2fa2b6edfa0f112c4b7"
+  ],
+  "victim_addresses": [
+   "0xdfdea277f6b44270bcb804997d1e6cc4ad8407db",
+   "0xfd51531b26f9be08240f7459eea5be80d5b047d9",
+   "0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5",
+   "0x1eb4cf3a948e7d72a198fe073ccb8c7a948cd853",
+   "0x57ab1ec28d129707052df4df418d58a2d46d5f51",
+   "0x5ef30b9986345249bc32d8928b7ee64de9435e39",
+   "0x9759a6ac90977b93b58547b4a71c78317f391a28",
+   "0x35d1b3f3d7966a1dfe207aa4514c12a259a0492b",
+   "0xa81598667ac561986b70ae11bbe2dd5348ed4327",
+   "0x89b78cfa322f6c5de0abceecab66aee45393cc5a",
+   "0x0a59649758aa4d66e25f08dd01271e891fe52199"
+  ],
+  "ignored_well_known": [
+   "0x6b175474e89094c44da98b954eedeac495271d0f",
+   "0xdac17f958d2ee523a2206206994597c13d831ec7",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "JamUniswapV2Pair"
+ },
+ {
+  "date": "2022-08-10",
+  "name": "XSTABLE Protocol",
+  "cause": "Incorrect Logic Check",
+  "loss_usd": null,
+  "loss_text": null,
+  "poc_path": "src/test/2022-08/XST_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-08/XST_exp.sol",
+  "extra_pocs": [
+   "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-08/XST_exp2.sol"
+  ],
+  "references": [
+   "https://mobile.twitter.com/BlockSecTeam/status/1557195012042936320"
+  ],
+  "victim_addresses": [
+   "0x694f8f9e0ec188f528d6354fdd0e47dca79b6f2c",
+   "0x91383a15c391c142b80045d8b4730c1c37ac0378",
+   "0xb276647e70cb3b81a1ca302cf8de280ff0ce5799",
+   "0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0xdac17f958d2ee523a2206206994597c13d831ec7",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x694f8f9e0ec188f528d6354fdd0e47dca79b6f2c",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "Uniswap V2"
+ },
+ {
+  "date": "2022-08-02",
+  "name": "Nomad Bridge",
+  "cause": "Business Logic Flaw : Incorrect acceptable merkle-root checks",
+  "loss_usd": 152000000,
+  "loss_text": "Multiple ERC-20 Tokens (~152M US$)",
+  "poc_path": "src/test/2022-08/NomadBridge_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-08/NomadBridge_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/samczsun/status/1554252024723546112",
+   "https://www.certik.com/resources/blog/28fMavD63CpZJOKOjb9DX3-nomad-bridge-exploit-incident-analysis",
+   "https://blog.coinbase.com/nomad-bridge-incident-analysis-899b425b0f34"
+  ],
+  "victim_addresses": [
+   "0x88a69b4e698a4b090df6cf5bd7b2d47325ad30a3",
+   "0x15fda9f60310d09fea54e3c99d1197dff5107248",
+   "0x5d94309e5a0090b165fa4181519701637b6daeba",
+   "0xb92336759618f55bd0f8313bd843604592e27bd8"
+  ],
+  "ignored_well_known": [
+   "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x88a69b4e698a4b090df6cf5bd7b2d47325ad30a3",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "UpgradeBeaconProxy"
+ },
+ {
+  "date": "2022-07-23",
+  "name": "Audius",
+  "cause": "Storage Collision & Malicious Proposal",
+  "loss_usd": 1080000,
+  "loss_text": "704 ETH (~1.08M US$)",
+  "poc_path": "src/test/2022-07/Audius_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-07/Audius_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/AudiusProject/status/1551000725169180672",
+   "https://twitter.com/1nf0s3cpt/status/1551050841146400768",
+   "https://blog.audius.co/article/audius-governance-takeover-post-mortem-7-23-22"
+  ],
+  "victim_addresses": [
+   "0xa0c7bd318d69424603cbf91e9969870f21b8ab4c",
+   "0xbdbb5945f252bc3466a319cdcc3ee8056bf2e569",
+   "0x4deca517d6817b6510798b7328f2314d3003abac",
+   "0x1c91af03a390b4c619b444425b3119e553b5b44b",
+   "0xe6d97b2099f142513be7a2a068be040656ae4591",
+   "0xea10fd3536fce6a5d40d55c790b96df33b26702f",
+   "0x4d7968ebfd390d5e7926cb3587c39eff2f9fb225",
+   "0xf24aeab628493f82742db68596b532ab8a141057",
+   "0x18aaa7115705e8be94bffebde57af9bfc265b998",
+   "0xf70f691d30ce23786cfb3a1522cfd76d159aca8d"
+  ],
+  "ignored_well_known": [
+   "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d",
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+  ],
+  "primary": "0x4deca517d6817b6510798b7328f2314d3003abac",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "AudiusAdminUpgradeabilityProxy"
+ },
+ {
+  "date": "2022-07-10",
+  "name": "Omni NFT",
+  "cause": "Reentrancy",
+  "loss_usd": 1400000,
+  "loss_text": "$1.4M",
+  "poc_path": "src/test/2022-07/Omni_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-07/Omni_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/SlowMist_Team/status/1546379086792388609",
+   "https://etherscan.io/tx/0x05d65e0adddc5d9ccfe6cd65be4a7899ebcb6e5ec7a39787971bcc3d6ba73996"
+  ],
+  "victim_addresses": [
+   "0x2f131c4dad4be81683abb966b4de05a549144443",
+   "0x8a90cab2b38dba80c64b7734e58ee1db38b8992e",
+   "0xebe72cdafebc1abf26517dd64b28762df77912a9"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0xba12222222228d8ba445958a75a0704d566bf2c8",
+   "0xd9e1ce17f2641f24ae83637ab66a2cca9c378b9f",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x2f131c4dad4be81683abb966b4de05a549144443",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "BeaconProxy"
+ },
+ {
+  "date": "2022-07-06",
+  "name": "FlippazOne NFT",
+  "cause": "Accesscontrol",
+  "loss_usd": null,
+  "loss_text": null,
+  "poc_path": "src/test/2022-07/FlippazOne_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-07/FlippazOne_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/bertcmiller/status/1544496577338826752",
+   "https://etherscan.io/tx/0x8bded20c1db5a1d5f595b15e682a95ce11d3c895d6031147fa49c4ffa5729a30"
+  ],
+  "victim_addresses": [
+   "0xe85a08cf316f695ebe7c13736c8cc38a7cc3e944"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xe85a08cf316f695ebe7c13736c8cc38a7cc3e944",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "FlippazOne"
+ },
+ {
+  "date": "2022-06-26",
+  "name": "XCarnival",
+  "cause": "Infinite Number of Loans",
+  "loss_usd": 3870000,
+  "loss_text": "3087 ETH (~$3.87M)",
+  "poc_path": "src/test/2022-06/XCarnival_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-06/XCarnival_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/XCarnival_Lab/status/1541226298399653888",
+   "https://twitter.com/peckshield/status/1541047171453034501",
+   "https://twitter.com/BlockSecTeam/status/1541070850505723905"
+  ],
+  "victim_addresses": [
+   "0xb7cbb4d43f1e08327a90b32a8417688c9d0b800a",
+   "0xf70f691d30ce23786cfb3a1522cfd76d159aca8d",
+   "0x39360ac1239a0b98cb8076d4135d0f72b7fd9909",
+   "0x5417da20ac8157dd5c07230cfc2b226fdcfc5663",
+   "0xb14b3b9682990ccc16f52eb04146c3ceab01169a",
+   "0x34ca24ddcdaf00105a3bf10ba5aae67953178b85",
+   "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+   "0xa04ec2366641a2286782d104c448f13bf36b2304",
+   "0x2d6e070af9574d07ef17ccd5748590a86690d175",
+   "0xb38707e31c813f832ef71c70731ed80b45b85b2d"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x39360ac1239a0b98cb8076d4135d0f72b7fd9909",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "XNFT"
+ },
+ {
+  "date": "2022-06-24",
+  "name": "Harmony's Horizon Bridge",
+  "cause": "Private key compromised",
+  "loss_usd": 100000000,
+  "loss_text": "$100 million",
+  "poc_path": "src/test/2022-06/Harmony_multisig_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-06/Harmony_multisig_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/harmonyprotocol/status/1540110924400324608",
+   "https://twitter.com/0xIvo/status/1540165571681128448",
+   "https://twitter.com/1nf0s3cpt/status/1540139812715261952"
+  ],
+  "victim_addresses": [
+   "0x715cdda5e9ad30a0ced14940f9997ee611496de6",
+   "0xf845a7ee8477ad1fb4446651e548901a2635a915",
+   "0x2dccdb493827e15a5dc8f8b72147e6c4a5620857",
+   "0x812d8622c6f3c45959439e7ede3c580da06f8f25"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d",
+   "0xdac17f958d2ee523a2206206994597c13d831ec7"
+  ],
+  "primary": "0x715cdda5e9ad30a0ced14940f9997ee611496de6",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "MultiSigWallet"
+ },
+ {
+  "date": "2022-06-18",
+  "name": "SNOOD",
+  "cause": "Miscalculation on \\_spendAllowance",
+  "loss_usd": null,
+  "loss_text": "104 ETH",
+  "poc_path": "src/test/2022-06/Snood_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-06/Snood_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://ethereum.stackexchange.com/questions/130472/attack-on-erc-777-smart-contract-and-uniswapv2pair-resulting-in-104-eth-liquidit",
+   "https://etherscan.io/tx/0x9a6227ef97d7ce75732645bd604ef128bb5dfbc1bfbe0966ad1cd2870d45a20e",
+   "https://ethtx.info/mainnet/0x9a6227ef97d7ce75732645bd604ef128bb5dfbc1bfbe0966ad1cd2870d45a20e/"
+  ],
+  "victim_addresses": [
+   "0xd45740ab9ec920bedbd9bab2e863519e59731941",
+   "0x0f6b0960d2569f505126341085ed7f0342b67dae",
+   "0x180ea08644b123d8a3f0eccf2a3b45a582075538"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xd45740ab9ec920bedbd9bab2e863519e59731941",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "TransparentUpgradeableProxy"
+ },
+ {
+  "date": "2022-06-16",
+  "name": "InverseFinance",
+  "cause": "Flashloan & Price Oracle Manipulation",
+  "loss_usd": 99976,
+  "loss_text": "53.2445 WBTC and 99,976.29 USDT",
+  "poc_path": "src/test/2022-06/InverseFinance_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-06/InverseFinance_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/peckshield/status/1537382891230883841",
+   "https://twitter.com/SlowMist_Team/status/1537602909512376321",
+   "https://blocksecteam.medium.com/price-oracle-manipulation-attack-on-inverse-finance-a5544218ea91",
+   "https://www.certik.com/resources/blog/6LbL57WA3iMNm8zd7q111R-inverse-finance-incident-analysis",
+   "https://etherscan.io/tx/0x958236266991bc3fe3b77feaacea120f172c0708ad01c7a715b255f218f9313c"
+  ],
+  "victim_addresses": [
+   "0x865377367054516e17014ccded1e7d814edc9ce4",
+   "0xd51a44d3fae010294c616388b506acda1bfaae46",
+   "0xc4ad29ba4b3c580e6d59105fff484999997675ff",
+   "0xe537b5cc158eb71037d4125bdd7538421981e6aa",
+   "0x8e764be4288b842791989db5b8ec067279829809",
+   "0xaa5a67c256e27a5d80712c51971408db3370927d",
+   "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7",
+   "0x1429a930ec3bcf5aa32ef298ccc5ab09836ef587",
+   "0x4dcf7407ae5c07f8681e1659f626e114a7667339",
+   "0xe8b3bc58774857732c6c1147bfc9b9e5fb6f427c",
+   "0x7fcb7dac61ee35b3d4a51117a7c58d53f0a8a670",
+   "0x6c3f90f043a72fa612cbac8115ee7e52bde6e490"
+  ],
+  "ignored_well_known": [
+   "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0xdac17f958d2ee523a2206206994597c13d831ec7",
+   "0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x865377367054516e17014ccded1e7d814edc9ce4",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "ERC20"
+ },
+ {
+  "date": "2022-05-17",
+  "name": "ApeCoin (APE)",
+  "cause": "Flashloan",
+  "loss_usd": 1100000,
+  "loss_text": "$1.1 million",
+  "poc_path": "src/test/2022-05/Bayc_apecoin_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-05/Bayc_apecoin_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://etherscan.io/tx/0xeb8c3bebed11e2e4fcd30cbfc2fb3c55c4ca166003c7f7d319e78eaab9747098",
+   "https://news.coincu.com/73892-the-flashloan-attack-on-the-ape-airdrop-to-claim-1-1-million-of-ape-tokens/"
+  ],
+  "victim_addresses": [
+   "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+   "0xea47b64e1bfccb773a0420247c0aa0a3c1d2e5c5",
+   "0x025c6da5bd0e6a5dd1350fda9e3b6a614b205a1f",
+   "0x4d224452801aced8b2f0aebe155379bb5d594381",
+   "0x6703741e913a30d6604481472b6d81f3da45e6e8"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "BoredApeYachtClub"
+ },
+ {
+  "date": "2022-04-30",
+  "name": "Saddle Finance",
+  "cause": "Swap Metapool Attack",
+  "loss_usd": 10000000,
+  "loss_text": "$10 million",
+  "poc_path": "src/test/2022-04/Saddle_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-04/Saddle_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/peckshield/status/1520330006710616064",
+   "https://medium.com/immunefi/hack-analysis-saddle-finance-april-2022-f2bcb119f38",
+   "https://github.com/Hephyrius/Immuni-Saddle-POC"
+  ],
+  "victim_addresses": [
+   "0x07df2ad9878f8797b4055230bbae5c808b8259b3",
+   "0x57ab1ec28d129707052df4df418d58a2d46d5f51",
+   "0x5f86558387293b6009d7896a61fcc86c17808d62",
+   "0xa5407eae9ba41422680e2e00537571bcc53efbfd",
+   "0x824dcd7b044d60df2e89b1bb888e66d8bcf41491"
+  ],
+  "ignored_well_known": [
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0x6b175474e89094c44da98b954eedeac495271d0f",
+   "0xdac17f958d2ee523a2206206994597c13d831ec7",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x07df2ad9878f8797b4055230bbae5c808b8259b3",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "FlashLoan"
+ },
+ {
+  "date": "2022-04-30",
+  "name": "Rari Capital/Fei Protocol",
+  "cause": "Flashloan Attack + Reentrancy",
+  "loss_usd": 80000000,
+  "loss_text": "$80 million",
+  "poc_path": "src/test/2022-04/Rari_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-04/Rari_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://certik.medium.com/fei-protocol-incident-analysis-8527440696cc",
+   "https://twitter.com/peckshield/status/1520369315698016256",
+   "https://etherscan.io/tx/0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0b0d41f6e76530"
+  ],
+  "victim_addresses": [
+   "0x26267e41ceca7c8e0f143554af707336f27fa051",
+   "0xebe0d1cb6a0b8569929e062d67bfbc07608f0a47",
+   "0x3f2d1bc6d02522dbcdb216b2e75edddafe04b16f"
+  ],
+  "ignored_well_known": [
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0xba12222222228d8ba445958a75a0704d566bf2c8",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x26267e41ceca7c8e0f143554af707336f27fa051",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "CEtherDelegator"
+ },
+ {
+  "date": "2022-04-23",
+  "name": "Akutar NFT",
+  "cause": "Denial of Service",
+  "loss_usd": 34000000,
+  "loss_text": "34M USD",
+  "poc_path": "src/test/2022-04/AkutarNFT_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-04/AkutarNFT_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://blocksecteam.medium.com/how-akutar-nft-loses-34m-usd-60d6cb053dff",
+   "https://etherscan.io/address/0xf42c318dbfbaab0eee040279c6a2588fa01a961d#code"
+  ],
+  "victim_addresses": [
+   "0xf42c318dbfbaab0eee040279c6a2588fa01a961d",
+   "0xca2eb45533a6d5e2657382b0d6ec01e33a425bf4",
+   "0xcc0ecd808ce4fed81f0552b3889656b28aa2bae9"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xf42c318dbfbaab0eee040279c6a2588fa01a961d",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "AkuAuction"
+ },
+ {
+  "date": "2022-04-16",
+  "name": "BeanstalkFarms",
+  "cause": "DAO + Flashloan",
+  "loss_usd": 182000000,
+  "loss_text": "$182 million",
+  "poc_path": "src/test/2022-04/Beanstalk_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-04/Beanstalk_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://rekt.news/beanstalk-rekt/",
+   "https://medium.com/uno-re/beanstalk-farms-hacked-total-damage-is-182-million-b699dd3e5c8",
+   "https://twitter.com/peckshield/status/1515680335769456640",
+   "https://etherscan.io/tx/0x68cdec0ac76454c3b0f7af0b8a3895db00adf6daaf3b50a99716858c4fa54c6f",
+   "https://etherscan.io/tx/0xcd314668aaa9bbfebaf1a0bd2b6553d01dd58899c508d4729fa7311dc5d33ad7"
+  ],
+  "victim_addresses": [
+   "0xdc59ac4fefa32293a95889dc396682858d52e5db",
+   "0x3a70dfa7d2262988064a2d051dd47521e43c9bdd",
+   "0x6c3f90f043a72fa612cbac8115ee7e52bde6e490",
+   "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7",
+   "0xc1e088fc1323b20bcbee9bd1b9fc9546db5624c5",
+   "0xe5ecf73603d98a0128f05ed30506ac7a663dbb69"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d",
+   "0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9",
+   "0x6b175474e89094c44da98b954eedeac495271d0f",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0xdac17f958d2ee523a2206206994597c13d831ec7",
+   "0x7a250d5630b4cf539739df2c5dacb4c659f2488d"
+  ],
+  "primary": "0xdc59ac4fefa32293a95889dc396682858d52e5db",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "Bean"
+ },
+ {
+  "date": "2022-03-29",
+  "name": "Ronin Network",
+  "cause": "Bridge",
+  "loss_usd": 624000000,
+  "loss_text": "$624 million",
+  "poc_path": "src/test/2022-03/Ronin_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-03/Ronin_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://rekt.news/ronin-rekt/",
+   "https://etherscan.io/tx/0xc28fad5e8d5e0ce6a2eaf67b6687be5d58113e16be590824d6cfa1a94467d0b7",
+   "https://etherscan.io/tx/0xed2c72ef1a552ddaec6dd1f5cddf0b59a8f37f82bdda5257d9c7c37db7bb9b08"
+  ],
+  "victim_addresses": [
+   "0x098b716b8aaf21512996dc57eb0615e2383e2f96",
+   "0x1a2a1c938ce3ec39b6d47113c7955baa9dd454f2"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x1a2a1c938ce3ec39b6d47113c7955baa9dd454f2",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "MainchainGatewayProxy"
+ },
+ {
+  "date": "2022-03-29",
+  "name": "Redacted Cartel",
+  "cause": "Custom Approval Logic",
+  "loss_usd": null,
+  "loss_text": null,
+  "poc_path": "src/test/2022-03/RedactedCartel_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-03/RedactedCartel_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://medium.com/immunefi/redacted-cartel-custom-approval-logic-bugfix-review-9b2d039ca2c5"
+  ],
+  "victim_addresses": [
+   "0x186e55c0bebd2f69348d94c4a27556d93c5bd36c",
+   "0x9ee1873ba8383b1d4ac459abd3c9c006eaa8800a",
+   "0x0f41d34b301e24e549b7445b3f620178bff331be",
+   "0x78186702bd66905845b469e3b76d4fd63f8722d4",
+   "0x20b92862dcb9976e0aa11fae766343b7317ab349"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x186e55c0bebd2f69348d94c4a27556d93c5bd36c",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "wxBTRFLY"
+ },
+ {
+  "date": "2022-03-27",
+  "name": "Revest Finance",
+  "cause": "Reentrancy",
+  "loss_usd": 11200000,
+  "loss_text": "$11.2 million",
+  "poc_path": "src/test/2022-03/Revest_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-03/Revest_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://blocksecteam.medium.com/revest-finance-vulnerabilities-more-than-re-entrancy-1609957b742f",
+   "https://etherscan.io/tx/0xe0b0c2672b760bef4e2851e91c69c8c0ad135c6987bbf1f43f5846d89e691428"
+  ],
+  "victim_addresses": [
+   "0xbc2c5392b0b841832bec8b9c30747badda7b70ca",
+   "0x56de8bc61346321d4f2211e3ac3c0a7f00db9b76",
+   "0x2320a28f52334d62622cc2eafa15de55f9987ed9"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d",
+   "0x0000000000000000000000000000000000000000"
+  ],
+  "primary": "0xbc2c5392b0b841832bec8b9c30747badda7b70ca",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "UniswapV2Pair"
+ },
+ {
+  "date": "2022-03-26",
+  "name": "Auctus",
+  "cause": "Arbitrary Call",
+  "loss_usd": 726000,
+  "loss_text": "$726 k",
+  "poc_path": "src/test/2022-03/Auctus_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-03/Auctus_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/AuctusOptions/status/1508647849663291398?cxt=HHwWjICzpbzO5e8pAAAA",
+   "https://etherscan.io/tx/0x2e7d7e7a6eb157b98974c8687fbd848d0158d37edc1302ea08ee5ddb376befea"
+  ],
+  "victim_addresses": [
+   "0xe7597f774fd0a15a617894dc39d45a28b97afa4f",
+   "0xcb32033c498b54818e58270f341e5f6a3bce993b"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+  ],
+  "primary": "0xe7597f774fd0a15a617894dc39d45a28b97afa4f",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "ACOWriter"
+ },
+ {
+  "date": "2022-03-22",
+  "name": "CompoundTUSDSweepTokenBypass",
+  "cause": "Insufficient validation",
+  "loss_usd": null,
+  "loss_text": null,
+  "poc_path": "src/test/2022-03/CompoundTusd_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-03/CompoundTusd_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://blog.openzeppelin.com/compound-tusd-integration-issue-retrospective/"
+  ],
+  "victim_addresses": [
+   "0x12392f67bdf24fae0af363c24ac620a2f67dad86",
+   "0x0000000000085d4780b73119b644ae5ecd22b376",
+   "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x12392f67bdf24fae0af363c24ac620a2f67dad86",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "Compound TrueUSD"
+ },
+ {
+  "date": "2022-03-20",
+  "name": "Li.Fi",
+  "cause": "Bridges",
+  "loss_usd": 570000,
+  "loss_text": "$570K",
+  "poc_path": "src/test/2022-03/LiFi_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-03/LiFi_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://blog.li.fi/20th-march-the-exploit-e9e1c5c03eb9",
+   "https://twitter.com/lifiprotocol/status/1505738407938387971",
+   "https://etherscan.io/tx/0x4b4143cbe7f5475029cf23d6dcbb56856366d91794426f2e33819b9b1aac4e96"
+  ],
+  "victim_addresses": [
+   "0xc6f2bde06967e04caaf4bf4e43717c3342680d76",
+   "0x5a9fd7c39a6c488e715437d7b1f3c823d5596ed1",
+   "0x878099f08131a18fab6bb0b4cfc6b6dae54b177e",
+   "0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+   "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
+   "0xb4efd85c19999d84251304bda99e90b92300bd93",
+   "0x6810e776880c02933d47db1b9fc05908e5386b96",
+   "0x72e364f2abdc788b7e918bc238b21f109cd634d7",
+   "0x18aaa7115705e8be94bffebde57af9bfc265b998",
+   "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+   "0x8a9c67fee641579deba04928c4bc45f66e26343a"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d",
+   "0x0000000000000000000000000000000000000000",
+   "0xdac17f958d2ee523a2206206994597c13d831ec7",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+   "0x6b175474e89094c44da98b954eedeac495271d0f"
+  ],
+  "primary": "0x5a9fd7c39a6c488e715437d7b1f3c823d5596ed1",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "LiFiDiamond"
+ },
+ {
+  "date": "2022-03-20",
+  "name": "Umbrella Network",
+  "cause": "Underflow",
+  "loss_usd": null,
+  "loss_text": null,
+  "poc_path": "src/test/2022-03/Umbrella_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-03/Umbrella_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://medium.com/uno-re/umbrella-network-hacked-700k-lost-97285b69e8c7",
+   "https://etherscan.io/tx/0x33479bcfbc792aa0f8103ab0d7a3784788b5b0e1467c81ffbed1b7682660b4fa"
+  ],
+  "victim_addresses": [
+   "0x1751e3e1aaf1a3e7b973c889b7531f43fc59f7d0",
+   "0x89767960b76b009416bc7ff4a4b79051eed0a9ee",
+   "0xb3fb1d01b07a706736ca175f827e4f56021b85de",
+   "0xb1bbeea2da2905e6b0a30203aef55c399c53d042"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xb3fb1d01b07a706736ca175f827e4f56021b85de",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "StakingRewards"
+ },
+ {
+  "date": "2022-03-05",
+  "name": "Bacon Protocol",
+  "cause": "Reentrancy",
+  "loss_usd": 1000000,
+  "loss_text": "$1 million",
+  "poc_path": "src/test/2022-03/Bacon_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-03/Bacon_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/peckshield/status/1500105933128495108",
+   "https://etherscan.io/tx/0xacfcaa8e1c482148f9f2d592c78ca7a27934c7333dab31978ed0aef333a28ab6",
+   "https://etherscan.io/tx/0x7d2296bcb936aa5e2397ddf8ccba59f54a178c3901666b49291d880369dbcf31"
+  ],
+  "victim_addresses": [
+   "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc",
+   "0xb8919522331c59f5c16bdfaa6a121a6e03a91f62",
+   "0x1820a4b7618bde71dce8cdc73aab6c95905fad24"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+  ],
+  "primary": "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "UniswapV2Pair"
+ },
+ {
+  "date": "2022-02-14",
+  "name": "BuildFinance",
+  "cause": "DAO",
+  "loss_usd": 470000,
+  "loss_text": "$470k",
+  "poc_path": "src/test/2022-02/BuildF_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-02/BuildF_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/finance_build/status/1493223190071554049",
+   "https://www.cryptotimes.io/build-finance-suffered-hostile-governance-takeover-lost-470k/",
+   "https://etherscan.io/tx/0x544e5849b71b98393f41d641683586d0b519c46a2eeac9bcb351917f40258a85"
+  ],
+  "victim_addresses": [
+   "0x5a6ebeb61a80b2a2a5e0b4d893d731358d888583",
+   "0x6e36556b3ee5aa28def2a8ec3dae30ec2b208739",
+   "0x562680a4dc50ed2f14d75bf31f494cfe0b8d10a1",
+   "0xf41c13f4e2f750408fc6eb5cf0e34225d52e7002"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x5a6ebeb61a80b2a2a5e0b4d893d731358d888583",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "Governance"
+ },
+ {
+  "date": "2022-02-08",
+  "name": "Sandbox LAND",
+  "cause": "Access control",
+  "loss_usd": null,
+  "loss_text": null,
+  "poc_path": "src/test/2022-02/Sandbox_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-02/Sandbox_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://slowmist.medium.com/the-vulnerability-behind-the-sandbox-land-migration-2abf68933170",
+   "https://etherscan.io/tx/0x34516ee081c221d8576939f68aee71e002dd5557180d45194209d6692241f7b1"
+  ],
+  "victim_addresses": [
+   "0x50f5474724e0ee42d9a4e711ccfb275809fd6d4a",
+   "0x9cfa73b8d300ec5bf204e4de4a58e5ee6b7dc93c",
+   "0x6fb0b915d0e10c3b2ae42a5dd879c3d995377a2c"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x50f5474724e0ee42d9a4e711ccfb275809fd6d4a",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "Land"
+ },
+ {
+  "date": "2022-02-04",
+  "name": "TecraSpace",
+  "cause": "Any token is destroyed",
+  "loss_usd": 63000,
+  "loss_text": "~63k $USDT",
+  "poc_path": "src/test/2022-02/TecraSpace_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-02/TecraSpace_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://etherscan.io/address/0x6653d9bcbc28fc5a2f5fb5650af8f2b2e1695a15",
+   "https://app.blocksec.com/explorer/tx/eth/0x81e9918e248d14d78ff7b697355fd9f456c6d7881486ed14fdfb69db16631154"
+  ],
+  "victim_addresses": [
+   "0xb19b7f59c08ea447f82b587c058ecbf5fde9c299",
+   "0x6653d9bcbc28fc5a2f5fb5650af8f2b2e1695a15",
+   "0xe38b72d6595fd3885d1d2f770aa23e94757f91a1",
+   "0x420725a69e79eeffb000f98ccd78a52369b6c5d4"
+  ],
+  "ignored_well_known": [
+   "0xdac17f958d2ee523a2206206994597c13d831ec7",
+   "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xe38b72d6595fd3885d1d2f770aa23e94757f91a1",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "TcrToken"
+ },
+ {
+  "date": "2022-01-18",
+  "name": "Multichain (Anyswap)",
+  "cause": "Insufficient Token Validation",
+  "loss_usd": 1400000,
+  "loss_text": "$1.4 million",
+  "poc_path": "src/test/2022-01/Anyswap_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-01/Anyswap_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://medium.com/zengo/without-permit-multichains-exploit-explained-8417e8c1639b",
+   "https://twitter.com/PeckShieldAlert/status/1483363515411099651",
+   "https://etherscan.io/tx/0xe50ed602bd916fc304d53c4fed236698b71691a95774ff0aeeb74b699c6227f7"
+  ],
+  "victim_addresses": [
+   "0x6b7a87899490ece95443e979ca9485cbe7e71522",
+   "0x3ee505ba316879d246a8fd2b3d7ee63b51b44fab"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x6b7a87899490ece95443e979ca9485cbe7e71522",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2022/README.md",
+  "primary_verified": true,
+  "primary_name": "AnyswapV4Router"
+ }
+]

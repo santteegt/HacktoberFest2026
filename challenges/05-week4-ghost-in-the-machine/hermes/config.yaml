@@ -1,0 +1,76 @@
+# Config fragment for the ghosts profile. __GHOSTS_HOME__ is filled by install.sh.
+model:
+  default: ghosts-gemma4-12b
+  provider: custom
+  base_url: http://localhost:11434/v1
+mcp_servers:
+  ethereum_history:
+    url: "https://www.ethereumhistory.com/mcp"
+    connect_timeout: 60
+    timeout: 120
+    # read-only archive tools; the pipeline itself talks to the REST API, not to this server
+    tools:
+      include:
+        - get_contract
+        - search_contracts
+        - browse_contracts
+        - get_contract_of_the_day
+        - get_documentation_progress
+approvals:
+  mode: manual
+  cron_mode: deny
+  single_query_mode: deny
+  unattended_mode: deny
+  destructive_slash_confirm: false
+  # A command policy, not a sandbox: it matches command text only.
+  deny:
+    - sudo
+    - sudo *
+    - su
+    - su *
+    - doas *
+    - osascript *
+    - launchctl *
+    - crontab *
+    - security *
+    - csrutil *
+    - spctl *
+    - tccutil *
+    - pmset *
+    - systemsetup *
+    - networksetup *
+    - defaults write *
+    - chown *
+    - chmod *+s*
+    - docker *
+    - rm -rf *
+    - git push*
+    - vercel *
+    - hermes gateway *
+    - hermes profile *
+    - hermes cron *
+agent:
+  disabled_toolsets:
+    - computer_use
+    - browser
+    - web
+    - code_execution
+    - image_gen
+    - video_gen
+    - tts
+    - delegation
+    - cronjob
+    - connections
+    - kanban
+terminal:
+  backend: local
+  cwd: __GHOSTS_HOME__
+display:
+  platforms:
+    discord:
+      tool_progress: 'off'
+      show_reasoning: false
+      interim_assistant_messages: false
+      long_running_notifications: false
+      busy_ack_detail: false
+      suppress_warning_notifications: true

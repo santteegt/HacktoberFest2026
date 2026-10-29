@@ -1,0 +1,1 @@
+[{"name": "kill", "type": "function", "inputs": [], "outputs": [], "constant": false}, {"name": "greet", "type": "function", "inputs": [], "outputs": [{"name": "", "type": "string"}], "constant": true}, {"type": "constructor", "inputs": [{"name": "_greeting", "type": "string"}]}]

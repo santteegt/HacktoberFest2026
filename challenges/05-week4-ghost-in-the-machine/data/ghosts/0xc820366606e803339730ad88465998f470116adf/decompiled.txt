@@ -1,0 +1,72 @@
+// Decompiled by ethereumhistory.com
+// Auto-generated pseudocode from bytecode — not verified source code
+// SPDX-License-Identifier: UNLICENSED
+contract Contract {
+
+    unknown public GetOwner; // Slot #1
+    unknown var2__2; // Slot #0
+
+    function() external payable {
+        undefined local0 = msg.data / 0x2 ** 0xe0; // #refs 4
+        if (msg.sig == 0ae50a39) {
+            $0ae50a39();
+        } else {
+            if (msg.sig == 167d3e9c) {
+                $167d3e9c();
+            } else {
+                if (msg.sig == 3cc86b80) {
+                    $3cc86b80();
+                } else {
+                    if (msg.sig == cf09e6e1) {
+                        $cf09e6e1();
+                    } else {
+                        if (msg.sig == d4859dbc) {
+                            $d4859dbc();
+                        } else {
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function GetOwner() public payable returns (unknown) {
+        return GetOwner;
+    }
+
+    function SetOwner(address _arg0) public payable {
+        if ((GetOwner & 0x2 ** 0xa0 - 0x1) != (0x2 ** 0xa0 - 0x1 & msg.sender) == 0) {
+            GetOwner = _arg0 | ~0xffffffffffffffffffffffffffffffffffffffff & GetOwner;
+            return;
+        }
+        return;
+    }
+
+    function GetMoney(uint256 _arg0, address _arg1) public payable {
+        if ((0x2 ** 0xa0 - 0x1 & msg.sender) != (0x2 ** 0xa0 - 0x1 & var_2) == 0) {
+            uint256 local3 = _arg0; // #refs 1
+            undefined local4 = 0x0; // #refs 2
+            undefined local5 = 0x60; // #refs 1
+            return;
+        }
+        return;
+    }
+
+    function SetBigContract(address _arg0) public payable {
+        if ((0x2 ** 0xa0 - 0x1 & msg.sender) != (0x2 ** 0xa0 - 0x1 & var_2) == 0) {
+            var_2 = _arg0 | ~0xffffffffffffffffffffffffffffffffffffffff & var_2;
+            return;
+        }
+        return;
+    }
+
+    function UniversalFunctionSecure(uint8 _arg0, bytes32 _arg1, bytes32 _arg2, bytes32 _arg3, bytes32 _arg4, bytes32 _arg5) public payable {
+        if ((GetOwner & 0x2 ** 0xa0 - 0x1) != (0x2 ** 0xa0 - 0x1 & msg.sender) == 0) {
+            undefined local2 = 0x0; // #refs 1
+            throw('JUMPI(0x57)@444 destination should be JUMPDEST@2 but found '0x60'');
+        }
+        return;
+    }
+
+}

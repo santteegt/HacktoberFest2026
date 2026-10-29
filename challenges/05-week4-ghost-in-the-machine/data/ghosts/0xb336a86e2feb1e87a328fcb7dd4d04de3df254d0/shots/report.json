@@ -1,0 +1,17 @@
+[
+ {
+  "site": "http://www.kingoftheether.com/postmortem.html",
+  "ok": true,
+  "captures": 93,
+  "note": "last = last 200 capture before the ghost's last transaction"
+ },
+ {
+  "site": "http://www.kingoftheether.com/postmortem.html",
+  "role": "first",
+  "ts": "20160211005112",
+  "ok": true,
+  "bytes": 90374,
+  "final_url": "https://web.archive.org/web/20160211005112/http://www.kingoftheether.com:80/",
+  "seconds": 4.9
+ }
+]

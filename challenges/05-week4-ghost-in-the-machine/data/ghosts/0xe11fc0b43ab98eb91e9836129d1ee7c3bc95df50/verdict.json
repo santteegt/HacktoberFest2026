@@ -1,0 +1,29 @@
+{
+ "address": "0xe11fc0b43ab98eb91e9836129d1ee7c3bc95df50",
+ "kind": "bad",
+ "reasons": [
+  "documented incident: Sushi Badger Digg (2021-01-25)",
+  "1 fatal wound(s) (confirmed, High impact, Medium+ confidence); first: catalog (High/High) Sushi Badger Digg",
+  "0 successful calls in the last 12 months out of 656 lifetime txs (0.0%)"
+ ],
+ "activity": {
+  "lifetime_txs": 656,
+  "last_tx": "2025-01-26T04:39:23Z",
+  "last_12m_txs": 0,
+  "last_12m_capped": false,
+  "silent_years": 1.8
+ },
+ "wounds": {
+  "count": 1,
+  "confirmed": 1,
+  "worst_impact": "High",
+  "scars": 0,
+  "fatal": 1
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

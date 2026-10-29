@@ -1,0 +1,178 @@
+{
+ "address": "0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T04:32:25Z",
+ "eh": {
+  "layer": "documented",
+  "era_id": "frontier",
+  "era_name": "Frontier",
+  "name": "KingOfTheEtherThrone",
+  "token": {
+   "token_name": null,
+   "token_symbol": null,
+   "token_decimals": null
+  },
+  "heuristics": {
+   "contract_type": "token",
+   "confidence": 0.5,
+   "is_proxy": false,
+   "has_selfdestruct": false,
+   "is_erc20_like": false
+  },
+  "decompilation_success": true,
+  "code_size_bytes": 2400,
+  "short_description": "Kieran Elby's redesigned successor throne, deployed Feb 6, 2016 \u2014 three hours after the v0.3.0 throne fell silent in what he later called the 'Turbulent Age' tr",
+  "description": "King of the Ether Throne v0.4.0 is the redesigned successor to the original v0.3.0 throne (0xa9d160e3), deployed on February 6, 2016 (block 963,186) during the 'Turbulent Age' (Feb 6\u20138, 2016) \u2014 the period when the original v0.3.0 throne stopped paying compensation to monarchs whose addresses required more than 2,300 gas to receive ether. Kieran Elby deployed v0.4.0 about three hours after the v0.3.0 send() bug was discovered, attempting a fix-and-improve revision.\n\nNotable changes from v0.3.0:\n\u2022 Starting claim price raised from 10 finney (0.01 ETH) to 100 finney (0.1 ETH).\n\u2022 No accumulatedWizardPayments slot \u2014 wizard now sweeps commission directly via sweepCommission(uint amount) rather than from an accumulating balance.\n\u2022 No 12-monarch limit \u2014 anyone can become king as long as the throne is active.\n\u2022 transferOwnership(address) added so the wizard role can be reassigned.\n\u2022 Two-significant-figure rounding of next claim price across tiers (0.001, 0.01, 0.1, 1, 10, 100, 1000 ETH) so prices don't accrue silly trailing decimals.\n\nIronically, v0.4.0 does NOT fully fix the send() bug \u2014 currentMonarch.etherAddress.send(compensation) still uses the default 2,300 gas stipend, so Mist-style contract wallets would still fail to receive their compensation. The proper fix didn't land until commit 120f5a26 (Feb 21, 2016) and the v1.0 rewrite.\n\nThe contract author references this exact contract address in the v0.4.0 source comment: '// This contract lives on the blockchain at 0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0'.",
+  "historical_significance": "King of the Ether Throne v0.4.0 was the first attempt to patch the gas-stipend bug that broke v0.3.0. Deployed by Kieran Elby on Feb 6, 2016 (block 963,186) \u2014 about three hours after the v0.3.0 send() bug was discovered \u2014 it ushered in the brief 'Turbulent Age' (Feb 6\u20138, 2016) of the throne lineage. v0.4.0 only partially fixed the issue: the .send() pattern remained in the compensation payment path, so monarchs whose receive function exceeded the 2,300 gas stipend (notably Mist-style contract wallets) still lost their compensation silently. The proper fix \u2014 call.value with manual gas \u2014 didn't land until commit 120f5a26 (Feb 21, 2016) and the v1.0 rewrite. v0.4.0 also raised the starting claim price from 10 finney to 100 finney, removed the 12-monarch limit, added transferOwnership for wizard reassignment, and introduced two-significant-figure tier rounding so claim prices stop accruing trailing decimals.",
+  "historical_context": null,
+  "verification_status": "verified",
+  "verification_method": "exact_bytecode_match",
+  "links": [
+   {
+    "id": 511,
+    "title": "Predecessor: King of the Ether Throne v0.3.0",
+    "url": "https://www.ethereumhistory.com/contract/0xa9d160e32ad37ac6f2b8231e4efe14d35abb576e",
+    "source": "EthereumHistory",
+    "note": "The original throne whose silent-failure bug forced this redesign",
+    "created_at": "2026-05-03T21:24:13.166Z"
+   },
+   {
+    "id": 510,
+    "title": "Post-mortem: The Gas Stipend Bug (Feb 2016)",
+    "url": "http://www.kingoftheether.com/postmortem.html",
+    "source": "KingOfTheEther",
+    "note": "Author's writeup of the .send() bug that triggered the Turbulent Age \u2014 the same bug remains partially present in v0.4.0",
+    "created_at": "2026-05-03T21:24:13.161Z"
+   },
+   {
+    "id": 509,
+    "title": "Original KingOfTheEtherThrone repository by Kieran Elby",
+    "url": "https://github.com/kieranelby/KingOfTheEtherThrone",
+    "source": "GitHub",
+    "note": "v0.4.0 source at commit 6d77929",
+    "created_at": "2026-05-03T21:24:13.152Z"
+   },
+   {
+    "id": 508,
+    "title": "Verification repo (byte-for-byte exact match)",
+    "url": "https://github.com/cartoonitunes/koth-v04-verification",
+    "source": "GitHub",
+    "note": "soljson v0.2.1-nightly.2016.2.3+commit.fad2d4df, optimizer ON. 2109 bytes runtime, exact match.",
+    "created_at": "2026-05-03T21:24:13.142Z"
+   }
+  ],
+  "metadata": [
+   {
+    "key": "tx_counts_by_year_external_to_v1",
+    "value": null,
+    "json_value": {
+     "counts": {
+      "2016": 21
+     },
+     "truncated": false
+    },
+    "source_url": "alchemy_getAssetTransfers",
+    "created_at": "2026-05-03T17:15:59.900Z"
+   }
+  ],
+  "has_source": true,
+  "has_abi": true
+ },
+ "birth": {
+  "block": 963186,
+  "timestamp": "2016-02-06T16:12:18.000Z",
+  "tx": "0xc076a813d03be06ad0c0f0b39167860806513edc71363362f5dd202d48b29ab6",
+  "deployer": "0xb2afec1da55c15ad57b3310f9008c47f4e028de3"
+ },
+ "blockscout": {
+  "name": "KingOfTheEtherThrone",
+  "is_contract": true,
+  "is_verified": true,
+  "ens": null,
+  "creation_tx": "0xc076a813d03be06ad0c0f0b39167860806513edc71363362f5dd202d48b29ab6",
+  "creator": "0xB2afec1DA55C15Ad57B3310F9008c47F4E028de3",
+  "has_logs": true
+ },
+ "life": {
+  "tx_count": 21,
+  "token_transfers": 0,
+  "gas_used": 2590763,
+  "last_tx": {
+   "timestamp": "2016-02-19T21:51:14.000000Z",
+   "method": "sweepCommission",
+   "status": "ok",
+   "hash": "0x61674b7648f410056fed0154e685d6166567fabe8436838bd693a9a935e8668c"
+  },
+  "recent_methods": [
+   "0x426f6b6b",
+   "0x44756e6e",
+   "0x46697265",
+   "0x4d616a6f",
+   "0x4e6f2073",
+   "0x53697220",
+   "0x56697474",
+   "0x5f6e6174",
+   "0x64706662",
+   "0x6b696e67",
+   "claimThrone",
+   "sweepCommission"
+  ],
+  "recent_years": [
+   "2016"
+  ],
+  "balance_wei": 0,
+  "balance_eth": 0.0
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 2109,
+  "balance_wei": 0,
+  "balance_eth": 0.0
+ },
+ "source": {
+  "provider": "sourcify",
+  "match": "match",
+  "name": "KingOfTheEtherThrone",
+  "compiler_version": "0.2.1+commit.91a6b35f",
+  "language": "Solidity",
+  "files": [
+   "KingOfTheEtherThrone.sol"
+  ],
+  "dir": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/05-week4-ghost-in-the-machine/data/ghosts/0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0/src"
+ },
+ "age": {
+  "hardfork": "Frontier Thawing",
+  "eh_era": "Frontier"
+ },
+ "sites": [
+  {
+   "host": "http://www.kingoftheether.com/postmortem.html",
+   "captures": 93,
+   "first_capture": "20160211005112",
+   "first_ok": "20160211005112",
+   "last_ok": "20260918060806",
+   "last_capture": "20260918060806",
+   "years_alive": [
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  }
+ ],
+ "name": "KingOfTheEtherThrone",
+ "sources_used": [
+  "blockscout",
+  "ethereumhistory",
+  "rpc",
+  "sourcify",
+  "wayback"
+ ]
+}

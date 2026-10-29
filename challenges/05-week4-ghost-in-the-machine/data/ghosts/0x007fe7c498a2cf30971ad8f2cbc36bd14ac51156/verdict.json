@@ -1,0 +1,30 @@
+{
+ "address": "0x007fe7c498a2cf30971ad8f2cbc36bd14ac51156",
+ "kind": "bad",
+ "reasons": [
+  "documented incident: OlympusDAO (2022-10-21)",
+  "4 fatal wound(s) (confirmed, High impact, Medium+ confidence); first: catalog (High/High) OlympusDAO",
+  "1 scar (reentrancy-no-eth), 4 fatal",
+  "0 successful calls in the last 12 months out of 103 lifetime txs (0.0%)"
+ ],
+ "activity": {
+  "lifetime_txs": 103,
+  "last_tx": "2022-10-21T12:19:23Z",
+  "last_12m_txs": 0,
+  "last_12m_capped": false,
+  "silent_years": 4.0
+ },
+ "wounds": {
+  "count": 8,
+  "confirmed": 8,
+  "worst_impact": "High",
+  "scars": 1,
+  "fatal": 4
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

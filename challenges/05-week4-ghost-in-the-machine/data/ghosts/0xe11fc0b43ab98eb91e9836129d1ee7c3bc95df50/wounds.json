@@ -1,0 +1,61 @@
+{
+ "address": "0xe11fc0b43ab98eb91e9836129d1ee7c3bc95df50",
+ "tier": "slither",
+ "compiler_version": "0.6.12+commit.27d51765",
+ "analyzed_files": [
+  "contracts/BoringOwnable.sol",
+  "contracts/SushiMaker.sol",
+  "contracts/interfaces/IERC20.sol",
+  "contracts/libraries/BoringERC20.sol",
+  "contracts/libraries/BoringMath.sol",
+  "contracts/uniswapv2/interfaces/IUniswapV2ERC20.sol",
+  "contracts/uniswapv2/interfaces/IUniswapV2Factory.sol",
+  "contracts/uniswapv2/interfaces/IUniswapV2Pair.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "Sushi Badger Digg",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": null,
+   "lines": null,
+   "snippet": null,
+   "description": "Sandwich attack",
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-01/Sushi_Badger_Digg_exp.sol"
+  }
+ ],
+ "incident": {
+  "id": "defihacklabs-2021-01-25-sushi-badger-digg",
+  "name": "Sushi Badger Digg",
+  "date": "2021-01-25",
+  "loss_usd": null,
+  "loss_eth": null,
+  "loss_note": "81.68 ETH",
+  "cause": "Sandwich attack",
+  "swc": null,
+  "summary": "Sushi Badger Digg (2021-01-25), documented in the DeFiHackLabs repository: Sandwich attack. Reported loss: 81.68 ETH.",
+  "references": [
+   "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-01/Sushi_Badger_Digg_exp.sol",
+   "https://cmichel.io/replaying-ethereum-hacks-sushiswap-badger-dao-digg/"
+  ]
+ },
+ "slither_raw": "data/ghosts/0xe11fc0b43ab98eb91e9836129d1ee7c3bc95df50/slither.json",
+ "catalog_entry": "defihacklabs-2021-01-25-sushi-badger-digg",
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 1.05
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.6.12"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:42:23Z"
+}

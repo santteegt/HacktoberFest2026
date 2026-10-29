@@ -1,0 +1,463 @@
+// Decompiled by ethereumhistory.com
+// Auto-generated pseudocode from bytecode — not verified source code
+// SPDX-License-Identifier: UNLICENSED
+contract Contract {
+
+    unknown var1__1; // Slot #1
+    unknown var2__2; // Slot #2
+    unknown public totalParticipants; // Slot #6
+    uint256 var4__4; // Slot #3
+    unknown var5__5; // Slot #0
+    unknown var6__6; // Slot #4
+    unknown var7__7; // Slot #5
+
+    function() external payable {
+        if (msg.data.length == 0 == 0) {
+            undefined local0 = msg.data / 0x2 ** 0xe0; // #refs 14
+            if (msg.sig == 09dfdc71) {
+                $09dfdc71();
+            } else {
+                if (msg.sig == 253459e3) {
+                    $253459e3();
+                } else {
+                    if (msg.sig == 4229616d) {
+                        $4229616d();
+                    } else {
+                        if (msg.sig == 57d4021b) {
+                            $57d4021b();
+                        } else {
+                            if (msg.sig == 67f809e9) {
+                                $67f809e9();
+                            } else {
+                                if (msg.sig == 686f2c90) {
+                                    $686f2c90();
+                                } else {
+                                    if (msg.sig == 6fbaaa1e) {
+                                        $6fbaaa1e();
+                                    } else {
+                                        if (msg.sig == 8a5fb3ca) {
+                                            $8a5fb3ca();
+                                        } else {
+                                            if (msg.sig == 9dbc4f9b) {
+                                                $9dbc4f9b();
+                                            } else {
+                                                if (msg.sig == a26dbf26) {
+                                                    $a26dbf26();
+                                                } else {
+                                                    if (msg.sig == a6f9dae1) {
+                                                        $a6f9dae1();
+                                                    } else {
+                                                        if (msg.sig == b4022950) {
+                                                            $b4022950();
+                                                        } else {
+                                                            if (msg.sig == ced92670) {
+                                                                $ced92670();
+                                                            } else {
+                                                                if (msg.sig == d11f13df) {
+                                                                    $d11f13df();
+                                                                } else {
+                                                                    if (msg.sig == fae14192) {
+                                                                        $fae14192();
+                                                                    } else {
+                                                                        if ((msg.value < 0xde0b6b3a7640000) == 0 == 0) {
+                                                                            var_1 += msg.value;
+                                                                            return;
+                                                                        }
+                                                                        if ((msg.value < 0x2b5e3af16b1880000) == 0) {
+                                                                            undefined local1 = var_2 / 0x2; // #refs 22
+                                                                            undefined local4 = 0x1 + totalParticipants; // #refs 3
+                                                                            totalParticipants += 0x1;
+                                                                            if ((totalParticipants == 0 > local4) == 0) {
+                                                                                undefined local7 = keccak256(0x6) + 0x2 * local4; // #refs 1
+                                                                                undefined local8 = keccak256(0x6) + 0x2 * totalParticipants; // #refs 10
+                                                                                if ((local8 > local7) == 0 == 0) {
+                                                                                    storage[keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = ~(0x2 ** 0xa0 - 0x1) & storage[local7];
+                                                                                    undefined local9 = 0x1 + local7; // #refs 1
+                                                                                    storage[0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = 0x0;
+                                                                                    if ((local8 > local9) == 0 == 0) {
+                                                                                        storage[0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = ~(0x2 ** 0xa0 - 0x1) & storage[local9];
+                                                                                        undefined local10 = 0x1 + local9; // #refs 1
+                                                                                        storage[0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = 0x0;
+                                                                                        if ((local8 > local10) == 0 == 0) {
+                                                                                            storage[0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = ~(0x2 ** 0xa0 - 0x1) & storage[local10];
+                                                                                            undefined local11 = 0x1 + local10; // #refs 1
+                                                                                            storage[0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = 0x0;
+                                                                                            if ((local8 > local11) == 0 == 0) {
+                                                                                                storage[0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = ~(0x2 ** 0xa0 - 0x1) & storage[local11];
+                                                                                                undefined local12 = 0x1 + local11; // #refs 1
+                                                                                                storage[0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = 0x0;
+                                                                                                if ((local8 > local12) == 0 == 0) {
+                                                                                                    storage[0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = ~(0x2 ** 0xa0 - 0x1) & storage[local12];
+                                                                                                    undefined local13 = 0x1 + local12; // #refs 1
+                                                                                                    storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = 0x0;
+                                                                                                    if ((local8 > local13) == 0 == 0) {
+                                                                                                        storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = ~(0x2 ** 0xa0 - 0x1) & storage[local13];
+                                                                                                        undefined local14 = 0x1 + local13; // #refs 1
+                                                                                                        storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = 0x0;
+                                                                                                        if ((local8 > local14) == 0 == 0) {
+                                                                                                            storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = ~(0x2 ** 0xa0 - 0x1) & storage[local14];
+                                                                                                            undefined local15 = 0x1 + local14; // #refs 1
+                                                                                                            storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = 0x0;
+                                                                                                            if ((local8 > local15) == 0 == 0) {
+                                                                                                                storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = ~(0x2 ** 0xa0 - 0x1) & storage[local15];
+                                                                                                                undefined local16 = 0x1 + local15; // #refs 1
+                                                                                                                storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = 0x0;
+                                                                                                                if ((local8 > local16) == 0 == 0) {
+                                                                                                                    storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = ~(0x2 ** 0xa0 - 0x1) & storage[local16];
+                                                                                                                    undefined local17 = 0x1 + local16; // #refs 1
+                                                                                                                    storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = 0x0;
+                                                                                                                    if ((local8 > local17) == 0 == 0) {
+                                                                                                                        storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = ~(0x2 ** 0xa0 - 0x1) & storage[local17];
+                                                                                                                        undefined local18 = 0x1 + local17; // #refs 1
+                                                                                                                        storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = 0x0;
+                                                                                                                        if ((local8 > local18) == 0 == 0) {
+                                                                                                                            storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = ~(0x2 ** 0xa0 - 0x1) & storage[local18];
+                                                                                                                            storage[0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + 0x1 + keccak256(0x6) + 0x2 * (0x1 + totalParticipants)] = 0x0;
+                                                                                                                        }
+                                                                                                                        storage[0x2 * totalParticipants + keccak256(0x6)] = ~(0x2 ** 0xa0 - 0x1) & storage[0x2 * totalParticipants + keccak256(0x6)] | msg.sender;
+                                                                                                                        storage[0x1 + 0x2 * totalParticipants + keccak256(0x6)] = msg.value * var_4 / 0x64;
+                                                                                                                        if (0xa != totalParticipants == 0) {
+                                                                                                                            var_4 = 0xc8;
+                                                                                                                            undefined local25 = 0x64; // #refs 1
+                                                                                                                            var_5 += msg.value * (0x64 - var_2 / 0x2) / 0x64;
+                                                                                                                            var_1 += var_2 / 0x2 * msg.value / 0x64;
+                                                                                                                            throw('JUMPI(0x57)@1618 destination should be JUMPDEST@2 but found '0x60'');
+                                                                                                                        }
+                                                                                                                        if (0x19 != totalParticipants == 0) {
+                                                                                                                            var_4 = 0x96;
+                                                                                                                            undefined local25 = 0x64; // #refs 1
+                                                                                                                            var_5 += msg.value * (0x64 - var_2 / 0x2) / 0x64;
+                                                                                                                            var_1 += var_2 / 0x2 * msg.value / 0x64;
+                                                                                                                            throw('JUMPI(0x57)@1618 destination should be JUMPDEST@2 but found '0x60'');
+                                                                                                                        }
+                                                                                                                        undefined local25 = 0x64; // #refs 1
+                                                                                                                        var_5 += msg.value * (0x64 - var_2 / 0x2) / 0x64;
+                                                                                                                        var_1 += var_2 / 0x2 * msg.value / 0x64;
+                                                                                                                        throw('JUMPI(0x57)@1618 destination should be JUMPDEST@2 but found '0x60'');
+                                                                                                                    }
+                                                                                                                    storage[0x2 * totalParticipants + keccak256(0x6)] = ~(0x2 ** 0xa0 - 0x1) & storage[0x2 * totalParticipants + keccak256(0x6)] | msg.sender;
+                                                                                                                    storage[0x1 + 0x2 * totalParticipants + keccak256(0x6)] = msg.value * var_4 / 0x64;
+                                                                                                                    if (0xa != totalParticipants == 0) {
+                                                                                                                        var_4 = 0xc8;
+                                                                                                                        undefined local24 = 0x64; // #refs 1
+                                                                                                                        var_5 += msg.value * (0x64 - var_2 / 0x2) / 0x64;
+                                                                                                                        var_1 += var_2 / 0x2 * msg.value / 0x64;
+                                                                                                                        throw('JUMPI(0x57)@1618 destination should be JUMPDEST@2 but found '0x60'');
+                                                                                                                    }
+                                                                                                                    if (0x19 != totalParticipants == 0) {
+                                                                                                                        var_4 = 0x96;
+                                                                                                                        undefined local24 = 0x64; // #refs 1
+                                                                                                                        var_5 += msg.value * (0x64 - var_2 / 0x2) / 0x64;
+                                                                                                                        var_1 += var_2 / 0x2 * msg.value / 0x64;
+                                                                                                                        throw('JUMPI(0x57)@1618 destination should be JUMPDEST@2 but found '0x60'');
+                                                                                                                    }
+                                                                                                                    undefined local24 = 0x64; // #refs 1
+                                                                                                                    var_5 += msg.value * (0x64 - var_2 / 0x2) / 0x64;
+                                                                                                                    var_1 += var_2 / 0x2 * msg.value / 0x64;
+                                                                                                                    throw('JUMPI(0x57)@1618 destination should be JUMPDEST@2 but found '0x60'');
+                                                                                                                }
+                                                                                                                storage[0x2 * totalParticipants + keccak256(0x6)] = ~(0x2 ** 0xa0 - 0x1) & storage[0x2 * totalParticipants + keccak256(0x6)] | msg.sender;
+                                                                                                                storage[0x1 + 0x2 * totalParticipants + keccak256(0x6)] = msg.value * var_4 / 0x64;
+                                                                                                                if (0xa != totalParticipants == 0) {
+                                                                                                                    var_4 = 0xc8;
+                                                                                                                    undefined local23 = 0x64; // #refs 1
+                                                                                                                    var_5 += msg.value * (0x64 - var_2 / 0x2) / 0x64;
+                                                                                                                    var_1 += var_2 / 0x2 * msg.value / 0x64;
+                                                                                                                    throw('JUMPI(0x57)@1618 destination should be JUMPDEST@2 but found '0x60'');
+                                                                                                                }
+                                                                                                                if (0x19 != totalParticipants == 0) {
+                                                                                                                    var_4 = 0x96;
+                                                                                                                    undefined local23 = 0x64; // #refs 1
+                                                                                                                    var_5 += msg.value * (0x64 - var_2 / 0x2) / 0x64;
+                                                                                                                    var_1 += var_2 / 0x2 * msg.value / 0x64;
+                                                                                                                    throw('JUMPI(0x57)@1618 destination should be JUMPDEST@2 but found '0x60'');
+                                                                                                                }
+                                                                                                                undefined local23 = 0x64; // #refs 1
+                                                                                                                var_5 += msg.value * (0x64 - var_2 / 0x2) / 0x64;
+                                                                                                                var_1 += var_2 / 0x2 * msg.value / 0x64;
+                                                                                                                throw('JUMPI(0x57)@1618 destination should be JUMPDEST@2 but found '0x60'');
+                                                                                                            }
+                                                                                                            storage[0x2 * totalParticipants + keccak256(0x6)] = ~(0x2 ** 0xa0 - 0x1) & storage[0x2 * totalParticipants + keccak256(0x6)] | msg.sender;
+                                                                                                            storage[0x1 + 0x2 * totalParticipants + keccak256(0x6)] = msg.value * var_4 / 0x64;
+                                                                                                            if (0xa != totalParticipants == 0) {
+                                                                                                                var_4 = 0xc8;
+                                                                                                                undefined local22 = 0x64; // #refs 1
+                                                                                                                var_5 += msg.value * (0x64 - var_2 / 0x2) / 0x64;
+                                                                                                                var_1 += var_2 / 0x2 * msg.value / 0x64;
+                                                                                                                throw('JUMPI(0x57)@1618 destination should be JUMPDEST@2 but found '0x60'');
+                                                                                                            }
+                                                                                                            if (0x19 != totalParticipants == 0) {
+                                                                                                                var_4 = 0x96;
+                                                                                                                undefined local22 = 0x64; // #refs 1
+                                                                                                                var_5 += msg.value * (0x64 - var_2 / 0x2) / 0x64;
+                                                                                                                var_1 += var_2 / 0x2 * msg.value / 0x64;
+                                                                                                                throw('JUMPI(0x57)@1618 destination should be JUMPDEST@2 but found '0x60'');
+                                                                                                            }
+                                                                                                        }
+                                                                                                        storage[0x2 * totalParticipants + keccak256(0x6)] = ~(0x2 ** 0xa0 - 0x1) & storage[0x2 * totalParticipants + keccak256(0x6)] | msg.sender;
+                                                                                                        storage[0x1 + 0x2 * totalParticipants + keccak256(0x6)] = msg.value * var_4 / 0x64;
+                                                                                                        if (0xa != totalParticipants == 0) {
+                                                                                                            var_4 = 0xc8;
+                                                                                                        }
+                                                                                                        if (0x19 != totalParticipants == 0) {
+                                                                                                            var_4 = 0x96;
+                                                                                                        }
+                                                                                                    }
+                                                                                                    storage[0x2 * totalParticipants + keccak256(0x6)] = ~(0x2 ** 0xa0 - 0x1) & storage[0x2 * totalParticipants + keccak256(0x6)] | msg.sender;
+                                                                                                    storage[0x1 + 0x2 * totalParticipants + keccak256(0x6)] = msg.value * var_4 / 0x64;
+                                                                                                    if (0xa != totalParticipants == 0) {
+                                                                                                        var_4 = 0xc8;
+                                                                                                    }
+                                                                                                    if (0x19 != totalParticipants == 0) {
+                                                                                                        var_4 = 0x96;
+                                                                                                    }
+                                                                                                }
+                                                                                                storage[0x2 * totalParticipants + keccak256(0x6)] = ~(0x2 ** 0xa0 - 0x1) & storage[0x2 * totalParticipants + keccak256(0x6)] | msg.sender;
+                                                                                                storage[0x1 + 0x2 * totalParticipants + keccak256(0x6)] = msg.value * var_4 / 0x64;
+                                                                                                if (0xa != totalParticipants == 0) {
+                                                                                                    var_4 = 0xc8;
+                                                                                                }
+                                                                                                if (0x19 != totalParticipants == 0) {
+                                                                                                    var_4 = 0x96;
+                                                                                                }
+                                                                                            }
+                                                                                            storage[0x2 * totalParticipants + keccak256(0x6)] = ~(0x2 ** 0xa0 - 0x1) & storage[0x2 * totalParticipants + keccak256(0x6)] | msg.sender;
+                                                                                            storage[0x1 + 0x2 * totalParticipants + keccak256(0x6)] = msg.value * var_4 / 0x64;
+                                                                                            if (0xa != totalParticipants == 0) {
+                                                                                                var_4 = 0xc8;
+                                                                                            }
+                                                                                            if (0x19 != totalParticipants == 0) {
+                                                                                                var_4 = 0x96;
+                                                                                            }
+                                                                                        }
+                                                                                        storage[0x2 * totalParticipants + keccak256(0x6)] = ~(0x2 ** 0xa0 - 0x1) & storage[0x2 * totalParticipants + keccak256(0x6)] | msg.sender;
+                                                                                        storage[0x1 + 0x2 * totalParticipants + keccak256(0x6)] = msg.value * var_4 / 0x64;
+                                                                                        if (0xa != totalParticipants == 0) {
+                                                                                            var_4 = 0xc8;
+                                                                                        }
+                                                                                        if (0x19 != totalParticipants == 0) {
+                                                                                            var_4 = 0x96;
+                                                                                        }
+                                                                                    }
+                                                                                    storage[0x2 * totalParticipants + keccak256(0x6)] = ~(0x2 ** 0xa0 - 0x1) & storage[0x2 * totalParticipants + keccak256(0x6)] | msg.sender;
+                                                                                    storage[0x1 + 0x2 * totalParticipants + keccak256(0x6)] = msg.value * var_4 / 0x64;
+                                                                                    if (0xa != totalParticipants == 0) {
+                                                                                        var_4 = 0xc8;
+                                                                                    }
+                                                                                    if (0x19 != totalParticipants == 0) {
+                                                                                        var_4 = 0x96;
+                                                                                    }
+                                                                                }
+                                                                                storage[0x2 * totalParticipants + keccak256(0x6)] = ~(0x2 ** 0xa0 - 0x1) & storage[0x2 * totalParticipants + keccak256(0x6)] | msg.sender;
+                                                                                storage[0x1 + 0x2 * totalParticipants + keccak256(0x6)] = msg.value * var_4 / 0x64;
+                                                                                if (0xa != totalParticipants == 0) {
+                                                                                    var_4 = 0xc8;
+                                                                                }
+                                                                                if (0x19 != totalParticipants == 0) {
+                                                                                    var_4 = 0x96;
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        undefined local2 = 0x6; // #refs 2
+                                                                        undefined local4 = 0x1 + totalParticipants; // #refs 3
+                                                                        totalParticipants += 0x1;
+                                                                        if ((totalParticipants == 0 > local4) == 0) {
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if ((msg.value < 0xde0b6b3a7640000) == 0 == 0) {
+            var_1 += msg.value;
+            return;
+        }
+        if ((msg.value < 0x2b5e3af16b1880000) == 0) {
+            undefined local1 = 0x6; // #refs 2
+            undefined local3 = 0x1 + totalParticipants; // #refs 3
+            totalParticipants += 0x1;
+            if ((totalParticipants == 0 > local3) == 0) {
+            }
+        }
+        undefined local1 = 0x6; // #refs 2
+        undefined local3 = 0x1 + totalParticipants; // #refs 3
+        totalParticipants += 0x1;
+        if ((totalParticipants == 0 > local3) == 0) {
+        }
+    }
+
+    function currentPyramidBalanceApproximately() public payable returns (unknown, uint256, uint256, unknown, unknown, unknown, unknown, unknown, unknown, unknown) {
+        undefined local5 = memory[0x40]; // #refs 4
+        undefined local7 = memory[0x40]; // #refs 1
+        undefined local10 = 0x20 + 0x20 + local7; // #refs 1
+        undefined local11 = memory[local5]; // #refs 3
+        undefined local14 = 0x1f & local11; // #refs 2
+        return (var_5 / 0xde0b6b3a7640000, 0x40, 0xca, memory[0x1e0], memory[0x200], memory[0x220], memory[0x240], memory[0x260], memory[0x280], 0xffffffffffffffffffff00000000000000000000000000000000000000000000 & memory[0x2a0]);
+    }
+
+    function feesSeperateFromBalanceApproximately() public payable returns (unknown) {
+        return var_1 / 0xde0b6b3a7640000;
+    }
+
+    function collectPercentOfFees(uint256 _arg0) public payable {
+        if ((0x2 ** 0xa0 - 0x1 & msg.sender) != (0x2 ** 0xa0 - 0x1 & var_7) == 0) {
+            if (0x0 == var_1 == 0) {
+                uint256 local4 = _arg0; // #refs 1
+                if ((local4 > 0x64) == 0 == 0) {
+                    throw('JUMP(0x56)@375 destination should be JUMPDEST@2 but found '0x60'');
+                }
+                undefined local5 = local4 * var_1 / 0x64; // #refs 1
+                undefined local6 = 0x0; // #refs 2
+                undefined local7 = memory[0x40]; // #refs 1
+                var_1 -= _arg0 * var_1 / 0x64;
+                return;
+            }
+            if (0x0 == var_1 == 0 == 0) {
+                throw('JUMP(0x56)@375 destination should be JUMPDEST@2 but found '0x60'');
+            }
+            undefined local5 = _arg0 * var_1 / 0x64; // #refs 1
+            undefined local6 = 0x0; // #refs 2
+            undefined local7 = memory[0x40]; // #refs 1
+            var_1 -= _arg0 * var_1 / 0x64;
+            return;
+        }
+        return;
+    }
+
+    function nextPayoutWhenPyramidBalanceTotalsApproximately() public payable {
+        throw('JUMPI(0x57)@410 destination should be JUMPDEST@2 but found '0x60'');
+    }
+
+    function DynamicPyramid() public payable {
+        var_7 = msg.sender | ~(0x2 ** 0xa0 - 0x1) & var_7;
+        return;
+    }
+
+    function collectAllFees() public payable {
+        if ((0x2 ** 0xa0 - 0x1 & msg.sender) != (0x2 ** 0xa0 - 0x1 & var_7) == 0) {
+            if (0x0 != var_1 == 0) {
+                throw('JUMP(0x56)@505 destination should be JUMPDEST@2 but found '0x60'');
+            }
+            undefined local2 = 0x0; // #refs 2
+            undefined local3 = memory[0x40]; // #refs 1
+            var_1 = local2;
+            return;
+        }
+        return;
+    }
+
+    function currentMultiplier() public payable returns (unknown, uint256, uint256, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown) {
+        undefined local4 = memory[0x40]; // #refs 4
+        undefined local6 = memory[0x40]; // #refs 1
+        undefined local9 = 0x20 + 0x20 + local6; // #refs 1
+        undefined local10 = memory[local4]; // #refs 3
+        undefined local13 = 0x1f & local10; // #refs 2
+        return (var_4, 0x40, 0x11f, memory[0x220], memory[0x240], memory[0x260], memory[0x280], memory[0x2a0], memory[0x2c0], memory[0x2e0], memory[0x300], 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00 & memory[0x320]);
+    }
+
+    function currentFeePercentage() public payable returns (unknown, uint256, uint256, unknown, unknown, unknown, unknown, unknown) {
+        undefined local4 = memory[0x40]; // #refs 4
+        undefined local6 = memory[0x40]; // #refs 1
+        undefined local9 = 0x20 + 0x20 + local6; // #refs 1
+        undefined local10 = memory[local4]; // #refs 3
+        undefined local13 = 0x1f & local10; // #refs 2
+        return (var_2, 0x40, 0x84, memory[0x1a0], memory[0x1c0], memory[0x1e0], memory[0x200], 0xffffffff00000000000000000000000000000000000000000000000000000000 & memory[0x220]);
+    }
+
+    function participantDetails(uint256 _arg0) public payable returns (uint256, uint256) {
+        undefined local1 = 0x0; // #refs 1
+        uint256 local2 = _arg0; // #refs 2
+        if ((local2 > totalParticipants) == 0) {
+            throw('JUMPI(0x57)@641 destination should be JUMPDEST@2 but found '0x60'');
+        }
+        return (0x0, 0x0);
+    }
+
+    function totalParticipants() public payable returns (unknown) {
+        return totalParticipants;
+    }
+
+    function changeOwner(address _arg0) public payable {
+        if ((0x2 ** 0xa0 - 0x1 & msg.sender) != (0x2 ** 0xa0 - 0x1 & var_7) == 0) {
+            var_7 = _arg0 | ~(0x2 ** 0xa0 - 0x1) & var_7;
+            return;
+        }
+        return;
+    }
+
+    function collectFeesInEther(uint256 _arg0) public payable {
+        if ((0x2 ** 0xa0 - 0x1 & msg.sender) != (0x2 ** 0xa0 - 0x1 & var_7) == 0) {
+            undefined local2 = 0xde0b6b3a7640000 * _arg0; // #refs 6
+            if ((local2 > var_1) == 0 == 0) {
+                if ((0x2 ** 0xa0 - 0x1 & msg.sender) != (0x2 ** 0xa0 - 0x1 & var_7) == 0) {
+                    if (0x0 != var_1 == 0) {
+                        throw('JUMP(0x56)@505 destination should be JUMPDEST@2 but found '0x60'');
+                    }
+                    undefined local4 = 0x0; // #refs 2
+                    undefined local5 = memory[0x40]; // #refs 1
+                    var_1 = local4;
+                    if (0x0 != var_1 == 0) {
+                        throw('JUMP(0x56)@1320 destination should be JUMPDEST@2 but found '0x60'');
+                    }
+                    undefined local8 = 0x0; // #refs 2
+                    undefined local9 = memory[0x40]; // #refs 1
+                    var_1 -= 0xde0b6b3a7640000 * _arg0;
+                    return;
+                }
+                if (0x0 != var_1 == 0) {
+                    throw('JUMP(0x56)@1320 destination should be JUMPDEST@2 but found '0x60'');
+                }
+                undefined local4 = 0x0; // #refs 2
+                undefined local5 = memory[0x40]; // #refs 1
+                var_1 -= 0xde0b6b3a7640000 * _arg0;
+            }
+            if (0x0 != var_1 == 0) {
+                throw('JUMP(0x56)@1320 destination should be JUMPDEST@2 but found '0x60'');
+            }
+            undefined local3 = 0x0; // #refs 2
+            undefined local4 = memory[0x40]; // #refs 1
+            var_1 -= 0xde0b6b3a7640000 * _arg0;
+        }
+    }
+
+    function changeMultiplier(uint256 _arg0) public payable {
+        if ((0x2 ** 0xa0 - 0x1 & msg.sender) != (0x2 ** 0xa0 - 0x1 & var_7) == 0) {
+            uint256 local2 = _arg0; // #refs 1
+            if (local2 > 0x12c == 0) {
+                if ((local2 < 0x78) == 0 == 0) {
+                    throw('JUMP(0x56)@925 destination should be JUMPDEST@2 but found '0x60'');
+                }
+                var_4 = local2;
+            }
+            if (local2 > 0x12c == 0 == 0) {
+                throw('JUMP(0x56)@925 destination should be JUMPDEST@2 but found '0x60'');
+            }
+            var_4 = local2;
+        }
+    }
+
+    function numberOfParticipantsWaitingForPayout() public payable returns (unknown) {
+        return totalParticipants - var_6;
+    }
+
+    function changeFeePercentage(uint256 _arg0) public payable {
+        if ((var_7 & 0x2 ** 0xa0 - 0x1) != (0x2 ** 0xa0 - 0x1 & msg.sender) == 0) {
+            if ((_arg0 > 0xa) == 0 == 0) {
+                throw('JUMP(0x56)@981 destination should be JUMPDEST@2 but found '0x60'');
+            }
+            var_2 = _arg0;
+        }
+    }
+
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="gravestone" viewBox="0 0 120 130" role="img" aria-labelledby="$uid"><title id="$uid">A gravestone for contract $tag, whose code is gone from the chain</title>
+<path d="M22 118V50c0-26 16-40 38-40s38 14 38 40v68z" fill="#b9b2c9" stroke="#1d1029" stroke-width="3"/>
+<text x="60" y="58" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18" font-weight="900" fill="#1d1029">R.I.P.</text>
+<text x="60" y="80" text-anchor="middle" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="11" font-weight="700" fill="#1d1029">$tag</text>
+<path d="M8 120h104" stroke="#1d1029" stroke-width="3" stroke-linecap="round"/>
+<g stroke="#1d1029" stroke-width="1.5"><circle cx="22" cy="114" r="7" fill="#f29d1f"/><circle cx="98" cy="114" r="7" fill="#f29d1f"/><circle cx="34" cy="117" r="5" fill="#ffb432"/></g>
+</svg>

@@ -1,0 +1,64 @@
+{
+ "address": "0xdc59ac4fefa32293a95889dc396682858d52e5db",
+ "tier": "slither",
+ "compiler_version": "0.7.6+commit.7338295f",
+ "analyzed_files": [
+  "@openzeppelin/contracts/access/Ownable.sol",
+  "@openzeppelin/contracts/math/SafeMath.sol",
+  "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+  "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol",
+  "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+  "@openzeppelin/contracts/utils/Context.sol",
+  "contracts/Bean.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "BeanstalkFarms",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": null,
+   "lines": null,
+   "snippet": null,
+   "description": "DAO + Flashloan",
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-04/Beanstalk_exp.sol"
+  }
+ ],
+ "incident": {
+  "id": "defihacklabs-2022-04-16-beanstalkfarms",
+  "name": "BeanstalkFarms",
+  "date": "2022-04-16",
+  "loss_usd": 182000000,
+  "loss_eth": null,
+  "loss_note": "$182 million",
+  "cause": "DAO + Flashloan",
+  "swc": null,
+  "summary": "BeanstalkFarms (2022-04-16), documented in the DeFiHackLabs repository: DAO + Flashloan. Reported loss: $182 million.",
+  "references": [
+   "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-04/Beanstalk_exp.sol",
+   "https://rekt.news/beanstalk-rekt/",
+   "https://medium.com/uno-re/beanstalk-farms-hacked-total-damage-is-182-million-b699dd3e5c8",
+   "https://twitter.com/peckshield/status/1515680335769456640",
+   "https://etherscan.io/tx/0x68cdec0ac76454c3b0f7af0b8a3895db00adf6daaf3b50a99716858c4fa54c6f",
+   "https://etherscan.io/tx/0xcd314668aaa9bbfebaf1a0bd2b6553d01dd58899c508d4729fa7311dc5d33ad7"
+  ]
+ },
+ "slither_raw": "data/ghosts/0xdc59ac4fefa32293a95889dc396682858d52e5db/slither.json",
+ "catalog_entry": "defihacklabs-2022-04-16-beanstalkfarms",
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 1.0
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.7.6"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:41:48Z"
+}

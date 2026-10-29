@@ -1,0 +1,64 @@
+{
+ "address": "0xf4eced2f682ce333f96f2d8966c613ded8fc95dd",
+ "started_at": "2026-10-29T05:33:31Z",
+ "finished_at": "2026-10-29T05:33:57Z",
+ "kind": "lingering",
+ "title": "The Prototype That Never Slept",
+ "name": "MyToken",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists",
+   "skipped": true
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists",
+   "skipped": true
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists",
+   "skipped": true
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 25.2,
+   "note": "25.2 s, 4 calls; verifier 26/26 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "49,534 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "11 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "gallery_path": "web/ghosts/0xf4eced2f682ce333f96f2d8966c613ded8fc95dd/"
+}

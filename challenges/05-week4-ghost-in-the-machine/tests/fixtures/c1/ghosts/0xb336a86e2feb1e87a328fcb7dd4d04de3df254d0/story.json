@@ -1,0 +1,66 @@
+{
+ "address": "0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0",
+ "name": "KingOfTheEtherThrone",
+ "kind": "friendly",
+ "title": "The throne that fell silent",
+ "tagline": "A crown built in three hours, worn for thirteen days, then left on an empty chair.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "A new throne at dusk",
+   "paragraphs": [
+    "On the 6th of February 2016, in block 963,186, Kieran Elby raised a new throne on the Ethereum chain.",
+    "It came three hours after the old throne, v0.3.0, fell silent. This one was meant to fix what had broken: the way it paid its fallen kings."
+   ],
+   "facts_cited": [
+    "birth.timestamp",
+    "birth.block",
+    "eh.short_description"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "Thirteen days of kings",
+   "paragraphs": [
+    "People came to claim the crown. Each new monarch paid more than the last, and the throne passed the coins down to the one it had just replaced.",
+    "In all, the chain remembers 21 transactions. The wizard who built it swept his commission and walked away."
+   ],
+   "facts_cited": [
+    "life.tx_count",
+    "life.last_tx.method"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The empty chair",
+   "paragraphs": [
+    "The last call came on the 19th of February 2016: sweepCommission. After that, nobody knocked.",
+    "Its code is still there, 2,109 bytes of it, holding nothing. A friendly ghost: no wound, no grudge, only a chair that waits for a king."
+   ],
+   "facts_cited": [
+    "life.last_tx.timestamp",
+    "chain.code_bytes",
+    "chain.balance_eth"
+   ]
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "fixture (hand-written by Lane C1, not a model)",
+  "think": false,
+  "seconds": 0.0,
+  "prompt_tokens": 0,
+  "output_tokens": 0
+ },
+ "verifier": {
+  "sentences": 9,
+  "grounded": 7,
+  "repaired": 1,
+  "dropped": 1,
+  "dropped_text": [
+   "More than four hundred monarchs wore the crown before it fell."
+  ]
+ },
+ "generated_at": "2026-10-29T05:10:00Z"
+}

@@ -1,0 +1,81 @@
+{
+ "address": "0xc9fa8f4cfd11559b50c5c7f6672b9eea2757e1bd",
+ "started_at": "2026-10-29T05:28:59Z",
+ "finished_at": "2026-10-29T05:29:31Z",
+ "kind": "bad",
+ "title": "The Ghost of QTNToken",
+ "name": "QUATERNION",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 0.1,
+   "note": "incident: victim of QTNToken (2023-01-18): business logic flaw"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 5.1,
+   "note": "QUATERNION; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 9.9,
+   "note": "tier slither, 2 finding(s), incident: QTNToken"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "bad"
+  },
+  {
+   "name": "face",
+   "ok": false,
+   "seconds": 0.0,
+   "note": "RuntimeError: no screenshots (no site known)"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 16.3,
+   "note": "16.3 s, 5 calls; verifier 29/29 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "59,925 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "8 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "incident",
+  "reason": "victim of QTNToken (2023-01-18): business logic flaw",
+  "name": "QUATERNION",
+  "year": 2023,
+  "hint": true
+ },
+ "incident_hint": {
+  "id": "defihacklabs-2023-01-18-qtntoken",
+  "name": "QTNToken",
+  "date": "2023-01-18",
+  "cause": "business logic flaw",
+  "loss_note": "~2ETH"
+ },
+ "gallery_path": "web/ghosts/0xc9fa8f4cfd11559b50c5c7f6672b9eea2757e1bd/"
+}

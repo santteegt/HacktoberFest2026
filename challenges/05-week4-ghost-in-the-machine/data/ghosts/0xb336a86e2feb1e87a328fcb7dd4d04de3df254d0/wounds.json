@@ -1,0 +1,102 @@
+{
+ "address": "0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0",
+ "tier": "catalog",
+ "compiler_version": "0.2.1+commit.91a6b35f",
+ "analyzed_files": [
+  "KingOfTheEtherThrone.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in claimThrone()",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "KingOfTheEtherThrone.sol",
+   "lines": [
+    99,
+    103
+   ],
+   "snippet": "        // If they paid too little, reject claim and refund their money.\n        if (valuePaid < currentClaimPrice) {\n            msg.sender.send(valuePaid);\n            return;\n        }",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently. Documented incident: King of the Ether Throne failed payments (Turbulent Age) (2016-02-06).",
+   "reference_url": "http://www.kingoftheether.com/postmortem.html"
+  },
+  {
+   "id": "w2",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in claimThrone()",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "KingOfTheEtherThrone.sol",
+   "lines": [
+    106,
+    110
+   ],
+   "snippet": "        if (valuePaid > currentClaimPrice) {\n            uint excessPaid = valuePaid - currentClaimPrice;\n            msg.sender.send(excessPaid);\n            valuePaid = valuePaid - excessPaid;\n        }",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently. Documented incident: King of the Ether Throne failed payments (Turbulent Age) (2016-02-06).",
+   "reference_url": "http://www.kingoftheether.com/postmortem.html"
+  },
+  {
+   "id": "w3",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in claimThrone()",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "KingOfTheEtherThrone.sol",
+   "lines": [
+    119,
+    123
+   ],
+   "snippet": "\n        if (currentMonarch.etherAddress != wizardAddress) {\n            currentMonarch.etherAddress.send(compensation);\n        } else {\n            // When the throne is vacant, the fee accumulates for the wizard.",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently. Documented incident: King of the Ether Throne failed payments (Turbulent Age) (2016-02-06).",
+   "reference_url": "http://www.kingoftheether.com/postmortem.html"
+  },
+  {
+   "id": "w4",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in sweepCommission()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "KingOfTheEtherThrone.sol",
+   "lines": [
+    166,
+    168
+   ],
+   "snippet": "    function sweepCommission(uint amount) onlywizard {\n        wizardAddress.send(amount);\n    }",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently.",
+   "reference_url": null
+  }
+ ],
+ "incident": {
+  "id": "kotet-v040-2016",
+  "name": "King of the Ether Throne failed payments (Turbulent Age)",
+  "date": "2016-02-06",
+  "loss_usd": null,
+  "loss_eth": 98.043,
+  "loss_note": "Post-mortem Appendix A lists failed sends of 42.273 ETH (compensation), 7.77 ETH (refund) and 48 ETH (refund), all later returned by hand: 98.043 ETH in total. The timeline in the same page says 'three refunds for a total of 98.5 ether'. A fourth failure (95.04 ETH, block 968739) rolled back the whole transaction and was paid in a later block, so it caused no loss. The post-mortem says all ether was returned.",
+  "cause": "claimThrone sent compensation and refunds with address.send(), which forwards only 2300 gas and does not check the return value. Mist contract wallets ran out of gas, so the payments failed while the contract kept going and crowned the new monarch anyway.",
+  "swc": "SWC-104",
+  "summary": "During the 'Turbulent Age' (6-8 February 2016) the v0.4.0 throne contract failed to pay several monarchs and over/underpaying claimants who used contract wallets. It did not notice the failures and kept accepting claims. The developer swept the contract balance and refunded the affected wallets by hand on 19 February, then shipped v0.5.0 with a gas-carrying send and a resend function.",
+  "references": [
+   "http://www.kingoftheether.com/postmortem.html",
+   "https://raw.githubusercontent.com/kieranelby/KingOfTheEtherThrone/6d77929b/contracts/KingOfTheEtherThrone.sol",
+   "https://raw.githubusercontent.com/kieranelby/KingOfTheEtherThrone/120f5a20/contracts/KingOfTheEtherThrone.sol",
+   "https://api.github.com/repos/kieranelby/KingOfTheEtherThrone/commits/6d77929b",
+   "https://www.ethereumhistory.com/contract/0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0",
+   "https://eth.blockscout.com/api/v2/addresses/0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0"
+  ]
+ },
+ "slither_raw": null,
+ "catalog_entry": "kotet-v040-2016",
+ "run": null,
+ "analyzed_at": "2026-10-29T05:05:02Z"
+}

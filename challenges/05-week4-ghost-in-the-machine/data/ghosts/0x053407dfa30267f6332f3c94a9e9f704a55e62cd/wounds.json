@@ -1,0 +1,80 @@
+{
+ "address": "0x053407dfa30267f6332f3c94a9e9f704a55e62cd",
+ "tier": "slither",
+ "compiler_version": "0.8.19+commit.7dd6d404",
+ "analyzed_files": [
+  "contracts/interfaces/ICapacitor.sol",
+  "contracts/interfaces/IExecutionManager.sol",
+  "contracts/interfaces/ISignatureVerifier.sol",
+  "contracts/interfaces/ISocket.sol",
+  "contracts/interfaces/ISwitchboard.sol",
+  "contracts/interfaces/ITransmitManager.sol",
+  "contracts/libraries/RescueFundsLib.sol",
+  "contracts/switchboard/native/NativeSwitchboardBase.sol",
+  "contracts/switchboard/native/PolygonL1Switchboard.sol",
+  "contracts/utils/AccessControl.sol",
+  "contracts/utils/AccessControlExtended.sol",
+  "contracts/utils/AccessRoles.sol",
+  "contracts/utils/Ownable.sol",
+  "contracts/utils/SigIdentifiers.sol",
+  "lib/contracts/contracts/lib/ExitPayloadReader.sol",
+  "lib/contracts/contracts/lib/Merkle.sol",
+  "lib/contracts/contracts/lib/MerklePatriciaProof.sol",
+  "lib/contracts/contracts/lib/RLPReader.sol",
+  "lib/contracts/contracts/tunnel/FxBaseRootTunnel.sol",
+  "lib/solmate/src/tokens/ERC20.sol",
+  "lib/solmate/src/utils/SafeTransferLib.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "reentrancy-no-eth",
+   "swc": "SWC-107",
+   "title": "Reentrancy in NativeSwitchboardBase.registerSiblingSlug(uint32,uint256,uint256,uint256,address)",
+   "impact": "Medium",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "contracts/switchboard/native/NativeSwitchboardBase.sol",
+   "lines": [
+    244,
+    264
+   ],
+   "snippet": "    function registerSiblingSlug(\n        uint32 siblingChainSlug_,\n        uint256 maxPacketLength_,\n        uint256 capacitorType_,\n        uint256 initialPacketCount_,\n        address remoteNativeSwitchboard_\n    ) external override onlyRole(GOVERNANCE_ROLE) {\n        if (isInitialized) revert AlreadyInitialized();\n\n        initialPacketCount = initialPacketCount_;\n        (address capacitor, ) = socket__.registerSwitchboardForSibling(\n            siblingChainSlug_,\n            maxPacketLength_,\n            capacitorType_,\n            remoteNativeSwitchboard_\n        );\n\n        isInitialized = true;\n        capacitor__ = ICapacitor(capacitor);\n        remoteNativeSwitchboard = remoteNativeSwitchboard_;\n    }",
+   "description": "The function calls out to another contract before it finishes updating its own state. A malicious callee can re-enter while the state is half-written; no ether moves in the reentrant path itself, but the stale state can be abused. Slither: Reentrancy in NativeSwitchboardBase.registerSiblingSlug(uint32,uint256,uint256,uint256,address) (contracts/switchboard/native/NativeSwitchboardBase.sol#244-264):\n\tExternal calls:\n\t- (capacitor,None) = socket__.registerSwitchboardForSibling(siblingChainSlug_,maxPacketLength_,capacitorType_,remoteNativeSwitchboard_) (contracts/switchboard/native/NativeSwitchboardBase.sol#254-259)\n\tState variables written after the call(s):\n\t- isInitialized = true (contracts/switchboard/native/NativeSwitchboardBase.sol#261)\n\tNativeSwitchboardBase.isInitialized (contracts/switchboard/native/NativeSwitchboardBase.s",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-no-eth"
+  },
+  {
+   "id": "w2",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "ERC20.permit(address,address,uint256,uint256,uint8,bytes32,bytes32) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "lib/solmate/src/tokens/ERC20.sol",
+   "lines": [
+    125,
+    125
+   ],
+   "snippet": "        require(deadline >= block.timestamp, \"PERMIT_DEADLINE_EXPIRED\");",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: ERC20.permit(address,address,uint256,uint256,uint8,bytes32,bytes32) (lib/solmate/src/tokens/ERC20.sol#116-160) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool,string)(deadline >= block.timestamp,PERMIT_DEADLINE_EXPIRED) (lib/solmate/src/tokens/ERC20.sol#125)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  }
+ ],
+ "incident": null,
+ "slither_raw": "data/ghosts/0x053407dfa30267f6332f3c94a9e9f704a55e62cd/slither.json",
+ "catalog_entry": null,
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 2.09
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.8.19"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:39:13Z"
+}

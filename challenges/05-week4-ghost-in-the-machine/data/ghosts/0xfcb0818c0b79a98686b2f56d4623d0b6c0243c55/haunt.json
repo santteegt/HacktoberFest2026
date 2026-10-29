@@ -1,0 +1,74 @@
+{
+ "address": "0xfcb0818c0b79a98686b2f56d4623d0b6c0243c55",
+ "started_at": "2026-10-29T05:27:40Z",
+ "finished_at": "2026-10-29T05:28:11Z",
+ "kind": "friendly",
+ "title": "The Echo of Blokur",
+ "name": "greeter",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 1.2,
+   "note": "archive: documented on Ethereum History (deployed 2016-09-07, era dao)"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 8.9,
+   "note": "greeter; via blockscout, ethereumhistory, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "tier regex, 1 finding(s)"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "friendly"
+  },
+  {
+   "name": "face",
+   "ok": false,
+   "seconds": 0.0,
+   "note": "RuntimeError: no screenshots (no site known)"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 22.3,
+   "note": "22.2 s, 4 calls; verifier 22/22 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "48,210 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "6 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "archive",
+  "reason": "documented on Ethereum History (deployed 2016-09-07, era dao)",
+  "name": "greeter",
+  "year": 2016,
+  "hint": false
+ },
+ "gallery_path": "web/ghosts/0xfcb0818c0b79a98686b2f56d4623d0b6c0243c55/"
+}

@@ -1,0 +1,107 @@
+{
+ "address": "0xf98f439b19ddedb1dab2775b09bd824ad4d6e943",
+ "name": "HumanStandardToken",
+ "kind": "friendly",
+ "kind_source": "verdict.json",
+ "title": "The Silent Token of Constantinople",
+ "tagline": "A friendly spirit born and stilled on a single summer day.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of a token",
+   "paragraphs": [
+    "A single candle flickers near a digital grave. The HumanStandardToken arrived on July 31, 2019. A wallet deployed it. It was written in Solidity 0.3.5.",
+    "The contract is a small program that lives on Ethereum. It was born into the Constantinople era. On the day it was born, it was written into a block, one page of Ethereum's shared record book. Now it sits quiet at 7.2 years old."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.blockscout.name",
+    "facts.source.compiler_version",
+    "verdict.activity.silent_years"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "A single movement",
+   "paragraphs": [
+    "The HumanStandardToken sits still now. It lived a quiet life with only 1 transaction. People used it once to perform a transfer.",
+    "The busy days ended in 2019. It remains a ghost on the chain, silent and alone."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.blockscout.name"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The long silence",
+   "paragraphs": [
+    "The HumanStandardToken sits still. Its code still rests on the chain like a shadow. It has been quiet for 7.2 years.",
+    "The last call came on July 31, 2019. That call was a transfer. It holds 0.0 ETH inside now."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.blockscout.name",
+    "facts.life.token_transfers",
+    "verdict.activity.silent_years"
+   ]
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 11.7,
+  "model_seconds": 11.6,
+  "calls": 5,
+  "prompt_tokens": 1848,
+  "output_tokens": 351
+ },
+ "verifier": {
+  "sentences": 21,
+  "grounded": 20,
+  "repaired": 1,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [
+   {
+    "chapter": "birth",
+    "verdict": "repaired",
+    "text": "A wallet starting with 0xafbe and ending in 51c4 brought it into the world.",
+    "problems": [
+     {
+      "kind": "number",
+      "token": "51"
+     }
+    ],
+    "rewrite": "A wallet deployed it."
+   }
+  ],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "July 31, 2019",
+  "born_year": 2019,
+  "age_years": 7.2,
+  "age_years_whole": 7,
+  "last_seen_on": "July 31, 2019",
+  "last_seen_year": 2019,
+  "silent_years": 7.2,
+  "silent_days": 2646,
+  "active_days": 0,
+  "balance_eth": 0.0,
+  "deployer_short": "0xafbe…51c4",
+  "address_short": "0xf98f…e943",
+  "compiler_label": "Solidity 0.3.5",
+  "activity_label": "last busy in 2019"
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:52:46Z"
+}

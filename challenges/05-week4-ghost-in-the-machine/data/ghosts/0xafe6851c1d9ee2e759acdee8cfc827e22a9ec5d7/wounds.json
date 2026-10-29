@@ -1,0 +1,15 @@
+{
+ "address": "0xafe6851c1d9ee2e759acdee8cfc827e22a9ec5d7",
+ "tier": "regex",
+ "compiler_version": "0.2.0-nightly.2016.1.18+commit.02340e84",
+ "analyzed_files": [
+  "token.sol"
+ ],
+ "source_origin": "src",
+ "findings": [],
+ "incident": null,
+ "slither_raw": null,
+ "catalog_entry": null,
+ "run": null,
+ "analyzed_at": "2026-10-29T05:40:57Z"
+}

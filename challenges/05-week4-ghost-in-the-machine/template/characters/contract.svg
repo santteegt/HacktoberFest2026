@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="contract" viewBox="0 0 120 120" role="img" aria-labelledby="$uid"><title id="$uid">Contract $tag while it was alive: a glowing block with a happy face</title>
+<ellipse cx="55" cy="114" rx="30" ry="4" fill="#000" opacity=".18"/>
+<path d="M55 10l40 20l-40 20l-40-20z" fill="#ffb432" stroke="#1d1029" stroke-width="3" stroke-linejoin="round"/>
+<path d="M15 30v50l40 22V50z" fill="#f29d1f" stroke="#1d1029" stroke-width="3" stroke-linejoin="round"/>
+<path d="M95 30v50l-40 22V50z" fill="#7a3fb0" stroke="#1d1029" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="28" cy="58" r="3.5" fill="#1d1029"/><circle cx="42" cy="65" r="3.5" fill="#1d1029"/>
+<path d="M26 72q8 10 17 8" stroke="#1d1029" stroke-width="3" fill="none" stroke-linecap="round"/>
+<g fill="#ffd24a" stroke="#1d1029" stroke-width="1.2"><path d="M100 14l2 5l5 2l-5 2l-2 5l-2-5l-5-2l5-2z"/><path d="M8 12l1.5 3.5l3.5 1.5l-3.5 1.5l-1.5 3.5l-1.5-3.5l-3.5-1.5l3.5-1.5z"/></g>
+<g transform="rotate(-27 75 68)"><rect x="58" y="62" width="34" height="13" rx="2" fill="#f6f1ff" stroke="#1d1029" stroke-width="1.6"/><text x="75" y="72" text-anchor="middle" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9" font-weight="700" fill="#1d1029">$tag</text></g>
+</svg>

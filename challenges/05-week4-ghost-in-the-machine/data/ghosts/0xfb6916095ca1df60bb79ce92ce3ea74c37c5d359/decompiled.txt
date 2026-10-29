@@ -1,0 +1,317 @@
+# Palkeoramix decompiler. 
+
+def storage:
+  owner is address at storage 0
+  stor0 is uint256 at storage 0
+  stor1 is array of uint256 at storage 1
+  stor2 is array of uint256 at storage 2
+  stor3 is array of uint256 at storage 3
+  proposals is array of struct at storage 4
+  stor5 is array of uint256 at storage 5
+  memberId is array of uint256 at storage 6
+  stor7 is array of struct at storage 7
+  stor8 is array of uint256 at storage 8
+  priceOfAUnicornInFinney is uint256 at storage 9
+  stor39192952402756187425302384862487251540968225014669488259582314013099748177606 is array of uint8 at storage 0x56a66cc928b5edb82af9bd49922954155ab7b0942694bea4ce44661d9a8736c6
+  stor62514009886607029107290561805838585334079798074568712924583230797734656856476 is array of uint256 at storage 0x8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19c
+  stor62514009886607029107290561805838585334079798074568712924583230797734656856478 is array of uint256 at storage 0x8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19e
+  stor75276140696391174450305814049576319106646922510300487059720162673006384432777 is array of uint256 at storage 0xa66cc928b5edb82af9bd49922954155ab7b0942694bea4ce44661d9a8736c689
+  stor75276140696391174450305814049576319106646922510300487059720162673006384432780 is array of uint256 at storage 0xa66cc928b5edb82af9bd49922954155ab7b0942694bea4ce44661d9a8736c68c
+
+def proposals(uint256 _param1) payable: 
+  require _param1 < proposals.length
+  mem[416] = uint256(stor[sha3((10 * _param1) + ('name', 'proposals', 4) + 2)].field_0)
+  idx = 416
+  s = 0
+  while stor[(10 * _param1) + ('name', 'proposals', 4) + 2].length + 416 > idx + 32:
+      mem[idx + 32] = uint256(stor[s + sha3((10 * _param1) + ('name', 'proposals', 4) + 2)].field_256)
+      idx = idx + 32
+      s = s + 1
+      continue 
+  return address(proposals[_param1].field_0), 
+         uint256(proposals[_param1].field_256),
+         Array(len=stor[(10 * _param1) + ('name', 'proposals', 4) + 2].length, data=mem[416 len stor[(10 * _param1) + ('name', 'proposals', 4) + 2].length + (floor32(stor[(10 * _param1) + ('name', 'proposals', 4) + 2].length - 1) + -stor[(10 * _param1) + ('name', 'proposals', 4) + 2].length + 32 % 32)]),
+         uint256(proposals[_param1].field_768),
+         uint8(proposals[_param1].field_1024),
+         uint8(proposals[_param1].field_1024),
+         uint256(proposals[_param1].field_1280),
+         uint256(proposals[_param1].field_1536),
+         uint256(proposals[_param1].field_1792)
+
+def memberId(address _param1) payable: 
+  return memberId[_param1]
+
+def numProposals() payable: 
+  return stor5.length
+
+def priceOfAUnicornInFinney() payable: 
+  return priceOfAUnicornInFinney
+
+def debatingPeriodInMinutes() payable: 
+  return stor2.length
+
+def minimumQuorum() payable: 
+  return stor1.length
+
+def owner() payable: 
+  return address(owner)
+
+def majorityMargin() payable: 
+  return stor3.length
+
+def unicornAddress() payable: 
+  return address(stor8.length)
+
+#
+#  Regular functions
+#
+
+def transferOwnership(address newOwner) payable: 
+  require caller == address(owner)
+  uint256(stor0) = newOwner or Mask(96, 160, uint256(stor0))
+
+def changeUnicorn(uint256 newUnicornPriceInFinney, address newUnicornAddress) payable: 
+  require caller == address(owner)
+  stor8.length = newUnicornAddress or Mask(96, 160, stor8.length)
+  priceOfAUnicornInFinney = newUnicornPriceInFinney
+
+def _fallback(?) payable: # default function
+  if call.value > priceOfAUnicornInFinney:
+      call address(stor8.length).mintToken(address target, uint256 mintedAmount) with:
+           gas gas_remaining - 25050 wei
+          args caller, call.value / 10^15 * priceOfAUnicornInFinney
+      require ext_call.success
+
+def checkProposalCode(uint256 proposalNumber, address beneficiary, uint256 weiAmount, bytes transactionBytecode) payable: 
+  require proposalNumber < proposals.length
+  return (uint256(stor[code.data[6371 len 32] + (10 * proposalNumber) + 7].field_0) == sha3(beneficiary, weiAmount, transactionBytecode[all]))
+
+def changeVotingRules(uint256 minimumQuorumForProposals, uint256 minutesForDebate, int256 marginOfVotesForMajority) payable: 
+  require caller == address(owner)
+  stor1.length = minimumQuorumForProposals
+  stor2.length = minutesForDebate
+  stor3.length = marginOfVotesForMajority
+  log ChangeOfRules(
+        uint256 newMinimumQuorum=minimumQuorumForProposals,
+        uint256 newDebatingPeriodInMinutes=minutesForDebate,
+        int256 newMajorityMargin=marginOfVotesForMajority)
+
+def vote(uint256 proposalNumber, bool supportsProposal, string justificationText) payable: 
+  require memberId[caller]
+  require memberId[caller] < stor7.length
+  require proposalNumber < proposals.length
+  require uint8(stor[code.data[6371 len 32] + (10 * proposalNumber) + 9][caller].field_0) != 1
+  uint8(stor[code.data[6371 len 32] + (10 * proposalNumber) + 9][caller].field_0) = 1
+  uint256(stor[code.data[6371 len 32] + (10 * proposalNumber) + 5].field_0) += storA66C[stor6[caller]]
+  if not supportsProposal:
+      uint256(stor[code.data[6371 len 32] + (10 * proposalNumber) + 6].field_0) -= storA66C[stor6[caller]]
+  else:
+      uint256(stor[code.data[6371 len 32] + (10 * proposalNumber) + 6].field_0) += storA66C[stor6[caller]]
+  log Voted(
+        uint256 proposalID=proposalNumber,
+        bool position=supportsProposal,
+        address voter=caller,
+        string justification=Array(len=justificationText.length, data=justificationText[all]))
+  return 0
+
+def members(uint256 _param1) payable: 
+  require _param1 < stor7.length
+  mem[288] = uint256(stor[sha3((5 * _param1) - 0x599336d74a1247d50642b66dd6abeaa5484f6bd96b415b31bb99e26578c93975)].field_0)
+  idx = 288
+  s = 0
+  while stor[(5 * _param1) - 0x599336d74a1247d50642b66dd6abeaa5484f6bd96b415b31bb99e26578c93975].length + 288 > idx + 32:
+      mem[idx + 32] = uint256(stor[s + sha3((5 * _param1) - 0x599336d74a1247d50642b66dd6abeaa5484f6bd96b415b31bb99e26578c93975) + 1].field_0)
+      idx = idx + 32
+      s = s + 1
+      continue 
+  return address(stor7[_param1].field_0), 
+         storA66C[_param1],
+         uint8(stor56A6[_param1]),
+         Array(len=stor[(5 * _param1) - 0x599336d74a1247d50642b66dd6abeaa5484f6bd96b415b31bb99e26578c93975].length, data=mem[288 len stor[(5 * _param1) - 0x599336d74a1247d50642b66dd6abeaa5484f6bd96b415b31bb99e26578c93975].length + (floor32(stor[(5 * _param1) - 0x599336d74a1247d50642b66dd6abeaa5484f6bd96b415b31bb99e26578c93975].length - 1) + -stor[(5 * _param1) - 0x599336d74a1247d50642b66dd6abeaa5484f6bd96b415b31bb99e26578c93975].length + 32 % 32)]),
+         storA66C[_param1]
+
+def changeMembership(address targetMember, uint256 voteWeight, bool canAddProposals, string memberName) payable: 
+  require caller == address(owner)
+  if memberId[address(targetMember)]:
+      require memberId[address(targetMember)] < stor7.length
+      storA66C[stor6[address(targetMember)]] = voteWeight
+      uint256(stor56A6[stor6[address(targetMember)]]) = canAddProposals or Mask(248, 8, uint256(stor56A6[stor6[address(targetMember)]]))
+      uint256(stor[sha3((5 * stor6[address(targetMember)]) - 0x599336d74a1247d50642b66dd6abeaa5484f6bd96b415b31bb99e26578c93975)][].field_0) = Array(len=memberName.length, data=memberName[all])
+  else:
+      memberId[address(targetMember)] = stor7.length
+      stor7.length++
+      if not stor7.length <= stor7.length + 1:
+          mem[0] = 7
+          idx = (5 * stor7.length) + 5
+          while sha3(7) + (5 * stor7.length) > idx + sha3(mem[0]):
+              address(stor[idx + sha3(mem[0])].field_0) = 0
+              uint256(stor[idx + sha3(mem[0]) + 1].field_0) = 0
+              uint8(stor[idx + sha3(mem[0]) + 2].field_0) = 0
+              uint256(stor[idx + sha3(mem[0]) + 3].field_0) = 0
+              if 31 < stor[idx + sha3(mem[0]) + 3].length:
+                  mem[0] = idx + sha3(mem[0]) + 3
+                  s = sha3(idx + sha3(mem[0]) + 3)
+                  while sha3(idx + sha3(mem[0]) + 3) + (stor[idx + sha3(mem[0]) + 3].length + 31 / 32) > s:
+                      uint256(stor[s].field_0) = 0
+                      s = s + 1
+                      continue 
+              uint256(stor[idx + sha3(mem[0]) + 4].field_0) = 0
+              idx = idx + 1
+              continue 
+      require stor7.length < stor7.length
+      uint256(stor7[stor7.length].field_0) = Mask(96, 0, stor7[stor7.length].field_160)
+      uint256(stor7[stor7.length].field_256) = voteWeight
+      uint256(stor7[stor7.length].field_512) = Mask(248, 0, stor7[stor7.length].field_520)
+      uint256(stor[sha3((5 * stor7.length) + ('name', 'stor7', 7) + 3)][].field_0) = Array(len=memberName.length, data=memberName[all])
+      uint256(stor7[stor7.length].field_1024) = block.timestamp
+  log MembershipChanged(address member=targetMember)
+
+def executeProposal(uint256 proposalNumber, bytes transactionBytecode) payable: 
+  mem[128 len transactionBytecode.length] = transactionBytecode[all]
+  require proposalNumber < proposals.length
+  require block.timestamp >= stor8A35[proposalNumber]
+  require not uint8(stor[(10 * proposalNumber) + code.data[6371 len 32] + 4].field_0)
+  mem[ceil32(transactionBytecode.length) + 128] = address(stor[(10 * proposalNumber) + code.data[6371 len 32]].field_0)
+  mem[ceil32(transactionBytecode.length) + 148] = uint256(stor[(10 * proposalNumber) + code.data[6371 len 32] + 1].field_0)
+  mem[ceil32(transactionBytecode.length) + 180 len transactionBytecode.length] = transactionBytecode[all]
+  require uint256(stor[(10 * proposalNumber) + code.data[6371 len 32] + 7].field_0) == sha3(address(stor[(10 * proposalNumber) + code.data[6371 len 32]].field_0), uint256(stor[(10 * proposalNumber) + code.data[6371 len 32] + 1].field_0), transactionBytecode[all])
+  require uint256(stor[(10 * proposalNumber) + code.data[6371 len 32] + 5].field_0) >= stor1.length
+  if uint256(stor[(10 * proposalNumber) + code.data[6371 len 32] + 6].field_0) <=′ stor3.length:
+      uint8(stor[(10 * proposalNumber) + code.data[6371 len 32] + 4].field_0) = 1
+      uint8(stor[(10 * proposalNumber) + code.data[6371 len 32] + 4].field_8) = 0
+  else:
+      mem[ceil32(transactionBytecode.length) + 128 len transactionBytecode.length] = transactionBytecode[all]
+      if not transactionBytecode.length % 32:
+          call address(stor[(10 * proposalNumber) + code.data[6371 len 32]].field_0) with:
+             value uint256(stor[(10 * proposalNumber) + code.data[6371 len 32] + 1].field_0) wei
+               gas gas_remaining - 34050 wei
+              args transactionBytecode[all]
+      else:
+          mem[floor32(transactionBytecode.length) + ceil32(transactionBytecode.length) + 128] = mem[floor32(transactionBytecode.length) + ceil32(transactionBytecode.length) + -(transactionBytecode.length % 32) + 160 len transactionBytecode.length % 32]
+          call address(stor[(10 * proposalNumber) + code.data[6371 len 32]].field_0).mem[ceil32(transactionBytecode.length) + 128 len 4] with:
+             value uint256(stor[(10 * proposalNumber) + code.data[6371 len 32] + 1].field_0) wei
+               gas gas_remaining - 34050 wei
+              args mem[ceil32(transactionBytecode.length) + 132 len floor32(transactionBytecode.length) + 28]
+      uint8(stor[(10 * proposalNumber) + code.data[6371 len 32] + 4].field_0) = 1
+      uint8(stor[(10 * proposalNumber) + code.data[6371 len 32] + 4].field_8) = 1
+  stor[(10 * proposalNumber) + code.data[6371 len 32] + 4].field_256 % 1 = 0
+  log ProposalTallied(
+        uint256 proposalID=proposalNumber,
+        int256 result=uint256(stor[(10 * proposalNumber) + code.data[6371 len 32] + 6].field_0),
+        uint256 quorum=uint256(stor[(10 * proposalNumber) + code.data[6371 len 32] + 5].field_0),
+        bool active=uint8(stor[(10 * proposalNumber) + code.data[6371 len 32] + 4].field_8))
+  return 0
+
+def newProposalInEther(address beneficiary, uint256 etherAmount, string jobDescription, bytes transactionBytecode) payable: 
+  require memberId[caller]
+  require memberId[caller] < stor7.length
+  require uint8(stor56A6[stor6[caller]])
+  proposals.length++
+  if not proposals.length <= proposals.length + 1:
+      mem[0] = 4
+      idx = (10 * proposals.length) + code.data[6371 len 32] + 10
+      while code.data[6371 len 32] + (10 * proposals.length) > idx:
+          address(stor[idx].field_0) = 0
+          stor1[idx] = 0
+          stor2[idx] = 0
+          if 31 < stor[idx + 2].length:
+              s = sha3(idx + 2)
+              while sha3(idx + 2) + (stor[idx + 2].length + 31 / 32) > s:
+                  uint256(stor[s].field_0) = 0
+                  s = s + 1
+                  continue 
+          stor3[idx] = 0
+          uint16(proposals[idx].field_0) = 0
+          stor5[idx] = 0
+          memberId[idx] = 0
+          uint256(stor7[idx].field_0) = 0
+          uint256(stor8[idx]) = 0
+          mem[0] = idx + 8
+          s = sha3(mem[0])
+          while sha3(idx + 8) + (2 * uint256(stor8[idx])) > s:
+              Mask(168, 0, stor[s].field_0) = 0
+              stor1[s] = 0
+              if 31 < stor[s + 1].length:
+                  mem[0] = s + 1
+                  t = sha3(s + 1)
+                  while sha3(s + 1) + (stor[s + 1].length + 31 / 32) > t:
+                      uint256(stor[t].field_0) = 0
+                      t = t + 1
+                      continue 
+              s = s + 1
+              continue 
+          idx = idx + 1
+          continue 
+  require proposals.length < proposals.length
+  uint256(stor[(10 * stor4.length) + code.data[6371 len 32]].field_0) = beneficiary or Mask(96, 160, uint256(stor[(10 * stor4.length) + code.data[6371 len 32]].field_0))
+  stor8A35[stor4.length] = 10^18 * etherAmount
+  uint256(stor[sha3((10 * stor4.length) - 0x75ca53043ea007e5c65182cbb028f60d7179ff4b55739a3949b401801c942e63)][].field_0) = Array(len=jobDescription.length, data=jobDescription[all])
+  uint256(stor[(10 * stor4.length) + code.data[6371 len 32] + 7].field_0) = sha3(beneficiary, 10^18 * etherAmount, transactionBytecode[all])
+  uint256(stor[(10 * stor4.length) + code.data[6371 len 32] + 3].field_0) = block.timestamp + (60 * stor2.length)
+  uint8(stor[(10 * stor4.length) + code.data[6371 len 32] + 4].field_0) = 0
+  uint8(stor[(10 * stor4.length) + code.data[6371 len 32] + 4].field_8) = 0
+  uint256(stor[(10 * stor4.length) + code.data[6371 len 32] + 5].field_0) = 0
+  log ProposalAdded(
+        uint256 proposalID=proposals.length,
+        address recipient=address(beneficiary),
+        uint256 amount=etherAmount,
+        string description=Array(len=jobDescription.length, data=jobDescription[all]))
+  stor5.length = proposals.length + 1
+  return proposals.length
+
+def newProposalInWei(address beneficiary, uint256 weiAmount, string JobDescription, bytes transactionBytecode) payable: 
+  require memberId[caller]
+  require memberId[caller] < stor7.length
+  require uint8(stor56A6[stor6[caller]])
+  proposals.length++
+  if not proposals.length <= proposals.length + 1:
+      mem[0] = 4
+      idx = (10 * proposals.length) + 10
+      while sha3(4) + (10 * proposals.length) > idx + sha3(mem[0]):
+          address(stor[idx + sha3(mem[0])].field_0) = 0
+          uint256(stor[idx + sha3(mem[0]) + 1].field_0) = 0
+          uint256(stor[idx + sha3(mem[0]) + 2].field_0) = 0
+          if 31 < stor[idx + sha3(mem[0]) + 2].length:
+              s = sha3(idx + sha3(mem[0]) + 2)
+              while sha3(idx + sha3(mem[0]) + 2) + (stor[idx + sha3(mem[0]) + 2].length + 31 / 32) > s:
+                  uint256(stor[s].field_0) = 0
+                  s = s + 1
+                  continue 
+          uint256(stor[idx + sha3(mem[0]) + 3].field_0) = 0
+          uint16(stor[idx + sha3(mem[0]) + 4].field_0) = 0
+          uint256(stor[idx + sha3(mem[0]) + 5].field_0) = 0
+          uint256(stor[idx + sha3(mem[0]) + 6].field_0) = 0
+          uint256(stor[idx + sha3(mem[0]) + 7].field_0) = 0
+          uint256(stor[idx + sha3(mem[0]) + 8].field_0) = 0
+          mem[0] = idx + sha3(mem[0]) + 8
+          s = sha3(mem[0])
+          while sha3(idx + sha3(mem[0]) + 8) + (2 * uint256(stor[idx + sha3(mem[0]) + 8].field_0)) > s:
+              Mask(168, 0, stor[s].field_0) = 0
+              stor1[s] = 0
+              if 31 < stor[s + 1].length:
+                  mem[0] = s + 1
+                  t = sha3(s + 1)
+                  while sha3(s + 1) + (stor[s + 1].length + 31 / 32) > t:
+                      uint256(stor[t].field_0) = 0
+                      t = t + 1
+                      continue 
+              s = s + 1
+              continue 
+          idx = idx + 1
+          continue 
+  require proposals.length < proposals.length
+  uint256(proposals[proposals.length].field_0) = beneficiary or Mask(96, 160, uint256(proposals[proposals.length].field_0))
+  uint256(proposals[proposals.length].field_256) = weiAmount
+  uint256(stor[sha3((10 * proposals.length) + ('name', 'proposals', 4) + 2)][].field_0) = Array(len=JobDescription.length, data=JobDescription[all])
+  uint256(proposals[proposals.length].field_1792) = sha3(beneficiary, weiAmount, transactionBytecode[all])
+  uint256(proposals[proposals.length].field_768) = block.timestamp + (60 * stor2.length)
+  uint8(proposals[proposals.length].field_1024) = 0
+  uint8(proposals[proposals.length].field_1032) = 0
+  uint256(proposals[proposals.length].field_1280) = 0
+  log ProposalAdded(
+        uint256 proposalID=proposals.length,
+        address recipient=address(beneficiary),
+        uint256 amount=weiAmount,
+        string description=Array(len=JobDescription.length, data=JobDescription[all]))
+  stor5.length = proposals.length + 1
+  return proposals.length

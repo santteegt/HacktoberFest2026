@@ -1,0 +1,23 @@
+[
+ {
+  "ts": "20210928165622",
+  "url": "https://web.archive.org/web/20210928165622/https://pastebin.com/N5ANMPSy",
+  "file": "shots/20210928165622.png",
+  "role": "first",
+  "site": "http://pastebin.com/N5ANMPSy"
+ },
+ {
+  "ts": "20230131190931",
+  "url": "https://web.archive.org/web/20230131190931/https://www.guinnessworldrecords.com/world-records/696281-first-ethereum-nft",
+  "file": "shots/20230131190931.png",
+  "role": "first",
+  "site": "https://www.guinnessworldrecords.com/world-records/696281-first-ethereum-nft"
+ },
+ {
+  "ts": "20210928165622",
+  "url": "https://web.archive.org/web/20210928165622/https://pastebin.com/N5ANMPSy",
+  "file": "shots/20210928165622.png",
+  "role": "cover",
+  "site": "http://pastebin.com/N5ANMPSy"
+ }
+]

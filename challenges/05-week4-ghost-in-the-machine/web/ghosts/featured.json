@@ -1,0 +1,20 @@
+{
+ "address": "0xc820366606e803339730ad88465998f470116adf",
+ "name": "0xc820366606e803339730ad88465998f470116adf",
+ "unnamed": true,
+ "kind": "friendly",
+ "age": "Homestead",
+ "born": "2016-05-26",
+ "last_seen": null,
+ "never_called": true,
+ "proxy": false,
+ "calls": 0,
+ "scars": 0,
+ "balance_eth": 0.0,
+ "historian": true,
+ "path": "ghosts/0xc820366606e803339730ad88465998f470116adf/",
+ "cover": null,
+ "title": "The Silent Small Half",
+ "tagline": "A lonely forwarding wallet from the Homestead era that remains untouched by any human hand.",
+ "generated_at": "2026-10-29T16:40:53Z"
+}

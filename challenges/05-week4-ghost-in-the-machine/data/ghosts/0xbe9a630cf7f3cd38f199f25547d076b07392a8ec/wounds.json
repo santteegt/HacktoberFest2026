@@ -1,0 +1,230 @@
+{
+ "address": "0xbe9a630cf7f3cd38f199f25547d076b07392a8ec",
+ "tier": "slither",
+ "compiler_version": "0.4.24+commit.e67f0147",
+ "analyzed_files": [
+  "TemplateCrowdsale.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "unchecked-transfer",
+   "swc": "SWC-104",
+   "title": "Crowdsale._deliverTokens(address,uint256) ignores return value by token.transfer(_beneficiary,_tokenAmount)",
+   "impact": "High",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    244,
+    251
+   ],
+   "snippet": "  function _deliverTokens(\n    address _beneficiary,\n    uint256 _tokenAmount\n  )\n    internal\n  {\n    token.transfer(_beneficiary, _tokenAmount);\n  }",
+   "description": "A token transfer's return value is ignored; a failed transfer passes silently. Slither: Crowdsale._deliverTokens(address,uint256) (TemplateCrowdsale.sol#244-251) ignores return value by token.transfer(_beneficiary,_tokenAmount) (TemplateCrowdsale.sol#250)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer"
+  },
+  {
+   "id": "w2",
+   "check": "reentrancy-no-eth",
+   "swc": "SWC-107",
+   "title": "Reentrancy in TemplateCrowdsale.init()",
+   "impact": "Medium",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    1141,
+    1166
+   ],
+   "snippet": "    function init() public onlyOwner {\n        require(!initialized);\n        initialized = true;\n\n        if (PAUSED) {\n            MainToken(token).pause();\n        }\n\n        \n        address[4] memory addresses = [address(0xd9ee0d1af4b0b2bc48505237973ce3cc57bfe678),address(0xdffc6b14d882f9c45fce1377e0cdb2a8dff5e1a7),address(0xaf31505389cd0165bdb8807f6880888480132442),address(0xf457d557d13c3f1fba37708b448d15bf41bf28ac)];\n        uint[4] memory amounts = [uint(4000000000000),uint(10000000000000),uint(10000000000000),uint(10000000000000)];\n        uint64[4] memory freezes = [uint64(0),uint64(0),uint64(0),uint64(0)];\n\n        for (uint i = 0; i < addresses.length; i++) {\n            if (freezes[i] == 0) {\n                MainToken(token).mint(addresses[i], amounts[i]);\n            } else {\n                MainToken(token).mintAndFreeze(addresses[i], amounts[i], freezes[i]);\n            }\n        }\n        \n\n        transferOwnership(TARGET_USER);\n\n        emit Initialized();\n    }",
+   "description": "The function calls out to another contract before it finishes updating its own state. A malicious callee can re-enter while the state is half-written; no ether moves in the reentrant path itself, but the stale state can be abused. Slither: Reentrancy in TemplateCrowdsale.init() (TemplateCrowdsale.sol#1141-1166):\n\tExternal calls:\n\t- MainToken(token).pause() (TemplateCrowdsale.sol#1146)\n\t- MainToken(token).mint(addresses[i],amounts[i]) (TemplateCrowdsale.sol#1156)\n\t- MainToken(token).mintAndFreeze(addresses[i],amounts[i],freezes[i]) (TemplateCrowdsale.sol#1158)\n\tState variables written after the call(s):\n\t- transferOwnership(TARGET_USER) (TemplateCrowdsale.sol#1163)\n\t\t- owner = _newOwner (TemplateCrowdsale.sol#357)\n\tOwnable.owner (TemplateCrowdsale.sol#308) can be used in cross function reentrancies:\n\t- Ownable._transferOwnership(",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-no-eth"
+  },
+  {
+   "id": "w3",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "TimedCrowdsale.constructor(uint256,uint256) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    386,
+    393
+   ],
+   "snippet": "  constructor(uint256 _openingTime, uint256 _closingTime) public {\n    // solium-disable-next-line security/no-block-members\n    require(_openingTime >= block.timestamp);\n    require(_closingTime >= _openingTime);\n\n    openingTime = _openingTime;\n    closingTime = _closingTime;\n  }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: TimedCrowdsale.constructor(uint256,uint256) (TemplateCrowdsale.sol#386-393) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool)(_openingTime >= block.timestamp) (TemplateCrowdsale.sol#388)\n\t- require(bool)(_closingTime >= _openingTime) (TemplateCrowdsale.sol#389)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w4",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "TimedCrowdsale.hasClosed() uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    399,
+    402
+   ],
+   "snippet": "  function hasClosed() public view returns (bool) {\n    // solium-disable-next-line security/no-block-members\n    return block.timestamp > closingTime;\n  }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: TimedCrowdsale.hasClosed() (TemplateCrowdsale.sol#399-402) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- block.timestamp > closingTime (TemplateCrowdsale.sol#401)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w5",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "FreezableToken.releaseOnce() uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    734,
+    756
+   ],
+   "snippet": "    function releaseOnce() public {\n        bytes32 headKey = toKey(msg.sender, 0);\n        uint64 head = chains[headKey];\n        require(head != 0);\n        require(uint64(block.timestamp) > head);\n        bytes32 currentKey = toKey(msg.sender, head);\n\n        uint64 next = chains[currentKey];\n\n        uint amount = freezings[currentKey];\n        delete freezings[currentKey];\n\n        balances[msg.sender] = balances[msg.sender].add(amount);\n        freezingBalance[msg.sender] = freezingBalance[msg.sender].sub(amount);\n\n        if (next == 0) {\n            delete chains[headKey];\n        } else {\n            chains[headKey] = next;\n            delete chains[currentKey];\n        }\n        emit Released(msg.sender, amount);\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: FreezableToken.releaseOnce() (TemplateCrowdsale.sol#734-756) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool)(uint64(block.timestamp) > head) (TemplateCrowdsale.sol#738)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w6",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "FreezableToken.releaseAll() uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    762,
+    771
+   ],
+   "snippet": "    function releaseAll() public returns (uint tokens) {\n        uint release;\n        uint balance;\n        (release, balance) = getFreezing(msg.sender, 0);\n        while (release != 0 && block.timestamp > release) {\n            releaseOnce();\n            tokens += balance;\n            (release, balance) = getFreezing(msg.sender, 0);\n        }\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: FreezableToken.releaseAll() (TemplateCrowdsale.sol#762-771) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- release != 0 && block.timestamp > release (TemplateCrowdsale.sol#766)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w7",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "FreezableToken.freeze(address,uint64) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    782,
+    813
+   ],
+   "snippet": "    function freeze(address _to, uint64 _until) internal {\n        require(_until > block.timestamp);\n        bytes32 key = toKey(_to, _until);\n        bytes32 parentKey = toKey(_to, uint64(0));\n        uint64 next = chains[parentKey];\n\n        if (next == 0) {\n            chains[parentKey] = _until;\n            return;\n        }\n\n        bytes32 nextKey = toKey(_to, next);\n        uint parent;\n\n        while (next != 0 && _until > next) {\n            parent = next;\n            parentKey = nextKey;\n\n            next = chains[nextKey];\n            nextKey = toKey(_to, next);\n        }\n\n        if (_until == next) {\n            return;\n        }\n\n        if (next != 0) {\n            chains[key] = next;\n        }\n\n        chains[parentKey] = _until;\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: FreezableToken.freeze(address,uint64) (TemplateCrowdsale.sol#782-813) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool)(_until > block.timestamp) (TemplateCrowdsale.sol#783)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w8",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "MainCrowdsale.hasStarted() uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    1075,
+    1077
+   ],
+   "snippet": "    function hasStarted() public view returns (bool) {\n        return now >= openingTime;\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: MainCrowdsale.hasStarted() (TemplateCrowdsale.sol#1075-1077) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- now >= openingTime (TemplateCrowdsale.sol#1076)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w9",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "TemplateCrowdsale.constructor(MintableToken) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    1133,
+    1139
+   ],
+   "snippet": "    constructor(MintableToken _token) public\n        Crowdsale(395 * TOKEN_DECIMAL_MULTIPLIER, 0xb1e12cf4eC9B00757B1D75223bc67FDDD0Fc0b82, _token)\n        TimedCrowdsale(START_TIME > now ? START_TIME : now, 1908014400)\n        CappedCrowdsale(167088607594936708860759494)\n        \n    {\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: TemplateCrowdsale.constructor(MintableToken) (TemplateCrowdsale.sol#1133-1139) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- START_TIME > now (TemplateCrowdsale.sol#1135)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w10",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "TemplateCrowdsale.setStartTime(uint256) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    1171,
+    1179
+   ],
+   "snippet": "    function setStartTime(uint _startTime) public onlyOwner {\n        // only if CS was not started\n        require(now < openingTime);\n        // only move time to future\n        require(_startTime > openingTime);\n        require(_startTime < closingTime);\n        emit TimesChanged(_startTime, closingTime, openingTime, closingTime);\n        openingTime = _startTime;\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: TemplateCrowdsale.setStartTime(uint256) (TemplateCrowdsale.sol#1171-1179) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool)(now < openingTime) (TemplateCrowdsale.sol#1173)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w11",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "TemplateCrowdsale.setEndTime(uint256) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    1183,
+    1191
+   ],
+   "snippet": "    function setEndTime(uint _endTime) public onlyOwner {\n        // only if CS was not ended\n        require(now < closingTime);\n        // only if new end time in future\n        require(now < _endTime);\n        require(_endTime > openingTime);\n        emit TimesChanged(openingTime, _endTime, openingTime, closingTime);\n        closingTime = _endTime;\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: TemplateCrowdsale.setEndTime(uint256) (TemplateCrowdsale.sol#1183-1191) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool)(now < closingTime) (TemplateCrowdsale.sol#1185)\n\t- require(bool)(now < _endTime) (TemplateCrowdsale.sol#1187)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w12",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "TemplateCrowdsale.setTimes(uint256,uint256) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    1195,
+    1223
+   ],
+   "snippet": "    function setTimes(uint _startTime, uint _endTime) public onlyOwner {\n        require(_endTime > _startTime);\n        uint oldStartTime = openingTime;\n        uint oldEndTime = closingTime;\n        bool changed = false;\n        if (_startTime != oldStartTime) {\n            require(_startTime > now);\n            // only if CS was not started\n            require(now < oldStartTime);\n            // only move time to future\n            require(_startTime > oldStartTime);\n\n            openingTime = _startTime;\n            changed = true;\n        }\n        if (_endTime != oldEndTime) {\n            // only if CS was not ended\n            require(now < oldEndTime);\n            // end time in future\n            require(now < _endTime);\n\n            closingTime = _endTime;\n            changed = true;\n        }\n\n        if (changed) {\n            emit TimesChanged(openingTime, _endTime, openingTime, closingTime);\n        }\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: TemplateCrowdsale.setTimes(uint256,uint256) (TemplateCrowdsale.sol#1195-1223) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool)(_startTime > now) (TemplateCrowdsale.sol#1201)\n\t- require(bool)(now < oldStartTime) (TemplateCrowdsale.sol#1203)\n\t- require(bool)(now < oldEndTime) (TemplateCrowdsale.sol#1212)\n\t- require(bool)(now < _endTime) (TemplateCrowdsale.sol#1214)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  }
+ ],
+ "incident": null,
+ "slither_raw": "data/ghosts/0xbe9a630cf7f3cd38f199f25547d076b07392a8ec/slither.json",
+ "catalog_entry": null,
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 3.39
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.4.24"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:37:51Z"
+}

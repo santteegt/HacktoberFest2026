@@ -1,0 +1,81 @@
+{
+ "address": "0x2920f7d6134f4669343e70122ca9b8f19ef8fa5d",
+ "started_at": "2026-10-29T05:35:05Z",
+ "finished_at": "2026-10-29T05:35:46Z",
+ "kind": "bad",
+ "title": "The Shadow of MonoToken",
+ "name": "MonoToken",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 0.1,
+   "note": "incident: victim of MonoX Finance (2021-11-30): Price Manipulation, about $31,000,000 lost"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 12.9,
+   "note": "MonoToken; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 13.3,
+   "note": "tier slither, 3 finding(s), incident: MonoX Finance"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "bad"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 15.6,
+   "note": "15.6 s, 5 calls; verifier 31/31 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "59,622 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "14 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "incident",
+  "reason": "victim of MonoX Finance (2021-11-30): Price Manipulation, about $31,000,000 lost",
+  "name": "MonoX Token",
+  "year": 2021,
+  "hint": true
+ },
+ "incident_hint": {
+  "id": "defihacklabs-2021-11-30-monox-finance",
+  "name": "MonoX Finance",
+  "date": "2021-11-30",
+  "cause": "Price Manipulation",
+  "loss_note": "$31 million"
+ },
+ "gallery_path": "web/ghosts/0x2920f7d6134f4669343e70122ca9b8f19ef8fa5d/"
+}

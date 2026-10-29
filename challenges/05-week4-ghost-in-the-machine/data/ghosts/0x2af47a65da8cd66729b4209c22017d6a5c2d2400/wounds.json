@@ -1,0 +1,111 @@
+{
+ "address": "0x2af47a65da8cd66729b4209c22017d6a5c2d2400",
+ "tier": "slither",
+ "compiler_version": "0.4.18+commit.9cf6e910",
+ "analyzed_files": [
+  "StandardBounties.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "StandardBounties.transferredAmountEqualsValue(uint256,uint256) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "StandardBounties.sol",
+   "lines": [
+    226,
+    239
+   ],
+   "snippet": "  modifier transferredAmountEqualsValue(uint _bountyId, uint _amount) {\n      if (bounties[_bountyId].paysTokens){\n        require(msg.value == 0);\n        uint oldBalance = tokenContracts[_bountyId].balanceOf(this);\n        if (_amount != 0){\n          require(tokenContracts[_bountyId].transferFrom(msg.sender, this, _amount));\n        }\n        require((tokenContracts[_bountyId].balanceOf(this) - oldBalance) == _amount);\n\n      } else {\n        require((_amount * 1 wei) == msg.value);\n      }\n      _;\n  }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: StandardBounties.transferredAmountEqualsValue(uint256,uint256) (StandardBounties.sol#226-239) uses a dangerous strict equality:\n\t- require(bool)((tokenContracts[_bountyId].balanceOf(this) - oldBalance) == _amount) (StandardBounties.sol#233)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w2",
+   "check": "reentrancy-no-eth",
+   "swc": "SWC-107",
+   "title": "Reentrancy in StandardBounties.issueAndActivateBounty(address,uint256,string,uint256,address,bool,address,uint256)",
+   "impact": "Medium",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "StandardBounties.sol",
+   "lines": [
+    320,
+    357
+   ],
+   "snippet": "  function issueAndActivateBounty(\n      address _issuer,\n      uint _deadline,\n      string _data,\n      uint256 _fulfillmentAmount,\n      address _arbiter,\n      bool _paysTokens,\n      address _tokenContract,\n      uint256 _value\n  )\n      public\n      payable\n      validateDeadline(_deadline)\n      amountIsNotZero(_fulfillmentAmount)\n      validateNotTooManyBounties\n      returns (uint)\n  {\n      require (_value >= _fulfillmentAmount);\n      if (_paysTokens){\n        require(msg.value == 0);\n        tokenContracts[bounties.length] = HumanStandardToken(_tokenContract);\n        require(tokenContracts[bounties.length].transferFrom(msg.sender, this, _value));\n      } else {\n        require((_value * 1 wei) == msg.value);\n      }\n      bounties.push(Bounty(_issuer,\n                            _deadline,\n                            _data,\n                            _fulfillmentAmount,\n                            _arbiter,\n                            _paysTokens,\n                            BountyStages.Active,\n                            _value));\n      BountyIssued(bounties.length - 1);\n      ContributionAdded(bounties.length - 1, msg.sender, _value);\n      BountyActivated(bounties.length - 1, msg.sender);\n      return (bounties.length - 1);\n  }",
+   "description": "The function calls out to another contract before it finishes updating its own state. A malicious callee can re-enter while the state is half-written; no ether moves in the reentrant path itself, but the stale state can be abused. Slither: Reentrancy in StandardBounties.issueAndActivateBounty(address,uint256,string,uint256,address,bool,address,uint256) (StandardBounties.sol#320-357):\n\tExternal calls:\n\t- require(bool)(tokenContracts[bounties.length].transferFrom(msg.sender,this,_value)) (StandardBounties.sol#341)\n\tState variables written after the call(s):\n\t- bounties.push(Bounty(_issuer,_deadline,_data,_fulfillmentAmount,_arbiter,_paysTokens,BountyStages.Active,_value)) (StandardBounties.sol#345-352)\n\tStandardBounties.bounties (StandardBounties.sol#155) can be used in cross function reentrancies:\n\t- StandardBounties.acceptFulfil",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-no-eth"
+  },
+  {
+   "id": "w3",
+   "check": "reentrancy-no-eth",
+   "swc": "SWC-107",
+   "title": "Reentrancy in StandardBounties.contribute(uint256,uint256)",
+   "impact": "Medium",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "StandardBounties.sol",
+   "lines": [
+    371,
+    383
+   ],
+   "snippet": "  function contribute (uint _bountyId, uint _value)\n      payable\n      public\n      validateBountyArrayIndex(_bountyId)\n      isBeforeDeadline(_bountyId)\n      isNotDead(_bountyId)\n      amountIsNotZero(_value)\n      transferredAmountEqualsValue(_bountyId, _value)\n  {\n      bounties[_bountyId].balance += _value;\n\n      ContributionAdded(_bountyId, msg.sender, _value);\n  }",
+   "description": "The function calls out to another contract before it finishes updating its own state. A malicious callee can re-enter while the state is half-written; no ether moves in the reentrant path itself, but the stale state can be abused. Slither: Reentrancy in StandardBounties.contribute(uint256,uint256) (StandardBounties.sol#371-383):\n\tExternal calls:\n\t- transferredAmountEqualsValue(_bountyId,_value) (StandardBounties.sol#378)\n\t\t- oldBalance = tokenContracts[_bountyId].balanceOf(this) (StandardBounties.sol#229)\n\t\t- require(bool)(tokenContracts[_bountyId].transferFrom(msg.sender,this,_amount)) (StandardBounties.sol#231)\n\t\t- require(bool)((tokenContracts[_bountyId].balanceOf(this) - oldBalance) == _amount) (StandardBounties.sol#233)\n\tState variables written after the call(s):\n\t- bounties[_bountyId].balance += _value (StandardBounties.so",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-no-eth"
+  },
+  {
+   "id": "w4",
+   "check": "reentrancy-no-eth",
+   "swc": "SWC-107",
+   "title": "Reentrancy in StandardBounties.activateBounty(uint256,uint256)",
+   "impact": "Medium",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "StandardBounties.sol",
+   "lines": [
+    390,
+    404
+   ],
+   "snippet": "  function activateBounty(uint _bountyId, uint _value)\n      payable\n      public\n      validateBountyArrayIndex(_bountyId)\n      isBeforeDeadline(_bountyId)\n      onlyIssuer(_bountyId)\n      transferredAmountEqualsValue(_bountyId, _value)\n  {\n      bounties[_bountyId].balance += _value;\n      require (bounties[_bountyId].balance >= bounties[_bountyId].fulfillmentAmount);\n      transitionToState(_bountyId, BountyStages.Active);\n\n      ContributionAdded(_bountyId, msg.sender, _value);\n      BountyActivated(_bountyId, msg.sender);\n  }",
+   "description": "The function calls out to another contract before it finishes updating its own state. A malicious callee can re-enter while the state is half-written; no ether moves in the reentrant path itself, but the stale state can be abused. Slither: Reentrancy in StandardBounties.activateBounty(uint256,uint256) (StandardBounties.sol#390-404):\n\tExternal calls:\n\t- transferredAmountEqualsValue(_bountyId,_value) (StandardBounties.sol#396)\n\t\t- oldBalance = tokenContracts[_bountyId].balanceOf(this) (StandardBounties.sol#229)\n\t\t- require(bool)(tokenContracts[_bountyId].transferFrom(msg.sender,this,_amount)) (StandardBounties.sol#231)\n\t\t- require(bool)((tokenContracts[_bountyId].balanceOf(this) - oldBalance) == _amount) (StandardBounties.sol#233)\n\tState variables written after the call(s):\n\t- bounties[_bountyId].balance += _value (StandardBountie",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-no-eth"
+  },
+  {
+   "id": "w5",
+   "check": "reentrancy-no-eth",
+   "swc": "SWC-107",
+   "title": "Reentrancy in StandardBounties.increasePayout(uint256,uint256,uint256)",
+   "impact": "Medium",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "StandardBounties.sol",
+   "lines": [
+    600,
+    612
+   ],
+   "snippet": "  function increasePayout(uint _bountyId, uint _newFulfillmentAmount, uint _value)\n      public\n      payable\n      validateBountyArrayIndex(_bountyId)\n      onlyIssuer(_bountyId)\n      newFulfillmentAmountIsIncrease(_bountyId, _newFulfillmentAmount)\n      transferredAmountEqualsValue(_bountyId, _value)\n  {\n      bounties[_bountyId].balance += _value;\n      require(bounties[_bountyId].balance >= _newFulfillmentAmount);\n      bounties[_bountyId].fulfillmentAmount = _newFulfillmentAmount;\n      PayoutIncreased(_bountyId, _newFulfillmentAmount);\n  }",
+   "description": "The function calls out to another contract before it finishes updating its own state. A malicious callee can re-enter while the state is half-written; no ether moves in the reentrant path itself, but the stale state can be abused. Slither: Reentrancy in StandardBounties.increasePayout(uint256,uint256,uint256) (StandardBounties.sol#600-612):\n\tExternal calls:\n\t- transferredAmountEqualsValue(_bountyId,_value) (StandardBounties.sol#606)\n\t\t- oldBalance = tokenContracts[_bountyId].balanceOf(this) (StandardBounties.sol#229)\n\t\t- require(bool)(tokenContracts[_bountyId].transferFrom(msg.sender,this,_amount)) (StandardBounties.sol#231)\n\t\t- require(bool)((tokenContracts[_bountyId].balanceOf(this) - oldBalance) == _amount) (StandardBounties.sol#233)\n\tState variables written after the call(s):\n\t- bounties[_bountyId].balance += _value (Standar",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-no-eth"
+  }
+ ],
+ "incident": null,
+ "slither_raw": "data/ghosts/0x2af47a65da8cd66729b4209c22017d6a5c2d2400/slither.json",
+ "catalog_entry": null,
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 1.75
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.4.18"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:05:06Z"
+}

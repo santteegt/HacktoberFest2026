@@ -1,0 +1,43 @@
+{
+ "address": "0xb3215bf5b10bdb13b6c015fd66548b13a926098c",
+ "tier": "slither",
+ "compiler_version": "v0.4.16+commit.d7661dd9",
+ "analyzed_files": [
+  "UserWallet.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "unchecked-transfer",
+   "swc": "SWC-104",
+   "title": "UserWallet.collectToken(address) ignores return value by t.transfer(owner,balance)",
+   "impact": "High",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "UserWallet.sol",
+   "lines": [
+    23,
+    27
+   ],
+   "snippet": "    function collectToken(address token) onlyOwner {\n        Token t = Token(token);\n        uint256 balance = t.balanceOf(this);\n        t.transfer(owner, balance);\n    }",
+   "description": "A token transfer's return value is ignored; a failed transfer passes silently. Slither: UserWallet.collectToken(address) (UserWallet.sol#23-27) ignores return value by t.transfer(owner,balance) (UserWallet.sol#26)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer"
+  }
+ ],
+ "incident": null,
+ "slither_raw": "data/ghosts/0xb3215bf5b10bdb13b6c015fd66548b13a926098c/slither.json",
+ "catalog_entry": null,
+ "run": {
+  "method": "single-file",
+  "errors": [],
+  "seconds": {
+   "single-file": 3.39
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.4.16"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:36:16Z"
+}

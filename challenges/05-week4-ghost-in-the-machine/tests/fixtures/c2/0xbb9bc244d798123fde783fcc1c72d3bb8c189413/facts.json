@@ -1,0 +1,322 @@
+{
+ "address": "0xbb9bc244d798123fde783fcc1c72d3bb8c189413",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T04:32:32Z",
+ "eh": {
+  "layer": "documented",
+  "era_id": "homestead",
+  "era_name": "Homestead",
+  "name": "TheDAO",
+  "token": {
+   "token_name": "The DAO",
+   "token_symbol": "DAO",
+   "token_decimals": 1
+  },
+  "heuristics": {
+   "contract_type": "token",
+   "confidence": 0.5,
+   "is_proxy": false,
+   "has_selfdestruct": false,
+   "is_erc20_like": true
+  },
+  "decompilation_success": true,
+  "code_size_bytes": 10838,
+  "short_description": "The DAO was a decentralized autonomous organization and investor-directed venture capital fund built on Ethereum by Slock.it. Its April 2016 crowdsale raised ov",
+  "description": "The DAO enabled anyone to become a stakeholder by contributing Ether during its creation phase. Token holders could submit funding proposals, vote on them, and, if approved, release Ether from the contract to proposal recipients. The system also included a mechanism allowing participants to exit the DAO by splitting into a new instance and reclaiming a proportional share of funds. At the time, it represented the most ambitious attempt to encode organizational governance and capital allocation directly into Ethereum smart contracts.\n\nThe DAO was conceived and coded principally by Christoph Jentzsch of Slock.it, a German startup building decentralized smart locks. The contract implemented a decentralized venture capital fund: token holders voted on project proposals, and approved proposals received ETH funding directly from the contract. It launched April 30, 2016 with a 28-day token sale that attracted over 11,000 participants, raising approximately 11.5 million ETH (over $150 million at the time). At its peak, The DAO held nearly 14% of all Ether tokens in circulation.\n\nOn June 17, 2016, an attacker exploited a recursive call vulnerability (reentrancy bug) in the splitDAO function, draining approximately 3.6 million ETH (~$50 million) into a child DAO. The Ethereum Foundation published an emergency advisory the same day. Because the child DAO had a 27-day creation period, the attacker could not immediately withdraw the funds, giving the community time to respond.\n\nAfter weeks of heated debate, the Ethereum community executed a hard fork at block 1,920,000 on July 20, 2016, creating an irregular state change that transferred the drained funds into a recovery contract. This fork successfully returned ETH to DAO token holders but was controversial \u2014 those who opposed it continued operating the original chain, which became Ethereum Classic (ETC).\n\nIn July 2017, the U.S. SEC issued an investigative report concluding that DAO tokens were securities under federal law, marking the first major regulatory action related to Ethereum-based tokens.",
+  "historical_significance": "The DAO represents the single most consequential event in Ethereum history prior to the Merge. It demonstrated both the revolutionary potential and catastrophic risks of smart contract-based governance. The hack and resulting hard fork permanently split the Ethereum community and blockchain, creating Ethereum Classic. The SEC investigation that followed shaped the regulatory landscape for all subsequent token offerings. The reentrancy vulnerability exploited in the attack became the canonical example in smart contract security education, leading to the widespread adoption of checks-effects-interactions patterns and reentrancy guards.",
+  "historical_context": "The DAO launched during a period of intense optimism about Ethereum smart contracts. It attracted 14% of all ETH in circulation, creating systemic risk. The hard fork decision was the most contentious governance event in Ethereum history, with the community debating code-is-law immutability vs. pragmatic intervention. The SEC report in 2017 established that token sales could constitute securities offerings under the Howey test.",
+  "verification_status": "verified",
+  "verification_method": "etherscan_verified",
+  "links": [
+   {
+    "id": 225,
+    "title": "The DAO (Wikipedia)",
+    "url": "https://en.wikipedia.org/wiki/The_DAO",
+    "source": "Wikipedia",
+    "note": "Comprehensive overview with SEC investigation context",
+    "created_at": "2026-03-06T06:35:07.446Z"
+   },
+   {
+    "id": 224,
+    "title": "Understanding The DAO Attack (CoinDesk)",
+    "url": "https://www.coindesk.com/learn/understanding-the-dao-attack",
+    "source": "CoinDesk",
+    "note": "Detailed explainer of the reentrancy exploit and timeline",
+    "created_at": "2026-03-06T06:35:07.379Z"
+   },
+   {
+    "id": 223,
+    "title": "The DAO GitHub Repository",
+    "url": "https://github.com/blockchainsllc/DAO",
+    "source": "GitHub",
+    "note": "Original source code by Slock.it, LGPL licensed",
+    "created_at": "2026-03-06T06:35:07.373Z"
+   },
+   {
+    "id": 222,
+    "title": "Hard Fork Completed (EF Blog)",
+    "url": "https://blog.ethereum.org/2016/07/20/hard-fork-completed",
+    "source": "Ethereum Foundation",
+    "note": "Official announcement of the successful hard fork at block 1920000",
+    "created_at": "2026-03-06T06:35:07.367Z"
+   },
+   {
+    "id": 221,
+    "title": "CRITICAL UPDATE Re: DAO Vulnerability (EF Blog)",
+    "url": "https://blog.ethereum.org/2016/06/17/critical-update-re-dao-vulnerability",
+    "source": "Ethereum Foundation",
+    "note": "Official advisory from the Ethereum Foundation on the day of the attack",
+    "created_at": "2026-03-06T06:35:07.357Z"
+   },
+   {
+    "id": 66,
+    "title": "DAO IS BEING SECURELY DRAINED. DO NOT PANIC.",
+    "url": "https://x.com/avsa/status/745313647514226688?s=46",
+    "source": "Twitter",
+    "note": null,
+    "created_at": "2026-02-04T14:23:36.353Z"
+   },
+   {
+    "id": 32,
+    "title": "The DAO is back!",
+    "url": "https://x.com/laurashin/status/2016919271927140611?s=46",
+    "source": "X",
+    "note": "An interview with Griff Green, led by Laura Shin.",
+    "created_at": "2026-01-29T17:07:02.126Z"
+   },
+   {
+    "id": 26,
+    "title": "The DAO",
+    "url": "https://en.wikipedia.org/wiki/The_DAO",
+    "source": "Wikipedia",
+    "note": null,
+    "created_at": "2026-01-28T20:58:10.718Z"
+   }
+  ],
+  "metadata": [
+   {
+    "key": "tx_counts_by_year_external_to_v1",
+    "value": null,
+    "json_value": {
+     "counts": {
+      "2016": 50000
+     },
+     "truncated": true
+    },
+    "source_url": "alchemy_getAssetTransfers",
+    "created_at": "2026-01-25T17:44:35.386Z"
+   }
+  ],
+  "has_source": true,
+  "has_abi": true
+ },
+ "birth": {
+  "block": 1428757,
+  "timestamp": "2016-04-30T05:42:58.000Z",
+  "tx": "0xe9ebfecc2fa10100db51a4408d18193b3ac504584b51a4e55bdef1318f0a30f9",
+  "deployer": "0x793ea9692ada1900fbd0b80fffec6e431fe8b391"
+ },
+ "blockscout": {
+  "name": "\u0001",
+  "is_contract": true,
+  "is_verified": false,
+  "ens": null,
+  "creation_tx": "0xe9ebfecc2fa10100db51a4408d18193b3ac504584b51a4e55bdef1318f0a30f9",
+  "creator": "0x793ea9692Ada1900fBd0B80FFFEc6E431fe8b391",
+  "has_logs": true
+ },
+ "life": {
+  "tx_count": 175183,
+  "token_transfers": 242,
+  "gas_used": 10115501265,
+  "last_tx": {
+   "timestamp": "2026-10-28T02:49:47.000000Z",
+   "method": "receiveEther",
+   "status": "ok",
+   "hash": "0xe96220168ec9f61fcb044054d0cbf9d434d02d169e204091f67ba55ddc2b9b2f"
+  },
+  "recent_methods": [
+   "0x095ea7b3",
+   "receiveEther",
+   "refund"
+  ],
+  "recent_years": [
+   "2026"
+  ],
+  "balance_wei": 600000000000000,
+  "balance_eth": 0.0006,
+  "never_called": true,
+  "calls": 0
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 10838,
+  "balance_wei": 600000000000000,
+  "balance_eth": 0.0006
+ },
+ "age": {
+  "hardfork": "Homestead",
+  "eh_era": "Homestead"
+ },
+ "sites": [
+  {
+   "host": "https://en.wikipedia.org/wiki/The_DAO",
+   "captures": 280,
+   "first_capture": "20021127223823",
+   "first_ok": "20031015234259",
+   "last_ok": "20040124090726",
+   "last_capture": "20261001042225",
+   "years_alive": [
+    "2003",
+    "2004"
+   ]
+  },
+  {
+   "host": "https://www.coindesk.com/learn/understanding-the-dao-attack",
+   "captures": 167,
+   "first_capture": "20040324194105",
+   "first_ok": "20040324194105",
+   "last_ok": "20261001175004",
+   "last_capture": "20261001175004",
+   "years_alive": [
+    "2004",
+    "2005",
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "host": "https://blog.ethereum.org/2016/07/20/hard-fork-completed",
+   "captures": 133,
+   "first_capture": "20140113221549",
+   "first_ok": "20140113221549",
+   "last_ok": "20261001204142",
+   "last_capture": "20261001204142",
+   "years_alive": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "host": "https://blog.ethereum.org/2016/06/17/critical-update-re-dao-vulnerability",
+   "captures": 133,
+   "first_capture": "20140113221549",
+   "first_ok": "20140113221549",
+   "last_ok": "20261001204142",
+   "last_capture": "20261001204142",
+   "years_alive": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "host": "https://x.com/avsa/status/745313647514226688?s=46",
+   "captures": 215,
+   "first_capture": "19961219022100",
+   "first_ok": "19961219022100",
+   "last_ok": "20261001001557",
+   "last_capture": "20261001001557",
+   "years_alive": [
+    "1996",
+    "1997",
+    "1998",
+    "1999",
+    "2000",
+    "2001",
+    "2002",
+    "2003",
+    "2007",
+    "2008",
+    "2009",
+    "2011",
+    "2012",
+    "2013",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "host": "https://x.com/laurashin/status/2016919271927140611?s=46",
+   "captures": 215,
+   "first_capture": "19961219022100",
+   "first_ok": "19961219022100",
+   "last_ok": "20261001001557",
+   "last_capture": "20261001001557",
+   "years_alive": [
+    "1996",
+    "1997",
+    "1998",
+    "1999",
+    "2000",
+    "2001",
+    "2002",
+    "2003",
+    "2007",
+    "2008",
+    "2009",
+    "2011",
+    "2012",
+    "2013",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  }
+ ],
+ "name": "\u0001",
+ "sources_used": [
+  "blockscout",
+  "ethereumhistory",
+  "rpc",
+  "wayback"
+ ]
+}

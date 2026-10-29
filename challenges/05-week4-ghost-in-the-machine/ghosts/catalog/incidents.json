@@ -1,0 +1,279 @@
+[
+  {
+    "id": "thedao-2016",
+    "address": "0xbb9bc244d798123fde783fcc1c72d3bb8c189413",
+    "name": "The DAO hack",
+    "contract_name": "TheDAO",
+    "date": "2016-06-17",
+    "cause": "The split path paid ether out through an external call before the caller's balance was zeroed, so the attacker re-entered the split function from inside the payout and withdrew repeatedly in one transaction.",
+    "swc": "SWC-107",
+    "checks": [
+      "reentrancy-eth",
+      "call-value"
+    ],
+    "function_hint": "splitDAO",
+    "loss_usd": 50000000,
+    "loss_eth": 3600000,
+    "loss_note": "Wikipedia: about 3.6 million ether moved out, roughly a third of the 11.5 million committed, valued at around $50 million at the time. Atzei et al. (eprint 2016/1007) instead say about $60M came under the attacker's control.",
+    "incident": true,
+    "summary": "On 17 June 2016 an attacker drained ether from The DAO by calling the split function recursively before balances were updated. The ether went into a child DAO that had a 28-day holding period, and the Ethereum Foundation blog proposed a soft fork aimed at that child DAO's code. The funds were later recovered through the hard fork.",
+    "references": [
+      "https://blog.ethereum.org/2016/06/17/critical-update-re-dao-vulnerability",
+      "https://en.wikipedia.org/wiki/The_DAO",
+      "https://swcregistry.io/docs/SWC-107",
+      "https://eprint.iacr.org/2016/1007",
+      "https://raw.githubusercontent.com/blockchainsllc/DAO/v1.0/DAO.sol",
+      "https://raw.githubusercontent.com/blockchainsllc/DAO/v1.0/ManagedAccount.sol",
+      "https://eth.blockscout.com/api/v2/addresses/0xbb9bc244d798123fde783fcc1c72d3bb8c189413"
+    ],
+    "notes": "The EF blog names this address as The DAO and the child DAO as 0x304a554a310c7e546dfe434669c62820b7d83490. Blockscout returns no contract name and has no verified source for this address. splitDAO, withdrawRewardFor and payOut (call.value) appear in the v1.0 tag of the slockit/blockchainsllc DAO repository, but nothing fetched proves that the v1.0 tag is the exact deployed bytecode. The EF blog speaks only of 'the split function'. Its text does not mention the hard fork; that comes from Atzei et al. SWC-107 does not name The DAO. The two USD figures disagree ($50M vs ~$60M).",
+    "line_hint": "withdrawRewardFor(msg.sender)"
+  },
+  {
+    "id": "kotet-v030-2016",
+    "address": "0xa9d160e32ad37ac6f2b8231e4efe14d35abb576e",
+    "name": "King of the Ether Throne v0.3.0 (unchecked send, no documented incident)",
+    "contract_name": "KingOfTheEtherThrone",
+    "date": "2016-01-23",
+    "cause": "claimThrone pays compensation and refunds with a bare address.send(), which forwards only the 2300 gas stipend, and never checks the result. A contract-wallet recipient can therefore fail silently.",
+    "swc": "SWC-104",
+    "checks": [
+      "unchecked-send"
+    ],
+    "function_hint": "claimThrone",
+    "loss_usd": null,
+    "loss_eth": null,
+    "loss_note": "No loss is documented for this address. The official post-mortem's failed-payment table covers only the v0.4.0 contract (0xb336a86e...).",
+    "incident": false,
+    "summary": "This is the first public KotET throne, deployed on 23 January 2016 (block 893433). Its v0.3.0 source has the same unchecked send() in claimThrone as v0.4.0. The repository's 'Bump to new contract' commit of 6 February 2016 moved the website from this address to the v0.4.0 contract, and the official post-mortem places every failed payment on v0.4.0.",
+    "references": [
+      "http://www.kingoftheether.com/postmortem.html",
+      "https://github.com/kieranelby/KingOfTheEtherThrone",
+      "https://raw.githubusercontent.com/kieranelby/KingOfTheEtherThrone/54041a8/contracts/KingOfTheEtherThrone.sol",
+      "https://api.github.com/repos/kieranelby/KingOfTheEtherThrone/commits/6d77929b",
+      "https://www.ethereumhistory.com/contract/0xa9d160e32ad37ac6f2b8231e4efe14d35abb576e",
+      "https://eth.blockscout.com/api/v2/addresses/0xa9d160e32ad37ac6f2b8231e4efe14d35abb576e"
+    ],
+    "notes": "Sources conflict. ethereumhistory.com says the Turbulent Age (6-8 Feb 2016) silent-failure bug happened on v0.3.0. The primary post-mortem never mentions v0.3.0 and attributes every failed transfer to v0.4.0 at 0xb336a86e..., created at block 963186. This entry follows the primary source. Blockscout name: KingOfTheEtherThrone. Its creation tx (block 893433, 2016-01-23) came from 0x2f8818..., not from the v0.4.0 wizard address. The address still holds about 0.3646 ETH; no source explains why. The date is the deployment date, not an incident date.",
+    "line_hint": null
+  },
+  {
+    "id": "kotet-v040-2016",
+    "address": "0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0",
+    "name": "King of the Ether Throne failed payments (Turbulent Age)",
+    "contract_name": "KingOfTheEtherThrone",
+    "date": "2016-02-06",
+    "cause": "claimThrone sent compensation and refunds with address.send(), which forwards only 2300 gas and does not check the return value. Mist contract wallets ran out of gas, so the payments failed while the contract kept going and crowned the new monarch anyway.",
+    "swc": "SWC-104",
+    "checks": [
+      "unchecked-send"
+    ],
+    "function_hint": "claimThrone",
+    "loss_usd": null,
+    "loss_eth": 98.043,
+    "loss_note": "Post-mortem Appendix A lists failed sends of 42.273 ETH (compensation), 7.77 ETH (refund) and 48 ETH (refund), all later returned by hand: 98.043 ETH in total. The timeline in the same page says 'three refunds for a total of 98.5 ether'. A fourth failure (95.04 ETH, block 968739) rolled back the whole transaction and was paid in a later block, so it caused no loss. The post-mortem says all ether was returned.",
+    "incident": true,
+    "summary": "During the 'Turbulent Age' (6-8 February 2016) the v0.4.0 throne contract failed to pay several monarchs and over/underpaying claimants who used contract wallets. It did not notice the failures and kept accepting claims. The developer swept the contract balance and refunded the affected wallets by hand on 19 February, then shipped v0.5.0 with a gas-carrying send and a resend function.",
+    "references": [
+      "http://www.kingoftheether.com/postmortem.html",
+      "https://raw.githubusercontent.com/kieranelby/KingOfTheEtherThrone/6d77929b/contracts/KingOfTheEtherThrone.sol",
+      "https://raw.githubusercontent.com/kieranelby/KingOfTheEtherThrone/120f5a20/contracts/KingOfTheEtherThrone.sol",
+      "https://api.github.com/repos/kieranelby/KingOfTheEtherThrone/commits/6d77929b",
+      "https://www.ethereumhistory.com/contract/0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0",
+      "https://eth.blockscout.com/api/v2/addresses/0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0"
+    ],
+    "notes": "Address verified three ways. The post-mortem names it and gives creation tx c076a813... at block 963186. Blockscout returns name KingOfTheEtherThrone with the same creation tx (2016-02-06T16:12:18Z). The v0.4.0 source header states this address. ethereumhistory.com calls v0.4.0 a partial fix deployed after a v0.3.0 bug, which contradicts the primary post-mortem; see the v0.3.0 entry. The post-mortem's prose says 'two compensation payments and one refund' while its appendix shows one lost compensation and two lost refunds. No USD figure is given.",
+    "line_hint": null
+  },
+  {
+    "id": "rubixi-2016",
+    "address": "0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+    "name": "Rubixi ownership takeover",
+    "contract_name": "Rubixi",
+    "date": "2016-04-02",
+    "cause": "The contract was renamed from DynamicPyramid to Rubixi but its constructor kept the old name. That turned DynamicPyramid() into a public function anyone could call to become owner and then take the fees with collectAllFees().",
+    "swc": "SWC-118",
+    "checks": [
+      "constructor-name"
+    ],
+    "function_hint": "DynamicPyramid",
+    "loss_usd": null,
+    "loss_eth": null,
+    "loss_note": "No written source fetched states an amount. Atzei et al. say only that users invoked DynamicPyramid to become owner and withdraw the fees.",
+    "incident": true,
+    "summary": "Rubixi was a Ponzi-style contract whose leftover constructor, DynamicPyramid, could be called by anyone to seize ownership. Once the bug became public, several accounts claimed ownership and withdrew the collected fees.",
+    "references": [
+      "https://swcregistry.io/docs/SWC-118",
+      "https://eprint.iacr.org/2016/1007",
+      "https://eth.blockscout.com/api/v2/addresses/0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+      "https://eth.blockscout.com/api/v2/smart-contracts/0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+      "https://www.4byte.directory/api/v1/signatures/?text_signature=DynamicPyramid()"
+    ],
+    "notes": "Address verified: Atzei et al. cite the Etherscan link for this address, and Blockscout returns name Rubixi with verified source containing function DynamicPyramid() and collectAllFees(). SWC-118 does not mention Rubixi. No write-up gives a date. The date here comes from Blockscout transaction data: the contract was deployed on 2016-03-14, and the first DynamicPyramid() call (selector 0x67f809e9) from a non-deployer was on 2016-04-02 by 0x591fa06e..., followed by collectAllFees the same day. Summing Blockscout internal transfers out of successful collectAllFees calls made by non-deployer accounts gives about 20.07 ETH. That is a derived figure, not taken from a write-up, so it is left out of loss_eth.",
+    "line_hint": null
+  },
+  {
+    "id": "governmental-2016",
+    "address": "0xf45717552f12ef7cb65e95476f217ea008167ae3",
+    "name": "GovernMental jackpot stuck by gas limit",
+    "contract_name": "Government",
+    "date": "2016-04-26",
+    "cause": "The jackpot payout also reset two dynamic storage arrays to empty, and the compiler clears them one slot at a time. Once the creditor list grew large enough, the payout needed more gas than a block allowed, so it could not run.",
+    "swc": "SWC-128",
+    "checks": [
+      "costly-loop",
+      "unchecked-send"
+    ],
+    "function_hint": "lendGovernmentMoney",
+    "loss_usd": null,
+    "loss_eth": 1100,
+    "loss_note": "About 1100 ETH jackpot stuck, not stolen (Reddit thread title and Atzei et al. '~1100 ether'). Atzei et al. say a later gas limit increase let the winner rescue it.",
+    "incident": true,
+    "summary": "GovernMental was a Ponzi game that paid the last investor the jackpot after 12 hours with no new money. When the timer ran out, the payout transaction tried to clear the creditor arrays and exceeded the block gas limit, which locked about 1100 ETH. Atzei et al. report that a later gas limit increase let the winner rescue it.",
+    "references": [
+      "https://eprint.iacr.org/2016/1007",
+      "https://www.reddit.com/r/ethereum/comments/4ghzhv/governmentals_1100_eth_jackpot_payout_is_stuck/",
+      "http://governmental.github.io/GovernMental/",
+      "https://eth.blockscout.com/api/v2/addresses/0xf45717552f12ef7cb65e95476f217ea008167ae3",
+      "https://eth.blockscout.com/api/v2/smart-contracts/0xf45717552f12ef7cb65e95476f217ea008167ae3"
+    ],
+    "notes": "Address verified four ways: Atzei et al. (ref 12), the GovernMental website, the Reddit post (read through a web.archive.org copy because reddit blocked direct fetch) and Blockscout (verified name 'Government'; source has creditorAddresses = new address[](0) inside lendGovernmentMoney). The date is the Reddit post timestamp (2016-04-26T09:03Z), when the timer had already run out. The exact on-chain payout date and transaction were not found: the Blockscout internal-tx query returned no transfer over 50 ETH and said some blocks were unprocessed. Atzei et al. tie the gas limit increase to 'the hard-fork of the 17th of June'; this was not checked further. Mapping SWC-128 and costly-loop is my own classification. The source has no explicit loop; the cost comes from compiler-generated slot clearing.",
+    "line_hint": null
+  },
+  {
+    "id": "parity-multisig-1-2017",
+    "address": "0xbec591de75b8699a3ba52f073428822d0bfc0d7e",
+    "name": "Parity multisig wallet hack (initWallet takeover)",
+    "contract_name": "Wallet",
+    "date": "2017-07-19",
+    "cause": "The wallet's fallback forwarded any unknown call to the shared library with delegatecall, which exposed the library's public initWallet. Nothing stopped re-initialization, so the attacker made himself sole owner with one required signature and then called execute to move the funds.",
+    "swc": "SWC-105",
+    "checks": [
+      "controlled-delegatecall",
+      "unprotected-upgrade"
+    ],
+    "function_hint": "initWallet",
+    "loss_usd": 30000000,
+    "loss_eth": 153037,
+    "loss_note": "OpenZeppelin: 153,037 ETH drained from three multisig wallets as of 12:19 pm UTC, 'over 150,000 ETH (~30M USD)'. The figures cover all three wallets. On-chain, this one wallet sent 82,189 ETH to the attacker in tx 0xeef10fc5...",
+    "incident": true,
+    "summary": "On 19 July 2017 an attacker took over Parity 1.5+ multisig wallets by calling initWallet through the wallet's delegatecall fallback, then drained them with execute. OpenZeppelin counted 153,037 ETH taken from three wallets that held token-sale funds.",
+    "references": [
+      "https://www.openzeppelin.com/news/on-the-parity-wallet-multisig-hack-405a8c12e8f7",
+      "https://swcregistry.io/docs/SWC-105",
+      "https://swcregistry.io/docs/SWC-112",
+      "https://eth.blockscout.com/api/v2/transactions/0x9dbf0326a03a2a3719c27be4fa69aacc9857fd231a8d9dcaede4bb083def75ec",
+      "https://eth.blockscout.com/api/v2/transactions/0xeef10fc5170f669b86c4cd0444882a96087221325f8bf2f55d6188633aa7be7c",
+      "https://eth.blockscout.com/api/v2/smart-contracts/0xbec591de75b8699a3ba52f073428822d0bfc0d7e",
+      "https://eth.blockscout.com/api/v2/addresses/0xa657491c1e7f16adb39b9b60e87bbb8d93988bc3"
+    ],
+    "notes": "OpenZeppelin gives the attacker (0xb3764761...) and the initWallet/execute tx hashes but no wallet or library address. The address here is the victim wallet that is the 'to' of both of those txs. Blockscout shows that each tx delegatecalls into 0xa657491c1e7f16adb39b9b60e87bbb8d93988bc3 (verified name WalletLibrary, the vulnerable library) and that the execute tx sent 82,189 ETH to the attacker. The wallet's verified source (name 'Wallet') contains the delegatecall fallback and initWallet. Which project owned this wallet, and the other two victim addresses, were not sourced. Parity's own July post-mortem (parity.io) was not fetched; only a redirect was seen. Search snippets mention ~377,000 ETH taken by white hats, which I did not verify. SWC-105 vs SWC-112 and the check mapping are my classification.",
+    "line_hint": null
+  },
+  {
+    "id": "parity-multisig-2-2017",
+    "address": "0x863df6bfa4469f3ead0be8f9f2aae51c91a907b4",
+    "name": "Parity multisig library self-destruct (funds frozen)",
+    "contract_name": "WalletLibrary",
+    "date": "2017-11-06",
+    "cause": "The shared wallet library deployed on 20 July 2017 was never initialized, so anyone could call initWallet on it and become its owner. The new owner then called kill, which self-destructed the library that every dependent wallet delegated to.",
+    "swc": "SWC-106",
+    "checks": [
+      "suicidal",
+      "unprotected-upgrade"
+    ],
+    "function_hint": "kill",
+    "loss_usd": null,
+    "loss_eth": 513774.16,
+    "loss_note": "Parity post-mortem: funds blocked in 587 wallets holding a total of 513,774.16 Ether plus additional tokens. Frozen, not stolen. The post-mortem gives no USD figure.",
+    "incident": true,
+    "summary": "On 6 November 2017 the user 'devops199' initialized the unowned Parity multisig library, took ownership and destroyed it. Every multisig wallet deployed after 20 July 2017 depended on that library, which froze 513,774.16 ETH in 587 wallets.",
+    "references": [
+      "https://medium.com/paritytech/a-postmortem-on-the-parity-multi-sig-library-self-destruct-63daca3a4cf7",
+      "https://swcregistry.io/docs/SWC-106",
+      "https://eth.blockscout.com/api/v2/addresses/0x863df6bfa4469f3ead0be8f9f2aae51c91a907b4",
+      "https://eth.blockscout.com/api?module=account&action=txlist&address=0x863df6bfa4469f3ead0be8f9f2aae51c91a907b4",
+      "https://www.4byte.directory/api/v1/signatures/?hex_signature=0xe46dcfeb",
+      "https://www.4byte.directory/api/v1/signatures/?hex_signature=0xcbf0b0c0"
+    ],
+    "notes": "The post-mortem (read through a web.archive.org copy because medium returned 403) does not print the library address. The address is verified from Blockscout instead. It was created on 2017-07-20 (matching the 'redeployed July 20th' in the post-mortem). On 2017-11-06, 0xae7168de... sent an initWallet(address[],uint256,uint256) tx at 14:33:47 UTC and a kill(address) tx at 15:25:21 UTC. Both times match the post-mortem's timestamps, though the post-mortem's prose attaches them to slightly different steps. Blockscout shows no contract name or verified source, which fits a self-destructed contract. contract_name WalletLibrary is inferred from the July library's verified name, not shown for this address. Other press USD estimates (~$150M-$280M) were seen only in search snippets and are not used.",
+    "line_hint": null
+  },
+  {
+    "id": "fomo3d-round1-2018",
+    "address": "0xa62142888aba8370742be823c1782d17a0389da1",
+    "name": "Fomo3D round 1 won by block stuffing",
+    "contract_name": "FoMo3Dlong",
+    "date": "2018-08-22",
+    "cause": "The round ends when its timer runs out without a new key purchase. The winner bought last and then filled the next blocks with high-fee gas-burning transactions, so no rival purchase could be mined before the timer expired.",
+    "swc": null,
+    "checks": [],
+    "function_hint": null,
+    "loss_usd": null,
+    "loss_eth": 10469,
+    "loss_note": "solmaz.io: the winning address took the pot of 10,469 ETH on 22 August 2018. This is the game's jackpot paid to the attacker, not a theft from the contract. Stuffing one block cost around 4 ETH.",
+    "incident": true,
+    "summary": "Fomo3D Long's first round was won by an account that made the last key purchase in block 6191896 and then stuffed blocks with 501 Gwei gas-burning transactions until the round ended at block 6191909, about 175 seconds later. The attack exploited the game's timer design and Ethereum block space rather than a code bug.",
+    "references": [
+      "https://solmaz.io/2018/10/18/anatomy-block-stuffing/",
+      "https://eth.blockscout.com/api/v2/addresses/0xa62142888aba8370742be823c1782d17a0389da1",
+      "https://eth.blockscout.com/api/v2/smart-contracts/0xa62142888aba8370742be823c1782d17a0389da1"
+    ],
+    "notes": "Address verified: solmaz.io names 0xA62142888ABa8370742bE823c1782D17A0389Da1 as Fomo3D Long, and Blockscout returns the verified name FoMo3Dlong. The winner was 0xa169df5ed3363cfc4c92ac96c6c5f2a42fccbf85 and the stuffing contract 0x18e1B664C6a2E88b93C1b71F61Cbf76a726B7801 (solmaz.io). The SECBIT write-up was not fetched (only search snippets were seen), and the coinmonks article returned 403. No USD figure was sourced. No SWC entry or slither check in the allowed list fits block stuffing, so checks is empty.",
+    "line_hint": null
+  },
+  {
+    "id": "spankchain-2018",
+    "address": "0xf91546835f756da0c10cfa0cda95b15577b84aa7",
+    "name": "SpankChain payment channel reentrancy",
+    "contract_name": "LedgerChannel",
+    "date": "2018-10-06",
+    "cause": "LCOpenTimeout sent the channel's ETH and then called the channel's token transfer before deleting the channel record. The attacker's fake ERC20 re-entered LCOpenTimeout from its transfer function and got the deposit paid out again and again.",
+    "swc": "SWC-107",
+    "checks": [
+      "reentrancy-eth"
+    ],
+    "function_hint": "LCOpenTimeout",
+    "loss_usd": 38000,
+    "loss_eth": 165.38,
+    "loss_note": "SpankChain post: 'drained 165.38 ETH (~$38,000)' plus about $4,000 of BOOTY immobilized. Of this, 34.99 ETH and 1271.88 BOOTY (~$9,300) belonged to users. The post was later updated to say the ETH and BOOTY were recovered.",
+    "incident": true,
+    "summary": "An attacker opened a channel with createChannel, using a malicious contract posing as an ERC20 token, then called LCOpenTimeout repeatedly through reentrancy to drain 165.38 ETH from SpankChain's payment channel contract. SpankChain had chosen to skip an external audit of this contract and later got the funds back.",
+    "references": [
+      "https://medium.com/spankchain/we-got-spanked-what-we-know-so-far-d5ed3a0f38fe",
+      "https://eth.blockscout.com/api/v2/addresses/0xf91546835f756da0c10cfa0cda95b15577b84aa7",
+      "https://eth.blockscout.com/api/v2/smart-contracts/0xf91546835f756da0c10cfa0cda95b15577b84aa7",
+      "https://eth.blockscout.com/api?module=account&action=txlist&address=0xc5918a927c4fb83fe99e30d6f66707f4b396900e"
+    ],
+    "notes": "Address verified: the SpankChain post links this address as the payment channel contract, and Blockscout returns the verified name LedgerChannel with LCOpenTimeout deleting the channel only after the transfers. The post was read through a web.archive.org copy because medium returned 403. The date follows the post ('6pm PST Saturday', the Saturday before the 9 Oct 2018 post). On-chain, the attacker contract's calls are on 2018-10-07 around 00:39 UTC. The attacker EOA was 0xcf267ea3f1ebae3c29fea0a3253f94f3122c2199 and the malicious contract 0xc5918a927c4fb83fe99e30d6f66707f4b396900e (both from the post). The recovery terms (bounty paid) appear only in a search snippet and are not used.",
+    "line_hint": null
+  },
+  {
+    "id": "lendfme-2020",
+    "address": "0x0eee3e3828a45f7601d5f54bf49bb01d1a9df5ea",
+    "name": "dForce Lendf.Me imBTC reentrancy",
+    "contract_name": "MoneyMarket",
+    "date": "2020-04-19",
+    "cause": "Lendf.Me listed imBTC, an ERC777 token whose transfer calls a hook on the sender. During supply, the attacker's hook called withdraw. supply then wrote back its stale cached balance, so the attacker's collateral grew without a real deposit.",
+    "swc": "SWC-107",
+    "checks": [
+      "reentrancy-eth"
+    ],
+    "function_hint": "supply",
+    "loss_usd": 25244120.74,
+    "loss_eth": null,
+    "loss_note": "Eye of Horus (arXiv 2101.06204): attackers borrowed 12 tokens worth 25,244,120.74 USD in total (10.31M USD of it WETH). Quantstamp: 'nearly 25 million USD'. PeckShield via Odaily: assets worth 25,236,849.44 USD could be borrowed. Quantstamp says the attacker returned nearly all funds.",
+    "incident": true,
+    "summary": "On 19 April 2020 an attacker used the ERC777 tokensToSend hook of imBTC to call Lendf.Me's withdraw from inside supply, inflating recorded imBTC collateral. The attacker then borrowed the liquidity of all 12 Lendf.Me markets, about $25 million, which was later returned.",
+    "references": [
+      "https://quantstamp.com/blog/how-the-dforce-hacker-used-reentrancy-to-steal-25-million",
+      "https://arxiv.org/pdf/2101.06204",
+      "https://www.odaily.news/en/post/5149213",
+      "https://eth.blockscout.com/api/v2/addresses/0x0eee3e3828a45f7601d5f54bf49bb01d1a9df5ea",
+      "https://eth.blockscout.com/api/v2/smart-contracts/0x0eee3e3828a45f7601d5f54bf49bb01d1a9df5ea",
+      "https://www.4byte.directory/api/v1/signatures/?hex_signature=0xf2b9fdb8"
+    ],
+    "notes": "The address is verified only by Blockscout: verified name MoneyMarket, with supply(), withdraw() and doTransferIn(), and a burst of supply/withdraw/borrow txs on 2020-04-19 from 01:08 UTC. None of the write-ups fetched print the MoneyMarket address. Timing differs by source: Eye of Horus says the attack started 00:58:43 UTC on 19 April, Quantstamp says 18 April 9:00 PM EST, and Odaily/PeckShield says 08:45 on 19 April in UTC+8. All three are 19 April UTC or close to it. No ETH-denominated loss was sourced. The ERC777 hook re-enters through a token transfer rather than an ETH send, so slither may report this under a different reentrancy detector than reentrancy-eth. The PeckShield and SlowMist Medium posts returned 403 and were not read directly.",
+    "line_hint": null
+  }
+]

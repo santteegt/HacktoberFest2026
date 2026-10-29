@@ -1,0 +1,74 @@
+{
+ "address": "0x5415238f5e6cb55b4d122a1df2e0340ba8a03a7e",
+ "started_at": "2026-10-29T05:38:20Z",
+ "finished_at": "2026-10-29T05:38:51Z",
+ "kind": "friendly",
+ "title": "The Echo of Arrow Glacier",
+ "name": "DSTP",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 3.0,
+   "note": "random: verified contract created in block 14152219 (2022), found after 1 random blocks"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 6.4,
+   "note": "DSTP; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 14.9,
+   "note": "tier slither, 0 finding(s)"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "friendly"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 10.2,
+   "note": "10.2 s, 4 calls; verifier 21/21 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "48,042 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "19 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "random",
+  "reason": "verified contract created in block 14152219 (2022), found after 1 random blocks",
+  "name": "DSTP",
+  "year": 2022,
+  "hint": false
+ },
+ "gallery_path": "web/ghosts/0x5415238f5e6cb55b4d122a1df2e0340ba8a03a7e/"
+}

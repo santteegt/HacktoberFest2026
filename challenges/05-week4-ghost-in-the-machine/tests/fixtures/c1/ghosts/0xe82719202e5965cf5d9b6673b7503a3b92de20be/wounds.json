@@ -1,0 +1,29 @@
+{
+ "address": "0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+ "tier": "catalog",
+ "compiler_version": "0.2.1+commit.91a6b35f",
+ "analyzed_files": [
+  "Rubixi.sol"
+ ],
+ "findings": [
+  {
+   "id": "w1",
+   "check": "incorrect-constructor-name",
+   "swc": "SWC-118",
+   "title": "The constructor kept its old name: DynamicPyramid()",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "Rubixi.sol",
+   "lines": [
+    12,
+    15
+   ],
+   "snippet": "        //Sets creator\n        function DynamicPyramid() {\n                creator = msg.sender;\n        }",
+   "description": "The contract was renamed to Rubixi, but the function meant to run once at birth is still called DynamicPyramid. It never ran as a constructor; it is a public function anyone can call to make themselves the creator.",
+   "reference_url": "https://swcregistry.io/docs/SWC-118"
+  }
+ ],
+ "incident": null,
+ "slither_raw": null
+}

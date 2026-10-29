@@ -1,0 +1,94 @@
+{
+ "address": "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",
+ "name": "FoundationTipJar",
+ "kind": "lingering",
+ "kind_source": "verdict.json",
+ "title": "The Ghost of the Unicorn",
+ "tagline": "A lingering relic from the Frontier Thawing era, still holding the memory of original tokens.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of the foundation tip jar",
+   "paragraphs": [
+    "Marigolds scent the air as we remember February 11, 2016. On that day, the FoundationTipJar was born during the Frontier Thawing. It was written into a block, one page of Ethereum's shared record book.",
+    "A wallet ending in 9adb brought the contract into the world. It is a small program that lives on Ethereum. It allowed direct donations and gave out the original Unicorn token.",
+    "The contract is now about 10.7 years old. It sits quietly on the chain like a ghost of the early days."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.age.hardfork",
+    "facts.birth.timestamp",
+    "facts.eh.name"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The spirit of the unicorn",
+   "paragraphs": [
+    "The contract sat as a quiet tool for transparency. It let people send Ether directly to the Foundation. Each gift was a public act of coordination. In return, the contract issued a small experimental token called the Unicorn token. It served as a symbolic thank you for those who joined the journey.",
+    "This old ghost showed how early leaders viewed the chain. It turned institutional funding into a public experiment. The Unicorn token later lived on in other experiments like the Unicorn Meat Grinder Association DAO. It saw 1425 transactions during its life."
+   ],
+   "facts_cited": [
+    "facts.eh.historical_significance",
+    "facts.life.tx_count"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The knocking",
+   "paragraphs": [
+    "The FoundationTipJar sits quiet in the dark. It holds about 4.3 ETH inside its belly. People still reach out to touch it.",
+    "Some voices come to change membership. Others arrive to make new proposals or cast a vote. A few still come to execute a proposal.",
+    "The code remains on the chain. It waits for the next visitor."
+   ],
+   "facts_cited": [
+    "facts.eh.name",
+    "facts.life.balance_eth"
+   ],
+   "variant": "the knocking"
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 20.7,
+  "model_seconds": 20.6,
+  "calls": 4,
+  "prompt_tokens": 2143,
+  "output_tokens": 434
+ },
+ "verifier": {
+  "sentences": 27,
+  "grounded": 27,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "February 11, 2016",
+  "born_year": 2016,
+  "age_years": 10.7,
+  "age_years_whole": 10,
+  "last_seen_on": "August 8, 2026",
+  "last_seen_year": 2026,
+  "silent_years": 0.2,
+  "silent_days": 81,
+  "active_days": 3830,
+  "balance_eth": 4.30284,
+  "deployer_short": "0xd122…9adb",
+  "address_short": "0xfb69…d359",
+  "activity_label": "active in 4 different years between 2022 and 2026"
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:33:57Z"
+}

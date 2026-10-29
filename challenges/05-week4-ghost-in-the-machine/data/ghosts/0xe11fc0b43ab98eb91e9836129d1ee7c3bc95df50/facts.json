@@ -1,0 +1,98 @@
+{
+ "address": "0xe11fc0b43ab98eb91e9836129d1ee7c3bc95df50",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T05:42:15Z",
+ "blockscout": {
+  "name": "SushiMaker",
+  "is_contract": true,
+  "is_verified": true,
+  "ens": null,
+  "creation_tx": "0x0bbbd2036f14d57617d4b90db6f828a61c842c19d3cc2d04c1c7fcaddad32989",
+  "creator": "0x9e6e344f94305d36eA59912b0911fE2c9149Ed3E",
+  "has_logs": true
+ },
+ "birth": {
+  "block": 11626958,
+  "timestamp": "2021-01-10T11:57:22.000000Z",
+  "tx": "0x0bbbd2036f14d57617d4b90db6f828a61c842c19d3cc2d04c1c7fcaddad32989",
+  "deployer": "0x9e6e344f94305d36eA59912b0911fE2c9149Ed3E",
+  "timestamp_source": "blockscout"
+ },
+ "life": {
+  "tx_count": 656,
+  "token_transfers": 299411,
+  "gas_used": 959728679,
+  "last_tx": {
+   "timestamp": "2025-01-26T04:39:23.000000Z",
+   "method": "convertMultiple",
+   "status": "ok",
+   "hash": "0xc65097bff8255be947a4989a634a2aae29a8b1a6ffc7b77ef47032a290287986"
+  },
+  "recent_methods": [
+   "convert",
+   "convertMultiple"
+  ],
+  "recent_years": [
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "balance_wei": 0,
+  "balance_eth": 0.0,
+  "last_12m_capped": false,
+  "first_tx_timestamp": "2021-01-10T11:57:22.000000Z",
+  "calls": 656,
+  "calls_source": "blockscout-counters",
+  "calls_capped": false,
+  "never_called": false,
+  "first_call_timestamp": "2021-01-10T20:16:17.000000Z",
+  "last_12m_txs": 0
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 6022,
+  "balance_wei": 0,
+  "balance_eth": 0.0
+ },
+ "source": {
+  "provider": "sourcify",
+  "match": "match",
+  "name": "SushiMaker",
+  "compiler_version": "0.6.12+commit.27d51765",
+  "language": "Solidity",
+  "files": [
+   "contracts/BoringOwnable.sol",
+   "contracts/SushiMaker.sol",
+   "contracts/interfaces/IERC20.sol",
+   "contracts/libraries/BoringERC20.sol",
+   "contracts/libraries/BoringMath.sol",
+   "contracts/uniswapv2/interfaces/IUniswapV2ERC20.sol",
+   "contracts/uniswapv2/interfaces/IUniswapV2Factory.sol",
+   "contracts/uniswapv2/interfaces/IUniswapV2Pair.sol"
+  ],
+  "dir": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/05-week4-ghost-in-the-machine/data/ghosts/0xe11fc0b43ab98eb91e9836129d1ee7c3bc95df50/src"
+ },
+ "age": {
+  "hardfork": "Muir Glacier",
+  "eh_era": null
+ },
+ "sites": [],
+ "sites_excluded": [],
+ "name": "SushiMaker",
+ "sources_used": [
+  "blockscout",
+  "rpc",
+  "sourcify"
+ ],
+ "names": [
+  {
+   "name": "SushiMaker",
+   "source": "blockscout"
+  },
+  {
+   "name": "SushiMaker",
+   "source": "source:sourcify"
+  }
+ ],
+ "proxy": false
+}

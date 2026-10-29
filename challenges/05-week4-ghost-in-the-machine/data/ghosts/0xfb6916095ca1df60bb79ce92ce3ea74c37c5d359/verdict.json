@@ -1,0 +1,30 @@
+{
+ "address": "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",
+ "kind": "lingering",
+ "reasons": [
+  "19 successful calls in the last 12 months out of 1425 lifetime txs (1.3%)",
+  "no site known",
+  "last successful call 2026-08-08, 0.2 years ago",
+  "1 suspected wound(s), none confirmed at Medium+"
+ ],
+ "activity": {
+  "lifetime_txs": 1425,
+  "last_tx": "2026-08-08T15:48:11Z",
+  "last_12m_txs": 19,
+  "last_12m_capped": false,
+  "silent_years": 0.2
+ },
+ "wounds": {
+  "count": 1,
+  "confirmed": 0,
+  "worst_impact": "Medium",
+  "scars": 0,
+  "fatal": 0
+ },
+ "labels": {
+  "historian_story": true,
+  "verified_source": false,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

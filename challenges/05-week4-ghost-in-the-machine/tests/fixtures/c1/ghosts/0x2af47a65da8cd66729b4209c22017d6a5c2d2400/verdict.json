@@ -1,0 +1,27 @@
+{
+ "address": "0x2af47a65da8cd66729b4209c22017d6a5c2d2400",
+ "kind": "lingering",
+ "reasons": [
+  "7 calls in 2025 by Ethereum History's yearly count",
+  "83.0 ETH still inside",
+  "no wounds"
+ ],
+ "activity": {
+  "lifetime_txs": 19461,
+  "last_tx": "2026-10-29T02:57:47Z",
+  "last_12m_txs": 7,
+  "last_12m_capped": false,
+  "silent_years": 0.0
+ },
+ "wounds": {
+  "count": 0,
+  "confirmed": 0,
+  "worst_impact": null
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": true
+ },
+ "decided_at": "2026-10-29T05:00:00Z"
+}

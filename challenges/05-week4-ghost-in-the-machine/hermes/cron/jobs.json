@@ -1,0 +1,46 @@
+{
+  "jobs": [
+    {
+      "id": "e1a7c04b92d3",
+      "name": "ghost-of-the-day",
+      "prompt": "",
+      "skills": [],
+      "script": "ghost-of-the-day.sh",
+      "no_agent": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * *",
+        "display": "0 9 * * *"
+      },
+      "schedule_display": "0 9 * * *",
+      "deliver": "local",
+      "enabled": false,
+      "state": "paused",
+      "paused_reason": "Installed paused; resume it when the .env is filled.",
+      "repeat": {
+        "times": null
+      }
+    },
+    {
+      "id": "7b30f5d81c6e",
+      "name": "weekly-incident",
+      "prompt": "",
+      "skills": [],
+      "script": "weekly-incident.sh",
+      "no_agent": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 1",
+        "display": "0 10 * * 1"
+      },
+      "schedule_display": "0 10 * * 1",
+      "deliver": "local",
+      "enabled": false,
+      "state": "paused",
+      "paused_reason": "Installed paused; resume it when the .env is filled.",
+      "repeat": {
+        "times": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+ "address": "0xc820366606e803339730ad88465998f470116adf",
+ "started_at": "2026-10-29T16:50:08Z",
+ "finished_at": "2026-10-29T16:50:08Z",
+ "kind": "friendly",
+ "title": "The Silent Small Half",
+ "name": "0xc820366606e803339730ad88465998f470116adf",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "archive: documented on Ethereum History (deployed 2016-05-26, era homestead)"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 6.2,
+   "note": "skipped: output exists (0xc820366606e803339730ad88465998f470116adf; via blockscout, ethereumhistory, rpc)",
+   "skipped": true
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists (tier regex, 4 finding(s))",
+   "skipped": true
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists (friendly)",
+   "skipped": true
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists (no site known, no screenshots)",
+   "skipped": true
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 12.5,
+   "note": "skipped: output exists (12.5 s, 3 calls; verifier 15/15 grounded, 0 repaired, 0 dropped)",
+   "skipped": true
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists (43,889 bytes)",
+   "skipped": true
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "26 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "archive",
+  "reason": "documented on Ethereum History (deployed 2016-05-26, era homestead)",
+  "name": null,
+  "year": 2016,
+  "hint": false
+ },
+ "gallery_path": "web/ghosts/0xc820366606e803339730ad88465998f470116adf/"
+}

@@ -1,0 +1,33 @@
+{
+ "address": "0xfcb0818c0b79a98686b2f56d4623d0b6c0243c55",
+ "tier": "regex",
+ "compiler_version": "0.3.6+commit.3fc68da5",
+ "analyzed_files": [
+  "greeter.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "selfdestruct",
+   "swc": "SWC-106",
+   "title": "Self-destruct in kill()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "greeter.sol",
+   "lines": [
+    10,
+    10
+   ],
+   "snippet": "    function kill() { if (msg.sender == owner) suicide(owner); }",
+   "description": "The contract can destroy itself here; whether only the owner can reach this line must be read from the code.",
+   "reference_url": null
+  }
+ ],
+ "incident": null,
+ "slither_raw": null,
+ "catalog_entry": null,
+ "run": null,
+ "analyzed_at": "2026-10-29T05:27:49Z"
+}

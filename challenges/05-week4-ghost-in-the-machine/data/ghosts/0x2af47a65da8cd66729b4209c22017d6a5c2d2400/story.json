@@ -1,0 +1,107 @@
+{
+ "address": "0x2af47a65da8cd66729b4209c22017d6a5c2d2400",
+ "name": "StandardBounties",
+ "kind": "lingering",
+ "kind_source": "verdict.json",
+ "title": "The Lingering Bounty of Byzantium",
+ "tagline": "Born in December, this ghost waits for a final call in the Byzantium era.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of StandardBounties",
+   "paragraphs": [
+    "A single light flickers over the name StandardBounties. It came into the world on December 18, 2017. On the day it was born it was written into a block, one page of Ethereum's shared record book. A wallet ending in 7645 brought it into the light.",
+    "The contract is a small program that lives on Ethereum. It arrived during the Byzantium era. It was written using Solidity 0.4.18. Now it sits nearly 9 years old in the quiet dark."
+   ],
+   "facts_cited": [
+    "facts.birth.deployer",
+    "facts.birth.timestamp",
+    "facts.blockscout.name",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The steady pulse of work",
+   "paragraphs": [
+    "The contract moved with a steady rhythm. People called fulfillBounty and killBounty to move things forward. It saw 19461 transactions during its life.",
+    "It has remained active every year since 2022. It lives on bounties.network and gitcoin.co. These sites have been online since 2017 and stay online in 2026."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.fetched_at",
+    "facts.life.last_tx.method",
+    "facts.life.recent_methods[1]",
+    "facts.life.recent_years[0]",
+    "facts.life.tx_count"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The knocking",
+   "paragraphs": [
+    "The contract sits in the quiet dark. It holds about 83 ETH. People still come to its door. They turn in work for a bounty or they end a bounty.",
+    "The code remains on the chain. It has 27 calls in the last 12 months. Its last call was on October 29, 2026. It bears two old scars: a balance check that demands an exact amount and a door left open for a caller to step back in mid-call. Never wait for an exact balance and pay last to lock the door."
+   ],
+   "facts_cited": [
+    "facts.fetched_at",
+    "facts.life.balance_eth",
+    "facts.life.last_12m_txs",
+    "verdict.reasons[0]"
+   ],
+   "variant": "the knocking"
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 14.1,
+  "model_seconds": 14.1,
+  "calls": 4,
+  "prompt_tokens": 2079,
+  "output_tokens": 446
+ },
+ "verifier": {
+  "sentences": 25,
+  "grounded": 25,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "December 18, 2017",
+  "born_year": 2017,
+  "age_years": 8.9,
+  "age_years_whole": 8,
+  "last_seen_on": "October 29, 2026",
+  "last_seen_year": 2026,
+  "silent_years": 0.0,
+  "silent_days": 0,
+  "active_days": 3236,
+  "balance_eth": 83.001304,
+  "deployer_short": "0xbfdb…7645",
+  "address_short": "0x2af4…2400",
+  "compiler_label": "Solidity 0.4.18",
+  "activity_label": "active every year since 2022",
+  "site_years": {
+   "bounties.network": "2017-2026",
+   "gitcoin.co": "2017-2026"
+  },
+  "site_labels": [
+   "bounties.network, online since 2017 and still online in 2026",
+   "gitcoin.co, online since 2017 and still online in 2026"
+  ]
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:35:11Z"
+}

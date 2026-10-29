@@ -1,0 +1,96 @@
+{
+ "address": "0xdc59ac4fefa32293a95889dc396682858d52e5db",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T05:41:41Z",
+ "blockscout": {
+  "name": "Bean",
+  "is_contract": true,
+  "is_verified": true,
+  "ens": null,
+  "creation_tx": "0xec462c02a2e4442db62179b70a7c07f812b237e127a5b24ba192f796f8013db6",
+  "creator": "0xC1E088fC1323b20BCBee9bd1B9fC9546db5624C5",
+  "has_logs": true
+ },
+ "birth": {
+  "block": 12974077,
+  "timestamp": "2021-08-06T22:27:37.000000Z",
+  "tx": "0xec462c02a2e4442db62179b70a7c07f812b237e127a5b24ba192f796f8013db6",
+  "deployer": "0xC1E088fC1323b20BCBee9bd1B9fC9546db5624C5",
+  "timestamp_source": "blockscout"
+ },
+ "life": {
+  "tx_count": 5093,
+  "token_transfers": 0,
+  "gas_used": 211361413,
+  "last_tx": {
+   "timestamp": "2026-10-21T15:48:59.000000Z",
+   "method": "approve",
+   "status": "ok",
+   "hash": "0xa71ddd7823382073011efe348c2706f070c914c1b58f377bb09b34ab07c88e99"
+  },
+  "recent_methods": [
+   "approve",
+   "transfer"
+  ],
+  "recent_years": [
+   "2025",
+   "2026"
+  ],
+  "balance_wei": 0,
+  "balance_eth": 0.0,
+  "last_12m_capped": false,
+  "first_tx_timestamp": "2021-08-06T22:27:55.000000Z",
+  "calls": 5093,
+  "calls_source": "blockscout-counters",
+  "calls_capped": false,
+  "never_called": false,
+  "first_call_timestamp": "2021-08-06T22:27:55.000000Z",
+  "last_12m_txs": 35
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 4261,
+  "balance_wei": 0,
+  "balance_eth": 0.0
+ },
+ "source": {
+  "provider": "sourcify",
+  "match": "exact_match",
+  "name": "Bean",
+  "compiler_version": "0.7.6+commit.7338295f",
+  "language": "Solidity",
+  "files": [
+   "@openzeppelin/contracts/access/Ownable.sol",
+   "@openzeppelin/contracts/math/SafeMath.sol",
+   "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+   "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol",
+   "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+   "@openzeppelin/contracts/utils/Context.sol",
+   "contracts/Bean.sol"
+  ],
+  "dir": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/05-week4-ghost-in-the-machine/data/ghosts/0xdc59ac4fefa32293a95889dc396682858d52e5db/src"
+ },
+ "age": {
+  "hardfork": "London",
+  "eh_era": null
+ },
+ "sites": [],
+ "sites_excluded": [],
+ "name": "Bean",
+ "sources_used": [
+  "blockscout",
+  "rpc",
+  "sourcify"
+ ],
+ "names": [
+  {
+   "name": "Bean",
+   "source": "blockscout"
+  },
+  {
+   "name": "Bean",
+   "source": "source:sourcify"
+  }
+ ],
+ "proxy": false
+}

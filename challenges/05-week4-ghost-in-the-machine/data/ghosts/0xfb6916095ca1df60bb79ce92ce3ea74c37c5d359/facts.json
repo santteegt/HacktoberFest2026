@@ -1,0 +1,146 @@
+{
+ "address": "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T05:32:54Z",
+ "eh": {
+  "layer": "documented",
+  "era_id": "frontier",
+  "era_name": "Frontier",
+  "name": "FoundationTipJar",
+  "token": {
+   "token_name": null,
+   "token_symbol": null,
+   "token_decimals": null
+  },
+  "heuristics": {
+   "contract_type": "dao",
+   "confidence": 0.5,
+   "is_proxy": false,
+   "has_selfdestruct": false,
+   "is_erc20_like": false
+  },
+  "decompilation_success": true,
+  "code_size_bytes": 7189,
+  "short_description": "An early Ethereum smart contract that enabled direct, on-chain donations to the Ethereum Foundation and issued the original Unicorn token.",
+  "description": "The Tip Jar functioned as a simple but deliberate demonstration of Ethereum\u2019s capabilities. It replaced traditional donation mechanisms with on-chain logic, making contributions publicly auditable and programmatically handled. The associated Unicorn token was intended as a symbolic acknowledgment of participation rather than a financial asset.\n\nThe Foundation Tip Jar was a smart contract deployed in 2015 by Alex Van de Sande while working at the Ethereum Foundation. It allowed anyone to send Ether directly to the Foundation through a transparent, permissionless contract. In return, contributors received a small experimental token known as the Unicorn token, issued automatically by the contract.",
+  "historical_significance": "The Foundation Tip Jar is historically significant as one of the earliest examples of Ethereum being used for direct institutional funding via smart contracts. Created by a core Ethereum Foundation contributor shortly after mainnet launch, it reflects how early Ethereum leadership viewed smart contracts as tools for transparency, coordination, and experimentation. The Unicorn token introduced through the Tip Jar later became the basis for further on-chain experiments, including the Unicorn Meat Grinder Association DAO.",
+  "historical_context": "In 2015, Ethereum was newly launched and lacked established patterns for fundraising, token standards, or governance. Developers were actively exploring how smart contracts could replace or augment existing institutional processes. The Foundation Tip Jar emerged from this environment as a practical experiment that combined funding, transparency, and token issuance into a single on-chain system. It stands today as a preserved artifact of Ethereum\u2019s earliest design philosophy, when even simple contracts were used to probe the social and technical possibilities of decentralized systems.",
+  "verification_status": "verified",
+  "verification_method": "etherscan_verified",
+  "links": [
+   {
+    "id": 2,
+    "title": "2016 Ethereum Donation Page (Web Archive)",
+    "url": "https://web.archive.org/web/20160405014834/ethereum.org/donate",
+    "source": null,
+    "note": null,
+    "created_at": "2026-01-25T18:20:06.137Z"
+   }
+  ],
+  "metadata": [
+   {
+    "key": "tx_counts_by_year_external_to_v1",
+    "value": null,
+    "json_value": {
+     "counts": {
+      "2016": 520,
+      "2017": 479,
+      "2018": 171,
+      "2019": 123,
+      "2020": 33,
+      "2021": 38,
+      "2022": 33,
+      "2023": 4,
+      "2025": 6
+     },
+     "truncated": false
+    },
+    "source_url": "alchemy_getAssetTransfers",
+    "created_at": "2026-01-25T18:16:26.388Z"
+   }
+  ],
+  "has_source": true,
+  "has_abi": true
+ },
+ "birth": {
+  "block": 988725,
+  "timestamp": "2016-02-11T17:14:03.000000Z",
+  "tx": "0x2f121b55188e408a274a11e3d59648f8a71a5be99f830576be350448aa5012f3",
+  "deployer": "0xd1220a0cf47c7b9be7a2e6ba89f429762e7b9adb",
+  "timestamp_source": "blockscout"
+ },
+ "blockscout": {
+  "name": null,
+  "is_contract": true,
+  "is_verified": false,
+  "ens": null,
+  "creation_tx": "0x2f121b55188e408a274a11e3d59648f8a71a5be99f830576be350448aa5012f3",
+  "creator": "0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb",
+  "has_logs": true
+ },
+ "life": {
+  "tx_count": 1425,
+  "token_transfers": 5216,
+  "gas_used": 75902388,
+  "last_tx": {
+   "timestamp": "2026-08-08T15:48:11.000000Z",
+   "method": null,
+   "status": "ok",
+   "hash": "0xcd95a7c52b334a4c64e98f075cb06d7dd3ddae7354942e2de15e4bb9c1f02b46"
+  },
+  "recent_methods": [
+   "0x39ae461f",
+   "0x68747470",
+   "0x731133e9",
+   "0x79c65068",
+   "changeMembership",
+   "executeProposal",
+   "newProposalInWei",
+   "vote",
+   "withdraw_money"
+  ],
+  "recent_years": [
+   "2022",
+   "2023",
+   "2025",
+   "2026"
+  ],
+  "balance_wei": 4302839667566230631,
+  "balance_eth": 4.30284,
+  "last_12m_capped": false,
+  "first_tx_timestamp": "2016-02-11T17:14:03.000000Z",
+  "calls": 1425,
+  "calls_source": "blockscout-counters",
+  "calls_capped": false,
+  "never_called": false,
+  "first_call_timestamp": "2016-02-11T17:15:55.000000Z",
+  "last_12m_txs": 19
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 6403,
+  "balance_wei": 4302839667566230631,
+  "balance_eth": 4.30284
+ },
+ "age": {
+  "hardfork": "Frontier Thawing",
+  "eh_era": "Frontier"
+ },
+ "sites": [],
+ "sites_excluded": [
+  "https://web.archive.org/web/20160405014834/ethereum.org/donate"
+ ],
+ "name": "FoundationTipJar",
+ "sources_used": [
+  "blockscout",
+  "ethereumhistory",
+  "rpc"
+ ],
+ "names": [
+  {
+   "name": "FoundationTipJar",
+   "source": "ethereumhistory"
+  }
+ ],
+ "proxy": false
+}

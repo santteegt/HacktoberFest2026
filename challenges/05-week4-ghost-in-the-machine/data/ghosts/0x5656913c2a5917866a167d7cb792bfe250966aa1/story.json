@@ -1,0 +1,146 @@
+{
+ "address": "0x5656913c2a5917866a167d7cb792bfe250966aa1",
+ "name": "BlockSwapWrapperGolemNetworkToken",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The Unclaimed Wrapper of Spurious Dragon",
+ "tagline": "A lonely token born in March remains haunted by an owner who was never named.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of the wrapped token",
+   "paragraphs": [
+    "A candle flickers against the cold stone. On March 30, 2017, a wallet ending in 8372 brought a new spirit into the world. This contract is a small program that lives on Ethereum. It was born as a second, independent Golem Network Token wrapper for the BlockSwap project.",
+    "The Spurious Dragon era held the air that night. On the day it was born, it was written into a block, one page of Ethereum's shared record book. It carries 18 decimals and the name BSGNT. It has lived for 9.6 years since it first appeared."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.birth.deployer",
+    "facts.eh.description",
+    "facts.eh.era_name",
+    "facts.eh.name",
+    "facts.eh.token.token_decimals",
+    "facts.eh.token.token_name"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "A hollow master",
+   "paragraphs": [
+    "I am the BlockSwapWrapperGolemNetworkToken. I carry a wound of high confidence. My owner is never initialized. I am a ghost who was never called.",
+    "I read a state variable before any hand ever wrote to it. It holds the zero value. This wound sits in my moveToWaves function. It is a high impact scar."
+   ],
+   "facts_cited": [
+    "facts.eh.name",
+    "wounds.findings[0].description"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "A shield of logic",
+   "paragraphs": [
+    "The ghost of BlockSwapWrapperGolemNetworkToken lingers because the owner was never initialized. It is a wound in the code that still haunts the contract. The spirit feeds on the empty space where a master should be.",
+    "The cure leaves no pointer pointing at slot zero. Before 0.5, a local struct could silently overwrite the owner. Now, the compiler rejects any reference variable that does not say memory, storage, or calldata.",
+    "The cure is built into the very rules of the language. Because it is a firm rule, the compiler itself prevents the wound from reopening. The ghost finds no way to reach the owner now."
+   ],
+   "facts_cited": [
+    "facts.eh.name"
+   ]
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I am the BlockSwapWrapperGolemNetworkToken. I carry a wound of high confidence. My owner is never initialized. I am a ghost who was never called.",
+   "I read a state variable before any hand ever wrote to it. It holds the zero value. This wound sits in my moveToWaves function. It is a high impact scar."
+  ],
+  "snippet": {
+   "file": "BlockSwapWrapperGolemNetworkToken.sol",
+   "lines": [
+    45,
+    45
+   ],
+   "code": "    address public owner;"
+  },
+  "finding": {
+   "id": "w1",
+   "check": "uninitialized-state",
+   "swc": "SWC-109",
+   "title": "BlockSwapWrapperGolemNetworkToken.owner is never initialized. It is used in",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-state"
+  },
+  "incident": null
+ },
+ "buster": {
+  "paragraphs": [
+   "The ghost of BlockSwapWrapperGolemNetworkToken lingers because the owner was never initialized. It is a wound in the code that still haunts the contract. The spirit feeds on the empty space where a master should be.",
+   "The cure leaves no pointer pointing at slot zero. Before 0.5, a local struct could silently overwrite the owner. Now, the compiler rejects any reference variable that does not say memory, storage, or calldata.",
+   "The cure is built into the very rules of the language. Because it is a firm rule, the compiler itself prevents the wound from reopening. The ghost finds no way to reach the owner now."
+  ],
+  "fix": {
+   "language": "solidity",
+   "version": "0.8.38",
+   "code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.38;\n\ncontract BlockSwapWrapperGolemNetworkToken {\n    struct Entry { address who; uint256 amount; }\n    address public owner = msg.sender;\n    Entry[] public entries;\n\n    function add(uint256 amount) external {\n        Entry memory e = Entry({who: msg.sender, amount: amount});  // explicit data location\n        entries.push(e);\n    }\n}\n",
+   "compiled": true,
+   "compiler_output": "solc 0.8.38 --bin: OK (BlockSwapWrapperGolemNetworkToken 844 bytes)",
+   "adapted": true,
+   "renames": {
+    "Registry": "BlockSwapWrapperGolemNetworkToken"
+   },
+   "recipe": "uninitialized-storage",
+   "attempts": 1,
+   "note": "the recipe with names chosen by the model from the old contract; renamed and checked by code, compiled by solc",
+   "ignored_renames": [],
+   "failed_attempts": []
+  },
+  "fix_reason": null,
+  "recipe": {
+   "check": "uninitialized-storage",
+   "title": "No pointer left pointing at slot zero",
+   "explain": "Before 0.5, a local struct or array declared without a location silently pointed at storage slot zero and could overwrite the owner. Since Solidity 0.5 every reference variable must say `memory`, `storage` or `calldata`, and the compiler rejects an uninitialized storage pointer.",
+   "compiler_enforced": true
+  },
+  "mitigation": null
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 15.8,
+  "model_seconds": 15.8,
+  "calls": 5,
+  "prompt_tokens": 2597,
+  "output_tokens": 480
+ },
+ "verifier": {
+  "sentences": 27,
+  "grounded": 27,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "never_called": true,
+  "born_on": "March 30, 2017",
+  "born_year": 2017,
+  "age_years": 9.6,
+  "age_years_whole": 9,
+  "balance_eth": 0.0,
+  "deployer_short": "0x99ac…8372",
+  "address_short": "0x5656…6aa1",
+  "compiler_label": "Solidity 0.4.8"
+ },
+ "notes": [
+  "never called (life.never_called): no life chapter, no last call"
+ ],
+ "generated_at": "2026-10-29T05:52:05Z"
+}

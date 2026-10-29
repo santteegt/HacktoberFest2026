@@ -1,0 +1,29 @@
+{
+ "address": "0x6b7a87899490ece95443e979ca9485cbe7e71522",
+ "kind": "bad",
+ "reasons": [
+  "documented incident: Multichain (Anyswap) (2022-01-18)",
+  "1 fatal wound(s) (confirmed, High impact, Medium+ confidence); first: catalog (High/High) Multichain (Anyswap)",
+  "1 successful calls in the last 12 months out of 237477 lifetime txs (0.0%)"
+ ],
+ "activity": {
+  "lifetime_txs": 237477,
+  "last_tx": "2026-07-14T01:52:23Z",
+  "last_12m_txs": 1,
+  "last_12m_capped": false,
+  "silent_years": 0.3
+ },
+ "wounds": {
+  "count": 2,
+  "confirmed": 2,
+  "worst_impact": "High",
+  "scars": 0,
+  "fatal": 1
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

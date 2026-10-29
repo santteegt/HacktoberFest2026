@@ -1,0 +1,74 @@
+{
+ "address": "0x8a57d2708d1f228dac2f7934f5311cd2a0a1cda4",
+ "started_at": "2026-10-29T05:34:24Z",
+ "finished_at": "2026-10-29T05:35:04Z",
+ "kind": "friendly",
+ "title": "The Echo of Spurious Dragon",
+ "name": "EtherVote",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 6.3,
+   "note": "archive: documented on Ethereum History (deployed 2017-07-10, era spurious)"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 11.1,
+   "note": "EtherVote; via blockscout, ethereumhistory, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 4.2,
+   "note": "tier slither, 0 finding(s)"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "friendly"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 25.2,
+   "note": "25.2 s, 4 calls; verifier 28/28 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "48,741 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "13 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "archive",
+  "reason": "documented on Ethereum History (deployed 2017-07-10, era spurious)",
+  "name": "EtherVote",
+  "year": 2017,
+  "hint": false
+ },
+ "gallery_path": "web/ghosts/0x8a57d2708d1f228dac2f7934f5311cd2a0a1cda4/"
+}

@@ -1,0 +1,82 @@
+{
+ "address": "0xe11fc0b43ab98eb91e9836129d1ee7c3bc95df50",
+ "started_at": "2026-10-29T05:42:15Z",
+ "finished_at": "2026-10-29T05:42:38Z",
+ "kind": "bad",
+ "title": "The SushiMaker's Hollow Hunger",
+ "name": "SushiMaker",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "incident: victim of Sushi Badger Digg (2021-01-25): Sandwich attack"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 4.9,
+   "note": "SushiMaker; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 2.8,
+   "note": "tier slither, 1 finding(s), incident: Sushi Badger Digg"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "bad"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: --skip-face",
+   "skipped": true
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 15.2,
+   "note": "15.2 s, 6 calls; verifier 31/32 grounded, 1 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "55,383 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "23 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": true,
+  "deploy": false
+ },
+ "picked": {
+  "source": "incident",
+  "reason": "victim of Sushi Badger Digg (2021-01-25): Sandwich attack",
+  "name": "SushiMaker",
+  "year": 2021,
+  "hint": true
+ },
+ "incident_hint": {
+  "id": "defihacklabs-2021-01-25-sushi-badger-digg",
+  "name": "Sushi Badger Digg",
+  "date": "2021-01-25",
+  "cause": "Sandwich attack",
+  "loss_note": "81.68 ETH"
+ },
+ "gallery_path": "web/ghosts/0xe11fc0b43ab98eb91e9836129d1ee7c3bc95df50/"
+}

@@ -1,0 +1,36 @@
+# Palkeoramix decompiler. 
+
+def storage:
+  name is array of uint256 at storage 0
+  symbol is array of uint256 at storage 1
+  decimals is uint8 at storage 2
+  balanceOf is mapping of uint256 at storage 3
+
+def name() payable: 
+  return name[0 len name.length]
+
+def decimals() payable: 
+  return decimals
+
+def balanceOf(address account) payable: 
+  return balanceOf[account]
+
+def symbol() payable: 
+  return symbol[0 len symbol.length]
+
+#
+#  Regular functions
+#
+
+def _fallback(?) payable: # default function
+  stop
+
+def transfer(address recipient, uint256 amount) payable: 
+  require balanceOf[caller] >= amount
+  require amount + balanceOf[recipient] >= balanceOf[recipient]
+  balanceOf[caller] -= amount
+  balanceOf[address(recipient)] += amount
+  log Transfer(
+        address from=amount,
+        address to=caller,
+        uint256 value=recipient)

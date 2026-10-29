@@ -1,0 +1,29 @@
+{
+ "address": "0xbb9bc244d798123fde783fcc1c72d3bb8c189413",
+ "kind": "bad",
+ "reasons": [
+  "documented incident: The DAO hack (2016-06-17)",
+  "1 fatal wound(s) (confirmed, High impact, Medium+ confidence); first: catalog (High/High) The DAO hack",
+  "223 successful calls in the last 12 months out of 175183 lifetime txs (0.1%)"
+ ],
+ "activity": {
+  "lifetime_txs": 175183,
+  "last_tx": "2026-10-28T02:49:47Z",
+  "last_12m_txs": 223,
+  "last_12m_capped": false,
+  "silent_years": 0.0
+ },
+ "wounds": {
+  "count": 7,
+  "confirmed": 1,
+  "worst_impact": "High",
+  "scars": 0,
+  "fatal": 1
+ },
+ "labels": {
+  "historian_story": true,
+  "verified_source": false,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

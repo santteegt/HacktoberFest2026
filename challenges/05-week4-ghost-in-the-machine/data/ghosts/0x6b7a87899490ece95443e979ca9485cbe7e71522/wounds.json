@@ -1,0 +1,73 @@
+{
+ "address": "0x6b7a87899490ece95443e979ca9485cbe7e71522",
+ "tier": "slither",
+ "compiler_version": "0.8.1+commit.df193b15",
+ "analyzed_files": [
+  "AnyswapV4Router.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "Multichain (Anyswap)",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": null,
+   "lines": null,
+   "snippet": null,
+   "description": "Insufficient Token Validation",
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-01/Anyswap_exp.sol"
+  },
+  {
+   "id": "w2",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "AnyswapV4Router.mpc() uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "AnyswapV4Router.sol",
+   "lines": [
+    219,
+    224
+   ],
+   "snippet": "    function mpc() public view returns (address) {\n        if (block.timestamp >= _newMPCEffectiveTime) {\n            return _newMPC;\n        }\n        return _oldMPC;\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: AnyswapV4Router.mpc() (AnyswapV4Router.sol#219-224) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- block.timestamp >= _newMPCEffectiveTime (AnyswapV4Router.sol#220)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  }
+ ],
+ "incident": {
+  "id": "defihacklabs-2022-01-18-multichain-anyswap",
+  "name": "Multichain (Anyswap)",
+  "date": "2022-01-18",
+  "loss_usd": 1400000,
+  "loss_eth": null,
+  "loss_note": "$1.4 million",
+  "cause": "Insufficient Token Validation",
+  "swc": null,
+  "summary": "Multichain (Anyswap) (2022-01-18), documented in the DeFiHackLabs repository: Insufficient Token Validation. Reported loss: $1.4 million.",
+  "references": [
+   "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-01/Anyswap_exp.sol",
+   "https://medium.com/zengo/without-permit-multichains-exploit-explained-8417e8c1639b",
+   "https://twitter.com/PeckShieldAlert/status/1483363515411099651",
+   "https://etherscan.io/tx/0xe50ed602bd916fc304d53c4fed236698b71691a95774ff0aeeb74b699c6227f7"
+  ]
+ },
+ "slither_raw": "data/ghosts/0x6b7a87899490ece95443e979ca9485cbe7e71522/slither.json",
+ "catalog_entry": "defihacklabs-2022-01-18-multichain-anyswap",
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 5.47
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.8.1"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:28:31Z"
+}

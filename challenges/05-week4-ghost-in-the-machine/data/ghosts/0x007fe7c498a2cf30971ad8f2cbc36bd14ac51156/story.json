@@ -1,0 +1,169 @@
+{
+ "address": "0x007fe7c498a2cf30971ad8f2cbc36bd14ac51156",
+ "name": "BondFixedExpiryTeller",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The Phantom of Olympus",
+ "tagline": "Born in Paris, this wounded bond still bleeds from the OlympusDAO scar.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of the teller",
+   "paragraphs": [
+    "A single candle flickers against the cold stone. On September 16, 2022, a wallet deployed the BondFixedExpiryTeller. It was born as a small program that lives on Ethereum. This child arrived during the Paris era.",
+    "The contract was forged using Solidity 0.8.15. On the day it was born, it was written into a block, one page of Ethereum's shared record book. It has lived for about 4 years now."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.blockscout.name",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The teller's busy days",
+   "paragraphs": [
+    "The contract lived a busy life. People called it 103 times. They used the create, purchase, and redeem functions. It moved through 2 different years between 2022 and 2023.",
+    "OlympusDAO saw it on 2022-10-21. The DeFiHackLabs repository holds its story. The records show no input validation. The wound remains open."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.life.last_tx.timestamp",
+    "facts.life.recent_years[1]",
+    "facts.life.tx_count",
+    "verdict.reasons[0]",
+    "wounds.findings[0].reference_url"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The hollow open gate",
+   "paragraphs": [
+    "I am a teller contract. My address is named in the DeFiHackLabs record of the OlympusDAO incident. The record does not say what part I played. The loss belongs to OlympusDAO as a whole, not to me alone.",
+    "I have a high impact wound. It happened on October 21, 2022. I had no input validation. This flaw let the shadows in.",
+    "The loss was about $292K. That was 30500 OHM. My ghost still haunts the catalog."
+   ],
+   "facts_cited": [
+    "facts.life.last_tx.timestamp",
+    "verdict.reasons[0]",
+    "wounds.findings[0].reference_url",
+    "wounds.incident.loss_note",
+    "wounds.incident.loss_usd"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "The ghost of OlympusDAO",
+   "paragraphs": [
+    "The shadow of OlympusDAO hangs heavy over the teller. It carries a wound from a governance flaw. No compiler version or Solidity upgrade can heal this mark.",
+    "The ghost lingers because of a lack of input validation. To still the spirit, count voting power from a snapshot taken before a proposal opens. Put a delay between a vote passing and its execution so a one-transaction loan cannot pass and run a proposal."
+   ],
+   "facts_cited": [
+    "verdict.reasons[0]"
+   ]
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I am a teller contract. My address is named in the DeFiHackLabs record of the OlympusDAO incident. The record does not say what part I played. The loss belongs to OlympusDAO as a whole, not to me alone.",
+   "I have a high impact wound. It happened on October 21, 2022. I had no input validation. This flaw let the shadows in.",
+   "The loss was about $292K. That was 30500 OHM. My ghost still haunts the catalog."
+  ],
+  "snippet": null,
+  "finding": {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "OlympusDAO",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/OlympusDao_exp.sol"
+  },
+  "incident": {
+   "id": "defihacklabs-2022-10-21-olympusdao",
+   "name": "OlympusDAO",
+   "date": "2022-10-21",
+   "loss_usd": 292000,
+   "loss_eth": null,
+   "loss_note": "~$292K (30500 OHM)",
+   "cause": "No input validation",
+   "swc": null,
+   "summary": "OlympusDAO (2022-10-21), documented in the DeFiHackLabs repository: No input validation. Reported loss: ~$292K (30500 OHM).",
+   "references": [
+    "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/OlympusDao_exp.sol",
+    "https://twitter.com/peckshield/status/1583416829237526528"
+   ]
+  }
+ },
+ "buster": {
+  "paragraphs": [
+   "The shadow of OlympusDAO hangs heavy over the teller. It carries a wound from a governance flaw. No compiler version or Solidity upgrade can heal this mark.",
+   "The ghost lingers because of a lack of input validation. To still the spirit, count voting power from a snapshot taken before a proposal opens. Put a delay between a vote passing and its execution so a one-transaction loan cannot pass and run a proposal."
+  ],
+  "fix": null,
+  "fix_reason": "No compiler version fixes this wound: it is a governance flaw (cause in the record: 'No input validation'). The buster's advice is a general mitigation for that kind of flaw, written by hand, not taken from the incident's references.",
+  "recipe": null,
+  "mitigation": {
+   "flaw_kind": "governance",
+   "advice": "Count voting power from a snapshot taken before a proposal opens, so borrowed tokens cannot vote. Put a delay between a vote passing and its execution, so a one-transaction loan cannot pass and run a proposal."
+  }
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 19.2,
+  "model_seconds": 19.2,
+  "calls": 6,
+  "prompt_tokens": 2887,
+  "output_tokens": 577
+ },
+ "verifier": {
+  "sentences": 34,
+  "grounded": 33,
+  "repaired": 1,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [
+   {
+    "chapter": "birth",
+    "verdict": "repaired",
+    "text": "On September 16, 2022, a wallet ending in 956c brought the BondFixedExpiryTeller into being.",
+    "problems": [
+     {
+      "kind": "number",
+      "token": "956"
+     }
+    ],
+    "rewrite": "On September 16, 2022, a wallet deployed the BondFixedExpiryTeller."
+   }
+  ],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "September 16, 2022",
+  "born_year": 2022,
+  "age_years": 4.1,
+  "age_years_whole": 4,
+  "last_seen_on": "October 21, 2022",
+  "last_seen_year": 2022,
+  "silent_years": 4.0,
+  "silent_days": 1468,
+  "active_days": 34,
+  "balance_eth": 0.0,
+  "deployer_short": "0x4e59…956c",
+  "address_short": "0x007f…1156",
+  "compiler_label": "Solidity 0.8.15",
+  "activity_label": "active in 2 different years between 2022 and 2023"
+ },
+ "notes": [
+  "no recipe matches the wound: buster tells the general mitigation, no code"
+ ],
+ "generated_at": "2026-10-29T05:54:02Z"
+}

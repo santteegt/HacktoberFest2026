@@ -1,0 +1,50 @@
+{
+ "address": "0xfcb0818c0b79a98686b2f56d4623d0b6c0243c55",
+ "name": "greeter",
+ "kind": "friendly",
+ "title": "The greeter nobody visited",
+ "tagline": "It learned one word, hello, and waited at the door.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "Hello, world",
+   "paragraphs": [
+    "The greeter was born on the 7th of September 2016, in block 2,217,797, in the DAO Fork age.",
+    "It knew how to say one thing back to anyone who asked."
+   ],
+   "facts_cited": [
+    "birth.timestamp",
+    "birth.block",
+    "age.hardfork"
+   ]
+  },
+  {
+   "id": "silence",
+   "variant": "never called",
+   "heading": "The door that never opened",
+   "paragraphs": [
+    "Nobody ever asked. Not one call has reached it since the day it was born."
+   ],
+   "facts_cited": [
+    "life.never_called"
+   ]
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "fixture (hand-written by Lane C1, not a model)",
+  "think": false,
+  "seconds": 0.0,
+  "prompt_tokens": 0,
+  "output_tokens": 0
+ },
+ "verifier": {
+  "sentences": 4,
+  "grounded": 4,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": []
+ },
+ "generated_at": "2026-10-29T12:05:00Z"
+}

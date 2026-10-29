@@ -1,0 +1,154 @@
+{
+ "address": "0xbb9bc244d798123fde783fcc1c72d3bb8c189413",
+ "tier": "catalog",
+ "compiler_version": null,
+ "analyzed_files": [
+  "source.eh.sol"
+ ],
+ "source_origin": "eh",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "catalog",
+   "swc": "SWC-107",
+   "title": "The DAO hack",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "source.eh.sol",
+   "lines": [
+    989,
+    1014
+   ],
+   "snippet": "        // Assign reward rights to new DAO\n        uint rewardTokenToBeMoved =\n            (balances[msg.sender] * p.splitData[0].rewardToken) /\n            p.splitData[0].totalSupply;\n\n        uint paidOutToBeMoved = DAOpaidOut[address(this)] * rewardTokenToBeMoved /\n            rewardToken[address(this)];\n\n        rewardToken[address(p.splitData[0].newDAO)] += rewardTokenToBeMoved;\n        if (rewardToken[address(this)] < rewardTokenToBeMoved)\n            throw;\n        rewardToken[address(this)] -= rewardTokenToBeMoved;\n\n        DAOpaidOut[address(p.splitData[0].newDAO)] += paidOutToBeMoved;\n        if (DAOpaidOut[address(this)] < paidOutToBeMoved)\n            throw;\n        DAOpaidOut[address(this)] -= paidOutToBeMoved;\n\n        // Burn DAO Tokens\n        Transfer(msg.sender, 0, balances[msg.sender]);\n        withdrawRewardFor(msg.sender); // be nice, and get his rewards\n        totalSupply -= balances[msg.sender];\n        balances[msg.sender] = 0;\n        paidOut[msg.sender] = 0;\n        return true;\n    }",
+   "description": "The split path paid ether out through an external call before the caller's balance was zeroed, so the attacker re-entered the split function from inside the payout and withdrew repeatedly in one transaction.",
+   "reference_url": "https://blog.ethereum.org/2016/06/17/critical-update-re-dao-vulnerability"
+  },
+  {
+   "id": "w2",
+   "check": "call-value",
+   "swc": "SWC-107",
+   "title": "call.value() with all remaining gas in payOut()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "source.eh.sol",
+   "lines": [
+    194,
+    203
+   ],
+   "snippet": "    function payOut(address _recipient, uint _amount) returns (bool) {\n        if (msg.sender != owner || msg.value > 0 || (payOwnerOnly && _recipient != owner))\n            throw;\n        if (_recipient.call.value(_amount)()) {\n            PayOut(_recipient, _amount);\n            return true;\n        } else {\n            return false;\n        }\n    }",
+   "description": "A low-level call.value() forwards all remaining gas to the recipient, which can run code and call back in before this function finishes.",
+   "reference_url": null
+  },
+  {
+   "id": "w3",
+   "check": "call-value",
+   "swc": "SWC-107",
+   "title": "call.value() with all remaining gas in createTokenProxy()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "source.eh.sol",
+   "lines": [
+    295,
+    312
+   ],
+   "snippet": "    function createTokenProxy(address _tokenHolder) returns (bool success) {\n        if (now < closingTime && msg.value > 0\n            && (privateCreation == 0 || privateCreation == msg.sender)) {\n\n            uint token = (msg.value * 20) / divisor();\n            extraBalance.call.value(msg.value - token)();\n            balances[_tokenHolder] += token;\n            totalSupply += token;\n            weiGiven[_tokenHolder] += msg.value;\n            CreatedToken(_tokenHolder, token);\n            if (totalSupply >= minTokensToCreate && !isFueled) {\n                isFueled = true;\n                FuelingToDate(totalSupply);\n            }\n            return true;\n        }\n        throw;\n    }",
+   "description": "A low-level call.value() forwards all remaining gas to the recipient, which can run code and call back in before this function finishes.",
+   "reference_url": null
+  },
+  {
+   "id": "w4",
+   "check": "call-value",
+   "swc": "SWC-107",
+   "title": "call.value() with all remaining gas in refund()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "source.eh.sol",
+   "lines": [
+    314,
+    328
+   ],
+   "snippet": "    function refund() noEther {\n        if (now > closingTime && !isFueled) {\n            // Get extraBalance - will only succeed when called for the first time\n            if (extraBalance.balance >= extraBalance.accumulatedInput())\n                extraBalance.payOut(address(this), extraBalance.accumulatedInput());\n\n            // Execute refund\n            if (msg.sender.call.value(weiGiven[msg.sender])()) {\n                Refund(msg.sender, weiGiven[msg.sender]);\n                totalSupply -= balances[msg.sender];\n                balances[msg.sender] = 0;\n                weiGiven[msg.sender] = 0;\n            }\n        }\n    }",
+   "description": "A low-level call.value() forwards all remaining gas to the recipient, which can run code and call back in before this function finishes.",
+   "reference_url": null
+  },
+  {
+   "id": "w5",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in executeProposal()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "source.eh.sol",
+   "lines": [
+    875,
+    879
+   ],
+   "snippet": "        if (!isRecipientAllowed(p.recipient)) {\n            closeProposal(_proposalID);\n            p.creator.send(p.proposalDeposit);\n            return;\n        }",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently.",
+   "reference_url": null
+  },
+  {
+   "id": "w6",
+   "check": "call-value",
+   "swc": "SWC-107",
+   "title": "call.value() with all remaining gas in executeProposal()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "source.eh.sol",
+   "lines": [
+    907,
+    911
+   ],
+   "snippet": "        // Execute result\n        if (quorum >= minQuorum(p.amount) && p.yea > p.nay && proposalCheck) {\n            if (!p.recipient.call.value(p.amount)(_transactionData))\n                throw;\n",
+   "description": "A low-level call.value() forwards all remaining gas to the recipient, which can run code and call back in before this function finishes.",
+   "reference_url": null
+  },
+  {
+   "id": "w7",
+   "check": "call-value",
+   "swc": "SWC-107",
+   "title": "call.value() with all remaining gas in newContract()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "source.eh.sol",
+   "lines": [
+    1016,
+    1028
+   ],
+   "snippet": "    function newContract(address _newContract){\n        if (msg.sender != address(this) || !allowedRecipients[_newContract]) return;\n        // move all ether\n        if (!_newContract.call.value(address(this).balance)()) {\n            throw;\n        }\n\n        //move all reward tokens\n        rewardToken[_newContract] += rewardToken[address(this)];\n        rewardToken[address(this)] = 0;\n        DAOpaidOut[_newContract] += DAOpaidOut[address(this)];\n        DAOpaidOut[address(this)] = 0;\n    }",
+   "description": "A low-level call.value() forwards all remaining gas to the recipient, which can run code and call back in before this function finishes.",
+   "reference_url": null
+  }
+ ],
+ "incident": {
+  "id": "thedao-2016",
+  "name": "The DAO hack",
+  "date": "2016-06-17",
+  "loss_usd": 50000000,
+  "loss_eth": 3600000,
+  "loss_note": "Wikipedia: about 3.6 million ether moved out, roughly a third of the 11.5 million committed, valued at around $50 million at the time. Atzei et al. (eprint 2016/1007) instead say about $60M came under the attacker's control.",
+  "cause": "The split path paid ether out through an external call before the caller's balance was zeroed, so the attacker re-entered the split function from inside the payout and withdrew repeatedly in one transaction.",
+  "swc": "SWC-107",
+  "summary": "On 17 June 2016 an attacker drained ether from The DAO by calling the split function recursively before balances were updated. The ether went into a child DAO that had a 28-day holding period, and the Ethereum Foundation blog proposed a soft fork aimed at that child DAO's code. The funds were later recovered through the hard fork.",
+  "references": [
+   "https://blog.ethereum.org/2016/06/17/critical-update-re-dao-vulnerability",
+   "https://en.wikipedia.org/wiki/The_DAO",
+   "https://swcregistry.io/docs/SWC-107",
+   "https://eprint.iacr.org/2016/1007",
+   "https://raw.githubusercontent.com/blockchainsllc/DAO/v1.0/DAO.sol",
+   "https://raw.githubusercontent.com/blockchainsllc/DAO/v1.0/ManagedAccount.sol",
+   "https://eth.blockscout.com/api/v2/addresses/0xbb9bc244d798123fde783fcc1c72d3bb8c189413"
+  ]
+ },
+ "slither_raw": null,
+ "catalog_entry": "thedao-2016",
+ "run": null,
+ "analyzed_at": "2026-10-29T05:05:02Z"
+}

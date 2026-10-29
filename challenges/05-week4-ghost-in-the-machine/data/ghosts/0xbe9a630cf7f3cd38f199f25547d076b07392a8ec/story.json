@@ -1,0 +1,194 @@
+{
+ "address": "0xbe9a630cf7f3cd38f199f25547d076b07392a8ec",
+ "name": "TemplateCrowdsale",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The Broken Promise of Muir Glacier",
+ "tagline": "A wounded crowdsale ignores the failure of a transfer, leaving its victims in eternal shadow.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of the template",
+   "paragraphs": [
+    "A single candle flickers over the name TemplateCrowdsale. It arrived on June 18, 2020, brought into the world by the wallet 0x1e1f…5cf1. This contract is a small program that lives on Ethereum. On the day it was born it was written into a block, one page of Ethereum's shared record book.",
+    "The world was in the Muir Glacier era when it first took breath. It was crafted using Solidity 0.4.24. Now it has lived for about 6 years."
+   ],
+   "facts_cited": [
+    "facts.age.hardfork",
+    "facts.birth.timestamp",
+    "facts.blockscout.creator",
+    "facts.blockscout.name",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The quiet pulse",
+   "paragraphs": [
+    "The contract lived a brief, lonely life. Only 4 transactions ever crossed its path. People reached out to it once to call init.",
+    "It grew still and silent long ago. The last busy days were in 2020. Now it sits like a ghost on the chain."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The silent failure",
+   "paragraphs": [
+    "I am TemplateCrowdsale. A shadow sits deep inside my _deliverTokens function. I send tokens to a beneficiary, but I do not listen to the answer.",
+    "The transfer happens, or it does not. I do not care if the token fails to move. I pass silently through the dark. This is my wound, and it is high.",
+    "I have a high impact wound where a token transfer's return value is ignored. They ache like old scars in the cold."
+   ],
+   "facts_cited": [
+    "facts.blockscout.name"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "The ghost of the ignored answer",
+   "paragraphs": [
+    "The candles tremble as the ghost of TemplateCrowdsale rises. It carries a wound from a call that was never heard. The contract sent tokens but did not listen to the reply. It moved forward as if the money had arrived.",
+    "A ghost-buster stands before the flickering light. The cure is to read the answer of every call. In Solidity 0.8.38, the code must check the boolean return. If the call fails, the contract must revert.",
+    "Old methods like send or low-level call could return false without stopping the flow. The new way lets every recipient pull their own payment. This stops one stubborn wallet from blocking the whole path."
+   ],
+   "facts_cited": [
+    "facts.blockscout.name",
+    "recipe.solc_version"
+   ]
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I am TemplateCrowdsale. A shadow sits deep inside my _deliverTokens function. I send tokens to a beneficiary, but I do not listen to the answer.",
+   "The transfer happens, or it does not. I do not care if the token fails to move. I pass silently through the dark. This is my wound, and it is high.",
+   "I have a high impact wound where a token transfer's return value is ignored. They ache like old scars in the cold."
+  ],
+  "snippet": {
+   "file": "TemplateCrowdsale.sol",
+   "lines": [
+    244,
+    251
+   ],
+   "code": "  function _deliverTokens(\n    address _beneficiary,\n    uint256 _tokenAmount\n  )\n    internal\n  {\n    token.transfer(_beneficiary, _tokenAmount);\n  }"
+  },
+  "finding": {
+   "id": "w1",
+   "check": "unchecked-transfer",
+   "swc": "SWC-104",
+   "title": "Crowdsale._deliverTokens(address,uint256) ignores return value by token.transfer(_beneficiary,_tokenAmount)",
+   "impact": "High",
+   "confidence": "Medium",
+   "confirmed": true,
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer"
+  },
+  "incident": null
+ },
+ "buster": {
+  "paragraphs": [
+   "The candles tremble as the ghost of TemplateCrowdsale rises. It carries a wound from a call that was never heard. The contract sent tokens but did not listen to the reply. It moved forward as if the money had arrived.",
+   "A ghost-buster stands before the flickering light. The cure is to read the answer of every call. In Solidity 0.8.38, the code must check the boolean return. If the call fails, the contract must revert.",
+   "Old methods like send or low-level call could return false without stopping the flow. The new way lets every recipient pull their own payment. This stops one stubborn wallet from blocking the whole path."
+  ],
+  "fix": {
+   "language": "solidity",
+   "version": "0.8.38",
+   "code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.38;\n\ncontract TemplateCrowdsale {\n    mapping(address => uint256) public owed;\n\n    function credit(address who) external payable {\n        owed[who] += msg.value;\n    }\n\n    // Pull, don't push: each recipient withdraws, and a failed transfer reverts instead of vanishing.\n    function claim() external {\n        uint256 amount = owed[msg.sender];\n        require(amount > 0, \"nothing owed\");\n        owed[msg.sender] = 0;\n        (bool ok, ) = payable(msg.sender).call{value: amount}(\"\");\n        require(ok, \"transfer failed\");\n    }\n}\n",
+   "compiled": true,
+   "compiler_output": "solc 0.8.38 --bin: OK (TemplateCrowdsale 1290 bytes)",
+   "adapted": true,
+   "renames": {
+    "Payouts": "TemplateCrowdsale"
+   },
+   "recipe": "unchecked-lowlevel",
+   "attempts": 2,
+   "note": "the recipe with names chosen by the model from the old contract; renamed and checked by code, compiled by solc",
+   "ignored_renames": [
+    "totalSupply is a function in the old contract but owed is a variable",
+    "buyTokens does not look like it does the job of credit",
+    "_deliverTokens takes 2 argument(s) in the old contract but claim takes 0"
+   ],
+   "failed_attempts": [
+    {
+     "ok": false,
+     "renames": {
+      "Payouts": "TemplateCrowdsale",
+      "owed": "totalSupply",
+      "credit": "buyTokens",
+      "claim": "_deliverTokens"
+     },
+     "rename_problems": [
+      "totalSupply is a function in the old contract but owed is a variable",
+      "buyTokens does not look like it does the job of credit",
+      "_deliverTokens takes 2 argument(s) in the old contract but claim takes 0"
+     ],
+     "meaning_problems": [],
+     "output": "solc 0.8.38 --bin: OK (TemplateCrowdsale 1290 bytes)"
+    }
+   ]
+  },
+  "fix_reason": null,
+  "recipe": {
+   "check": "unchecked-lowlevel",
+   "title": "Read the answer of every call",
+   "explain": "Old `send` and low-level `call` return false instead of failing, so a contract that ignores the answer keeps going as if the money arrived. Modern Solidity code checks the boolean that `call` returns and reverts on failure, and it lets each recipient pull its own payment so one stubborn wallet cannot block everyone else.",
+   "compiler_enforced": false
+  },
+  "mitigation": null
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 26.4,
+  "model_seconds": 26.3,
+  "calls": 8,
+  "prompt_tokens": 4628,
+  "output_tokens": 694
+ },
+ "verifier": {
+  "sentences": 35,
+  "grounded": 34,
+  "repaired": 1,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [
+   {
+    "chapter": "haunting",
+    "verdict": "repaired",
+    "text": "There are 11 other wounds in my body.",
+    "problems": [
+     {
+      "kind": "number",
+      "token": "11"
+     }
+    ],
+    "rewrite": "I have a high impact wound where a token transfer's return value is ignored."
+   }
+  ],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "June 18, 2020",
+  "born_year": 2020,
+  "age_years": 6.4,
+  "age_years_whole": 6,
+  "last_seen_on": "June 25, 2020",
+  "last_seen_year": 2020,
+  "silent_years": 6.3,
+  "silent_days": 2317,
+  "active_days": 6,
+  "balance_eth": 0.0,
+  "deployer_short": "0x1e1f…5cf1",
+  "address_short": "0xbe9a…a8ec",
+  "compiler_label": "Solidity 0.4.24",
+  "activity_label": "last busy in 2020"
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:52:58Z"
+}

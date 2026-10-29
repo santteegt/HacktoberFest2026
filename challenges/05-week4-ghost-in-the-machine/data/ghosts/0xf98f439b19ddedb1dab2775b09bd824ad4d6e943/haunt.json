@@ -1,0 +1,74 @@
+{
+ "address": "0xf98f439b19ddedb1dab2775b09bd824ad4d6e943",
+ "started_at": "2026-10-29T05:29:47Z",
+ "finished_at": "2026-10-29T05:30:03Z",
+ "kind": "friendly",
+ "title": "The Token Born in Silence",
+ "name": "HumanStandardToken",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 16.1,
+   "note": "random: verified contract created in block 8256162 (2019), found after 22 random blocks"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 3.7,
+   "note": "HumanStandardToken; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "tier regex, 0 finding(s)"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "friendly"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 12.8,
+   "note": "12.8 s, 5 calls; verifier 21/22 grounded, 1 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "48,192 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "9 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "random",
+  "reason": "verified contract created in block 8256162 (2019), found after 22 random blocks",
+  "name": "HumanStandardToken",
+  "year": 2019,
+  "hint": false
+ },
+ "gallery_path": "web/ghosts/0xf98f439b19ddedb1dab2775b09bd824ad4d6e943/"
+}

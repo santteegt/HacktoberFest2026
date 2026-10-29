@@ -1,0 +1,74 @@
+{
+ "address": "0x6b00da74da51b1eccbd05d979c1df075fd46ff45",
+ "started_at": "2026-10-29T05:30:09Z",
+ "finished_at": "2026-10-29T05:30:56Z",
+ "kind": "friendly",
+ "title": "The Saffron Ghost of Berlin",
+ "name": "SaffronERC20StakingPool",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 5.2,
+   "note": "random: verified contract created in block 12797270 (2021), found after 5 random blocks"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 5.7,
+   "note": "SaffronERC20StakingPool; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 14.5,
+   "note": "tier slither, 5 finding(s)"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "friendly"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 27.2,
+   "note": "27.2 s, 4 calls; verifier 21/21 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "48,117 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "10 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "random",
+  "reason": "verified contract created in block 12797270 (2021), found after 5 random blocks",
+  "name": "SaffronERC20StakingPool",
+  "year": 2021,
+  "hint": false
+ },
+ "gallery_path": "web/ghosts/0x6b00da74da51b1eccbd05d979c1df075fd46ff45/"
+}

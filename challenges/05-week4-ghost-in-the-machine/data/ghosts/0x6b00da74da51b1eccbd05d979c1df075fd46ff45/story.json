@@ -1,0 +1,94 @@
+{
+ "address": "0x6b00da74da51b1eccbd05d979c1df075fd46ff45",
+ "name": "SaffronERC20StakingPool",
+ "kind": "friendly",
+ "kind_source": "verdict.json",
+ "title": "The Saffron Ghost of Berlin",
+ "tagline": "A friendly staking pool that fell silent under the Berlin moon.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of the saffron pool",
+   "paragraphs": [
+    "Candles flicker over the SaffronERC20StakingPool. It was born on July 10, 2021. A wallet ending in f8cb brought it into the world. On the day it was born it was written into a block, one page of Ethereum's shared record book.",
+    "The contract is a small program that lives on Ethereum. It arrived during the Berlin era. It was built using Solidity 0.7.4. Now it has lived for 5.3 years."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.birth.timestamp",
+    "facts.blockscout.name",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The quiet hum of the pool",
+   "paragraphs": [
+    "People came to the SaffronERC20StakingPool to move their wealth. They called to add liquidity and remove liquidity. Some joined the governance to guide the way.",
+    "The contract saw 30 transactions in its life. It moved through new epochs before falling still. Its busy days ended in 2021."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.blockscout.name",
+    "facts.life.tx_count"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The long silence",
+   "paragraphs": [
+    "The saffron pool fell still on August 8, 2021. Someone called remove_liquidity and the movement stopped. It has been quiet for 5.2 years.",
+    "The code still rests on the chain like a shadow. It holds 0.0 ETH inside its empty heart."
+   ],
+   "facts_cited": [
+    "facts.life.last_tx.timestamp",
+    "facts.life.token_transfers",
+    "verdict.activity.silent_years"
+   ]
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 11.7,
+  "model_seconds": 11.7,
+  "calls": 4,
+  "prompt_tokens": 1707,
+  "output_tokens": 362
+ },
+ "verifier": {
+  "sentences": 21,
+  "grounded": 21,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "July 10, 2021",
+  "born_year": 2021,
+  "age_years": 5.3,
+  "age_years_whole": 5,
+  "last_seen_on": "August 8, 2021",
+  "last_seen_year": 2021,
+  "silent_years": 5.2,
+  "silent_days": 1907,
+  "active_days": 29,
+  "balance_eth": 0.0,
+  "deployer_short": "0x09e9…f8cb",
+  "address_short": "0x6b00…ff45",
+  "compiler_label": "Solidity 0.7.4",
+  "activity_label": "last busy in 2021"
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:53:24Z"
+}

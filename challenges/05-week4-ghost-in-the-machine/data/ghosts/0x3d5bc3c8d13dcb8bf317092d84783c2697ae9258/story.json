@@ -1,0 +1,159 @@
+{
+ "address": "0x3d5bc3c8d13dcb8bf317092d84783c2697ae9258",
+ "name": "Unitroller",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The Shadow of Muir Glacier",
+ "tagline": "Unitroller haunts the cold ethereum era, still bleeding from the CreamFinance wound.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of unitroller",
+   "paragraphs": [
+    "The candle flames dance against the cold stone. On August 2, 2020, a new spirit arrived. A wallet ending in 1074 brought it into the world. It began its life as a small program that lives on Ethereum.",
+    "The air was still during the Muir Glacier era. The contract was written in Solidity 0.5.17. On the day it was born, it was written into a block, one page of Ethereum's shared record book. It has lived for 6.2 years.",
+    "The ghost lingers in the shadows of the code. Its wound remains open in the silence. It watches the flickering light of the ofrenda."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.age.hardfork",
+    "facts.birth.timestamp",
+    "facts.blockscout.creator",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The shadow of manipulation",
+   "paragraphs": [
+    "The candles flicker over 24108 transactions. People called it to enterMarkets and exitMarket. They used claimComp to take what was offered. It lived through 4 different years between 2021 and 2024.",
+    "The records show a dark path. CreamFinance marked it on 2021-10-27. The DeFiHackLabs repository holds the truth of Price Manipulation. The wound remains in the code."
+   ],
+   "facts_cited": [
+    "facts.life.last_tx.method",
+    "facts.life.last_tx.timestamp",
+    "facts.life.recent_methods[1]",
+    "facts.life.recent_methods[2]",
+    "facts.life.tx_count",
+    "verdict.reasons[0]",
+    "wounds.findings[0].description",
+    "wounds.findings[0].reference_url"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The weight of the lost gold",
+   "paragraphs": [
+    "I am a proxy. I am the front door that passes calls on to another contract. My address sits in the DeFiHackLabs record of the CreamFinance incident. The record does not say what part I played.",
+    "The wound is deep. It was a Price Manipulation on October 27, 2021. The loss belongs to CreamFinance as a whole, not to me alone. It was $130M."
+   ],
+   "facts_cited": [
+    "verdict.reasons[0]",
+    "wounds.findings[0].description",
+    "wounds.findings[0].reference_url",
+    "wounds.incident.loss_usd"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "The scar of Unitroller",
+   "paragraphs": [
+    "The candle light shows a deep wound. It came from CreamFinance. The cause was Price Manipulation. This wound is a price oracle flaw. No compiler version and no Solidity upgrade fixes it.",
+    "Read prices from a time-weighted average or several independent sources. Never use the spot price of one pool that a single trade can move. Cap how far a price may move in one block. Pause borrowing when it jumps."
+   ],
+   "facts_cited": [
+    "verdict.reasons[0]",
+    "wounds.findings[0].description"
+   ]
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I am a proxy. I am the front door that passes calls on to another contract. My address sits in the DeFiHackLabs record of the CreamFinance incident. The record does not say what part I played.",
+   "The wound is deep. It was a Price Manipulation on October 27, 2021. The loss belongs to CreamFinance as a whole, not to me alone. It was $130M."
+  ],
+  "snippet": null,
+  "finding": {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "CreamFinance",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-10/Cream_2_exp.sol"
+  },
+  "incident": {
+   "id": "defihacklabs-2021-10-27-creamfinance",
+   "name": "CreamFinance",
+   "date": "2021-10-27",
+   "loss_usd": 130000000,
+   "loss_eth": null,
+   "loss_note": "$130M",
+   "cause": "Price Manipulation",
+   "swc": null,
+   "summary": "CreamFinance (2021-10-27), documented in the DeFiHackLabs repository: Price Manipulation. Reported loss: $130M.",
+   "references": [
+    "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-10/Cream_2_exp.sol",
+    "https://medium.com/immunefi/hack-analysis-cream-finance-oct-2021-fc222d913fc5"
+   ]
+  }
+ },
+ "buster": {
+  "paragraphs": [
+   "The candle light shows a deep wound. It came from CreamFinance. The cause was Price Manipulation. This wound is a price oracle flaw. No compiler version and no Solidity upgrade fixes it.",
+   "Read prices from a time-weighted average or several independent sources. Never use the spot price of one pool that a single trade can move. Cap how far a price may move in one block. Pause borrowing when it jumps."
+  ],
+  "fix": null,
+  "fix_reason": "No compiler version fixes this wound: it is a price oracle flaw (cause in the record: 'Price Manipulation'). The buster's advice is a general mitigation for that kind of flaw, written by hand, not taken from the incident's references.",
+  "recipe": null,
+  "mitigation": {
+   "flaw_kind": "price oracle",
+   "advice": "Read prices from a time-weighted average or from several independent sources, never from the spot price of one pool that a single trade can move. Cap how far a price may move in one block, and pause borrowing when it jumps."
+  }
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 23.0,
+  "model_seconds": 22.9,
+  "calls": 5,
+  "prompt_tokens": 2660,
+  "output_tokens": 572
+ },
+ "verifier": {
+  "sentences": 38,
+  "grounded": 38,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "August 2, 2020",
+  "born_year": 2020,
+  "age_years": 6.2,
+  "age_years_whole": 6,
+  "last_seen_on": "May 3, 2024",
+  "last_seen_year": 2024,
+  "silent_years": 2.5,
+  "silent_days": 908,
+  "active_days": 1369,
+  "balance_eth": 0.0,
+  "deployer_short": "0x1979…1074",
+  "address_short": "0x3d5b…9258",
+  "compiler_label": "Solidity 0.5.17",
+  "activity_label": "active in 4 different years between 2021 and 2024"
+ },
+ "notes": [
+  "no recipe matches the wound: buster tells the general mitigation, no code"
+ ],
+ "generated_at": "2026-10-29T05:54:42Z"
+}

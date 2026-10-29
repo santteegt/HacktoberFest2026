@@ -1,0 +1,149 @@
+{
+ "address": "0xc9fa8f4cfd11559b50c5c7f6672b9eea2757e1bd",
+ "name": "QUATERNION",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The Phantom of Berlin",
+ "tagline": "QUATERNION haunts the QTNToken wound since its final call.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of quaternion",
+   "paragraphs": [
+    "The candle flickers over a memory of July 26, 2021. A wallet ending in 5cb7 brought the contract into the world. It is a small program that lives on Ethereum. On the day it was born, it was written into a block, one page of Ethereum's shared record book.",
+    "The contract arrived during the Berlin era. It was built using Solidity 0.6.12. Now, it has lived for 5.3 years. Its shadow still lingers in the code."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.birth.timestamp",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The shadow of the flaw",
+   "paragraphs": [
+    "The candles flicker over 386 transactions. People reached out to it. They used approve and transfer to move their weight. It lived through 4 different years between 2021 and 2024.",
+    "A dark spot remains on the record. The DeFiHackLabs repository holds the truth of QTNToken. It speaks of a business logic flaw from 2023-01-18."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.life.last_tx.timestamp",
+    "facts.life.tx_count",
+    "verdict.reasons[0]",
+    "wounds.findings[0].reference_url"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The weight of the flaw",
+   "paragraphs": [
+    "I am a token. My address is named in the DeFiHackLabs record of the QTNToken incident. The record does not say what part I played. The loss belongs to QTNToken as a whole, not to me alone.",
+    "On January 18, 2023, a business logic flaw opened my doors. It was a high impact wound. About 2ETH vanished into the dark."
+   ],
+   "facts_cited": [
+    "verdict.reasons[0]",
+    "verdict.wounds.count",
+    "wounds.findings[0].reference_url"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "The unhealing scar",
+   "paragraphs": [
+    "The ghost of QUATERNION lingers in the cold air. Its wound is QTNToken. This was a business logic flaw in the economic logic. No compiler version fixes this. No Solidity upgrade can heal it.",
+    "Write down the rules the money must always obey. Test them with fuzzing before deployment. Cap how much one transaction can move. Add a time lock so a mistake can be caught before it is drained."
+   ],
+   "facts_cited": []
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I am a token. My address is named in the DeFiHackLabs record of the QTNToken incident. The record does not say what part I played. The loss belongs to QTNToken as a whole, not to me alone.",
+   "On January 18, 2023, a business logic flaw opened my doors. It was a high impact wound. About 2ETH vanished into the dark."
+  ],
+  "snippet": null,
+  "finding": {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "QTNToken",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2023-01/QTN_exp.sol"
+  },
+  "incident": {
+   "id": "defihacklabs-2023-01-18-qtntoken",
+   "name": "QTNToken",
+   "date": "2023-01-18",
+   "loss_usd": null,
+   "loss_eth": null,
+   "loss_note": "~2ETH",
+   "cause": "business logic flaw",
+   "swc": null,
+   "summary": "QTNToken (2023-01-18), documented in the DeFiHackLabs repository: business logic flaw. Reported loss: ~2ETH.",
+   "references": [
+    "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2023-01/QTN_exp.sol",
+    "https://twitter.com/BlockSecTeam/status/1615625901739511809"
+   ]
+  }
+ },
+ "buster": {
+  "paragraphs": [
+   "The ghost of QUATERNION lingers in the cold air. Its wound is QTNToken. This was a business logic flaw in the economic logic. No compiler version fixes this. No Solidity upgrade can heal it.",
+   "Write down the rules the money must always obey. Test them with fuzzing before deployment. Cap how much one transaction can move. Add a time lock so a mistake can be caught before it is drained."
+  ],
+  "fix": null,
+  "fix_reason": "No compiler version fixes this wound: it is a economic logic flaw (cause in the record: 'business logic flaw'). The buster's advice is a general mitigation for that kind of flaw, written by hand, not taken from the incident's references.",
+  "recipe": null,
+  "mitigation": {
+   "flaw_kind": "economic logic",
+   "advice": "Write down the rules the money must always obey and test them with fuzzing before deployment. Cap how much one transaction can move, and add a time lock so a mistake can be caught before it is drained."
+  }
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 24.8,
+  "model_seconds": 24.7,
+  "calls": 5,
+  "prompt_tokens": 2629,
+  "output_tokens": 524
+ },
+ "verifier": {
+  "sentences": 33,
+  "grounded": 33,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "July 26, 2021",
+  "born_year": 2021,
+  "age_years": 5.3,
+  "age_years_whole": 5,
+  "last_seen_on": "May 19, 2024",
+  "last_seen_year": 2024,
+  "silent_years": 2.4,
+  "silent_days": 893,
+  "active_days": 1027,
+  "balance_eth": 0.0,
+  "deployer_short": "0x21bb…5cb7",
+  "address_short": "0xc9fa…e1bd",
+  "compiler_label": "Solidity 0.6.12",
+  "activity_label": "active in 4 different years between 2021 and 2024"
+ },
+ "notes": [
+  "no recipe matches the wound: buster tells the general mitigation, no code"
+ ],
+ "generated_at": "2026-10-29T05:55:33Z"
+}

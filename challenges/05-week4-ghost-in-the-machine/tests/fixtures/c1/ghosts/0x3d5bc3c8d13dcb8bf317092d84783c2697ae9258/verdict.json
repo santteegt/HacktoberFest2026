@@ -1,0 +1,26 @@
+{
+ "address": "0x3d5bc3c8d13dcb8bf317092d84783c2697ae9258",
+ "kind": "bad",
+ "reasons": [
+  "documented incident: CreamFinance (2021-10-27)",
+  "0 successful calls in the last 12 months out of 24108 lifetime txs (0.0%)"
+ ],
+ "activity": {
+  "lifetime_txs": 24108,
+  "last_tx": "2024-05-03T06:42:47Z",
+  "last_12m_txs": 0,
+  "last_12m_capped": false,
+  "silent_years": 2.5
+ },
+ "wounds": {
+  "count": 1,
+  "confirmed": 1,
+  "worst_impact": "High"
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T12:00:00Z"
+}

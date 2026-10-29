@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>$title</title>
+<style>
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1200px; height: 630px; overflow: hidden; }
+body {
+  position: relative;
+  background: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1.6px) 0 0 / 9px 9px, linear-gradient(165deg, #1b0b2b 0%, #3b1a5a 58%, #6a2a6e 100%);
+  color: #f7ead0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.picado { position: absolute; top: 0; left: 0; width: 1200px; height: 46px; display: block; }
+.moon { position: absolute; right: 70px; top: 74px; width: 96px; height: 96px; border-radius: 50%; background: #ffe9a8; box-shadow: 0 0 60px 14px rgba(255,233,168,.3); }
+.stars { position: absolute; inset: 0; background-image: radial-gradient(#fff 1.2px, transparent 2px), radial-gradient(#ffd24a 1.2px, transparent 2px); background-size: 140px 110px, 190px 150px; background-position: 20px 60px, 80px 90px; opacity: .5; }
+.frame { position: absolute; inset: 60px 26px 22px; border: 4px solid #1d1029; border-radius: 10px; box-shadow: 9px 9px 0 #f29d1f; }
+.copy { position: absolute; left: 66px; top: 92px; width: 700px; }
+.chips { display: flex; gap: 12px; flex-wrap: wrap; }
+.chip { padding: 7px 16px; border: 3px solid #1d1029; border-radius: 999px; background: #fff8e7; color: #1d1029; font: 800 20px/1.2 ui-rounded, "SF Pro Rounded", "Avenir Next", system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; }
+.badge { color: #fff; }
+.kind-friendly { background: #0f6b5c; } .kind-lingering { background: #5b3f8c; } .kind-bad { background: #a3122a; }
+.kind-banished { background: #3a3a3a; } .kind-alive { background: #1f5f99; } .kind-unknown { background: #5a4a6e; }
+h1 {
+  margin-top: 22px;
+  font: 900 64px/1.02 ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Avenir Next", system-ui, sans-serif;
+  text-transform: uppercase; color: #fff; text-shadow: 4px 4px 0 #1d1029, 8px 8px 0 #e8457a;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere;
+}
+h1.long { font-size: 50px; }
+.tagline { margin-top: 20px; font: 27px/1.38 "Chalkboard SE", "Comic Sans MS", "Comic Neue", ui-rounded, system-ui, sans-serif; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.name { position: absolute; left: 66px; bottom: 82px; font: 700 26px/1.2 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #ffd24a; max-width: 720px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.site { position: absolute; left: 66px; bottom: 44px; font: 800 19px/1 ui-rounded, "Avenir Next", system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #cdbbe6; }
+.stage { position: absolute; right: 40px; bottom: 26px; width: 430px; height: 470px; }
+.stage .ghost { position: absolute; right: 18px; top: 70px; width: 320px; height: auto; transform: rotate(-4deg); }
+.stage .contract { position: absolute; right: 40px; top: 90px; width: 280px; }
+.stage .gravestone { position: absolute; right: 60px; bottom: 10px; width: 210px; }
+.stage .teller { position: absolute; left: 0; bottom: -4px; width: 150px; height: auto; }
+.ghost .face { display: none; }
+[data-kind="friendly"] .ghost .face-friendly, [data-kind="alive"] .ghost .face-friendly, [data-kind="unknown"] .ghost .face-friendly,
+[data-kind="lingering"] .ghost .face-lingering, [data-kind="bad"] .ghost .face-bad, [data-kind="banished"] .ghost .face-banished { display: inline; }
+[data-kind="bad"] .ghost { filter: drop-shadow(0 0 22px rgba(232,69,122,.7)); }
+[data-kind="lingering"] .ghost { filter: drop-shadow(0 0 18px rgba(180,139,224,.7)); }
+[data-kind="banished"] .ghost .ghost-sheet { opacity: .6; }
+[data-kind="banished"] .stage .ghost { top: 0; width: 230px; }
+</style>
+</head>
+<body data-kind="$kind">
+<div class="stars"></div>
+<div class="moon"></div>
+$picado
+<div class="frame"></div>
+<div class="copy">
+<div class="chips"><span class="chip badge kind-$kind">$badge</span><span class="chip">Age: $age</span>$extra_chips</div>
+<h1 class="$title_class">$title</h1>
+<p class="tagline">$tagline</p>
+</div>
+<p class="name">$name</p>
+<p class="site">$site</p>
+<div class="stage">$stage</div>
+</body>
+</html>

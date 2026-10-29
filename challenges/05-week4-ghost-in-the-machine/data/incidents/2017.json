@@ -1,0 +1,60 @@
+[
+ {
+  "date": "2017-11-06",
+  "name": "Parity",
+  "cause": "'Accidentally Killed It'",
+  "loss_usd": null,
+  "loss_text": "514k ETH",
+  "poc_path": "src/test/2017-11/Parity_kill_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2017-11/Parity_kill_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://elementus.io/blog/which-icos-are-affected-by-the-parity-wallet-bug/",
+   "https://etherscan.io/tx/0x05f71e1b2cb4f03e547739db15d080fd30c989eda04d37ce6264c5686e0722c9",
+   "https://etherscan.io/tx/0x47f7cff7a5e671884629c93b368cb18f58a993f4b19c2a53a8662e3f1482f690"
+  ],
+  "victim_addresses": [
+   "0x863df6bfa4469f3ead0be8f9f2aae51c91a907b4"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x863df6bfa4469f3ead0be8f9f2aae51c91a907b4",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": false,
+  "primary_name": null
+ },
+ {
+  "date": "2017-07-19",
+  "name": "Parity Multisig",
+  "cause": "delegatecall to unprotected initWallet",
+  "loss_usd": 30000000,
+  "loss_text": "153,037 ETH (~$30M)",
+  "poc_path": "src/test/2017-07/Parity_first_hack_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2017-07/Parity_first_hack_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://www.openzeppelin.com/news/on-the-parity-wallet-multisig-hack-405a8c12e8f7",
+   "https://haseebq.com/a-hacker-stole-31m-of-ether/",
+   "https://etherscan.io/tx/0x9dbf0326a03a2a3719c27be4fa69aacc9857fd231a8d9dcaede4bb083def75ec",
+   "https://etherscan.io/tx/0xeef10fc5170f669b86c4cd0444882a96087221325f8bf2f55d6188633aa7be7c"
+  ],
+  "victim_addresses": [
+   "0xb3764761e297d6f121e79c32a65829cd1ddb4d32",
+   "0xbec591de75b8699a3ba52f073428822d0bfc0d7e"
+  ],
+  "ignored_well_known": [],
+  "primary": "0xb3764761e297d6f121e79c32a65829cd1ddb4d32",
+  "chains": [],
+  "chain": "unspecified",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": false,
+  "primary_name": null
+ }
+]

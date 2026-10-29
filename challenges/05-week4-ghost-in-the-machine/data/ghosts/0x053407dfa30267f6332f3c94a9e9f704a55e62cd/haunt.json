@@ -1,0 +1,74 @@
+{
+ "address": "0x053407dfa30267f6332f3c94a9e9f704a55e62cd",
+ "started_at": "2026-10-29T05:38:54Z",
+ "finished_at": "2026-10-29T05:39:25Z",
+ "kind": "lingering",
+ "title": "The Ghost of Shanghai's Switchboard",
+ "name": "PolygonL1Switchboard",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 2.9,
+   "note": "random: verified contract created in block 18583724 (2023), found after 2 random blocks"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 5.0,
+   "note": "PolygonL1Switchboard; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 13.8,
+   "note": "tier slither, 2 finding(s)"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "lingering"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 12.1,
+   "note": "12.1 s, 4 calls; verifier 25/25 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "48,424 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "20 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "random",
+  "reason": "verified contract created in block 18583724 (2023), found after 2 random blocks",
+  "name": "PolygonL1Switchboard",
+  "year": 2023,
+  "hint": false
+ },
+ "gallery_path": "web/ghosts/0x053407dfa30267f6332f3c94a9e9f704a55e62cd/"
+}

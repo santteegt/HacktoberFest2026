@@ -1,0 +1,128 @@
+{
+ "address": "0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T04:32:52Z",
+ "eh": {
+  "layer": "documented",
+  "era_id": "homestead",
+  "era_name": "Homestead",
+  "name": "Rubixi",
+  "token": {
+   "token_name": null,
+   "token_symbol": null,
+   "token_decimals": null
+  },
+  "heuristics": {
+   "contract_type": null,
+   "confidence": 0.5,
+   "is_proxy": false,
+   "has_selfdestruct": false,
+   "is_erc20_like": false
+  },
+  "decompilation_success": true,
+  "code_size_bytes": 2523,
+  "short_description": null,
+  "description": null,
+  "historical_significance": null,
+  "historical_context": null,
+  "verification_status": "verified",
+  "verification_method": null,
+  "links": [],
+  "metadata": [
+   {
+    "key": "tx_counts_by_year_external_to_v1",
+    "value": null,
+    "json_value": {
+     "counts": {
+      "2016": 308,
+      "2017": 18,
+      "2018": 68,
+      "2019": 8,
+      "2020": 10,
+      "2021": 36,
+      "2022": 60,
+      "2023": 21,
+      "2024": 26,
+      "2025": 71,
+      "2026": 10
+     },
+     "truncated": false
+    },
+    "source_url": "alchemy_getAssetTransfers",
+    "created_at": "2026-04-01T05:04:33.984Z"
+   }
+  ],
+  "has_source": true,
+  "has_abi": true
+ },
+ "birth": {
+  "block": 1150481,
+  "timestamp": "2016-03-14T21:08:37.000Z",
+  "tx": "0x4496b64234e97bb7ed008d09938fb9e94ecf3461cbd89a5eabda356a098f8ec3",
+  "deployer": "0xdd68da49b2a0c46eb508bd4f18044b5c6268ad60"
+ },
+ "blockscout": {
+  "name": "Rubixi",
+  "is_contract": true,
+  "is_verified": true,
+  "ens": null,
+  "creation_tx": "0x4496b64234e97bb7ed008d09938fb9e94ecf3461cbd89a5eabda356a098f8ec3",
+  "creator": "0xdD68da49B2a0c46eB508bD4f18044B5C6268ad60",
+  "has_logs": false
+ },
+ "life": {
+  "tx_count": 712,
+  "token_transfers": 19,
+  "gas_used": 67783017,
+  "last_tx": {
+   "timestamp": "2026-10-13T12:54:47.000000Z",
+   "method": "DynamicPyramid",
+   "status": "ok",
+   "hash": "0x49a9b2fe0b6e9aea0b2e77251cdfa819374d1c76b8287d4d057a8b9a27ea814b"
+  },
+  "recent_methods": [
+   "0x3ccfd60b",
+   "DynamicPyramid",
+   "changeFeePercentage",
+   "changeMultiplier",
+   "changeOwner",
+   "collectAllFees",
+   "collectFeesInEther",
+   "collectPercentOfFees"
+  ],
+  "recent_years": [
+   "2026"
+  ],
+  "balance_wei": 4022216114388156011,
+  "balance_eth": 4.022216
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 2523,
+  "balance_wei": 4022216114388156011,
+  "balance_eth": 4.022216
+ },
+ "source": {
+  "provider": "sourcify",
+  "match": "match",
+  "name": "Rubixi",
+  "compiler_version": "0.2.1+commit.91a6b35f",
+  "language": "Solidity",
+  "files": [
+   "Rubixi.sol"
+  ],
+  "dir": "data/ghosts/0xe82719202e5965cf5d9b6673b7503a3b92de20be/src"
+ },
+ "age": {
+  "hardfork": "Homestead",
+  "eh_era": "Homestead"
+ },
+ "sites": [],
+ "name": "Rubixi",
+ "sources_used": [
+  "blockscout",
+  "ethereumhistory",
+  "rpc",
+  "sourcify"
+ ]
+}

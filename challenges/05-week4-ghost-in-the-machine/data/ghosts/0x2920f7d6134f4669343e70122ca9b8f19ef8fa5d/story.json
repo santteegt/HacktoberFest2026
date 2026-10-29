@@ -1,0 +1,163 @@
+{
+ "address": "0x2920f7d6134f4669343e70122ca9b8f19ef8fa5d",
+ "name": "MonoX Token",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The Wounded Soul of MonoX",
+ "tagline": "Born in the London era, this ghost still bleeds from the MonoX Finance wound.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of the mono x token",
+   "paragraphs": [
+    "The candle light dances on a cold screen. On November 19, 2021, a wallet ending in 7355 brought the MonoX Token into the world. It is a small program that lives on Ethereum. On the day it was born, it was written into a block, one page of Ethereum's shared record book.",
+    "The contract arrived during the London era. It was built with Solidity 0.7.6. Now it sits 4.9 years old in the quiet dark."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.birth.timestamp",
+    "facts.blockscout.creator",
+    "facts.blockscout.name",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The shadow of price manipulation",
+   "paragraphs": [
+    "The MonoX Token moved with a steady pulse. It stayed active every year since 2024. People reached out to it to mint, approve, and transfer.",
+    "The records show a heavy shadow. MonoX Finance was documented in the DeFiHackLabs repository. It spoke of price manipulation on 2021-11-30.",
+    "The contract saw 2230 transactions in its life. It remains a ghost in the machine."
+   ],
+   "facts_cited": [
+    "facts.blockscout.name",
+    "facts.life.recent_years[0]",
+    "facts.life.tx_count",
+    "verdict.reasons[0]",
+    "wounds.findings[0].reference_url"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The heavy price of manipulation",
+   "paragraphs": [
+    "I am a token. My address is named in the DeFiHackLabs record of the MonoX Finance incident. The record does not say what part I played. The loss belongs to MonoX Finance as a whole, not to me alone.",
+    "The wound is deep. Price Manipulation tore through the system on November 30, 2021. It left a high impact and a confirmed scar. $31 million vanished into the dark.",
+    "The ghost of that day remains. It is documented in the DeFiHackLabs repository. I carry the weight of the $31 million loss in my code."
+   ],
+   "facts_cited": [
+    "facts.blockscout.name",
+    "verdict.reasons[0]",
+    "wounds.findings[0].description",
+    "wounds.findings[0].reference_url",
+    "wounds.incident.loss_usd"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "The lingering scar",
+   "paragraphs": [
+    "The MonoX Token carries a deep wound from MonoX Finance. This ghost was born from a price oracle flaw. No compiler version and no Solidity upgrade can fix this design flaw.",
+    "Read prices from a time-weighted average or several independent sources. Do not use the spot price of one pool that a single trade can move. Cap how far a price may move in one block and pause borrowing when it jumps."
+   ],
+   "facts_cited": [
+    "facts.blockscout.name",
+    "verdict.reasons[0]"
+   ]
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I am a token. My address is named in the DeFiHackLabs record of the MonoX Finance incident. The record does not say what part I played. The loss belongs to MonoX Finance as a whole, not to me alone.",
+   "The wound is deep. Price Manipulation tore through the system on November 30, 2021. It left a high impact and a confirmed scar. $31 million vanished into the dark.",
+   "The ghost of that day remains. It is documented in the DeFiHackLabs repository. I carry the weight of the $31 million loss in my code."
+  ],
+  "snippet": null,
+  "finding": {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "MonoX Finance",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-11/Mono_exp.sol"
+  },
+  "incident": {
+   "id": "defihacklabs-2021-11-30-monox-finance",
+   "name": "MonoX Finance",
+   "date": "2021-11-30",
+   "loss_usd": 31000000,
+   "loss_eth": null,
+   "loss_note": "$31 million",
+   "cause": "Price Manipulation",
+   "swc": null,
+   "summary": "MonoX Finance (2021-11-30), documented in the DeFiHackLabs repository: Price Manipulation. Reported loss: $31 million.",
+   "references": [
+    "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-11/Mono_exp.sol",
+    "https://slowmist.medium.com/detailed-analysis-of-the-31-million-monox-protocol-hack-574d8c44a9c8",
+    "https://knownseclab.com/news/61a986811992da0067558749",
+    "https://www.tuoniaox.com/news/p-521076.html",
+    "https://polygonscan.com/tx/0x5a03b9c03eedcb9ec6e70c6841eaa4976a732d050a6218969e39483bb3004d5d",
+    "https://etherscan.io/tx/0x9f14d093a2349de08f02fc0fb018dadb449351d0cdb7d0738ff69cc6fef5f299"
+   ]
+  }
+ },
+ "buster": {
+  "paragraphs": [
+   "The MonoX Token carries a deep wound from MonoX Finance. This ghost was born from a price oracle flaw. No compiler version and no Solidity upgrade can fix this design flaw.",
+   "Read prices from a time-weighted average or several independent sources. Do not use the spot price of one pool that a single trade can move. Cap how far a price may move in one block and pause borrowing when it jumps."
+  ],
+  "fix": null,
+  "fix_reason": "No compiler version fixes this wound: it is a price oracle flaw (cause in the record: 'Price Manipulation'). The buster's advice is a general mitigation for that kind of flaw, written by hand, not taken from the incident's references.",
+  "recipe": null,
+  "mitigation": {
+   "flaw_kind": "price oracle",
+   "advice": "Read prices from a time-weighted average or from several independent sources, never from the spot price of one pool that a single trade can move. Cap how far a price may move in one block, and pause borrowing when it jumps."
+  }
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 20.5,
+  "model_seconds": 20.4,
+  "calls": 5,
+  "prompt_tokens": 2648,
+  "output_tokens": 563
+ },
+ "verifier": {
+  "sentences": 33,
+  "grounded": 33,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "November 19, 2021",
+  "born_year": 2021,
+  "age_years": 4.9,
+  "age_years_whole": 4,
+  "last_seen_on": "September 9, 2026",
+  "last_seen_year": 2026,
+  "silent_years": 0.1,
+  "silent_days": 49,
+  "active_days": 1755,
+  "balance_eth": 0.0,
+  "deployer_short": "0xab51…7355",
+  "address_short": "0x2920…fa5d",
+  "compiler_label": "Solidity 0.7.6",
+  "activity_label": "active every year since 2024"
+ },
+ "notes": [
+  "no recipe matches the wound: buster tells the general mitigation, no code"
+ ],
+ "generated_at": "2026-10-29T05:54:21Z"
+}

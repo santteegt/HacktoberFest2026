@@ -1,0 +1,110 @@
+{
+ "address": "0x053407dfa30267f6332f3c94a9e9f704a55e62cd",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T05:38:54Z",
+ "blockscout": {
+  "name": "PolygonL1Switchboard",
+  "is_contract": true,
+  "is_verified": true,
+  "ens": null,
+  "creation_tx": "0x224aac0c78954710102c1d16d15fcc811b09572f11c3fa09f47614338fd79599",
+  "creator": "0x5fD7D0d6b91CC4787Bcb86ca47e0Bd4ea0346d34",
+  "has_logs": true
+ },
+ "birth": {
+  "block": 18583724,
+  "timestamp": "2023-11-16T10:03:11.000000Z",
+  "tx": "0x224aac0c78954710102c1d16d15fcc811b09572f11c3fa09f47614338fd79599",
+  "deployer": "0x5fD7D0d6b91CC4787Bcb86ca47e0Bd4ea0346d34",
+  "timestamp_source": "blockscout"
+ },
+ "life": {
+  "tx_count": 1159,
+  "token_transfers": 0,
+  "gas_used": 55704010,
+  "last_tx": {
+   "timestamp": "2025-01-04T14:26:47.000000Z",
+   "method": "nominateOwner",
+   "status": "ok",
+   "hash": "0xa5e98fbfc8f5a082aef6f0c7daa885873e530b5c1cad4d57dd6f51ae56d8181f"
+  },
+  "recent_methods": [
+   "nominateOwner",
+   "setFees"
+  ],
+  "recent_years": [
+   "2024",
+   "2025"
+  ],
+  "balance_wei": 0,
+  "balance_eth": 0.0,
+  "last_12m_capped": false,
+  "first_tx_timestamp": "2023-11-16T10:03:11.000000Z",
+  "calls": 1159,
+  "calls_source": "blockscout-counters",
+  "calls_capped": false,
+  "never_called": false,
+  "first_call_timestamp": "2023-11-16T13:26:23.000000Z",
+  "last_12m_txs": 0
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 18572,
+  "balance_wei": 0,
+  "balance_eth": 0.0
+ },
+ "source": {
+  "provider": "sourcify",
+  "match": "match",
+  "name": "PolygonL1Switchboard",
+  "compiler_version": "0.8.19+commit.7dd6d404",
+  "language": "Solidity",
+  "files": [
+   "contracts/interfaces/ICapacitor.sol",
+   "contracts/interfaces/IExecutionManager.sol",
+   "contracts/interfaces/ISignatureVerifier.sol",
+   "contracts/interfaces/ISocket.sol",
+   "contracts/interfaces/ISwitchboard.sol",
+   "contracts/interfaces/ITransmitManager.sol",
+   "contracts/libraries/RescueFundsLib.sol",
+   "contracts/switchboard/native/NativeSwitchboardBase.sol",
+   "contracts/switchboard/native/PolygonL1Switchboard.sol",
+   "contracts/utils/AccessControl.sol",
+   "contracts/utils/AccessControlExtended.sol",
+   "contracts/utils/AccessRoles.sol",
+   "contracts/utils/Ownable.sol",
+   "contracts/utils/SigIdentifiers.sol",
+   "lib/contracts/contracts/lib/ExitPayloadReader.sol",
+   "lib/contracts/contracts/lib/Merkle.sol",
+   "lib/contracts/contracts/lib/MerklePatriciaProof.sol",
+   "lib/contracts/contracts/lib/RLPReader.sol",
+   "lib/contracts/contracts/tunnel/FxBaseRootTunnel.sol",
+   "lib/solmate/src/tokens/ERC20.sol",
+   "lib/solmate/src/utils/SafeTransferLib.sol"
+  ],
+  "dir": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/05-week4-ghost-in-the-machine/data/ghosts/0x053407dfa30267f6332f3c94a9e9f704a55e62cd/src"
+ },
+ "age": {
+  "hardfork": "Shanghai",
+  "eh_era": null
+ },
+ "sites": [],
+ "sites_excluded": [],
+ "name": "PolygonL1Switchboard",
+ "sources_used": [
+  "blockscout",
+  "rpc",
+  "sourcify"
+ ],
+ "names": [
+  {
+   "name": "PolygonL1Switchboard",
+   "source": "blockscout"
+  },
+  {
+   "name": "PolygonL1Switchboard",
+   "source": "source:sourcify"
+  }
+ ],
+ "proxy": false
+}

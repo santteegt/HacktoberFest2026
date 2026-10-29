@@ -1,0 +1,74 @@
+{
+ "address": "0x8f5e78888f8933ed676a62bb6b58a4b279abe408",
+ "started_at": "2026-10-29T05:41:14Z",
+ "finished_at": "2026-10-29T05:41:40Z",
+ "kind": "friendly",
+ "title": "The Proxy of Muir Glacier",
+ "name": "AdminUpgradeabilityProxy",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 2.2,
+   "note": "random: verified contract created in block 12016209 (2021), found after 2 random blocks"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 4.6,
+   "note": "AdminUpgradeabilityProxy; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 11.1,
+   "note": "tier slither, 0 finding(s)"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "friendly"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 11.2,
+   "note": "11.1 s, 4 calls; verifier 23/23 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "48,308 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "21 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "random",
+  "reason": "verified contract created in block 12016209 (2021), found after 2 random blocks",
+  "name": "stakedXYM",
+  "year": 2021,
+  "hint": false
+ },
+ "gallery_path": "web/ghosts/0x8f5e78888f8933ed676a62bb6b58a4b279abe408/"
+}

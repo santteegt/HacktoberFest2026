@@ -1,0 +1,4 @@
+{"address": "0xf2919d1d80aff2940274014bef534f7791906ff2", "source": "incident", "reason": "victim of JAY (2022-12-29): Insufficient validation + Reentrancy", "name": "JAY", "year": 2022,
+ "extra": {"incident": {"name": "JAY", "date": "2022-12-29", "cause": "Insufficient validation + Reentrancy", "loss_usd": null, "loss_text": "~15.32 ETH",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-12/JAY_exp.sol", "references": ["https://twitter.com/BlockSecTeam/status/1608372475225866240"],
+  "victim_addresses": ["0x0348d20b74ddc0ac9bfc3626e06d30bb6fac213b", "0xf2919d1d80aff2940274014bef534f7791906ff2"], "primary": "0xf2919d1d80aff2940274014bef534f7791906ff2"}}}

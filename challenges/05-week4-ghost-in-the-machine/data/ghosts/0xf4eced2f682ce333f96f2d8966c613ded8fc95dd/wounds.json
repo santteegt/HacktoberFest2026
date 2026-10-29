@@ -1,0 +1,16 @@
+{
+ "address": "0xf4eced2f682ce333f96f2d8966c613ded8fc95dd",
+ "tier": "regex",
+ "compiler_version": "0.1.6+commit.d41f8b7c",
+ "analyzed_files": [
+  "Contract.sol",
+  "MyToken.sol"
+ ],
+ "source_origin": "src",
+ "findings": [],
+ "incident": null,
+ "slither_raw": null,
+ "catalog_entry": null,
+ "run": null,
+ "analyzed_at": "2026-10-29T05:32:18Z"
+}

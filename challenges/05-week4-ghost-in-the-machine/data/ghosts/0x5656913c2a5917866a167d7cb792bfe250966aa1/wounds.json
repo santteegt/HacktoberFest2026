@@ -1,0 +1,46 @@
+{
+ "address": "0x5656913c2a5917866a167d7cb792bfe250966aa1",
+ "tier": "slither",
+ "compiler_version": "0.4.8+commit.60cc1668",
+ "analyzed_files": [
+  "BlockSwapWrapperGolemNetworkToken.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "uninitialized-state",
+   "swc": "SWC-109",
+   "title": "BlockSwapWrapperGolemNetworkToken.owner is never initialized. It is used in",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "BlockSwapWrapperGolemNetworkToken.sol",
+   "lines": [
+    45,
+    45
+   ],
+   "snippet": "    address public owner;",
+   "description": "A state variable is read before anything ever writes it, so it holds the zero value. Slither: BlockSwapWrapperGolemNetworkToken.owner (BlockSwapWrapperGolemNetworkToken.sol#45) is never initialized. It is used in:\n\t- BlockSwapWrapperGolemNetworkToken.moveToWaves(string,uint256) (BlockSwapWrapperGolemNetworkToken.sol#71-74)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-state"
+  }
+ ],
+ "incident": null,
+ "slither_raw": "data/ghosts/0x5656913c2a5917866a167d7cb792bfe250966aa1/slither.json",
+ "catalog_entry": null,
+ "run": {
+  "method": "single-file",
+  "errors": [
+   "solc-json: Invalid compilation: \nInvalid solc compilation unrecognised option '--standard-json'\n"
+  ],
+  "seconds": {
+   "solc-json": 1.7,
+   "single-file": 0.69
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.4.8"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:40:27Z"
+}

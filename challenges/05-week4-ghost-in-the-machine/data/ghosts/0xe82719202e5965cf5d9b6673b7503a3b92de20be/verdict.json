@@ -1,0 +1,29 @@
+{
+ "address": "0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+ "kind": "bad",
+ "reasons": [
+  "documented incident: Rubixi ownership takeover (2016-04-02)",
+  "1 fatal wound(s) (confirmed, High impact, Medium+ confidence); first: constructor-name (High/High) DynamicPyramid() looks like a constructor but no contract is named DynamicPyramid",
+  "75 successful calls in the last 12 months out of 712 lifetime txs (10.5%)"
+ ],
+ "activity": {
+  "lifetime_txs": 712,
+  "last_tx": "2026-10-13T12:54:47Z",
+  "last_12m_txs": 75,
+  "last_12m_capped": false,
+  "silent_years": 0.0
+ },
+ "wounds": {
+  "count": 5,
+  "confirmed": 1,
+  "worst_impact": "High",
+  "scars": 0,
+  "fatal": 1
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

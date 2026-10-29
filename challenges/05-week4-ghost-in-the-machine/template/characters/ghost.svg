@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ghost" viewBox="0 0 130 130" role="img" aria-labelledby="$uid"><title id="$uid">The ghost of contract $tag: a floating sheet ghost carrying its address tag</title>
+<ellipse class="ghost-shadow" cx="52" cy="126" rx="26" ry="3" fill="#000" opacity=".18"/>
+<g class="ghost-sheet">
+<path d="M52 6C26 6 13 28 13 54v46q6 12 12 0q7 12 13 0q7 12 14 0q7 12 13 0q7 12 13 0q6 12 13 0V54C91 28 78 6 52 6z" fill="#f6f1ff" stroke="#1d1029" stroke-width="3" stroke-linejoin="round"/>
+<path d="M16 64q-10 4-8 14q6-2 9-6M88 62q10 2 14 12" fill="#f6f1ff" stroke="#1d1029" stroke-width="3" stroke-linecap="round"/>
+<g class="face face-friendly"><ellipse cx="40" cy="46" rx="4.5" ry="6.5" fill="#1d1029"/><ellipse cx="64" cy="46" rx="4.5" ry="6.5" fill="#1d1029"/><circle cx="41.5" cy="43.5" r="1.5" fill="#fff"/><circle cx="65.5" cy="43.5" r="1.5" fill="#fff"/><path d="M42 61q10 9 20 0" stroke="#1d1029" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="32" cy="58" r="4" fill="#ff9ab8" opacity=".8"/><circle cx="72" cy="58" r="4" fill="#ff9ab8" opacity=".8"/></g>
+<g class="face face-lingering"><path d="M34 47q6-5 12 0M58 47q6-5 12 0" stroke="#1d1029" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M44 68q8-6 16 0" stroke="#1d1029" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M40 53q-3 5 0 7q3-2 0-7z" fill="#5fb6e6"/></g>
+<g class="face face-bad"><path d="M31 36l14 6M73 36l-14 6" stroke="#1d1029" stroke-width="3.5" stroke-linecap="round"/><circle cx="40" cy="48" r="5" fill="#a3122a"/><circle cx="64" cy="48" r="5" fill="#a3122a"/><circle cx="40" cy="48" r="1.6" fill="#ffd24a"/><circle cx="64" cy="48" r="1.6" fill="#ffd24a"/><path d="M36 66l5-5l5 6l6-6l6 6l5-6l5 5" stroke="#1d1029" stroke-width="3" fill="#2a1240" stroke-linejoin="round"/></g>
+<g class="face face-banished"><path d="M35 41l10 10M45 41l-10 10M59 41l10 10M69 41l-10 10" stroke="#1d1029" stroke-width="3" stroke-linecap="round"/><path d="M42 66h20" stroke="#1d1029" stroke-width="3" stroke-linecap="round"/></g>
+</g>
+<path d="M102 74l6 14" stroke="#1d1029" stroke-width="2"/>
+<g class="ghost-tag" transform="rotate(-8 112 96)"><rect x="85" y="87" width="44" height="17" rx="3" fill="#ffd24a" stroke="#1d1029" stroke-width="2"/><circle cx="89" cy="95.5" r="1.5" fill="#1d1029"/><text x="109" y="99.5" text-anchor="middle" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9.5" font-weight="700" fill="#1d1029">$tag</text></g>
+</svg>

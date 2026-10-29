@@ -1,0 +1,84 @@
+{
+ "address": "0xc820366606e803339730ad88465998f470116adf",
+ "tier": "regex",
+ "compiler_version": null,
+ "analyzed_files": [
+  "source.eh.sol"
+ ],
+ "source_origin": "eh",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in NormalizeMoney()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "source.eh.sol",
+   "lines": [
+    136,
+    140
+   ],
+   "snippet": "        \t\n        \tif (sumDifference > transactionCost){\n        \t    Creator.send(sumDifference - transactionCost);\n        \t}\n        \telse{",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently.",
+   "reference_url": null
+  },
+  {
+   "id": "w2",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in SendAllMoney()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "source.eh.sol",
+   "lines": [
+    190,
+    199
+   ],
+   "snippet": "    function SendAllMoney(){\n        if(msg.sender==Creator) { \n            for (uint24 i = 0;i < SmallContractsLength;i++){\n                if(smallContractsIncoming[i] > 0 ){//if more than 0.005 ether\n                    SmallContracts[i].send(smallContractsIncoming[i]);//send ether to wallet\n                    smallContractsIncoming[i]=0;\n                }\n            }\n        }\n    }",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently.",
+   "reference_url": null
+  },
+  {
+   "id": "w3",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in GetMoney()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "source.eh.sol",
+   "lines": [
+    209,
+    213
+   ],
+   "snippet": "    function GetMoney(uint weiAmount,address to){\n        if(msg.sender==Creator) { \n            to.send(weiAmount);\n        }\n    }",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently.",
+   "reference_url": null
+  },
+  {
+   "id": "w4",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in GetMoney()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "source.eh.sol",
+   "lines": [
+    293,
+    297
+   ],
+   "snippet": "    function GetMoney(uint weiAmount,address toAddress){\n        if(msg.sender==address(b)) { \n            toAddress.send(weiAmount);\n        }\n    }",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently.",
+   "reference_url": null
+  }
+ ],
+ "incident": null,
+ "slither_raw": null,
+ "catalog_entry": null,
+ "run": null,
+ "analyzed_at": "2026-10-29T16:40:53Z"
+}

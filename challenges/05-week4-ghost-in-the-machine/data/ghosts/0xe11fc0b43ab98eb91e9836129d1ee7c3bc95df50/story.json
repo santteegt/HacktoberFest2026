@@ -1,0 +1,154 @@
+{
+ "address": "0xe11fc0b43ab98eb91e9836129d1ee7c3bc95df50",
+ "name": "SushiMaker",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The SushiMaker's Bitter Banquet",
+ "tagline": "Born in Muir Glacier, this bad ghost still bleeds from the Sushi Badger Digg wound.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of the sushi maker",
+   "paragraphs": [
+    "A small candle flickers against the cold stone. On January 10, 2021, the SushiMaker came into being. It is a small program that lives on Ethereum. A wallet ending in ed3e brought it into the world.",
+    "The Muir Glacier era was cold and deep. On the day it was born, it was written into a block, one page of Ethereum's shared record book. It was forged using Solidity 0.6.12. Now it has lived for about 6 years."
+   ],
+   "facts_cited": [
+    "facts.age.hardfork",
+    "facts.birth.timestamp",
+    "facts.blockscout.name",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The shadow of the sandwich",
+   "paragraphs": [
+    "The SushiMaker moved with a steady pace. It worked every year since 2023. People called it to convert and convertMultiple. It completed 656 transactions in its life.",
+    "A dark memory sits in the records. Sushi Badger Digg documented a sandwich attack on January 25, 2021. The DeFiHackLabs repository holds this story of the wound."
+   ],
+   "facts_cited": [
+    "facts.blockscout.name",
+    "facts.life.last_tx.method",
+    "facts.life.recent_years[0]",
+    "facts.life.tx_count",
+    "verdict.reasons[0]",
+    "wounds.findings[0].reference_url"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The weight of the sandwich",
+   "paragraphs": [
+    "I am a helper contract. My address is named in the DeFiHackLabs record of the Sushi Badger Digg incident. The record does not say what part I played.",
+    "A sandwich attack tore through the Sushi Badger Digg on January 25, 2021. This wound left a high impact and a loss of 81.68 ETH. The loss belongs to Sushi Badger Digg as a whole, not to me alone."
+   ],
+   "facts_cited": [
+    "verdict.reasons[0]",
+    "wounds.findings[0].reference_url",
+    "wounds.incident.loss_note"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "The lingering scar",
+   "paragraphs": [
+    "The SushiMaker carries a deep wound from the Sushi Badger Digg. This mark comes from a sandwich attack. The wound is a trade ordering flaw. No compiler version and no Solidity upgrade fixes this.",
+    "Every swap needs a tight minimum-output limit. A trader cannot take the difference if they squeeze in before and after. Large swaps should not run on a schedule anyone can watch. Split them or send them through a private relay."
+   ],
+   "facts_cited": [
+    "facts.blockscout.name",
+    "verdict.reasons[0]"
+   ]
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I am a helper contract. My address is named in the DeFiHackLabs record of the Sushi Badger Digg incident. The record does not say what part I played.",
+   "A sandwich attack tore through the Sushi Badger Digg on January 25, 2021. This wound left a high impact and a loss of 81.68 ETH. The loss belongs to Sushi Badger Digg as a whole, not to me alone."
+  ],
+  "snippet": null,
+  "finding": {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "Sushi Badger Digg",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-01/Sushi_Badger_Digg_exp.sol"
+  },
+  "incident": {
+   "id": "defihacklabs-2021-01-25-sushi-badger-digg",
+   "name": "Sushi Badger Digg",
+   "date": "2021-01-25",
+   "loss_usd": null,
+   "loss_eth": null,
+   "loss_note": "81.68 ETH",
+   "cause": "Sandwich attack",
+   "swc": null,
+   "summary": "Sushi Badger Digg (2021-01-25), documented in the DeFiHackLabs repository: Sandwich attack. Reported loss: 81.68 ETH.",
+   "references": [
+    "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-01/Sushi_Badger_Digg_exp.sol",
+    "https://cmichel.io/replaying-ethereum-hacks-sushiswap-badger-dao-digg/"
+   ]
+  }
+ },
+ "buster": {
+  "paragraphs": [
+   "The SushiMaker carries a deep wound from the Sushi Badger Digg. This mark comes from a sandwich attack. The wound is a trade ordering flaw. No compiler version and no Solidity upgrade fixes this.",
+   "Every swap needs a tight minimum-output limit. A trader cannot take the difference if they squeeze in before and after. Large swaps should not run on a schedule anyone can watch. Split them or send them through a private relay."
+  ],
+  "fix": null,
+  "fix_reason": "No compiler version fixes this wound: it is a trade ordering flaw (cause in the record: 'Sandwich attack'). The buster's advice is a general mitigation for that kind of flaw, written by hand, not taken from the incident's references.",
+  "recipe": null,
+  "mitigation": {
+   "flaw_kind": "trade ordering",
+   "advice": "Every swap needs a tight minimum-output limit, so a trader squeezed in before and after it cannot take the difference. Large swaps should not run on a schedule anyone can watch; split them or send them through a private relay."
+  }
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 25.8,
+  "model_seconds": 25.8,
+  "calls": 5,
+  "prompt_tokens": 2641,
+  "output_tokens": 532
+ },
+ "verifier": {
+  "sentences": 31,
+  "grounded": 31,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "January 10, 2021",
+  "born_year": 2021,
+  "age_years": 5.8,
+  "age_years_whole": 5,
+  "last_seen_on": "January 26, 2025",
+  "last_seen_year": 2025,
+  "silent_years": 1.8,
+  "silent_days": 641,
+  "active_days": 1476,
+  "balance_eth": 0.0,
+  "deployer_short": "0x9e6e…ed3e",
+  "address_short": "0xe11f…df50",
+  "compiler_label": "Solidity 0.6.12",
+  "activity_label": "active every year since 2023"
+ },
+ "notes": [
+  "no recipe matches the wound: buster tells the general mitigation, no code"
+ ],
+ "generated_at": "2026-10-29T05:56:25Z"
+}

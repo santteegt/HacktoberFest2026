@@ -1,0 +1,72 @@
+<!--@ title -->
+<section class="panel title-panel" aria-labelledby="ghost-title">
+<div class="stars" aria-hidden="true"></div>
+<div class="moon" aria-hidden="true"></div>
+<div aria-hidden="true"><span class="petal"></span><span class="petal"></span><span class="petal"></span><span class="petal"></span><span class="petal"></span></div>
+<div class="title-copy">
+<p class="kicker">$kicker</p>
+<h1 class="ghost-title" id="ghost-title">$title</h1>
+<p class="tagline">$tagline</p>
+<ul class="chips" aria-label="Ghost facts at a glance">$chips</ul>
+</div>
+<div class="title-stage">
+$stage
+</div>
+</section>
+<!--@ cover -->
+<figure class="panel cover reveal tilt-r">
+<h2 class="caption">Its face, as the archive remembers it</h2>
+<img src="$src" alt="$alt" loading="lazy">
+<figcaption>$caption</figcaption>
+</figure>
+<!--@ record -->
+<section class="panel record-panel reveal tilt-l" aria-labelledby="record-h">
+<h2 class="caption" id="record-h"><small>The ofrenda card</small>What the chain remembers</h2>
+<div class="panel-inner">
+<dl class="record">
+<div class="wide"><dt>Address</dt><dd class="addr"><code id="ghost-address">$address</code><button type="button" class="copy" data-copy="$address" aria-describedby="copy-status">Copy</button><span id="copy-status" class="visually-hidden" role="status" aria-live="polite"></span></dd></div>
+$rows
+</dl>
+<p class="verdict-line">$verdict</p>
+</div>
+</section>
+<!--@ chapter -->
+<section class="panel chapter reveal $tilt $extra_class" aria-labelledby="ch-$cid">
+<h2 class="caption" id="ch-$cid"><small>$label</small>$heading</h2>
+<div class="sky">$beam<div class="flight"><div class="flyer"><div class="bob">$flyer</div></div></div></div>
+<div class="panel-inner">
+<div class="scene">
+$teller
+<div class="balloons">
+<p class="speaker">The storyteller</p>
+$balloons
+</div>
+</div>
+$extra
+</div>
+</section>
+<!--@ timeline -->
+<section class="panel timeline reveal tilt-r" aria-labelledby="tl-h">
+<h2 class="caption" id="tl-h"><small>Birth to silence</small>When it became a ghost</h2>
+<div class="panel-inner">
+<p class="ghost-moment">$moment</p>
+<div class="track" aria-hidden="true">$track</div>
+<ol class="events">$events</ol>
+</div>
+</section>
+<!--@ closing -->
+<section class="panel closing reveal" aria-labelledby="close-h">
+<h2 class="caption" id="close-h"><small>Counting the candles</small>What the storyteller was allowed to say</h2>
+<div class="panel-inner">
+<ul class="tally">$tally</ul>
+<p class="tally-line">$tally_line</p>
+$dropped
+</div>
+</section>
+<!--@ smallprint -->
+<h2 class="visually-hidden">Small print</h2>
+<p>$model_line</p>
+<p class="honest">$honest</p>
+<p>Sources used for this ghost:</p>
+<ul>$sources</ul>
+<p>Generated $generated. Address $address on Ethereum mainnet (chain $chain_id).</p>

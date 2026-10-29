@@ -1,0 +1,74 @@
+{
+ "address": "0x5656913c2a5917866a167d7cb792bfe250966aa1",
+ "started_at": "2026-10-29T05:40:13Z",
+ "finished_at": "2026-10-29T05:40:46Z",
+ "kind": "bad",
+ "title": "The Unclaimed Wrapper of Golem",
+ "name": "BlockSwapWrapperGolemNetworkToken",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 5.7,
+   "note": "archive: documented on Ethereum History (deployed 2017-03-30, era spurious)"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 8.3,
+   "note": "BlockSwapWrapperGolemNetworkToken; via blockscout, ethereumhistory, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 5.7,
+   "note": "tier slither, 1 finding(s)"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "bad"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 19.2,
+   "note": "19.2 s, 6 calls; verifier 40/40 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "57,794 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "19 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "archive",
+  "reason": "documented on Ethereum History (deployed 2017-03-30, era spurious)",
+  "name": "BlockSwapWrapperGolemNetworkToken",
+  "year": 2017,
+  "hint": false
+ },
+ "gallery_path": "web/ghosts/0x5656913c2a5917866a167d7cb792bfe250966aa1/"
+}

@@ -1,0 +1,193 @@
+{
+ "address": "0xf4eced2f682ce333f96f2d8966c613ded8fc95dd",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T05:32:10Z",
+ "eh": {
+  "layer": "documented",
+  "era_id": "frontier",
+  "era_name": "Frontier",
+  "name": "MistCoin",
+  "token": {
+   "token_name": "MistCoin",
+   "token_symbol": "MC",
+   "token_decimals": 2
+  },
+  "heuristics": {
+   "contract_type": "token",
+   "confidence": 0.5,
+   "is_proxy": false,
+   "has_selfdestruct": false,
+   "is_erc20_like": true
+  },
+  "decompilation_success": true,
+  "code_size_bytes": 1406,
+  "short_description": "The prototype token that inspired ERC-20, deployed by Fabian Vogelsteller on November 3, 2015, sixteen days before he submitted the ERC-20 proposal.",
+  "description": "MistCoin, deployed by Fabian Vogelsteller on November 3, 2015 as a test token while developing the concept that became ERC-20. The contract implements transfer and balanceOf but not transferFrom, approve, allowance, or totalSupply. Fabian submitted ERC-20 (Issue #20) to the ethereum/EIPs repo on November 19, 2015, sixteen days after deploying this contract. MistCoin is therefore not compliant with the ERC-20 standard even as originally proposed, but it is the prototype token that directly inspired and preceded it.",
+  "historical_significance": "The token that preceded and inspired ERC-20. Fabian Vogelsteller, author of ERC-20, deployed MistCoin as a test implementation 16 days before submitting the ERC-20 draft proposal. While often called the first ERC-20 token, it technically does not implement the full standard: it is missing transferFrom, approve, allowance, and totalSupply. The historically accurate claim is that it is the prototype that inspired ERC-20, not a compliant implementation of it.",
+  "historical_context": "In November 2015, Fabian Vogelsteller was working on the Mist wallet and experimenting with token contract interfaces. He deployed MistCoin at block 483,325 on November 3, 2015, gave tokens away on Reddit, and used it to test token handling in Mist. On November 19, 2015, he submitted ERC-20 as Issue #20 in the ethereum/EIPs repository, with the full interface including transferFrom, approve, and allowance. avsa noted that since Fabian had just written the spec, MistCoin became the first token deployed against the evolving standard concept. The token was later sent in bulk to the Doge-ETH Bounty DAO, which still holds 50,000 MistCoin.",
+  "verification_status": "verified",
+  "verification_method": "exact_bytecode_match",
+  "links": [
+   {
+    "id": 522,
+    "title": "Avsa and Fabian Devcon1 Interview",
+    "url": "https://youtu.be/jAj4rBld1Pg?si=P2JVAa8lK9oraejr",
+    "source": "Youtube",
+    "note": null,
+    "created_at": "2026-05-09T13:07:35.933Z"
+   },
+   {
+    "id": 327,
+    "title": "Fabian on MistCoin being first ERC-20 test token",
+    "url": "https://x.com/feindura/status/1770836755798806860",
+    "source": null,
+    "note": null,
+    "created_at": "2026-03-19T04:06:10.774Z"
+   },
+   {
+    "id": 326,
+    "title": "ERC-20 original proposal (Issue #20, Nov 19 2015)",
+    "url": "https://github.com/ethereum/EIPs/issues/20",
+    "source": null,
+    "note": null,
+    "created_at": "2026-03-19T04:06:10.758Z"
+   },
+   {
+    "id": 31,
+    "title": "Wallet 0.3.5 (Beta 3)",
+    "url": "https://github.com/ethereum/mist/releases/tag/0.3.5",
+    "source": "Github",
+    "note": "The Ethereum Wallet release that allowed for the first standard tokens.",
+    "created_at": "2026-01-29T14:05:36.506Z"
+   }
+  ],
+  "metadata": [
+   {
+    "key": "tx_counts_by_year_external_to_v1",
+    "value": null,
+    "json_value": {
+     "counts": {
+      "2015": 31,
+      "2016": 1,
+      "2017": 1,
+      "2018": 7,
+      "2019": 1,
+      "2020": 1,
+      "2021": 44,
+      "2022": 27,
+      "2023": 15,
+      "2024": 48,
+      "2025": 6,
+      "2026": 1
+     },
+     "truncated": false
+    },
+    "source_url": "alchemy_getAssetTransfers",
+    "created_at": "2026-01-25T03:46:25.539Z"
+   }
+  ],
+  "has_source": true,
+  "has_abi": true
+ },
+ "birth": {
+  "block": 483325,
+  "timestamp": "2015-11-03T12:03:29.000000Z",
+  "tx": "0x74349ce609e100a65c91851781f3b6b0829cef476eaba5ce53630d49497554a7",
+  "deployer": "0x9b22a80d5c7b3374a05b446081f97d0a34079e7f",
+  "timestamp_source": "blockscout"
+ },
+ "blockscout": {
+  "name": "MyToken",
+  "is_contract": true,
+  "is_verified": true,
+  "ens": null,
+  "creation_tx": "0x74349ce609e100a65c91851781f3b6b0829cef476eaba5ce53630d49497554a7",
+  "creator": "0x9b22a80D5c7B3374a05b446081f97d0A34079e7F",
+  "has_logs": true
+ },
+ "life": {
+  "tx_count": 183,
+  "token_transfers": 3,
+  "gas_used": 8318362,
+  "last_tx": {
+   "timestamp": "2026-01-01T08:19:47.000000Z",
+   "method": "transfer",
+   "status": "ok",
+   "hash": "0xeeb56c5fbbfa10e64d49325d2b66b703253584f676107420341fc0714320be20"
+  },
+  "recent_methods": [
+   "0x0a9059cb",
+   "transfer"
+  ],
+  "recent_years": [
+   "2024",
+   "2025",
+   "2026"
+  ],
+  "balance_wei": 10000000000000,
+  "balance_eth": 1e-05,
+  "last_12m_capped": false,
+  "first_tx_timestamp": "2015-11-03T12:03:29.000000Z",
+  "calls": 183,
+  "calls_source": "blockscout-counters",
+  "calls_capped": false,
+  "never_called": false,
+  "first_call_timestamp": "2015-11-03T12:05:43.000000Z",
+  "last_12m_txs": 1
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 716,
+  "balance_wei": 10000000000000,
+  "balance_eth": 1e-05
+ },
+ "source": {
+  "provider": "sourcify",
+  "match": "match",
+  "name": "MyToken",
+  "compiler_version": "0.1.6+commit.d41f8b7c",
+  "language": "Solidity",
+  "files": [
+   "Contract.sol",
+   "MyToken.sol"
+  ],
+  "dir": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/05-week4-ghost-in-the-machine/data/ghosts/0xf4eced2f682ce333f96f2d8966c613ded8fc95dd/src"
+ },
+ "age": {
+  "hardfork": "Frontier Thawing",
+  "eh_era": "Frontier"
+ },
+ "sites": [],
+ "sites_excluded": [
+  "https://github.com/ethereum/EIPs/issues/20",
+  "https://github.com/ethereum/mist/releases/tag/0.3.5",
+  "https://x.com/feindura/status/1770836755798806860",
+  "https://youtu.be/jAj4rBld1Pg?si=P2JVAa8lK9oraejr"
+ ],
+ "name": "MistCoin",
+ "sources_used": [
+  "blockscout",
+  "ethereumhistory",
+  "rpc",
+  "sourcify"
+ ],
+ "names": [
+  {
+   "name": "MistCoin",
+   "source": "ethereumhistory"
+  },
+  {
+   "name": "MistCoin",
+   "source": "ethereumhistory:token_name"
+  },
+  {
+   "name": "MyToken",
+   "source": "blockscout"
+  },
+  {
+   "name": "MyToken",
+   "source": "source:sourcify"
+  }
+ ],
+ "proxy": false
+}

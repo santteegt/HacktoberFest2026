@@ -1,0 +1,91 @@
+{
+ "address": "0x6b00da74da51b1eccbd05d979c1df075fd46ff45",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T05:30:09Z",
+ "blockscout": {
+  "name": "SaffronERC20StakingPool",
+  "is_contract": true,
+  "is_verified": true,
+  "ens": null,
+  "creation_tx": "0xaaf750729e6165f5d5af92821f8c580672989d7c65c689342cda6f186af10434",
+  "creator": "0x09E9FF67d9D5A25Fa465Db6f0bEdE5560581f8Cb",
+  "has_logs": true
+ },
+ "birth": {
+  "block": 12797270,
+  "timestamp": "2021-07-10T03:32:25.000000Z",
+  "tx": "0xaaf750729e6165f5d5af92821f8c580672989d7c65c689342cda6f186af10434",
+  "deployer": "0x09E9FF67d9D5A25Fa465Db6f0bEdE5560581f8Cb",
+  "timestamp_source": "blockscout"
+ },
+ "life": {
+  "tx_count": 30,
+  "token_transfers": 0,
+  "gas_used": 0,
+  "last_tx": {
+   "timestamp": "2021-08-08T06:10:05.000000Z",
+   "method": "remove_liquidity",
+   "status": "ok",
+   "hash": "0xb73c3bff930af76c3187cb39b78c854e005090cb39072b0b06c417c1a13e39b3"
+  },
+  "recent_methods": [
+   "add_liquidity",
+   "new_epoch",
+   "remove_liquidity",
+   "set_governance"
+  ],
+  "recent_years": [
+   "2021"
+  ],
+  "balance_wei": 0,
+  "balance_eth": 0.0,
+  "last_12m_capped": false,
+  "first_tx_timestamp": "2021-07-10T03:32:25.000000Z",
+  "calls": 30,
+  "calls_source": "blockscout-txlist",
+  "calls_capped": false,
+  "never_called": false,
+  "first_call_timestamp": "2021-07-10T05:05:25.000000Z",
+  "last_12m_txs": 0
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 12001,
+  "balance_wei": 0,
+  "balance_eth": 0.0
+ },
+ "source": {
+  "provider": "sourcify",
+  "match": "match",
+  "name": "SaffronERC20StakingPool",
+  "compiler_version": "0.7.4+commit.3f05b770",
+  "language": "Solidity",
+  "files": [
+   "SaffronERC20StakingPool.sol"
+  ],
+  "dir": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/05-week4-ghost-in-the-machine/data/ghosts/0x6b00da74da51b1eccbd05d979c1df075fd46ff45/src"
+ },
+ "age": {
+  "hardfork": "Berlin",
+  "eh_era": null
+ },
+ "sites": [],
+ "sites_excluded": [],
+ "name": "SaffronERC20StakingPool",
+ "sources_used": [
+  "blockscout",
+  "rpc",
+  "sourcify"
+ ],
+ "names": [
+  {
+   "name": "SaffronERC20StakingPool",
+   "source": "blockscout"
+  },
+  {
+   "name": "SaffronERC20StakingPool",
+   "source": "source:sourcify"
+  }
+ ],
+ "proxy": false
+}

@@ -1,0 +1,99 @@
+{
+ "address": "0xf4eced2f682ce333f96f2d8966c613ded8fc95dd",
+ "name": "MistCoin",
+ "kind": "lingering",
+ "kind_source": "verdict.json",
+ "title": "The Spirit of the Prototype",
+ "tagline": "MistCoin lingers as the ghost that inspired the ERC-20 standard during the Frontier Thawing.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The first mist",
+   "paragraphs": [
+    "A single candle flickers near a digital grave. On November 3, 2015, MistCoin arrived during the Frontier Thawing. It was a small program that lives on Ethereum. Fabian Vogelsteller brought it into the world from a specific wallet.",
+    "The contract was written in Solidity 0.1.6. On the day it was born, it was written into a block, one page of Ethereum's shared record book. It stood as a prototype for the ERC-20 standard. It is now about 11 years old."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.age.hardfork",
+    "facts.eh.name",
+    "facts.eh.short_description",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The prototype in the mist",
+   "paragraphs": [
+    "Fabian Vogelsteller placed MistCoin on the chain on November 3, 2015. It lived as a test token while he shaped the idea of ERC-20. It held only transfer and balanceOf. It lacked transferFrom, approve, allowance, and totalSupply.",
+    "The contract sat in the quiet for sixteen days. On November 19, 2015, Fabian submitted the ERC-20 draft to the ethereum/EIPs repo. MistCoin was the prototype that inspired the standard even though it was not compliant. It has been active every year since 2024.",
+    "People called it to the transfer function 183 times."
+   ],
+   "facts_cited": [
+    "facts.eh.description",
+    "facts.eh.name",
+    "facts.eh.short_description",
+    "facts.life.recent_years[0]",
+    "facts.life.tx_count"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The knocking",
+   "paragraphs": [
+    "MistCoin sits in the dark. Its code remains on the chain like a lingering breath. It holds about 0.00001 ETH deep inside.",
+    "The busy days are over. Only one call came in the last 12 months. Someone reached out to move funds between accounts. They still knock, seeking to move what remains."
+   ],
+   "facts_cited": [
+    "facts.eh.name",
+    "facts.life.balance_eth",
+    "verdict.reasons[0]"
+   ],
+   "variant": "the knocking"
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 13.9,
+  "model_seconds": 13.8,
+  "calls": 4,
+  "prompt_tokens": 2176,
+  "output_tokens": 455
+ },
+ "verifier": {
+  "sentences": 26,
+  "grounded": 26,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "November 3, 2015",
+  "born_year": 2015,
+  "age_years": 11.0,
+  "age_years_whole": 10,
+  "last_seen_on": "January 1, 2026",
+  "last_seen_year": 2026,
+  "silent_years": 0.8,
+  "silent_days": 300,
+  "active_days": 3711,
+  "balance_eth": 1e-05,
+  "deployer_short": "0x9b22…9e7f",
+  "address_short": "0xf4ec…95dd",
+  "compiler_label": "Solidity 0.1.6",
+  "activity_label": "active every year since 2024"
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T06:18:13Z"
+}

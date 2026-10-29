@@ -1,0 +1,95 @@
+{
+ "address": "0x8a57d2708d1f228dac2f7934f5311cd2a0a1cda4",
+ "name": "EtherVote",
+ "kind": "friendly",
+ "kind_source": "verdict.json",
+ "title": "The Ghost of Spurious Dragon",
+ "tagline": "Alex Van de Sande redeployed the old EtherVote contract on a quiet July day.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The ghost of the vote",
+   "paragraphs": [
+    "Marigolds scent the air as we remember EtherVote. It was born on July 10, 2017. A wallet ending in 9adb brought it into the world. On the day it was born it was written into a block, one page of Ethereum's shared record book.",
+    "The contract is a small program that lives on Ethereum. It arrived during the Spurious Dragon era. It was written in Solidity 0.4.11. Now it sits quiet, nearly 9.3 years old."
+   ],
+   "facts_cited": [
+    "facts.eh.era_name",
+    "facts.eh.name",
+    "facts.eh.short_description",
+    "facts.source.compiler_version",
+    "verdict.activity.silent_years"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The twin of the old vote",
+   "paragraphs": [
+    "The contract sits like a shadow of a previous ghost. It came from the same source text and the same account as its predecessor. It appeared one year later to perform the same single task. It took a proposal hash and a yes or no choice, then let the choice go.",
+    "The compiler changed the way it was born. A 0.4 series release gave it a non payable check instead of a handwritten guard. It carried a 43 byte metadata trailer that the old versions did not have. It was last busy in 2017. It saw only 1 transaction in its life."
+   ],
+   "facts_cited": [
+    "facts.eh.historical_significance",
+    "facts.eh.short_description"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The silence of EtherVote",
+   "paragraphs": [
+    "The candle flickers over EtherVote. Its last call came on July 10, 2017. The vote function fell silent then.",
+    "It has been quiet for 9.3 years. The code still rests on the chain. It holds 0.0 ETH inside."
+   ],
+   "facts_cited": [
+    "facts.eh.name",
+    "facts.eh.short_description",
+    "facts.life.token_transfers",
+    "verdict.activity.silent_years"
+   ]
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 13.9,
+  "model_seconds": 13.9,
+  "calls": 4,
+  "prompt_tokens": 2040,
+  "output_tokens": 412
+ },
+ "verifier": {
+  "sentences": 25,
+  "grounded": 25,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "July 10, 2017",
+  "born_year": 2017,
+  "age_years": 9.3,
+  "age_years_whole": 9,
+  "last_seen_on": "July 10, 2017",
+  "last_seen_year": 2017,
+  "silent_years": 9.3,
+  "silent_days": 3397,
+  "active_days": 0,
+  "balance_eth": 0.0,
+  "deployer_short": "0xd122…9adb",
+  "address_short": "0x8a57…cda4",
+  "compiler_label": "Solidity 0.4.11",
+  "activity_label": "last busy in 2017"
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:53:36Z"
+}

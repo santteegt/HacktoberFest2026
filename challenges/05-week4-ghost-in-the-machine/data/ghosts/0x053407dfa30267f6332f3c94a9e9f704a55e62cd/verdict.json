@@ -1,0 +1,29 @@
+{
+ "address": "0x053407dfa30267f6332f3c94a9e9f704a55e62cd",
+ "kind": "lingering",
+ "reasons": [
+  "last successful call 2025-01-04, 1.8 years ago",
+  "fallback: silent for under 2 years, too recent to be friendly",
+  "1 scar (reentrancy-no-eth), none fatal"
+ ],
+ "activity": {
+  "lifetime_txs": 1159,
+  "last_tx": "2025-01-04T14:26:47Z",
+  "last_12m_txs": 0,
+  "last_12m_capped": false,
+  "silent_years": 1.8
+ },
+ "wounds": {
+  "count": 2,
+  "confirmed": 2,
+  "worst_impact": "Medium",
+  "scars": 1,
+  "fatal": 0
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

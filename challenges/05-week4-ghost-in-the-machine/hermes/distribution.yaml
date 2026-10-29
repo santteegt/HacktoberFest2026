@@ -1,0 +1,32 @@
+name: ghosts
+version: 0.1.0
+description: "Ghosts in the Machine: keeps the altar of old Ethereum contracts. Picks a ghost on a schedule, runs the ghosts pipeline with local Gemma 4 (Ollama) and reports what the files say."
+hermes_requires: ">=0.22.0"
+author: "Santiago Gonzalez"
+license: "MIT"
+# scripts/ carries the cron scripts; Hermes copies it only because it is listed here.
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - skills/
+  - cron/jobs.json
+  - scripts/
+env_requires:
+  - name: DISCORD_BOT_TOKEN
+    description: "This agent's own Discord bot token (leave empty to run cron-only)"
+    required: false
+  - name: DISCORD_ALLOWED_USERS
+    description: "Your Discord user id; only you can talk to the bot"
+    required: false
+  - name: DISCORD_ALLOWED_CHANNELS
+    description: "Channel ids the bot listens in, comma-separated"
+    required: false
+  - name: DISCORD_FREE_RESPONSE_CHANNELS
+    description: "Channel ids where the bot answers without an @mention (usually the same as DISCORD_ALLOWED_CHANNELS)"
+    required: false
+  - name: DISCORD_HOME_CHANNEL
+    description: "Channel id where haunt reports are posted"
+    required: false
+  - name: VERCEL_TOKEN
+    description: "Vercel token for unattended deploys (optional: the Vercel CLI login is used when empty)"
+    required: false

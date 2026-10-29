@@ -1,0 +1,30 @@
+{
+ "address": "0x2af47a65da8cd66729b4209c22017d6a5c2d2400",
+ "kind": "lingering",
+ "reasons": [
+  "27 successful calls in the last 12 months out of 19461 lifetime txs (0.1%)",
+  "fallback: a site still answers (bounties.network, gitcoin.co), so the dapp may not be gone",
+  "last successful call 2026-10-29, 0.0 years ago",
+  "5 scars (incorrect-equality, reentrancy-no-eth), none fatal"
+ ],
+ "activity": {
+  "lifetime_txs": 19461,
+  "last_tx": "2026-10-29T02:57:47Z",
+  "last_12m_txs": 27,
+  "last_12m_capped": false,
+  "silent_years": 0.0
+ },
+ "wounds": {
+  "count": 5,
+  "confirmed": 5,
+  "worst_impact": "Medium",
+  "scars": 5,
+  "fatal": 0
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": true
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

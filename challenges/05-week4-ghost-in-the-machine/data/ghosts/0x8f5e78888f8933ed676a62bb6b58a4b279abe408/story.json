@@ -1,0 +1,95 @@
+{
+ "address": "0x8f5e78888f8933ed676a62bb6b58a4b279abe408",
+ "name": "stakedXYM",
+ "kind": "friendly",
+ "kind_source": "verdict.json",
+ "title": "The Silent Echo of Muir Glacier",
+ "tagline": "A friendly spirit born in March remains still since its final call.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of stakedXYM",
+   "paragraphs": [
+    "A flickering light reveals the origin of stakedXYM. It arrived on March 11, 2021. A wallet ending in 09ed brought it into the world. On the day it was born, it was written into a block, one page of Ethereum's shared record book.",
+    "The contract is a small program that lives on Ethereum. It appeared during the Muir Glacier era. It was built using Solidity 0.6.8. Now it sits at about 5.6 years old."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.age.hardfork",
+    "facts.birth.timestamp",
+    "facts.blockscout.name",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The quiet pulse of stakedXYM",
+   "paragraphs": [
+    "The contract lived a quiet life. It saw 60 transactions move through its gates. People used it to mint, burn, and transfer. They also used approve to give it permission.",
+    "It was active in 2 different years between 2021 and 2022. The busy days passed like shadows. Now it sits still on the chain."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.life.last_tx.timestamp",
+    "facts.life.tx_count"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The long silence",
+   "paragraphs": [
+    "The contract sits still under the moonlight. Its last call was the approve function on July 18, 2022. It has been quiet for 4.3 years.",
+    "The code still rests on the chain like a shadow. It holds 0.0 ETH inside. No one has reached out to it since that summer day."
+   ],
+   "facts_cited": [
+    "facts.life.last_tx.timestamp",
+    "facts.life.token_transfers",
+    "verdict.activity.silent_years"
+   ]
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 12.1,
+  "model_seconds": 12.0,
+  "calls": 4,
+  "prompt_tokens": 1694,
+  "output_tokens": 353
+ },
+ "verifier": {
+  "sentences": 23,
+  "grounded": 23,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "March 11, 2021",
+  "born_year": 2021,
+  "age_years": 5.6,
+  "age_years_whole": 5,
+  "last_seen_on": "July 18, 2022",
+  "last_seen_year": 2022,
+  "silent_years": 4.3,
+  "silent_days": 1563,
+  "active_days": 493,
+  "balance_eth": 0.0,
+  "deployer_short": "0x0b0b…09ed",
+  "address_short": "0x8f5e…e408",
+  "compiler_label": "Solidity 0.6.8",
+  "activity_label": "active in 2 different years between 2021 and 2022"
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:53:50Z"
+}

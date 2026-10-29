@@ -1,0 +1,74 @@
+{
+ "address": "0xb3215bf5b10bdb13b6c015fd66548b13a926098c",
+ "started_at": "2026-10-29T05:35:59Z",
+ "finished_at": "2026-10-29T05:36:58Z",
+ "kind": "bad",
+ "title": "The Ghost of the Ignored Return",
+ "name": "UserWallet",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 12.3,
+   "note": "random: verified contract created in block 5135023 (2018), found after 9 random blocks"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 5.6,
+   "note": "UserWallet; via blockscout, ethereumhistory, rpc"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 11.7,
+   "note": "tier slither, 1 finding(s)"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "bad"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 41.8,
+   "note": "41.8 s, 7 calls; verifier 36/36 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "57,723 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "15 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "random",
+  "reason": "verified contract created in block 5135023 (2018), found after 9 random blocks",
+  "name": "UserWallet",
+  "year": 2018,
+  "hint": false
+ },
+ "gallery_path": "web/ghosts/0xb3215bf5b10bdb13b6c015fd66548b13a926098c/"
+}

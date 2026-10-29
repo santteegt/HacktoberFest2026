@@ -1,0 +1,30 @@
+{
+ "address": "0x6e38a457c722c6011b2dfa06d49240e797844d66",
+ "kind": "lingering",
+ "reasons": [
+  "15 successful calls in the last 12 months out of 796 lifetime txs (1.9%)",
+  "fallback: a site still answers (https://www.guinnessworldrecords.com/world-records/696281-first-ethereum-nft), so the dapp may not be gone",
+  "last successful call 2026-08-18, 0.2 years ago",
+  "no wounds"
+ ],
+ "activity": {
+  "lifetime_txs": 796,
+  "last_tx": "2026-08-18T10:55:11Z",
+  "last_12m_txs": 15,
+  "last_12m_capped": false,
+  "silent_years": 0.2
+ },
+ "wounds": {
+  "count": 0,
+  "confirmed": 0,
+  "worst_impact": null,
+  "scars": 0,
+  "fatal": 0
+ },
+ "labels": {
+  "historian_story": true,
+  "verified_source": false,
+  "site_known": true
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

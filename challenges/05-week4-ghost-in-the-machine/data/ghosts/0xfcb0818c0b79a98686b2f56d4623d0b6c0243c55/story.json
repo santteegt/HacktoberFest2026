@@ -1,0 +1,79 @@
+{
+ "address": "0xfcb0818c0b79a98686b2f56d4623d0b6c0243c55",
+ "name": "greeter",
+ "kind": "friendly",
+ "kind_source": "verdict.json",
+ "title": "The Silent Greeting of Blokur",
+ "tagline": "A friendly ghost from the DAO Fork era remains untouched and uncalled.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The greeter's first breath",
+   "paragraphs": [
+    "A soft light flickers on the grave of the greeter. It arrived on September 7, 2016, during the DAO Fork era. A wallet ending in 2d5e brought it into the world. The contract is a small program that lives on Ethereum.",
+    "It was written in Solidity 0.3.6 to say Hello from Blokur! On the day it was born, it was written into a block, one page of Ethereum's shared record book. Now it sits ten years old and still waits in the quiet."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.eh.era_name",
+    "facts.source.compiler_version",
+    "wounds.findings[0].lines[0]"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The greeter's long silence",
+   "paragraphs": [
+    "The greeter arrived on September 7, 2016. It waited in the quiet for 10.1 years. No one ever called it.",
+    "The code still sits on the chain. It holds 0.0 ETH inside its hollow heart."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.birth.timestamp",
+    "facts.life.tx_count"
+   ],
+   "variant": "never called"
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 8.4,
+  "model_seconds": 8.3,
+  "calls": 3,
+  "prompt_tokens": 1264,
+  "output_tokens": 271
+ },
+ "verifier": {
+  "sentences": 14,
+  "grounded": 14,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "never_called": true,
+  "born_on": "September 7, 2016",
+  "born_year": 2016,
+  "age_years": 10.1,
+  "age_years_whole": 10,
+  "balance_eth": 0.0,
+  "deployer_short": "0xcb55…2d5e",
+  "address_short": "0xfcb0…3c55",
+  "compiler_label": "Solidity 0.3.6"
+ },
+ "notes": [
+  "never called (life.never_called): no life chapter, no last call"
+ ],
+ "generated_at": "2026-10-29T05:52:38Z"
+}

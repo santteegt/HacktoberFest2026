@@ -1,0 +1,118 @@
+{
+ "address": "0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+ "tier": "catalog",
+ "compiler_version": "0.2.1+commit.91a6b35f",
+ "analyzed_files": [
+  "Rubixi.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "constructor-name",
+   "swc": "SWC-118",
+   "title": "DynamicPyramid() looks like a constructor but no contract is named DynamicPyramid",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "Rubixi.sol",
+   "lines": [
+    13,
+    15
+   ],
+   "snippet": "        function DynamicPyramid() {\n                creator = msg.sender;\n        }",
+   "description": "DynamicPyramid() is written like a constructor (capitalized, assigns msg.sender) but the contract is named Rubixi, itself; in Solidity before 0.4.22 only a function named exactly like the contract is the constructor, so anyone can call this one. Documented incident: Rubixi ownership takeover (2016-04-02).",
+   "reference_url": "https://swcregistry.io/docs/SWC-118"
+  },
+  {
+   "id": "w2",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in addPayout()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "Rubixi.sol",
+   "lines": [
+    62,
+    66
+   ],
+   "snippet": "                while (balance > participants[payoutOrder].payout) {\n                        uint payoutToSend = participants[payoutOrder].payout;\n                        participants[payoutOrder].etherAddress.send(payoutToSend);\n\n                        balance -= participants[payoutOrder].payout;",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently.",
+   "reference_url": null
+  },
+  {
+   "id": "w3",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in collectAllFees()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "Rubixi.sol",
+   "lines": [
+    72,
+    77
+   ],
+   "snippet": "        function collectAllFees() onlyowner {\n                if (collectedFees == 0) throw;\n\n                creator.send(collectedFees);\n                collectedFees = 0;\n        }",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently.",
+   "reference_url": null
+  },
+  {
+   "id": "w4",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in collectFeesInEther()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "Rubixi.sol",
+   "lines": [
+    79,
+    87
+   ],
+   "snippet": "        function collectFeesInEther(uint _amt) onlyowner {\n                _amt *= 1 ether;\n                if (_amt > collectedFees) collectAllFees();\n\n                if (collectedFees == 0) throw;\n\n                creator.send(_amt);\n                collectedFees -= _amt;\n        }",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently.",
+   "reference_url": null
+  },
+  {
+   "id": "w5",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in collectPercentOfFees()",
+   "impact": "Medium",
+   "confidence": "Low",
+   "confirmed": false,
+   "file": "Rubixi.sol",
+   "lines": [
+    89,
+    95
+   ],
+   "snippet": "        function collectPercentOfFees(uint _pcent) onlyowner {\n                if (collectedFees == 0 || _pcent > 100) throw;\n\n                uint feesToCollect = collectedFees / 100 * _pcent;\n                creator.send(feesToCollect);\n                collectedFees -= feesToCollect;\n        }",
+   "description": "send() forwards only 2,300 gas and returns false on failure; the result is ignored, so a failed payment passes silently.",
+   "reference_url": null
+  }
+ ],
+ "incident": {
+  "id": "rubixi-2016",
+  "name": "Rubixi ownership takeover",
+  "date": "2016-04-02",
+  "loss_usd": null,
+  "loss_eth": null,
+  "loss_note": "No written source fetched states an amount. Atzei et al. say only that users invoked DynamicPyramid to become owner and withdraw the fees.",
+  "cause": "The contract was renamed from DynamicPyramid to Rubixi but its constructor kept the old name. That turned DynamicPyramid() into a public function anyone could call to become owner and then take the fees with collectAllFees().",
+  "swc": "SWC-118",
+  "summary": "Rubixi was a Ponzi-style contract whose leftover constructor, DynamicPyramid, could be called by anyone to seize ownership. Once the bug became public, several accounts claimed ownership and withdrew the collected fees.",
+  "references": [
+   "https://swcregistry.io/docs/SWC-118",
+   "https://eprint.iacr.org/2016/1007",
+   "https://eth.blockscout.com/api/v2/addresses/0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+   "https://eth.blockscout.com/api/v2/smart-contracts/0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+   "https://www.4byte.directory/api/v1/signatures/?text_signature=DynamicPyramid()"
+  ]
+ },
+ "slither_raw": null,
+ "catalog_entry": "rubixi-2016",
+ "run": null,
+ "analyzed_at": "2026-10-29T05:05:02Z"
+}

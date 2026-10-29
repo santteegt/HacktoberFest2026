@@ -1,0 +1,29 @@
+{
+ "address": "0xbe9a630cf7f3cd38f199f25547d076b07392a8ec",
+ "kind": "bad",
+ "reasons": [
+  "1 fatal wound(s) (confirmed, High impact, Medium+ confidence); first: unchecked-transfer (High/Medium) Crowdsale._deliverTokens(address,uint256) ignores return value by token.transfer(_beneficiary,_tokenAmount)",
+  "1 scar (reentrancy-no-eth), 1 fatal",
+  "0 successful calls in the last 12 months out of 4 lifetime txs (0.0%)"
+ ],
+ "activity": {
+  "lifetime_txs": 4,
+  "last_tx": "2020-06-25T04:31:01Z",
+  "last_12m_txs": 0,
+  "last_12m_capped": false,
+  "silent_years": 6.3
+ },
+ "wounds": {
+  "count": 12,
+  "confirmed": 12,
+  "worst_impact": "High",
+  "scars": 1,
+  "fatal": 1
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

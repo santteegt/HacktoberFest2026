@@ -1,0 +1,88 @@
+{
+ "address": "0xbe9a630cf7f3cd38f199f25547d076b07392a8ec",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T05:37:34Z",
+ "blockscout": {
+  "name": "TemplateCrowdsale",
+  "is_contract": true,
+  "is_verified": true,
+  "ens": null,
+  "creation_tx": "0x92ec3d64931b72a17a45fc01f7d1b6343e1caac722cca254e0133579427f2f22",
+  "creator": "0x1e1fEdbeB8CE004a03569A3FF03A1317a6515Cf1",
+  "has_logs": true
+ },
+ "birth": {
+  "block": 10288085,
+  "timestamp": "2020-06-18T06:30:14.000000Z",
+  "tx": "0x92ec3d64931b72a17a45fc01f7d1b6343e1caac722cca254e0133579427f2f22",
+  "deployer": "0x1e1fEdbeB8CE004a03569A3FF03A1317a6515Cf1",
+  "timestamp_source": "blockscout"
+ },
+ "life": {
+  "tx_count": 4,
+  "token_transfers": 0,
+  "gas_used": 0,
+  "last_tx": {
+   "timestamp": "2020-06-25T04:31:01.000000Z",
+   "method": null,
+   "status": "ok",
+   "hash": "0x916a412eac530c0ac0bc6ff73c76c1c6bae8d9c9035e1967e71c3756d1a8d591"
+  },
+  "recent_methods": [
+   "init"
+  ],
+  "recent_years": [
+   "2020"
+  ],
+  "balance_wei": 0,
+  "balance_eth": 0.0,
+  "last_12m_capped": false,
+  "first_tx_timestamp": "2020-06-18T06:30:14.000000Z",
+  "calls": 4,
+  "calls_source": "blockscout-txlist",
+  "calls_capped": false,
+  "never_called": false,
+  "first_call_timestamp": "2020-06-18T06:32:13.000000Z",
+  "last_12m_txs": 0
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 4352,
+  "balance_wei": 0,
+  "balance_eth": 0.0
+ },
+ "source": {
+  "provider": "sourcify",
+  "match": "match",
+  "name": "TemplateCrowdsale",
+  "compiler_version": "0.4.24+commit.e67f0147",
+  "language": "Solidity",
+  "files": [
+   "TemplateCrowdsale.sol"
+  ],
+  "dir": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/05-week4-ghost-in-the-machine/data/ghosts/0xbe9a630cf7f3cd38f199f25547d076b07392a8ec/src"
+ },
+ "age": {
+  "hardfork": "Muir Glacier",
+  "eh_era": null
+ },
+ "sites": [],
+ "sites_excluded": [],
+ "name": "TemplateCrowdsale",
+ "sources_used": [
+  "blockscout",
+  "rpc",
+  "sourcify"
+ ],
+ "names": [
+  {
+   "name": "TemplateCrowdsale",
+   "source": "blockscout"
+  },
+  {
+   "name": "TemplateCrowdsale",
+   "source": "source:sourcify"
+  }
+ ],
+ "proxy": false
+}

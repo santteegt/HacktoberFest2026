@@ -1,0 +1,125 @@
+{
+ "address": "0xfcb0818c0b79a98686b2f56d4623d0b6c0243c55",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T05:27:40Z",
+ "eh": {
+  "layer": "documented",
+  "era_id": "dao",
+  "era_name": "DAO Fork",
+  "name": "greeter",
+  "token": {
+   "token_name": null,
+   "token_symbol": null,
+   "token_decimals": null
+  },
+  "heuristics": {
+   "contract_type": "utility",
+   "confidence": 0.5,
+   "is_proxy": false,
+   "has_selfdestruct": false,
+   "is_erc20_like": false
+  },
+  "decompilation_success": false,
+  "code_size_bytes": 374,
+  "short_description": "The go-ethereum Contract Tutorial greeter, deployed with the greeting: Hello from Blokur!",
+  "description": "The greeter is the worked example of the Contract Tutorial on the go-ethereum wiki. It inherits a base contract named mortal, which records the account that created it and exposes kill(), a function that self-destructs the contract and sends its balance to that account. Only the creator can call it.\n\nThe greeter itself adds one string. The constructor stores the greeting given at deployment and greet() returns it. There is no setter, so the greeting a copy is born with is the only greeting it ever has, and no account other than the creator can affect it.\n\nThis copy was deployed with the greeting: Hello from Blokur!",
+  "historical_significance": "The Contract Tutorial was the introduction to Solidity that shipped with go-ethereum, and deploying the greeter was its final step. Each copy therefore preserves the sentence its author chose to write onto a public chain while learning the tools. The Solidity source here was recovered by compiling the tutorial text with period compilers until the output matched the deployed bytecode exactly.",
+  "historical_context": "The Contract Tutorial on the go-ethereum wiki was written for Frontier in 2015 and stayed in use as an introduction to Solidity well past the Homestead fork of March 2016. Copies of its greeter went on being deployed to mainnet by people working through the tutorial, compiled with whichever Solidity release was current when they reached the last step.",
+  "verification_status": "verified",
+  "verification_method": null,
+  "links": [],
+  "metadata": [
+   {
+    "key": "tx_counts_by_year_external_to_v1",
+    "value": null,
+    "json_value": {
+     "counts": {},
+     "truncated": false
+    },
+    "source_url": "alchemy_getAssetTransfers",
+    "created_at": "2026-08-30T02:16:54.231Z"
+   }
+  ],
+  "has_source": true,
+  "has_abi": true
+ },
+ "birth": {
+  "block": 2217797,
+  "timestamp": "2016-09-07T21:35:33.000000Z",
+  "tx": "0x311e0308091c874876d2d2388c24cba06628126be38be43de859f401f42f4424",
+  "deployer": "0xcb55eb51162ac0fef39dba51a21d553f64282d5e",
+  "timestamp_source": "blockscout"
+ },
+ "blockscout": {
+  "name": "greeter",
+  "is_contract": true,
+  "is_verified": true,
+  "ens": null,
+  "creation_tx": "0x311e0308091c874876d2d2388c24cba06628126be38be43de859f401f42f4424",
+  "creator": "0xCB55eB51162AC0feF39DbA51A21D553F64282D5e",
+  "has_logs": false
+ },
+ "life": {
+  "tx_count": 0,
+  "token_transfers": 0,
+  "gas_used": 0,
+  "last_tx": null,
+  "recent_methods": [],
+  "recent_years": [],
+  "balance_wei": 0,
+  "balance_eth": 0.0,
+  "last_12m_capped": false,
+  "first_tx_timestamp": "2016-09-07T21:35:33.000000Z",
+  "calls": 0,
+  "calls_source": "blockscout-txlist",
+  "calls_capped": false,
+  "never_called": true,
+  "first_call_timestamp": null,
+  "last_12m_txs": 0
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 374,
+  "balance_wei": 0,
+  "balance_eth": 0.0
+ },
+ "source": {
+  "provider": "sourcify",
+  "match": "match",
+  "name": "greeter",
+  "compiler_version": "0.3.6+commit.3fc68da5",
+  "language": "Solidity",
+  "files": [
+   "greeter.sol"
+  ],
+  "dir": "data/ghosts/0xfcb0818c0b79a98686b2f56d4623d0b6c0243c55/src"
+ },
+ "age": {
+  "hardfork": "DAO Fork",
+  "eh_era": "DAO Fork"
+ },
+ "sites": [],
+ "sites_excluded": [],
+ "name": "greeter",
+ "sources_used": [
+  "blockscout",
+  "ethereumhistory",
+  "rpc",
+  "sourcify"
+ ],
+ "names": [
+  {
+   "name": "greeter",
+   "source": "ethereumhistory"
+  },
+  {
+   "name": "greeter",
+   "source": "blockscout"
+  },
+  {
+   "name": "greeter",
+   "source": "source:sourcify"
+  }
+ ],
+ "proxy": false
+}

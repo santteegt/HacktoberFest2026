@@ -1,0 +1,64 @@
+{
+ "address": "0x2af47a65da8cd66729b4209c22017d6a5c2d2400",
+ "name": "StandardBounties",
+ "kind": "lingering",
+ "title": "The bounty board in the empty square",
+ "tagline": "The town moved on. A few people still pin notes to the board, and 83 ether still sleeps in the box.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "A board for honest work",
+   "paragraphs": [
+    "StandardBounties was born on the 18th of December 2017, in block 4,756,336, in the Byzantium age.",
+    "Anyone could post a task with a reward, and anyone could fulfil it and be paid."
+   ],
+   "facts_cited": [
+    "birth.timestamp",
+    "birth.block",
+    "age.hardfork"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The busy years",
+   "paragraphs": [
+    "The chain counts 19,461 transactions and 4,875 token transfers. Its site, bounties.network, was first archived in September 2017."
+   ],
+   "facts_cited": [
+    "life.tx_count",
+    "life.token_transfers",
+    "sites.0.first_ok"
+   ]
+  },
+  {
+   "id": "knocking",
+   "heading": "The knocking",
+   "paragraphs": [
+    "The crowds left, but the board stayed. In 2025 someone still knocked seven times.",
+    "The latest knock came on the 29th of October 2026: killBounty. Someone closing an old promise, perhaps. 83.001304 ether still sleeps inside."
+   ],
+   "facts_cited": [
+    "eh.metadata.tx_counts_by_year",
+    "life.last_tx",
+    "chain.balance_eth"
+   ]
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "fixture (hand-written by Lane C1, not a model)",
+  "think": false,
+  "seconds": 0.0,
+  "prompt_tokens": 0,
+  "output_tokens": 0
+ },
+ "verifier": {
+  "sentences": 8,
+  "grounded": 8,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": []
+ },
+ "generated_at": "2026-10-29T05:14:00Z"
+}

@@ -1,0 +1,81 @@
+{
+ "address": "0x6b7a87899490ece95443e979ca9485cbe7e71522",
+ "started_at": "2026-10-29T05:28:11Z",
+ "finished_at": "2026-10-29T05:28:59Z",
+ "kind": "bad",
+ "title": "The Haunted Multichain Router",
+ "name": "AnyswapV4Router",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 0.1,
+   "note": "incident: victim of Multichain (Anyswap) (2022-01-18): Insufficient Token Validation, about $1,400,000 lost"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 6.3,
+   "note": "AnyswapV4Router; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 13.6,
+   "note": "tier slither, 2 finding(s), incident: Multichain (Anyswap)"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "bad"
+  },
+  {
+   "name": "face",
+   "ok": false,
+   "seconds": 0.0,
+   "note": "RuntimeError: no screenshots (no site known)"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 27.6,
+   "note": "27.6 s, 7 calls; verifier 25/27 grounded, 2 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "57,030 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "7 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "incident",
+  "reason": "victim of Multichain (Anyswap) (2022-01-18): Insufficient Token Validation, about $1,400,000 lost",
+  "name": "AnyswapV4Router",
+  "year": 2022,
+  "hint": true
+ },
+ "incident_hint": {
+  "id": "defihacklabs-2022-01-18-multichain-anyswap",
+  "name": "Multichain (Anyswap)",
+  "date": "2022-01-18",
+  "cause": "Insufficient Token Validation",
+  "loss_note": "$1.4 million"
+ },
+ "gallery_path": "web/ghosts/0x6b7a87899490ece95443e979ca9485cbe7e71522/"
+}

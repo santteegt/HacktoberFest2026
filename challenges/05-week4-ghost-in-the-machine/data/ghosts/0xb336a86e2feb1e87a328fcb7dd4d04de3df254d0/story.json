@@ -1,0 +1,226 @@
+{
+ "address": "0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0",
+ "name": "KingOfTheEtherThrone",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The Throne of Hollow Claims",
+ "tagline": "Kieran Elby's redesign bled dry when an unchecked send haunted the Frontier Thawing.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The throne in the thaw",
+   "paragraphs": [
+    "The candles flicker over a throne of old code. It was born on February 6, 2016. A contract is a small program that lives on Ethereum. It arrived during the Frontier Thawing era.",
+    "The wallet 0xb2af…8de3 brought it into the world. It was written in Solidity 0.2.1. On the day it was born it was written into a block, one page of Ethereum's shared record book. It rose three hours after the v0.3.0 throne fell silent."
+   ],
+   "facts_cited": [
+    "facts.age.hardfork",
+    "facts.birth.deployer",
+    "facts.eh.links[3].note",
+    "facts.eh.short_description"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The wounded throne",
+   "paragraphs": [
+    "The candles flicker over a throne born in the Turbulent Age. Kieran Elby placed the new version on the block on February 6, 2016. It rose about three hours after the old throne broke its promises to the monarchs. The new throne raised the starting price to 100 finney and removed the limit on kings.",
+    "A wound remained deep in its heart. It still used the old way to send compensation with a small gas stipend. Mist-style contract wallets still lost their wealth in the shadows. The true healing did not come until February 21, 2016. It lived on the blockchain at 0xb336a86e...54d0.",
+    "The throne saw 21 transactions in its life."
+   ],
+   "facts_cited": [
+    "facts.address",
+    "facts.eh.description",
+    "facts.eh.metadata[0].json_value.counts.2016",
+    "facts.eh.short_description"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The silent crown",
+   "paragraphs": [
+    "I am KingOfTheEtherThrone. I remember the Turbulent Age in February 2016. My code saw a price too high and tried to send money back. I used a method that gave only 2,300 gas.",
+    "I did not check if the payment failed. Contract wallets ran out of gas, but I kept going anyway. I crowned new monarchs while the money stayed trapped in the dark.",
+    "The loss was 98.043 ETH. A developer swept my balance and returned the funds by hand. I now carry the weight of those failed sends in my memory."
+   ],
+   "facts_cited": [
+    "facts.eh.description",
+    "facts.eh.name",
+    "facts.eh.short_description",
+    "wounds.incident.loss_eth"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "The cure for the throne",
+   "paragraphs": [
+    "The KingOfTheEtherThrone sits in the cold. A ghost-buster arrives to heal the wound in claimThrone(). The old send() was a mistake. It let the contract move on even when the money did not arrive.",
+    "The cure is a simple habit in Solidity 0.8.38. The code must read the answer of every call. It checks the boolean to see if the payment landed. If it fails, the contract stops.",
+    "This way, each recipient pulls its own payment. One stubborn wallet cannot block the others. The ghost of the unchecked send() finally rests."
+   ],
+   "facts_cited": [
+    "facts.eh.description",
+    "facts.eh.name",
+    "facts.life.recent_methods[10]",
+    "recipe.solc_version"
+   ]
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I am KingOfTheEtherThrone. I remember the Turbulent Age in February 2016. My code saw a price too high and tried to send money back. I used a method that gave only 2,300 gas.",
+   "I did not check if the payment failed. Contract wallets ran out of gas, but I kept going anyway. I crowned new monarchs while the money stayed trapped in the dark.",
+   "The loss was 98.043 ETH. A developer swept my balance and returned the funds by hand. I now carry the weight of those failed sends in my memory."
+  ],
+  "snippet": {
+   "file": "KingOfTheEtherThrone.sol",
+   "lines": [
+    99,
+    103
+   ],
+   "code": "        // If they paid too little, reject claim and refund their money.\n        if (valuePaid < currentClaimPrice) {\n            msg.sender.send(valuePaid);\n            return;\n        }"
+  },
+  "finding": {
+   "id": "w1",
+   "check": "unchecked-send",
+   "swc": "SWC-104",
+   "title": "Unchecked send() in claimThrone()",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "reference_url": "http://www.kingoftheether.com/postmortem.html"
+  },
+  "incident": {
+   "id": "kotet-v040-2016",
+   "name": "King of the Ether Throne failed payments (Turbulent Age)",
+   "date": "2016-02-06",
+   "loss_usd": null,
+   "loss_eth": 98.043,
+   "loss_note": "Post-mortem Appendix A lists failed sends of 42.273 ETH (compensation), 7.77 ETH (refund) and 48 ETH (refund), all later returned by hand: 98.043 ETH in total. The timeline in the same page says 'three refunds for a total of 98.5 ether'. A fourth failure (95.04 ETH, block 968739) rolled back the whole transaction and was paid in a later block, so it caused no loss. The post-mortem says all ether was returned.",
+   "cause": "claimThrone sent compensation and refunds with address.send(), which forwards only 2300 gas and does not check the return value. Mist contract wallets ran out of gas, so the payments failed while the contract kept going and crowned the new monarch anyway.",
+   "swc": "SWC-104",
+   "summary": "During the 'Turbulent Age' (6-8 February 2016) the v0.4.0 throne contract failed to pay several monarchs and over/underpaying claimants who used contract wallets. It did not notice the failures and kept accepting claims. The developer swept the contract balance and refunded the affected wallets by hand on 19 February, then shipped v0.5.0 with a gas-carrying send and a resend function.",
+   "references": [
+    "http://www.kingoftheether.com/postmortem.html",
+    "https://raw.githubusercontent.com/kieranelby/KingOfTheEtherThrone/6d77929b/contracts/KingOfTheEtherThrone.sol",
+    "https://raw.githubusercontent.com/kieranelby/KingOfTheEtherThrone/120f5a20/contracts/KingOfTheEtherThrone.sol",
+    "https://api.github.com/repos/kieranelby/KingOfTheEtherThrone/commits/6d77929b",
+    "https://www.ethereumhistory.com/contract/0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0",
+    "https://eth.blockscout.com/api/v2/addresses/0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0"
+   ]
+  }
+ },
+ "buster": {
+  "paragraphs": [
+   "The KingOfTheEtherThrone sits in the cold. A ghost-buster arrives to heal the wound in claimThrone(). The old send() was a mistake. It let the contract move on even when the money did not arrive.",
+   "The cure is a simple habit in Solidity 0.8.38. The code must read the answer of every call. It checks the boolean to see if the payment landed. If it fails, the contract stops.",
+   "This way, each recipient pulls its own payment. One stubborn wallet cannot block the others. The ghost of the unchecked send() finally rests."
+  ],
+  "fix": {
+   "language": "solidity",
+   "version": "0.8.38",
+   "code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.38;\n\ncontract KingOfTheEtherThrone {\n    mapping(address => uint256) public owed;\n\n    function credit(address who) external payable {\n        owed[who] += msg.value;\n    }\n\n    // Pull, don't push: each recipient withdraws, and a failed transfer reverts instead of vanishing.\n    function claim() external {\n        uint256 amount = owed[msg.sender];\n        require(amount > 0, \"nothing owed\");\n        owed[msg.sender] = 0;\n        (bool ok, ) = payable(msg.sender).call{value: amount}(\"\");\n        require(ok, \"transfer failed\");\n    }\n}\n",
+   "compiled": true,
+   "compiler_output": "solc 0.8.38 --bin: OK (KingOfTheEtherThrone 1290 bytes)",
+   "adapted": true,
+   "renames": {
+    "Payouts": "KingOfTheEtherThrone"
+   },
+   "recipe": "unchecked-lowlevel",
+   "attempts": 2,
+   "note": "the recipe with names chosen by the model from the old contract; renamed and checked by code, compiled by solc",
+   "ignored_renames": [
+    "excessPaid does not look like it does the job of owed",
+    "sweepCommission does not look like it does the job of credit",
+    "claimThrone takes 1 argument(s) in the old contract but claim takes 0"
+   ],
+   "failed_attempts": [
+    {
+     "ok": false,
+     "renames": {
+      "Payouts": "KingOfTheEtherThrone",
+      "owed": "valuePaid",
+      "credit": "sweepCommission",
+      "claim": "claimThrone"
+     },
+     "rename_problems": [
+      "valuePaid does not look like it does the job of owed",
+      "sweepCommission does not look like it does the job of credit",
+      "claimThrone takes 1 argument(s) in the old contract but claim takes 0"
+     ],
+     "meaning_problems": [],
+     "output": "solc 0.8.38 --bin: OK (KingOfTheEtherThrone 1290 bytes)"
+    }
+   ]
+  },
+  "fix_reason": null,
+  "recipe": {
+   "check": "unchecked-lowlevel",
+   "title": "Read the answer of every call",
+   "explain": "Old `send` and low-level `call` return false instead of failing, so a contract that ignores the answer keeps going as if the money arrived. Modern Solidity code checks the boolean that `call` returns and reverts on failure, and it lets each recipient pull its own payment so one stubborn wallet cannot block everyone else.",
+   "compiler_enforced": false
+  },
+  "mitigation": null
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 41.2,
+  "model_seconds": 41.0,
+  "calls": 8,
+  "prompt_tokens": 6003,
+  "output_tokens": 841
+ },
+ "verifier": {
+  "sentences": 41,
+  "grounded": 41,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 1,
+   "dropped": 0
+  },
+  "details": [
+   {
+    "chapter": "life",
+    "verdict": "style-rewritten",
+    "text": "It lived on the blockchain at 0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0.",
+    "problems": [
+     {
+      "kind": "style",
+      "token": "a full 0x address or hash (use the short form like 0xbfdb…7645, or leave it out)"
+     }
+    ],
+    "rewrite": "It lived on the blockchain at 0xb336a86e...54d0."
+   }
+  ],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "February 6, 2016",
+  "born_year": 2016,
+  "age_years": 10.7,
+  "age_years_whole": 10,
+  "last_seen_on": "February 19, 2016",
+  "last_seen_year": 2016,
+  "silent_years": 10.7,
+  "silent_days": 3904,
+  "active_days": 13,
+  "balance_eth": 0.0,
+  "deployer_short": "0xb2af…8de3",
+  "address_short": "0xb336…54d0",
+  "compiler_label": "Solidity 0.2.1",
+  "activity_label": "last busy in 2016",
+  "site_years": {
+   "http://www.kingoftheether.com/postmortem.html": "2016-2026"
+  },
+  "site_labels": [
+   "kingoftheether.com/postmortem.html, online since 2016 and still online in 2026"
+  ]
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:56:51Z"
+}

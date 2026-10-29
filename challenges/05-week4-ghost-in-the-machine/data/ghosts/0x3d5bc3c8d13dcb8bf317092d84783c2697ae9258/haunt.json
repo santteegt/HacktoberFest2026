@@ -1,0 +1,82 @@
+{
+ "address": "0x3d5bc3c8d13dcb8bf317092d84783c2697ae9258",
+ "started_at": "2026-10-29T05:43:19Z",
+ "finished_at": "2026-10-29T05:43:58Z",
+ "kind": "bad",
+ "title": "The Haunted Echo of Unitroller",
+ "name": "Unitroller",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 0.1,
+   "note": "incident: victim of CreamFinance (2021-10-27): Price Manipulation, about $130,000,000 lost"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 4.5,
+   "note": "Unitroller; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 11.2,
+   "note": "tier slither, 23 finding(s), incident: CreamFinance"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "bad"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: --skip-face",
+   "skipped": true
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 23.0,
+   "note": "23.0 s, 6 calls; verifier 33/34 grounded, 1 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "59,682 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "25 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": true,
+  "deploy": false
+ },
+ "picked": {
+  "source": "incident",
+  "reason": "victim of CreamFinance (2021-10-27): Price Manipulation, about $130,000,000 lost",
+  "name": "Unitroller",
+  "year": 2021,
+  "hint": true
+ },
+ "incident_hint": {
+  "id": "defihacklabs-2021-10-27-creamfinance",
+  "name": "CreamFinance",
+  "date": "2021-10-27",
+  "cause": "Price Manipulation",
+  "loss_note": "$130M"
+ },
+ "gallery_path": "web/ghosts/0x3d5bc3c8d13dcb8bf317092d84783c2697ae9258/"
+}

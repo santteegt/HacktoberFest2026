@@ -1,0 +1,195 @@
+{
+ "address": "0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+ "name": "Rubixi",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The Shadow of the Missing Pyramid",
+ "tagline": "Rubixi haunts the Homestead era with a constructor that names a ghost contract.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of Rubixi",
+   "paragraphs": [
+    "A single candle flickers near the name Rubixi. It was born on March 14, 2016. On the day it was born it was written into a block, one page of Ethereum's shared record book. The wallet 0xdd68…ad60 brought it into the world.",
+    "The contract is a small program that lives on Ethereum. It entered the world during the Homestead era. It was built using Solidity 0.2.1. Now it stands 10.6 years old."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.birth.deployer",
+    "facts.birth.timestamp",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The ghost of the pyramid",
+   "paragraphs": [
+    "The candles flicker over 712 transactions. Rubixi lived a life of greed. It was a Ponzi-style contract. People called functions to change fees and multipliers.",
+    "The wound remains in the leftover constructor. Anyone could call DynamicPyramid to seize ownership. It still pulses with activity in 2026."
+   ],
+   "facts_cited": [
+    "facts.fetched_at",
+    "facts.life.last_tx.method",
+    "facts.life.tx_count"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The name that stayed behind",
+   "paragraphs": [
+    "I am Rubixi. I carry a wound from a name that was left behind. I was renamed, but my constructor kept the old title of DynamicPyramid. Because of this, anyone could call that function to become my owner.",
+    "On April 2, 2016, the truth of my wound was revealed. People called the function and took the fees for themselves. I have 4 other wounds, but this one was a high impact strike. People still use me, with 75 calls in the last 12 months and 712 calls in my life."
+   ],
+   "facts_cited": [
+    "facts.life.last_12m_txs",
+    "facts.life.last_tx.method",
+    "facts.life.tx_count",
+    "verdict.reasons[0]",
+    "verdict.reasons[2]"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "The birth rite no one can repeat",
+   "paragraphs": [
+    "The ghost of Rubixi lingers in the old ways. Before 0.4.22, a constructor was just a function with a name like the contract. If the name changed but the function stayed, anyone could call it. They could crown themselves owner like a stolen throne.",
+    "The cure is a birth rite no one can repeat. Now, the constructor keyword runs exactly once at deployment. Since 0.5, the old style no longer compiles. Every privileged function carries an onlyOwner guard to keep the throne safe."
+   ],
+   "facts_cited": [
+    "wounds.findings[0].description",
+    "wounds.findings[2].snippet"
+   ]
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I am Rubixi. I carry a wound from a name that was left behind. I was renamed, but my constructor kept the old title of DynamicPyramid. Because of this, anyone could call that function to become my owner.",
+   "On April 2, 2016, the truth of my wound was revealed. People called the function and took the fees for themselves. I have 4 other wounds, but this one was a high impact strike. People still use me, with 75 calls in the last 12 months and 712 calls in my life."
+  ],
+  "snippet": {
+   "file": "Rubixi.sol",
+   "lines": [
+    13,
+    15
+   ],
+   "code": "        function DynamicPyramid() {\n                creator = msg.sender;\n        }"
+  },
+  "finding": {
+   "id": "w1",
+   "check": "constructor-name",
+   "swc": "SWC-118",
+   "title": "DynamicPyramid() looks like a constructor but no contract is named DynamicPyramid",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "reference_url": "https://swcregistry.io/docs/SWC-118"
+  },
+  "incident": {
+   "id": "rubixi-2016",
+   "name": "Rubixi ownership takeover",
+   "date": "2016-04-02",
+   "loss_usd": null,
+   "loss_eth": null,
+   "loss_note": "No written source fetched states an amount. Atzei et al. say only that users invoked DynamicPyramid to become owner and withdraw the fees.",
+   "cause": "The contract was renamed from DynamicPyramid to Rubixi but its constructor kept the old name. That turned DynamicPyramid() into a public function anyone could call to become owner and then take the fees with collectAllFees().",
+   "swc": "SWC-118",
+   "summary": "Rubixi was a Ponzi-style contract whose leftover constructor, DynamicPyramid, could be called by anyone to seize ownership. Once the bug became public, several accounts claimed ownership and withdrew the collected fees.",
+   "references": [
+    "https://swcregistry.io/docs/SWC-118",
+    "https://eprint.iacr.org/2016/1007",
+    "https://eth.blockscout.com/api/v2/addresses/0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+    "https://eth.blockscout.com/api/v2/smart-contracts/0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+    "https://www.4byte.directory/api/v1/signatures/?text_signature=DynamicPyramid()"
+   ]
+  }
+ },
+ "buster": {
+  "paragraphs": [
+   "The ghost of Rubixi lingers in the old ways. Before 0.4.22, a constructor was just a function with a name like the contract. If the name changed but the function stayed, anyone could call it. They could crown themselves owner like a stolen throne.",
+   "The cure is a birth rite no one can repeat. Now, the constructor keyword runs exactly once at deployment. Since 0.5, the old style no longer compiles. Every privileged function carries an onlyOwner guard to keep the throne safe."
+  ],
+  "fix": {
+   "language": "solidity",
+   "version": "0.8.38",
+   "code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.38;\n\ncontract Rubixi {\n    address private creator;\n    uint256 private collectedFees;\n\n    constructor() {           // runs once, at deployment; no one can call it again\n        creator = msg.sender;\n    }\n\n    modifier onlyOwner() {\n        require(msg.sender == creator, \"not owner\");\n        _;\n    }\n\n    receive() external payable {\n        collectedFees += msg.value;\n    }\n\n    function collectAllFees() external onlyOwner {\n        uint256 amount = collectedFees;\n        collectedFees = 0;\n        (bool ok, ) = payable(creator).call{value: amount}(\"\");\n        require(ok, \"transfer failed\");\n    }\n\n    function changeOwner(address newOwner) external onlyOwner {\n        require(newOwner != address(0), \"zero owner\");\n        creator = newOwner;\n    }\n}\n",
+   "compiled": true,
+   "compiler_output": "solc 0.8.38 --bin: OK (Rubixi 1597 bytes)",
+   "adapted": true,
+   "renames": {
+    "Pyramid": "Rubixi",
+    "collectFees": "collectAllFees"
+   },
+   "recipe": "constructor-name",
+   "attempts": 2,
+   "note": "the recipe with names chosen by the model from the old contract; renamed and checked by code, compiled by solc",
+   "ignored_renames": [],
+   "failed_attempts": [
+    {
+     "ok": false,
+     "renames": {
+      "Pyramid": "Rubixi",
+      "creator": "creator",
+      "collectedFees": "collectedFees",
+      "collectFees": "collectAllFees",
+      "changeOwner": "changeMultiplier"
+     },
+     "rename_problems": [
+      "changeOwner already exists in the old contract; it keeps its own name"
+     ],
+     "meaning_problems": [],
+     "output": "solc 0.8.38 --bin: OK (Rubixi 1597 bytes)"
+    }
+   ]
+  },
+  "fix_reason": null,
+  "recipe": {
+   "check": "constructor-name",
+   "title": "A birth rite no one can repeat",
+   "explain": "Before 0.4.22 a constructor was a function named like the contract, so renaming the contract and forgetting the function left a public function anyone could call to crown themselves owner. Since 0.4.22 the `constructor` keyword runs exactly once at deployment, since 0.5 the old style no longer compiles, and every privileged function carries an `onlyOwner` guard.",
+   "compiler_enforced": true
+  },
+  "mitigation": null
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 30.1,
+  "model_seconds": 30.1,
+  "calls": 7,
+  "prompt_tokens": 4094,
+  "output_tokens": 717
+ },
+ "verifier": {
+  "sentences": 33,
+  "grounded": 33,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "March 14, 2016",
+  "born_year": 2016,
+  "age_years": 10.6,
+  "age_years_whole": 10,
+  "last_seen_on": "October 13, 2026",
+  "last_seen_year": 2026,
+  "silent_years": 0.0,
+  "silent_days": 15,
+  "active_days": 3864,
+  "balance_eth": 4.022216,
+  "deployer_short": "0xdd68…ad60",
+  "address_short": "0xe827…20be",
+  "compiler_label": "Solidity 0.2.1",
+  "activity_label": "called this year, 2026"
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:58:09Z"
+}

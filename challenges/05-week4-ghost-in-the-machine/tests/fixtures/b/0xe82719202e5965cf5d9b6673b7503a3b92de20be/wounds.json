@@ -1,0 +1,29 @@
+{
+ "address": "0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+ "tier": "regex",
+ "compiler_version": "0.2.1+commit.91a6b35f",
+ "analyzed_files": [
+  "Rubixi.sol"
+ ],
+ "findings": [
+  {
+   "id": "w1",
+   "check": "constructor-name",
+   "swc": "SWC-118",
+   "title": "Constructor name mismatch: DynamicPyramid() is public in contract Rubixi",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": false,
+   "file": "Rubixi.sol",
+   "lines": [
+    13,
+    15
+   ],
+   "snippet": "        function DynamicPyramid() {\n                creator = msg.sender;\n        }",
+   "description": "The contract was renamed to Rubixi but its constructor kept the old name DynamicPyramid, so anyone can call DynamicPyramid() and become the creator who collects the fees.",
+   "reference_url": "https://swcregistry.io/docs/SWC-118"
+  }
+ ],
+ "incident": null,
+ "slither_raw": null
+}

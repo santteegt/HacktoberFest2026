@@ -1,0 +1,202 @@
+{
+ "address": "0xbb9bc244d798123fde783fcc1c72d3bb8c189413",
+ "name": "TheDAO",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The Ghost of Slock.it's Venture",
+ "tagline": "A wounded decentralized fund haunted by the shadows of a devastating hack.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of the dao",
+   "paragraphs": [
+    "A candle flickers over the ghost of a venture capital fund. It was born on April 30, 2016. A wallet deployed it into the Homestead era. This contract is a small program that lives on Ethereum.",
+    "It arrived as a decentralized autonomous organization. On the day it was born it was written into a block, one page of Ethereum's shared record book. It stood ten years and six months old in the shadow of the past."
+   ],
+   "facts_cited": [
+    "derived.age_years_whole",
+    "facts.eh.description"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The wound and the split",
+   "paragraphs": [
+    "The ghost lingers where the splitDAO function failed. On June 17, 2016, a recursive call vulnerability opened a door. An attacker drained about 3.6 million ETH into a child DAO. The Ethereum Foundation issued an emergency advisory that same day.",
+    "The community debated for weeks while the stolen funds sat held. On July 20, 2016, a hard fork at block 1,920,000 changed the state. The funds moved to a recovery contract, but the chain split forever. Those who stayed behind became Ethereum Classic.",
+    "The SEC issued a report in July 2017. It called the tokens securities under federal law. This event became the lesson for every developer to guard against reentrancy. The contract saw 175,183 transactions in its life."
+   ],
+   "facts_cited": [
+    "facts.eh.description",
+    "facts.eh.historical_significance",
+    "facts.life.tx_count",
+    "wounds.incident.loss_eth"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The recursive drain",
+   "paragraphs": [
+    "I felt the attacker reach into my split function. They found a path where I paid out ether before I could zero the caller's balance. They re-entered my code from inside that payout, withdrawing repeatedly in one transaction.",
+    "On June 17, 2016, the drain began. About 3.6 million ether moved out, which was roughly a third of the 11.5 million committed. This loss was valued at around $50 million at the time.",
+    "People still use me. I have had 223 calls in the last 12 months and 175183 calls in my life."
+   ],
+   "facts_cited": [
+    "facts.eh.description",
+    "facts.eh.links[2].id",
+    "facts.life.tx_count",
+    "verdict.reasons[2]",
+    "wounds.incident.loss_eth",
+    "wounds.incident.loss_usd"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "The lock and the ledger",
+   "paragraphs": [
+    "The ghost of The DAO hack still lingers in the cold code. It haunts every contract that forgets to close the door. The cure is a habit called Pay last, lock the door.",
+    "Modern contracts must update their own books before they send ether. A caller that calls back finds the balance at zero. A reentrancy lock closes the door for the whole function.",
+    "The compiler does not stop this shadow by itself. In Solidity 0.8.38, a coder must use a checked return value. It is a way to keep the spirits out."
+   ],
+   "facts_cited": [
+    "facts.eh.token.token_name",
+    "recipe.solc_version"
+   ]
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I felt the attacker reach into my split function. They found a path where I paid out ether before I could zero the caller's balance. They re-entered my code from inside that payout, withdrawing repeatedly in one transaction.",
+   "On June 17, 2016, the drain began. About 3.6 million ether moved out, which was roughly a third of the 11.5 million committed. This loss was valued at around $50 million at the time.",
+   "People still use me. I have had 223 calls in the last 12 months and 175183 calls in my life."
+  ],
+  "snippet": {
+   "file": "source.eh.sol",
+   "lines": [
+    989,
+    1014
+   ],
+   "code": "        // Assign reward rights to new DAO\n        uint rewardTokenToBeMoved =\n            (balances[msg.sender] * p.splitData[0].rewardToken) /\n            p.splitData[0].totalSupply;\n\n        uint paidOutToBeMoved = DAOpaidOut[address(this)] * rewardTokenToBeMoved /\n            rewardToken[address(this)];\n\n        rewardToken[address(p.splitData[0].newDAO)] += rewardTokenToBeMoved;\n        if (rewardToken[address(this)] < rewardTokenToBeMoved)\n            throw;\n        rewardToken[address(this)] -= rewardTokenToBeMoved;\n\n        DAOpaidOut[address(p.splitData[0].newDAO)] += paidOutToBeMoved;\n        if (DAOpaidOut[address(this)] < paidOutToBeMoved)\n            throw;\n        DAOpaidOut[address(this)] -= paidOutToBeMoved;\n\n        // Burn DAO Tokens\n        Transfer(msg.sender, 0, balances[msg.sender]);\n        withdrawRewardFor(msg.sender); // be nice, and get his rewards\n        totalSupply -= balances[msg.sender];\n        balances[msg.sender] = 0;\n        paidOut[msg.sender] = 0;\n        return true;\n    }"
+  },
+  "finding": {
+   "id": "w1",
+   "check": "catalog",
+   "swc": "SWC-107",
+   "title": "The DAO hack",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "reference_url": "https://blog.ethereum.org/2016/06/17/critical-update-re-dao-vulnerability"
+  },
+  "incident": {
+   "id": "thedao-2016",
+   "name": "The DAO hack",
+   "date": "2016-06-17",
+   "loss_usd": 50000000,
+   "loss_eth": 3600000,
+   "loss_note": "Wikipedia: about 3.6 million ether moved out, roughly a third of the 11.5 million committed, valued at around $50 million at the time. Atzei et al. (eprint 2016/1007) instead say about $60M came under the attacker's control.",
+   "cause": "The split path paid ether out through an external call before the caller's balance was zeroed, so the attacker re-entered the split function from inside the payout and withdrew repeatedly in one transaction.",
+   "swc": "SWC-107",
+   "summary": "On 17 June 2016 an attacker drained ether from The DAO by calling the split function recursively before balances were updated. The ether went into a child DAO that had a 28-day holding period, and the Ethereum Foundation blog proposed a soft fork aimed at that child DAO's code. The funds were later recovered through the hard fork.",
+   "references": [
+    "https://blog.ethereum.org/2016/06/17/critical-update-re-dao-vulnerability",
+    "https://en.wikipedia.org/wiki/The_DAO",
+    "https://swcregistry.io/docs/SWC-107",
+    "https://eprint.iacr.org/2016/1007",
+    "https://raw.githubusercontent.com/blockchainsllc/DAO/v1.0/DAO.sol",
+    "https://raw.githubusercontent.com/blockchainsllc/DAO/v1.0/ManagedAccount.sol",
+    "https://eth.blockscout.com/api/v2/addresses/0xbb9bc244d798123fde783fcc1c72d3bb8c189413"
+   ]
+  }
+ },
+ "buster": {
+  "paragraphs": [
+   "The ghost of The DAO hack still lingers in the cold code. It haunts every contract that forgets to close the door. The cure is a habit called Pay last, lock the door.",
+   "Modern contracts must update their own books before they send ether. A caller that calls back finds the balance at zero. A reentrancy lock closes the door for the whole function.",
+   "The compiler does not stop this shadow by itself. In Solidity 0.8.38, a coder must use a checked return value. It is a way to keep the spirits out."
+  ],
+  "fix": {
+   "language": "solidity",
+   "version": "0.8.38",
+   "code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.38;\n\ncontract TheDAO {\n    mapping(address => uint256) public balances;\n    bool private locked;\n\n    modifier nonReentrant() {\n        require(!locked, \"reentrant call\");\n        locked = true;\n        _;\n        locked = false;\n    }\n\n    function receiveEther() external payable {\n        balances[msg.sender] += msg.value;\n    }\n\n    function withdraw() external nonReentrant {\n        uint256 amount = balances[msg.sender];   // checks\n        require(amount > 0, \"nothing to withdraw\");\n        balances[msg.sender] = 0;                // effects\n        (bool ok, ) = payable(msg.sender).call{value: amount}(\"\");  // interactions\n        require(ok, \"transfer failed\");\n    }\n}\n",
+   "compiled": true,
+   "compiler_output": "solc 0.8.38 --bin: OK (TheDAO 1504 bytes)",
+   "adapted": true,
+   "renames": {
+    "Vault": "TheDAO",
+    "deposit": "receiveEther"
+   },
+   "recipe": "reentrancy-eth",
+   "attempts": 2,
+   "note": "the recipe with names chosen by the model from the old contract; renamed and checked by code, compiled by solc",
+   "ignored_renames": [
+    "splitDAO takes 2 argument(s) in the old contract but withdraw takes 0"
+   ],
+   "failed_attempts": [
+    {
+     "ok": false,
+     "renames": {
+      "Vault": "TheDAO",
+      "balances": "balances",
+      "deposit": "receiveEther",
+      "withdraw": "payOut"
+     },
+     "rename_problems": [
+      "payOut takes 2 argument(s) in the old contract but withdraw takes 0"
+     ],
+     "meaning_problems": [],
+     "output": "solc 0.8.38 --bin: OK (TheDAO 1504 bytes)"
+    }
+   ]
+  },
+  "fix_reason": null,
+  "recipe": {
+   "check": "reentrancy-eth",
+   "title": "Pay last, lock the door",
+   "explain": "Modern contracts follow checks-effects-interactions: they update their own books before they send ether, so a caller that calls back in finds the balance already at zero. A reentrancy lock (a `nonReentrant` modifier, or OpenZeppelin's ReentrancyGuard) closes the door for the whole function, and `call` replaces the old `send` with a checked return value.",
+   "compiler_enforced": false
+  },
+  "mitigation": null
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 36.4,
+  "model_seconds": 36.3,
+  "calls": 7,
+  "prompt_tokens": 5972,
+  "output_tokens": 800
+ },
+ "verifier": {
+  "sentences": 38,
+  "grounded": 38,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "April 30, 2016",
+  "born_year": 2016,
+  "age_years": 10.5,
+  "age_years_whole": 10,
+  "last_seen_on": "October 28, 2026",
+  "last_seen_year": 2026,
+  "silent_years": 0.0,
+  "silent_days": 1,
+  "active_days": 3833,
+  "balance_eth": 0.0006,
+  "deployer_short": "0x793e…b391",
+  "address_short": "0xbb9b…9413",
+  "activity_label": "called this year, 2026"
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:57:32Z"
+}

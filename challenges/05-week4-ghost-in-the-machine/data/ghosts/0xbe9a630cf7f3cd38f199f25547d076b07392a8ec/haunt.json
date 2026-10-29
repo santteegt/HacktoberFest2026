@@ -1,0 +1,74 @@
+{
+ "address": "0xbe9a630cf7f3cd38f199f25547d076b07392a8ec",
+ "started_at": "2026-10-29T05:37:34Z",
+ "finished_at": "2026-10-29T05:38:16Z",
+ "kind": "bad",
+ "title": "The Hollow Promise of Muir Glacier",
+ "name": "TemplateCrowdsale",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 35.7,
+   "note": "random: verified contract created in block 10288085 (2020), found after 26 random blocks"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 5.9,
+   "note": "TemplateCrowdsale; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 11.5,
+   "note": "tier slither, 12 finding(s)"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "bad"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "no site known, no screenshots"
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 25.2,
+   "note": "25.2 s, 8 calls; verifier 33/34 grounded, 0 repaired, 1 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "61,177 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "16 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "random",
+  "reason": "verified contract created in block 10288085 (2020), found after 26 random blocks",
+  "name": "TemplateCrowdsale",
+  "year": 2020,
+  "hint": false
+ },
+ "gallery_path": "web/ghosts/0xbe9a630cf7f3cd38f199f25547d076b07392a8ec/"
+}

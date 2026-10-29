@@ -1,0 +1,32 @@
+[
+ {
+  "site": "http://pastebin.com/N5ANMPSy",
+  "ok": true,
+  "captures": 1,
+  "note": "last = last 200 capture before the ghost's last transaction"
+ },
+ {
+  "site": "https://www.guinnessworldrecords.com/world-records/696281-first-ethereum-nft",
+  "ok": true,
+  "captures": 2,
+  "note": "last = last 200 capture before the ghost's last transaction"
+ },
+ {
+  "site": "http://pastebin.com/N5ANMPSy",
+  "role": "first",
+  "ts": "20210928165622",
+  "ok": true,
+  "bytes": 121480,
+  "final_url": "https://web.archive.org/web/20210928165622/https://pastebin.com/N5ANMPSy",
+  "seconds": 7.1
+ },
+ {
+  "site": "https://www.guinnessworldrecords.com/world-records/696281-first-ethereum-nft",
+  "role": "first",
+  "ts": "20230131190931",
+  "ok": true,
+  "bytes": 105534,
+  "final_url": "https://web.archive.org/web/20230131190931/https://www.guinnessworldrecords.com/world-records/696281-first-ethereum-nft",
+  "seconds": 17.3
+ }
+]

@@ -1,0 +1,15 @@
+{
+ "address": "0xf98f439b19ddedb1dab2775b09bd824ad4d6e943",
+ "tier": "regex",
+ "compiler_version": "0.3.5+commit.5f97274",
+ "analyzed_files": [
+  "HumanStandardToken.sol"
+ ],
+ "source_origin": "src",
+ "findings": [],
+ "incident": null,
+ "slither_raw": null,
+ "catalog_entry": null,
+ "run": null,
+ "analyzed_at": "2026-10-29T05:29:51Z"
+}

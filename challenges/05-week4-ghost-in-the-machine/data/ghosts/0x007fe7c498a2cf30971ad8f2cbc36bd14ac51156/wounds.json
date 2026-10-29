@@ -1,0 +1,188 @@
+{
+ "address": "0x007fe7c498a2cf30971ad8f2cbc36bd14ac51156",
+ "tier": "slither",
+ "compiler_version": "0.8.15+commit.e14f2714",
+ "analyzed_files": [
+  "lib/clones-with-immutable-args/src/Clone.sol",
+  "lib/clones-with-immutable-args/src/ClonesWithImmutableArgs.sol",
+  "lib/solmate/src/auth/Auth.sol",
+  "lib/solmate/src/tokens/ERC20.sol",
+  "lib/solmate/src/utils/ReentrancyGuard.sol",
+  "src/BondFixedExpiryTeller.sol",
+  "src/ERC20BondToken.sol",
+  "src/bases/BondBaseTeller.sol",
+  "src/interfaces/IBondAggregator.sol",
+  "src/interfaces/IBondAuctioneer.sol",
+  "src/interfaces/IBondCallback.sol",
+  "src/interfaces/IBondFixedExpiryTeller.sol",
+  "src/interfaces/IBondTeller.sol",
+  "src/lib/CloneERC20.sol",
+  "src/lib/FullMath.sol",
+  "src/lib/TransferHelper.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "OlympusDAO",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": null,
+   "lines": null,
+   "snippet": null,
+   "description": "No input validation",
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/OlympusDao_exp.sol"
+  },
+  {
+   "id": "w2",
+   "check": "uninitialized-state",
+   "swc": "SWC-109",
+   "title": "BondBaseTeller.createFeeDiscount is never initialized. It is used in",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "src/bases/BondBaseTeller.sol",
+   "lines": [
+    62,
+    62
+   ],
+   "snippet": "    uint48 public createFeeDiscount;",
+   "description": "A state variable is read before anything ever writes it, so it holds the zero value. Slither: BondBaseTeller.createFeeDiscount (src/bases/BondBaseTeller.sol#62) is never initialized. It is used in:\n\t- BondFixedExpiryTeller.create(ERC20,uint48,uint256) (src/BondFixedExpiryTeller.sol#96-132)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-state"
+  },
+  {
+   "id": "w3",
+   "check": "unchecked-transfer",
+   "swc": "SWC-104",
+   "title": "BondFixedExpiryTeller.create(ERC20,uint48,uint256) ignores return value by underlying_.transferFrom(msg.sender,address(this),amount_)",
+   "impact": "High",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "src/BondFixedExpiryTeller.sol",
+   "lines": [
+    96,
+    132
+   ],
+   "snippet": "    function create(\n        ERC20 underlying_,\n        uint48 expiry_,\n        uint256 amount_\n    ) external override nonReentrant returns (ERC20BondToken, uint256) {\n        ERC20BondToken bondToken = bondTokens[underlying_][expiry_];\n\n        // Revert if no token exists, must call deploy first\n        if (bondToken == ERC20BondToken(address(0x00)))\n            revert Teller_TokenDoesNotExist(underlying_, expiry_);\n\n        // Transfer in underlying\n        // Check that amount received is not less than amount expected\n        // Handles edge cases like fee-on-transfer tokens (which are not supported)\n        uint256 oldBalance = underlying_.balanceOf(address(this));\n        underlying_.transferFrom(msg.sender, address(this), amount_);\n        if (underlying_.balanceOf(address(this)) < oldBalance + amount_)\n            revert Teller_UnsupportedToken();\n\n        // If fee is greater than the create discount, then calculate the fee and store it\n        // Otherwise, fee is zero.\n        if (protocolFee > createFeeDiscount) {\n            // Calculate fee amount\n            uint256 feeAmount = amount_.mulDiv(protocolFee - createFeeDiscount, FEE_DECIMALS);\n            rewards[_protocol][underlying_] += feeAmount;\n\n            // Mint new bond tokens\n            bondToken.mint(msg.sender, amount_ - feeAmount);\n\n            return (bondToken, amount_ - feeAmount);\n        } else {\n            // Mint new bond tokens\n            bondToken.mint(msg.sender, amount_);\n\n            return (bondToken, amount_);\n        }\n    }",
+   "description": "A token transfer's return value is ignored; a failed transfer passes silently. Slither: BondFixedExpiryTeller.create(ERC20,uint48,uint256) (src/BondFixedExpiryTeller.sol#96-132) ignores return value by underlying_.transferFrom(msg.sender,address(this),amount_) (src/BondFixedExpiryTeller.sol#111)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer"
+  },
+  {
+   "id": "w4",
+   "check": "unchecked-transfer",
+   "swc": "SWC-104",
+   "title": "BondFixedExpiryTeller.redeem(ERC20BondToken,uint256) ignores return value by token_.underlying().transfer(msg.sender,amount_)",
+   "impact": "High",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "src/BondFixedExpiryTeller.sol",
+   "lines": [
+    137,
+    142
+   ],
+   "snippet": "    function redeem(ERC20BondToken token_, uint256 amount_) external override nonReentrant {\n        if (uint48(block.timestamp) < token_.expiry())\n            revert Teller_TokenNotMatured(token_.expiry());\n        token_.burn(msg.sender, amount_);\n        token_.underlying().transfer(msg.sender, amount_);\n    }",
+   "description": "A token transfer's return value is ignored; a failed transfer passes silently. Slither: BondFixedExpiryTeller.redeem(ERC20BondToken,uint256) (src/BondFixedExpiryTeller.sol#137-142) ignores return value by token_.underlying().transfer(msg.sender,amount_) (src/BondFixedExpiryTeller.sol#141)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer"
+  },
+  {
+   "id": "w5",
+   "check": "reentrancy-no-eth",
+   "swc": "SWC-107",
+   "title": "Reentrancy in BondBaseTeller.claimFees(ERC20[],address)",
+   "impact": "Medium",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "src/bases/BondBaseTeller.sol",
+   "lines": [
+    99,
+    108
+   ],
+   "snippet": "    function claimFees(ERC20[] memory tokens_, address to_) external override {\n        uint256 len = tokens_.length;\n        for (uint256 i; i < len; ++i) {\n            ERC20 token = tokens_[i];\n            uint256 send = rewards[msg.sender][token];\n\n            rewards[msg.sender][token] = 0;\n            token.safeTransfer(to_, send);\n        }\n    }",
+   "description": "The function calls out to another contract before it finishes updating its own state. A malicious callee can re-enter while the state is half-written; no ether moves in the reentrant path itself, but the stale state can be abused. Slither: Reentrancy in BondBaseTeller.claimFees(ERC20[],address) (src/bases/BondBaseTeller.sol#99-108):\n\tExternal calls:\n\t- token.safeTransfer(to_,send) (src/bases/BondBaseTeller.sol#106)\n\tState variables written after the call(s):\n\t- rewards[msg.sender][token] = 0 (src/bases/BondBaseTeller.sol#105)\n\tBondBaseTeller.rewards (src/bases/BondBaseTeller.sol#67) can be used in cross function reentrancies:\n\t- BondBaseTeller.claimFees(ERC20[],address) (src/bases/BondBaseTeller.sol#99-108)\n\t- BondBaseTeller.rewards (src/bases/BondBaseTeller.sol#67)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-no-eth"
+  },
+  {
+   "id": "w6",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "BondFixedExpiryTeller._handlePayout(address,uint256,ERC20,uint48) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "src/BondFixedExpiryTeller.sol",
+   "lines": [
+    66,
+    91
+   ],
+   "snippet": "    function _handlePayout(\n        address recipient_,\n        uint256 payout_,\n        ERC20 underlying_,\n        uint48 vesting_\n    ) internal override returns (uint48 expiry) {\n        // If there is no vesting time, the deposit is treated as an instant swap.\n        // otherwise, deposit info is stored and payout is available at a future timestamp.\n        // instant swap is denoted by expiry == 0.\n        //\n        // bonds mature with a cliff at a set timestamp\n        // prior to the expiry timestamp, no payout tokens are accessible to the user\n        // after the expiry timestamp, the entire payout can be redeemed\n        //\n        // fixed-expiry bonds mature at a set timestamp\n        // i.e. expiry = day 10. when alice deposits on day 1, her term\n        // is 9 days. when bob deposits on day 2, his term is 8 days.\n        if (vesting_ > uint48(block.timestamp)) {\n            expiry = vesting_;\n            // Fixed-expiry bonds mint ERC-20 tokens\n            bondTokens[underlying_][expiry].mint(recipient_, payout_);\n        } else {\n            // If no expiry, then transfer payout directly to user\n            underlying_.safeTransfer(recipient_, payout_);\n        }\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: BondFixedExpiryTeller._handlePayout(address,uint256,ERC20,uint48) (src/BondFixedExpiryTeller.sol#66-91) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- vesting_ > uint48(block.timestamp) (src/BondFixedExpiryTeller.sol#83)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w7",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "ERC20.permit(address,address,uint256,uint256,uint8,bytes32,bytes32) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "lib/solmate/src/tokens/ERC20.sol",
+   "lines": [
+    119,
+    149
+   ],
+   "snippet": "    function permit(\n        address owner,\n        address spender,\n        uint256 value,\n        uint256 deadline,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) public virtual {\n        require(deadline >= block.timestamp, \"PERMIT_DEADLINE_EXPIRED\");\n\n        // Unchecked because the only math done is incrementing\n        // the owner's nonce which cannot realistically overflow.\n        unchecked {\n            bytes32 digest = keccak256(\n                abi.encodePacked(\n                    \"\\x19\\x01\",\n                    DOMAIN_SEPARATOR(),\n                    keccak256(abi.encode(PERMIT_TYPEHASH, owner, spender, value, nonces[owner]++, deadline))\n                )\n            );\n\n            address recoveredAddress = ecrecover(digest, v, r, s);\n\n            require(recoveredAddress != address(0) && recoveredAddress == owner, \"INVALID_SIGNER\");\n\n            allowance[recoveredAddress][spender] = value;\n        }\n\n        emit Approval(owner, spender, value);\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: ERC20.permit(address,address,uint256,uint256,uint8,bytes32,bytes32) (lib/solmate/src/tokens/ERC20.sol#119-149) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool,string)(deadline >= block.timestamp,PERMIT_DEADLINE_EXPIRED) (lib/solmate/src/tokens/ERC20.sol#128)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w8",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "BondFixedExpiryTeller.redeem(ERC20BondToken,uint256) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "src/BondFixedExpiryTeller.sol",
+   "lines": [
+    137,
+    142
+   ],
+   "snippet": "    function redeem(ERC20BondToken token_, uint256 amount_) external override nonReentrant {\n        if (uint48(block.timestamp) < token_.expiry())\n            revert Teller_TokenNotMatured(token_.expiry());\n        token_.burn(msg.sender, amount_);\n        token_.underlying().transfer(msg.sender, amount_);\n    }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: BondFixedExpiryTeller.redeem(ERC20BondToken,uint256) (src/BondFixedExpiryTeller.sol#137-142) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- uint48(block.timestamp) < token_.expiry() (src/BondFixedExpiryTeller.sol#138)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  }
+ ],
+ "incident": {
+  "id": "defihacklabs-2022-10-21-olympusdao",
+  "name": "OlympusDAO",
+  "date": "2022-10-21",
+  "loss_usd": 292000,
+  "loss_eth": null,
+  "loss_note": "~$292K (30500 OHM)",
+  "cause": "No input validation",
+  "swc": null,
+  "summary": "OlympusDAO (2022-10-21), documented in the DeFiHackLabs repository: No input validation. Reported loss: ~$292K (30500 OHM).",
+  "references": [
+   "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-10/OlympusDao_exp.sol",
+   "https://twitter.com/peckshield/status/1583416829237526528"
+  ]
+ },
+ "slither_raw": "data/ghosts/0x007fe7c498a2cf30971ad8f2cbc36bd14ac51156/slither.json",
+ "catalog_entry": "defihacklabs-2022-10-21-olympusdao",
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 2.29
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.8.15"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:42:54Z"
+}

@@ -1,0 +1,105 @@
+{
+ "address": "0x2920f7d6134f4669343e70122ca9b8f19ef8fa5d",
+ "tier": "slither",
+ "compiler_version": "0.7.6+commit.7338295f",
+ "analyzed_files": [
+  "@openzeppelin/contracts/access/AccessControl.sol",
+  "@openzeppelin/contracts/access/Ownable.sol",
+  "@openzeppelin/contracts/math/Math.sol",
+  "@openzeppelin/contracts/math/SafeMath.sol",
+  "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+  "@openzeppelin/contracts/token/ERC20/ERC20Snapshot.sol",
+  "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+  "@openzeppelin/contracts/utils/Address.sol",
+  "@openzeppelin/contracts/utils/Arrays.sol",
+  "@openzeppelin/contracts/utils/Context.sol",
+  "@openzeppelin/contracts/utils/Counters.sol",
+  "@openzeppelin/contracts/utils/EnumerableSet.sol",
+  "contracts/MonoToken.sol",
+  "hardhat/console.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "MonoX Finance",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": null,
+   "lines": null,
+   "snippet": null,
+   "description": "Price Manipulation",
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-11/Mono_exp.sol"
+  },
+  {
+   "id": "w2",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "MonoToken._writeCheckpoint(address,uint32,uint256,uint256) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/MonoToken.sol",
+   "lines": [
+    258,
+    276
+   ],
+   "snippet": "    function _writeCheckpoint(\n        address delegatee,\n        uint32 nCheckpoints,\n        uint256 oldVotes,\n        uint256 newVotes\n    )\n        internal\n    {\n        uint32 blockNumber = safe32(block.number, \"MONO::_writeCheckpoint: block number exceeds 32 bits\");\n\n        if (nCheckpoints > 0 && checkpoints[delegatee][nCheckpoints - 1].fromBlock == blockNumber) {\n            checkpoints[delegatee][nCheckpoints - 1].votes = newVotes;\n        } else {\n            checkpoints[delegatee][nCheckpoints] = Checkpoint(blockNumber, newVotes);\n            numCheckpoints[delegatee] = nCheckpoints + 1;\n        }\n\n        emit DelegateVotesChanged(delegatee, oldVotes, newVotes);\n    }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: MonoToken._writeCheckpoint(address,uint32,uint256,uint256) (contracts/MonoToken.sol#258-276) uses a dangerous strict equality:\n\t- nCheckpoints > 0 && checkpoints[delegatee][nCheckpoints - 1].fromBlock == blockNumber (contracts/MonoToken.sol#268)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w3",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "MonoToken.delegateBySig(address,uint256,uint256,uint8,bytes32,bytes32) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "contracts/MonoToken.sol",
+   "lines": [
+    163,
+    163
+   ],
+   "snippet": "        require(block.timestamp <= expiry, \"MONO::delegateBySig: signature expired\");",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: MonoToken.delegateBySig(address,uint256,uint256,uint8,bytes32,bytes32) (contracts/MonoToken.sol#124-165) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool,string)(block.timestamp <= expiry,MONO::delegateBySig: signature expired) (contracts/MonoToken.sol#163)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  }
+ ],
+ "incident": {
+  "id": "defihacklabs-2021-11-30-monox-finance",
+  "name": "MonoX Finance",
+  "date": "2021-11-30",
+  "loss_usd": 31000000,
+  "loss_eth": null,
+  "loss_note": "$31 million",
+  "cause": "Price Manipulation",
+  "swc": null,
+  "summary": "MonoX Finance (2021-11-30), documented in the DeFiHackLabs repository: Price Manipulation. Reported loss: $31 million.",
+  "references": [
+   "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-11/Mono_exp.sol",
+   "https://slowmist.medium.com/detailed-analysis-of-the-31-million-monox-protocol-hack-574d8c44a9c8",
+   "https://knownseclab.com/news/61a986811992da0067558749",
+   "https://www.tuoniaox.com/news/p-521076.html",
+   "https://polygonscan.com/tx/0x5a03b9c03eedcb9ec6e70c6841eaa4976a732d050a6218969e39483bb3004d5d",
+   "https://etherscan.io/tx/0x9f14d093a2349de08f02fc0fb018dadb449351d0cdb7d0738ff69cc6fef5f299"
+  ]
+ },
+ "slither_raw": "data/ghosts/0x2920f7d6134f4669343e70122ca9b8f19ef8fa5d/slither.json",
+ "catalog_entry": "defihacklabs-2021-11-30-monox-finance",
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 4.39
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.7.6"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:35:31Z"
+}

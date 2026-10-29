@@ -1,0 +1,291 @@
+[
+ {
+  "date": "2020-09-12",
+  "name": "bzx",
+  "cause": "Incorrect transfer",
+  "loss_usd": null,
+  "loss_text": null,
+  "poc_path": "src/test/2020-09/bzx_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2020-09/bzx_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://twitter.com/0x000000000marc/status/1305354469354303488"
+  ],
+  "victim_addresses": [
+   "0xd1c0f1316140d6bf1a9e2eea8a227dad151f69b7",
+   "0xb983e01458529665007ff7e0cddecdb74b967eb6",
+   "0xde744d544a9d768e96c21b5f087fc54b776e9b25"
+  ],
+  "ignored_well_known": [],
+  "primary": "0xb983e01458529665007ff7e0cddecdb74b967eb6",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": true,
+  "primary_name": "Fulcrum ETH iToken"
+ },
+ {
+  "date": "2020-12-29",
+  "name": "Cover Protocol",
+  "cause": "Incorrect calculation via cached data",
+  "loss_usd": null,
+  "loss_text": null,
+  "poc_path": "src/test/2020-12/Cover_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2020-12/Cover_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://mudit.blog/cover-protocol-hack-analysis-tokens-minted-exploit/",
+   "https://slowmist.medium.com/a-brief-analysis-of-the-cover-protocol-hacked-event-700d747b309c"
+  ],
+  "victim_addresses": [
+   "0xe0b94a7bb45dd905c79bb1992c9879f40f1caed5",
+   "0x59686e01aa841f622a43688153062c2f24f8fded",
+   "0x5d8d9f5b96f4438195be9b99eee6118ed4304286",
+   "0x00007569643bc1709561ec2e86f385df3759e5dd"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xe0b94a7bb45dd905c79bb1992c9879f40f1caed5",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": true,
+  "primary_name": "Blacksmith"
+ },
+ {
+  "date": "2020-11-21",
+  "name": "Pickle Finance",
+  "cause": "Insufficient validation",
+  "loss_usd": 20000000,
+  "loss_text": "$20 million",
+  "poc_path": "src/test/2020-11/Pickle_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2020-11/Pickle_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://github.com/banteg/evil-jar",
+   "https://etherscan.io/tx/0xe72d4e7ba9b5af0cf2a8cfb1e30fd9f388df0ab3da79790be842bfbed11087b0"
+  ],
+  "victim_addresses": [
+   "0xbac8a476b95ec741e56561a66231f92bc88bb3a8",
+   "0x2b0b02ce19c322b4dd55a3949b4fb6e9377f7913",
+   "0x6847259b2b3a4c17e7c43c54409810af48ba5210",
+   "0x6186e99d9cfb05e1fdf1b442178806e81da21dd8",
+   "0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",
+   "0x6949bb624e8e8a90f87cd2058139fcd77d2f3f87",
+   "0xcd892a97951d46615484359355e3ed88131f829d"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d",
+   "0x6b175474e89094c44da98b954eedeac495271d0f",
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+  ],
+  "primary": "0x6847259b2b3a4c17e7c43c54409810af48ba5210",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": true,
+  "primary_name": "ControllerV4"
+ },
+ {
+  "date": "2020-10-26",
+  "name": "Harvest Finance",
+  "cause": "Flashloan Attack",
+  "loss_usd": 33800000,
+  "loss_text": "$33.8 million",
+  "poc_path": "src/test/2020-10/HarvestFinance_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2020-10/HarvestFinance_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://rekt.news/harvest-finance-rekt/",
+   "https://etherscan.io/tx/0x35f8d2f572fceaac9288e5d462117850ef2694786992a8c3f6d02612277b0877"
+  ],
+  "victim_addresses": [
+   "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc",
+   "0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852",
+   "0x45f783cce6b7ff23b2ab2d70e416cdb7d6055f51",
+   "0xf0358e8c3cd5fa238a29301d0bea3d63a17bedbe",
+   "0xd6ad7a6750a7593e092a9b218d66c0a814a3436e",
+   "0x83f798e925bcd4017eb265844fddabb448f1707d",
+   "0x053c80ea73dc6941f518a68e2fc52ac45bde7c9c"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d",
+   "0xdac17f958d2ee523a2206206994597c13d831ec7",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+  ],
+  "primary": "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": true,
+  "primary_name": "UniswapV2Pair"
+ },
+ {
+  "date": "2020-08-04",
+  "name": "Opyn Protocol",
+  "cause": "msgValue in loop",
+  "loss_usd": null,
+  "loss_text": null,
+  "poc_path": "src/test/2020-08/Opyn_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2020-08/Opyn_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://medium.com/opyn/opyn-eth-put-exploit-post-mortem-1a009e3347a8",
+   "https://etherscan.io/tx/0x56de6c4bd906ee0c067a332e64966db8b1e866c7965c044163a503de6ee6552a"
+  ],
+  "victim_addresses": [
+   "0x951d51baefb72319d9fbe941e1615938d89abfe2",
+   "0xe7870231992ab4b1a01814fa0a599115fe94203f",
+   "0x01bdb7ada61c82e951b9ed9f0d312dc9af0ba0f2"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d",
+   "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+  ],
+  "primary": "0x951d51baefb72319d9fbe941e1615938d89abfe2",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": true,
+  "primary_name": "oToken"
+ },
+ {
+  "date": "2020-06-28",
+  "name": "Balancer Protocol",
+  "cause": "Token Incompatible",
+  "loss_usd": null,
+  "loss_text": null,
+  "poc_path": "src/test/2020-06/Balancer_20200628_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2020-06/Balancer_20200628_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://slowmist.medium.com/detailed-analysis-of-balancer-hack-de8bd86020de",
+   "https://etherscan.io/tx/0x013be97768b702fe8eccef1a40544d5ecb3c1961ad5f87fee4d16fdc08c78106"
+  ],
+  "victim_addresses": [
+   "0x1e0447b19bb6ecfdae1e4ae1694b0c3659614e4e",
+   "0xa7de087329bfcda5639247f96140f9dabe3deed1",
+   "0x0e511aa1a137aad267dfe3a6bfca0b856c1a3682",
+   "0x10ed43c718714eb63d5aa57b78b54704e256024e"
+  ],
+  "ignored_well_known": [
+   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+  ],
+  "primary": "0x1e0447b19bb6ecfdae1e4ae1694b0c3659614e4e",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": true,
+  "primary_name": "SoloMargin"
+ },
+ {
+  "date": "2020-06-18",
+  "name": "Bancor Protocol",
+  "cause": "Access Control",
+  "loss_usd": null,
+  "loss_text": null,
+  "poc_path": "src/test/2020-06/Bancor_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2020-06/Bancor_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://blog.bancor.network/bancors-response-to-today-s-smart-contract-vulnerability-dc888c589fe4",
+   "https://etherscan.io/address/0x5f58058c0ec971492166763c8c22632b583f667f"
+  ],
+  "victim_addresses": [
+   "0x5f58058c0ec971492166763c8c22632b583f667f",
+   "0xfd0b4daa7ba535741e6b5ba28cba24f9a816e67e",
+   "0x28dee01d53fed0edf5f6e310bf8ef9311513ae40"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x5f58058c0ec971492166763c8c22632b583f667f",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": true,
+  "primary_name": "BancorNetwork"
+ },
+ {
+  "date": "2020-04-19",
+  "name": "LendfMe",
+  "cause": "ERC777 Reentrancy",
+  "loss_usd": 25000000,
+  "loss_text": "$25,000,000",
+  "poc_path": "src/test/2020-04/LendfMe_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2020-04/LendfMe_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://peckshield.medium.com/uniswap-lendf-me-hacks-root-cause-and-loss-analysis-50f3263dcc09"
+  ],
+  "victim_addresses": [
+   "0x5f58058c0ec971492166763c8c22632b583f667f",
+   "0x0eee3e3828a45f7601d5f54bf49bb01d1a9df5ea",
+   "0xa9bf70a420d364e923c74448d9d817d3f2a77822",
+   "0x3212b29e33587a00fb1c83346f5dbfa69a458923",
+   "0x1820a4b7618bde71dce8cdc73aab6c95905fad24"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0x5f58058c0ec971492166763c8c22632b583f667f",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": true,
+  "primary_name": "BancorNetwork"
+ },
+ {
+  "date": "2020-04-18",
+  "name": "UniSwapV1",
+  "cause": "ERC777 Reentrancy",
+  "loss_usd": 220000,
+  "loss_text": "$220,000",
+  "poc_path": "src/test/2020-04/uniswap-erc777.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2020-04/uniswap-erc777.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://blog.blockmagnates.com/detailed-explanation-of-uniswaps-erc777-re-entry-risk-8fa5b3738e08"
+  ],
+  "victim_addresses": [
+   "0xffcf45b540e6c9f094ae656d2e34ad11cdfdb187",
+   "0x3212b29e33587a00fb1c83346f5dbfa69a458923",
+   "0x1820a4b7618bde71dce8cdc73aab6c95905fad24"
+  ],
+  "ignored_well_known": [],
+  "primary": "0x3212b29e33587a00fb1c83346f5dbfa69a458923",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": true,
+  "primary_name": "The Tokenized Bitcoin"
+ }
+]

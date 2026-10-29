@@ -1,0 +1,188 @@
+{
+ "address": "0x6e38a457c722c6011b2dfa06d49240e797844d66",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T05:26:13Z",
+ "eh": {
+  "layer": "documented",
+  "era_id": "frontier",
+  "era_name": "Frontier",
+  "name": "TerraNullius",
+  "token": {
+   "token_name": null,
+   "token_symbol": null,
+   "token_decimals": null
+  },
+  "heuristics": {
+   "contract_type": "registry",
+   "confidence": 0.5,
+   "is_proxy": false,
+   "has_selfdestruct": false,
+   "is_erc20_like": false
+  },
+  "decompilation_success": true,
+  "code_size_bytes": 954,
+  "short_description": "One of the earliest interactive contracts on Ethereum, allowing users to stake claims and leave permanent messages on the blockchain.",
+  "description": "Terra Nullius is the first inscription contract on Ethereum.\n\nIt establishes a direct model for blockchain-based permanence, where authored messages are written irreversibly and retained as part of Ethereum\u2019s history. The contract has no supply cap, no permissions, and no economic mechanism beyond gas costs.\n\nDespite being deployed in Ethereum\u2019s earliest days, Terra Nullius has remained active across multiple eras, with renewed usage during later periods of interest in on-chain art and NFTs.\n\nTerraNullius is a claims-based smart contract deployed on August 7, 2015 \u2014 just 15 days after Ethereum mainnet launched on July 30. The name references the legal concept of \"terra nullius\" (nobody's land), framing the early Ethereum blockchain as unclaimed territory.\n\nThe contract provides a simple but elegant interface: anyone can call the `claim()` function with a string message. The contract records the caller's address, their message, and the block number at which the claim was made. Claims are stored in an append-only array and can be read by anyone via `claims(index)` and `number_of_claims()`.\n\nThe creator, Reddit user Semiel, announced it on r/ethereum with the title \"Introducing Terra Nullius, the first* interactive Ethereum contract\" (the asterisk acknowledging uncertainty about the claim). The post explained that the gas limit had \"finally hit a point where meaningful contracts can be created\" \u2014 a reference to the Frontier-era gas limit increases in the first week of Ethereum. Semiel provided a Pastebin script that could be loaded into the Geth console for interaction.\n\nWritten in Solidity 0.1.1 \u2014 one of the earliest compiler versions \u2014 the contract is only 15 lines of source code. Its entire purpose is recording immutable human messages on Ethereum, functioning as one of the first on-chain message boards. Over 805 transactions have been recorded on the contract, with claims still being made as recently as 2026.",
+  "historical_significance": "One of the earliest interactive smart contracts deployed on Ethereum mainnet. Deployed 15 days after genesis when the gas limit was still being ramped up. An early demonstration that Ethereum could serve as permanent, censorship-resistant storage for human expression. Compiled with Solidity 0.1.1, the contract is among the oldest verified Solidity source code on mainnet.",
+  "historical_context": "Deployed during the Frontier era, when Ethereum mainnet was less than three weeks old. The gas limit had just been raised enough to deploy meaningful contracts. Users interacted via the Geth JavaScript console \u2014 there were no web-based interfaces or wallets. The community was small and concentrated on r/ethereum, where developers announced new contracts directly.",
+  "verification_status": "verified",
+  "verification_method": "etherscan_verified",
+  "links": [
+   {
+    "id": 216,
+    "title": "Terra Nullius interaction script \u2014 Pastebin (Aug 7, 2015)",
+    "url": "http://pastebin.com/N5ANMPSy",
+    "source": "Pastebin",
+    "note": "Original ABI and contract address published by the creator for loading into the Geth console. Contains the full contract ABI and address reference.",
+    "created_at": "2026-03-05T06:34:43.905Z"
+   },
+   {
+    "id": 215,
+    "title": "\"Introducing Terra Nullius, the first* interactive Ethereum contract\" \u2014 Reddit r/ethereum (Semiel, Aug 7, 2015)",
+    "url": "https://old.reddit.com/r/ethereum/comments/3g6e82/introducing_terra_nullius_the_first_interactive/",
+    "source": "Reddit",
+    "note": "Original announcement by the contract creator. 25 upvotes, 17 comments. Explains the concept and provides the Geth interaction script.",
+    "created_at": "2026-03-05T06:34:43.853Z"
+   },
+   {
+    "id": 44,
+    "title": "Guinness World Records: First Ethereum NFT",
+    "url": "https://www.guinnessworldrecords.com/world-records/696281-first-ethereum-nft",
+    "source": "Guinness World Records",
+    "note": "TerraNullius is not an NFT, but was marketed as one to sell a wrapped NFT project.",
+    "created_at": "2026-02-02T02:08:27.467Z"
+   },
+   {
+    "id": 43,
+    "title": "Introducing Terra Nullius, the first interactive Ethereum contract",
+    "url": "https://www.reddit.com/r/ethereum/s/d1LzMblZjx",
+    "source": "Reddit",
+    "note": null,
+    "created_at": "2026-02-02T02:08:27.451Z"
+   }
+  ],
+  "metadata": [
+   {
+    "key": "tx_counts_by_year_external_to_v1",
+    "value": null,
+    "json_value": {
+     "counts": {
+      "2015": 25,
+      "2016": 1,
+      "2021": 687,
+      "2022": 46,
+      "2023": 12,
+      "2024": 6,
+      "2025": 23,
+      "2026": 1
+     },
+     "truncated": false
+    },
+    "source_url": "alchemy_getAssetTransfers",
+    "created_at": "2026-01-25T11:43:57.861Z"
+   }
+  ],
+  "has_source": true,
+  "has_abi": true
+ },
+ "birth": {
+  "block": 49880,
+  "timestamp": "2015-08-07T20:48:27.000000Z",
+  "tx": "0xde920d165a8a3352156327edb7125e699cee116d8206dbcbf3600233a3407246",
+  "deployer": "0x7e7ec15a5944e978257ddae0008c2f2ece0a6090",
+  "timestamp_source": "blockscout"
+ },
+ "blockscout": {
+  "name": null,
+  "is_contract": true,
+  "is_verified": false,
+  "ens": null,
+  "creation_tx": "0xde920d165a8a3352156327edb7125e699cee116d8206dbcbf3600233a3407246",
+  "creator": "0x7e7eC15A5944e978257dDae0008C2F2eCe0A6090",
+  "has_logs": false
+ },
+ "life": {
+  "tx_count": 796,
+  "token_transfers": 0,
+  "gas_used": 93693864,
+  "last_tx": {
+   "timestamp": "2026-08-18T10:55:11.000000Z",
+   "method": "claim",
+   "status": "ok",
+   "hash": "0x7e48b8666bd4dc99bf52ca3fbc195e4587c29cfdc3b5f694a794d1722c82529a"
+  },
+  "recent_methods": [
+   "claim",
+   "number_of_claims"
+  ],
+  "recent_years": [
+   "2023",
+   "2024",
+   "2025",
+   "2026"
+  ],
+  "balance_wei": 0,
+  "balance_eth": 0.0,
+  "last_12m_capped": false,
+  "first_tx_timestamp": "2015-08-07T20:48:27.000000Z",
+  "calls": 796,
+  "calls_source": "blockscout-counters",
+  "calls_capped": false,
+  "never_called": false,
+  "first_call_timestamp": "2015-08-07T20:50:48.000000Z",
+  "last_12m_txs": 15
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 935,
+  "balance_wei": 0,
+  "balance_eth": 0.0
+ },
+ "age": {
+  "hardfork": "Frontier",
+  "eh_era": "Frontier"
+ },
+ "sites": [
+  {
+   "host": "http://pastebin.com/N5ANMPSy",
+   "captures": 1,
+   "first_capture": "20210928165622",
+   "first_ok": "20210928165622",
+   "last_ok": "20210928165622",
+   "last_capture": "20210928165622",
+   "years_alive": [
+    "2021"
+   ]
+  },
+  {
+   "host": "https://www.guinnessworldrecords.com/world-records/696281-first-ethereum-nft",
+   "captures": 2,
+   "first_capture": "20230131190931",
+   "first_ok": "20230131190931",
+   "last_ok": "20261018015339",
+   "last_capture": "20261018015339",
+   "years_alive": [
+    "2023",
+    "2026"
+   ]
+  }
+ ],
+ "sites_excluded": [
+  "https://old.reddit.com/r/ethereum/comments/3g6e82/introducing_terra_nullius_the_first_interactive/",
+  "https://www.reddit.com/r/ethereum/s/d1LzMblZjx"
+ ],
+ "name": "TerraNullius",
+ "sources_used": [
+  "blockscout",
+  "ethereumhistory",
+  "rpc",
+  "wayback"
+ ],
+ "names": [
+  {
+   "name": "TerraNullius",
+   "source": "ethereumhistory"
+  }
+ ],
+ "proxy": false
+}

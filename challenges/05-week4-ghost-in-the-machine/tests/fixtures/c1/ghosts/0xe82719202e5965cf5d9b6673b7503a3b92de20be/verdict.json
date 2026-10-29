@@ -1,0 +1,26 @@
+{
+ "address": "0xe82719202e5965cf5d9b6673b7503a3b92de20be",
+ "kind": "bad",
+ "reasons": [
+  "SWC-118 incorrect constructor name, confirmed by the catalog",
+  "anyone can call DynamicPyramid() and become the creator"
+ ],
+ "activity": {
+  "lifetime_txs": 712,
+  "last_tx": "2026-10-13T12:54:47Z",
+  "last_12m_txs": 10,
+  "last_12m_capped": false,
+  "silent_years": 0.0
+ },
+ "wounds": {
+  "count": 1,
+  "confirmed": 1,
+  "worst_impact": "High"
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:00:00Z"
+}

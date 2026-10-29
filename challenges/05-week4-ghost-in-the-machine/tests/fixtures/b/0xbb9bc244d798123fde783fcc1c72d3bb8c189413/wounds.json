@@ -1,0 +1,19 @@
+{
+ "address": "0xbb9bc244d798123fde783fcc1c72d3bb8c189413",
+ "tier": "catalog",
+ "compiler_version": null,
+ "analyzed_files": [],
+ "findings": [],
+ "incident": {
+  "name": "The DAO hack",
+  "date": "2016-06-17",
+  "loss_usd": 60000000,
+  "summary": "An attacker used a reentrancy in splitDAO to drain ether into a child DAO.",
+  "references": [
+   "https://blog.ethereum.org/2016/06/17/critical-update-re-dao-vulnerability"
+  ],
+  "cause": "Reentrancy: the split path paid out before zeroing the balance.",
+  "swc": "SWC-107"
+ },
+ "slither_raw": null
+}

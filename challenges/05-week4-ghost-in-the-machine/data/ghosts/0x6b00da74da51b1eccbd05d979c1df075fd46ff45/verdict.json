@@ -1,0 +1,28 @@
+{
+ "address": "0x6b00da74da51b1eccbd05d979c1df075fd46ff45",
+ "kind": "friendly",
+ "reasons": [
+  "last successful call 2021-08-08, 5.2 years ago",
+  "1 scar (incorrect-equality), none fatal"
+ ],
+ "activity": {
+  "lifetime_txs": 30,
+  "last_tx": "2021-08-08T06:10:05Z",
+  "last_12m_txs": 0,
+  "last_12m_capped": false,
+  "silent_years": 5.2
+ },
+ "wounds": {
+  "count": 5,
+  "confirmed": 5,
+  "worst_impact": "Medium",
+  "scars": 1,
+  "fatal": 0
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

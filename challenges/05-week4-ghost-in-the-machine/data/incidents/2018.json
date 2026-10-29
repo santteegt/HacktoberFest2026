@@ -1,0 +1,89 @@
+[
+ {
+  "date": "2018-04-24",
+  "name": "SmartMesh",
+  "cause": "Overflow",
+  "loss_usd": 140000000,
+  "loss_text": "140M",
+  "poc_path": "src/test/2018-04/SmartMesh_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2018-04/SmartMesh_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://cryptojobslist.com/blog/two-vulnerable-erc20-contracts-deep-dive-beautychain-smartmesh"
+  ],
+  "victim_addresses": [
+   "0xd6a09bdb29e1eafa92a30373c44b09e2e2e0651e",
+   "0x55f93985431fc9304077687a35a1ba103dc1e081",
+   "0xdf31a499a5a8358b74564f1e2214b31bb34eb46f"
+  ],
+  "ignored_well_known": [],
+  "primary": "0x55f93985431fc9304077687a35a1ba103dc1e081",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": true,
+  "primary_name": "SMT"
+ },
+ {
+  "date": "2018-10-07",
+  "name": "SpankChain",
+  "cause": "Reentrancy",
+  "loss_usd": 155,
+  "loss_text": "155 $ETH",
+  "poc_path": "src/test/2018-10/SpankChain_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2018-10/SpankChain_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://app.blocksec.com/explorer/tx/eth/0x21e9d20b57f6ae60dac23466c8395d47f42dc24628e5a31f224567a2b4effa88"
+  ],
+  "victim_addresses": [
+   "0xcf267ea3f1ebae3c29fea0a3253f94f3122c2199",
+   "0xc5918a927c4fb83fe99e30d6f66707f4b396900e",
+   "0xf91546835f756da0c10cfa0cda95b15577b84aa7"
+  ],
+  "ignored_well_known": [],
+  "primary": "0xf91546835f756da0c10cfa0cda95b15577b84aa7",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": true,
+  "primary_name": "LedgerChannel"
+ },
+ {
+  "date": "2018-04-22",
+  "name": "Beauty Chain",
+  "cause": "Integer Overflow",
+  "loss_usd": 900000000,
+  "loss_text": "$900 million",
+  "poc_path": "src/test/2018-04/BEC_exp.sol",
+  "poc_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2018-04/BEC_exp.sol",
+  "extra_pocs": [],
+  "references": [
+   "https://etherscan.io/tx/0xad89ff16fd1ebe3a0a7cf4ed282302c06626c1af33221ebe0d3a470aba4a660f",
+   "https://etherscan.io/address/0xc5d105e63711398af9bbff092d4b6769c82f793d#code"
+  ],
+  "victim_addresses": [
+   "0xc5d105e63711398af9bbff092d4b6769c82f793d",
+   "0xb4d30cac5124b46c2df0cf3e3e1be05f42119033",
+   "0x0e823ffe018727585eaf5bc769fa80472f76c3d7"
+  ],
+  "ignored_well_known": [
+   "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d"
+  ],
+  "primary": "0xc5d105e63711398af9bbff092d4b6769c82f793d",
+  "chains": [
+   "mainnet"
+  ],
+  "chain": "mainnet",
+  "source": "DeFiHackLabs",
+  "page": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/past/2021/README.md",
+  "primary_verified": true,
+  "primary_name": "BecToken"
+ }
+]

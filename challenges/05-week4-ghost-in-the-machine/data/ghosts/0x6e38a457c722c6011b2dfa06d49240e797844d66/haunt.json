@@ -1,0 +1,80 @@
+{
+ "address": "0x6e38a457c722c6011b2dfa06d49240e797844d66",
+ "started_at": "2026-10-29T05:45:31Z",
+ "finished_at": "2026-10-29T05:45:31Z",
+ "kind": "lingering",
+ "title": "The Ghost of Frontier Claims",
+ "name": "TerraNullius",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "archive: documented on Ethereum History (deployed 2015-08-07, era frontier); --year 2015 --seed daily (2026-10-29); restored by hand after a re-run overwrote the record"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 11.5,
+   "note": "skipped: output exists",
+   "skipped": true
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists",
+   "skipped": true
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists",
+   "skipped": true
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 28.1,
+   "note": "skipped: output exists",
+   "skipped": true
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 34.9,
+   "note": "skipped: output exists",
+   "skipped": true
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: output exists",
+   "skipped": true
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "25 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": false,
+  "deploy": false
+ },
+ "picked": {
+  "source": "archive",
+  "reason": "documented on Ethereum History (deployed 2015-08-07, era frontier)",
+  "name": "TerraNullius",
+  "year": 2015,
+  "hint": false
+ },
+ "gallery_path": "web/ghosts/0x6e38a457c722c6011b2dfa06d49240e797844d66/"
+}

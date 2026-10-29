@@ -1,0 +1,136 @@
+{
+ "address": "0x8a57d2708d1f228dac2f7934f5311cd2a0a1cda4",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T05:34:24Z",
+ "eh": {
+  "layer": "documented",
+  "era_id": "spurious",
+  "era_name": "Spurious Dragon",
+  "name": "EtherVote",
+  "token": {
+   "token_name": null,
+   "token_symbol": null,
+   "token_decimals": null
+  },
+  "heuristics": {
+   "contract_type": null,
+   "confidence": 0.5,
+   "is_proxy": false,
+   "has_selfdestruct": false,
+   "is_erc20_like": false
+  },
+  "decompilation_success": true,
+  "code_size_bytes": 267,
+  "short_description": "The 2016 EtherVote contract redeployed by Alex Van de Sande on 10 July 2017, recompiled on a 0.4 compiler.",
+  "description": "The same one function voting contract as 0x8b803d9f2bd4aeaa2a7c5265fb5684fe3e68c879, deployed again a year later from the same account and from the same source text. vote(bytes32 proposalHash, bool pro) emits LogVote with the proposal hash indexed, the yes or no choice, and the caller, and does nothing else. What changed is the compiler: built on a 0.4 series release with the optimizer off, so the deployed code carries the CBOR metadata trailer that 0.3 compilers did not emit, and the non payable check the 0.4 compilers insert on their own now stands where the handwritten ether guard stood in the 2016 versions.",
+  "historical_significance": "The code compiles exactly from the source published for the 2016 deployment on v0.4.10+commit.f0d539ae with the optimizer off. Only the 43 byte metadata trailer differs, because its swarm hash is a digest of the source text and file name and the EthereumHistory attribution line changes both.",
+  "historical_context": "Deployed on 10 July 2017 and used once, four minutes later. A year earlier the same account had put three versions of this contract on chain in four days during the argument over the response to the attack on The DAO.",
+  "verification_status": "verified",
+  "verification_method": "near_exact_match",
+  "links": [],
+  "metadata": [
+   {
+    "key": "tx_counts_by_year_external_to_v1",
+    "value": null,
+    "json_value": {
+     "counts": {
+      "2017": 1
+     },
+     "truncated": false
+    },
+    "source_url": "alchemy_getAssetTransfers",
+    "created_at": "2026-04-25T22:21:31.817Z"
+   }
+  ],
+  "has_source": true,
+  "has_abi": true
+ },
+ "birth": {
+  "block": 4004456,
+  "timestamp": "2017-07-10T20:02:45.000000Z",
+  "tx": "0xb049c98177b84bcca0f3a528604dd5a0cd0ed5ee49bb2a89662a0f3e76ad9885",
+  "deployer": "0xd1220a0cf47c7b9be7a2e6ba89f429762e7b9adb",
+  "timestamp_source": "blockscout"
+ },
+ "blockscout": {
+  "name": "EtherVote",
+  "is_contract": true,
+  "is_verified": true,
+  "ens": null,
+  "creation_tx": "0xb049c98177b84bcca0f3a528604dd5a0cd0ed5ee49bb2a89662a0f3e76ad9885",
+  "creator": "0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb",
+  "has_logs": true
+ },
+ "life": {
+  "tx_count": 1,
+  "token_transfers": 0,
+  "gas_used": 0,
+  "last_tx": {
+   "timestamp": "2017-07-10T20:41:34.000000Z",
+   "method": "vote",
+   "status": "ok",
+   "hash": "0x0eddb1e10c29c6b4d211efbbac98c2cfdf78a781d6b2baf700801f70b4d32c8b"
+  },
+  "recent_methods": [
+   "vote"
+  ],
+  "recent_years": [
+   "2017"
+  ],
+  "balance_wei": 0,
+  "balance_eth": 0.0,
+  "last_12m_capped": false,
+  "first_tx_timestamp": "2017-07-10T20:02:45.000000Z",
+  "calls": 1,
+  "calls_source": "blockscout-txlist",
+  "calls_capped": false,
+  "never_called": false,
+  "first_call_timestamp": "2017-07-10T20:41:34.000000Z",
+  "last_12m_txs": 0
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 267,
+  "balance_wei": 0,
+  "balance_eth": 0.0
+ },
+ "source": {
+  "provider": "sourcify",
+  "match": "match",
+  "name": "EtherVote",
+  "compiler_version": "0.4.11+commit.68ef5810",
+  "language": "Solidity",
+  "files": [
+   "EtherVote.sol"
+  ],
+  "dir": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/05-week4-ghost-in-the-machine/data/ghosts/0x8a57d2708d1f228dac2f7934f5311cd2a0a1cda4/src"
+ },
+ "age": {
+  "hardfork": "Spurious Dragon",
+  "eh_era": "Spurious Dragon"
+ },
+ "sites": [],
+ "sites_excluded": [],
+ "name": "EtherVote",
+ "sources_used": [
+  "blockscout",
+  "ethereumhistory",
+  "rpc",
+  "sourcify"
+ ],
+ "names": [
+  {
+   "name": "EtherVote",
+   "source": "ethereumhistory"
+  },
+  {
+   "name": "EtherVote",
+   "source": "blockscout"
+  },
+  {
+   "name": "EtherVote",
+   "source": "source:sourcify"
+  }
+ ],
+ "proxy": false
+}

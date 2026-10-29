@@ -1,0 +1,168 @@
+{
+ "address": "0xdc59ac4fefa32293a95889dc396682858d52e5db",
+ "name": "Bean",
+ "kind": "bad",
+ "kind_source": "verdict.json",
+ "title": "The Beanstalk Farm Shadow",
+ "tagline": "Born in London's era, Bean haunts the wound left by BeanstalkFarms.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of bean",
+   "paragraphs": [
+    "A single candle flickers over the memory of August 6, 2021. A wallet deployed Bean on August 6, 2021. It was born as a small program that lives on Ethereum.",
+    "The world was in the London era when it arrived. On the day it was born, it was written into a block, one page of Ethereum's shared record book. It was crafted using Solidity 0.7.6.",
+    "Bean is now about 5 years old. It sits in the shadows of the past, a ghost of the code that remains."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.source.compiler_version"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The pulse of the bean",
+   "paragraphs": [
+    "The candle flickers over 5093 transactions. People reached out with approve and transfer. It stayed busy every year since 2025.",
+    "The records point to BeanstalkFarms on 2022-04-16. It sits in the DeFiHackLabs repository. The ghost speaks of a DAO and a Flashloan."
+   ],
+   "facts_cited": [
+    "facts.life.recent_years[0]",
+    "facts.life.tx_count",
+    "verdict.reasons[0]",
+    "wounds.findings[0].reference_url"
+   ]
+  },
+  {
+   "id": "haunting",
+   "heading": "The heavy shadow of the farm",
+   "paragraphs": [
+    "I am a token. My address is named in the DeFiHackLabs record of the BeanstalkFarms incident. The record does not say what part I played. The loss belongs to BeanstalkFarms as a whole, not to me alone.",
+    "The wound is high and true. It happened on April 16, 2022. A DAO and a Flashloan tore through the code. $182 million vanished in the night."
+   ],
+   "facts_cited": [
+    "verdict.reasons[0]",
+    "wounds.findings[0].description",
+    "wounds.findings[0].reference_url",
+    "wounds.incident.loss_usd"
+   ]
+  },
+  {
+   "id": "buster",
+   "heading": "The lingering shadow of bean",
+   "paragraphs": [
+    "The ghost of BeanstalkFarms haunts the spirit. It is a governance flaw deep in the marrow. No compiler version and no Solidity upgrade can heal this wound.",
+    "Count the voting power from a snapshot taken before a proposal opens. This stops borrowed tokens from voting. Put a delay between a passing vote and its execution. This prevents a one-transaction loan from passing and running a proposal."
+   ],
+   "facts_cited": [
+    "verdict.reasons[0]"
+   ]
+  }
+ ],
+ "scary": {
+  "paragraphs": [
+   "I am a token. My address is named in the DeFiHackLabs record of the BeanstalkFarms incident. The record does not say what part I played. The loss belongs to BeanstalkFarms as a whole, not to me alone.",
+   "The wound is high and true. It happened on April 16, 2022. A DAO and a Flashloan tore through the code. $182 million vanished in the night."
+  ],
+  "snippet": null,
+  "finding": {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "BeanstalkFarms",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-04/Beanstalk_exp.sol"
+  },
+  "incident": {
+   "id": "defihacklabs-2022-04-16-beanstalkfarms",
+   "name": "BeanstalkFarms",
+   "date": "2022-04-16",
+   "loss_usd": 182000000,
+   "loss_eth": null,
+   "loss_note": "$182 million",
+   "cause": "DAO + Flashloan",
+   "swc": null,
+   "summary": "BeanstalkFarms (2022-04-16), documented in the DeFiHackLabs repository: DAO + Flashloan. Reported loss: $182 million.",
+   "references": [
+    "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2022-04/Beanstalk_exp.sol",
+    "https://rekt.news/beanstalk-rekt/",
+    "https://medium.com/uno-re/beanstalk-farms-hacked-total-damage-is-182-million-b699dd3e5c8",
+    "https://twitter.com/peckshield/status/1515680335769456640",
+    "https://etherscan.io/tx/0x68cdec0ac76454c3b0f7af0b8a3895db00adf6daaf3b50a99716858c4fa54c6f",
+    "https://etherscan.io/tx/0xcd314668aaa9bbfebaf1a0bd2b6553d01dd58899c508d4729fa7311dc5d33ad7"
+   ]
+  }
+ },
+ "buster": {
+  "paragraphs": [
+   "The ghost of BeanstalkFarms haunts the spirit. It is a governance flaw deep in the marrow. No compiler version and no Solidity upgrade can heal this wound.",
+   "Count the voting power from a snapshot taken before a proposal opens. This stops borrowed tokens from voting. Put a delay between a passing vote and its execution. This prevents a one-transaction loan from passing and running a proposal."
+  ],
+  "fix": null,
+  "fix_reason": "No compiler version fixes this wound: it is a governance flaw (cause in the record: 'DAO + Flashloan'). The buster's advice is a general mitigation for that kind of flaw, written by hand, not taken from the incident's references.",
+  "recipe": null,
+  "mitigation": {
+   "flaw_kind": "governance",
+   "advice": "Count voting power from a snapshot taken before a proposal opens, so borrowed tokens cannot vote. Put a delay between a vote passing and its execution, so a one-transaction loan cannot pass and run a proposal."
+  }
+ },
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 27.0,
+  "model_seconds": 27.0,
+  "calls": 6,
+  "prompt_tokens": 2825,
+  "output_tokens": 560
+ },
+ "verifier": {
+  "sentences": 30,
+  "grounded": 29,
+  "repaired": 1,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [
+   {
+    "chapter": "birth",
+    "verdict": "repaired",
+    "text": "On this day, a wallet ending in 24c5 brought Bean into the world.",
+    "problems": [
+     {
+      "kind": "number",
+      "token": "24"
+     }
+    ],
+    "rewrite": "A wallet deployed Bean on August 6, 2021."
+   }
+  ],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "August 6, 2021",
+  "born_year": 2021,
+  "age_years": 5.2,
+  "age_years_whole": 5,
+  "last_seen_on": "October 21, 2026",
+  "last_seen_year": 2026,
+  "silent_years": 0.0,
+  "silent_days": 7,
+  "active_days": 1901,
+  "balance_eth": 0.0,
+  "deployer_short": "0xc1e0…24c5",
+  "address_short": "0xdc59…e5db",
+  "compiler_label": "Solidity 0.7.6",
+  "activity_label": "active every year since 2025"
+ },
+ "notes": [
+  "no recipe matches the wound: buster tells the general mitigation, no code"
+ ],
+ "generated_at": "2026-10-29T05:55:58Z"
+}

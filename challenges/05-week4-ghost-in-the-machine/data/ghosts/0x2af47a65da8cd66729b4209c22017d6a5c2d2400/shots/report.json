@@ -1,0 +1,58 @@
+[
+ {
+  "site": "bounties.network",
+  "ok": true,
+  "captures": 79,
+  "note": "last = last 200 capture before the ghost's last transaction"
+ },
+ {
+  "site": "gitcoin.co",
+  "ok": true,
+  "captures": 112,
+  "note": "last = last 200 capture before the ghost's last transaction"
+ },
+ {
+  "site": "bounties.network",
+  "role": "first",
+  "ts": "20170923162827",
+  "ok": false,
+  "error": "screenshot only 7660 bytes (blank frame?)",
+  "seconds": 4.1
+ },
+ {
+  "site": "bounties.network",
+  "role": "first",
+  "ts": "20180111012706",
+  "ok": true,
+  "bytes": 731279,
+  "final_url": "https://web.archive.org/web/20180111012706/https://bounties.network/",
+  "seconds": 8.1
+ },
+ {
+  "site": "bounties.network",
+  "role": "last",
+  "ts": "20260607001844",
+  "ok": true,
+  "bytes": 262803,
+  "final_url": "https://web.archive.org/web/20260607001844/https://bounties.network/",
+  "seconds": 5.0
+ },
+ {
+  "site": "gitcoin.co",
+  "role": "first",
+  "ts": "20171005074903",
+  "ok": true,
+  "bytes": 91376,
+  "final_url": "https://web.archive.org/web/20171005074903/https://gitcoin.co/",
+  "seconds": 4.2
+ },
+ {
+  "site": "gitcoin.co",
+  "role": "last",
+  "ts": "20261007200520",
+  "ok": true,
+  "bytes": 100503,
+  "final_url": "https://web.archive.org/web/20261007200520/https://gitcoin.co/",
+  "seconds": 4.4
+ }
+]

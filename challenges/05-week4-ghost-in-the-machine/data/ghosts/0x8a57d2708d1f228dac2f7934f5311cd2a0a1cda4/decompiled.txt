@@ -1,0 +1,29 @@
+// Decompiled by ethereumhistory.com
+// Auto-generated pseudocode from bytecode — not verified source code
+// SPDX-License-Identifier: UNLICENSED
+// Metadata bzzr0://9b5d21ef84af47c74cde77f2c8ede902a7889b460deb2da8fb67e7c3efef5021
+pragma solidity ;
+
+contract Contract {
+
+    event LogVote(bytes32 indexed _arg0, bool _arg1, address _arg2);
+
+    function() external payable {
+        if (msg.sig == 9f2ce678) {
+            $9f2ce678();
+        } else {
+            revert('Invalid instruction (0xfe)');
+        }
+    }
+
+    function vote(bytes32 _arg0, bool _arg1) public payable {
+        if (msg.value == 0 == 0) {
+            revert('Invalid instruction (0xfe)');
+        }
+        undefined local1 = 0x4; // #refs 1
+        undefined local4 = msg.data[0x20 + local1] == 0 == 0; // #refs 1
+        emit LogVote(~0x0 & ~0x0 & msg.data[local1], local4 == 0 == 0 == 0 == 0, 0xffffffffffffffffffffffffffffffffffffffff & 0xffffffffffffffffffffffffffffffffffffffff & msg.sender);
+        return;
+    }
+
+}

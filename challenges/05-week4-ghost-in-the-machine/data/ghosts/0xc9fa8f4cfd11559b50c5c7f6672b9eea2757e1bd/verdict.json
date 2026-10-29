@@ -1,0 +1,29 @@
+{
+ "address": "0xc9fa8f4cfd11559b50c5c7f6672b9eea2757e1bd",
+ "kind": "bad",
+ "reasons": [
+  "documented incident: QTNToken (2023-01-18)",
+  "1 fatal wound(s) (confirmed, High impact, Medium+ confidence); first: catalog (High/High) QTNToken",
+  "0 successful calls in the last 12 months out of 386 lifetime txs (0.0%)"
+ ],
+ "activity": {
+  "lifetime_txs": 386,
+  "last_tx": "2024-05-19T02:09:35Z",
+  "last_12m_txs": 0,
+  "last_12m_capped": false,
+  "silent_years": 2.4
+ },
+ "wounds": {
+  "count": 2,
+  "confirmed": 2,
+  "worst_impact": "High",
+  "scars": 0,
+  "fatal": 1
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

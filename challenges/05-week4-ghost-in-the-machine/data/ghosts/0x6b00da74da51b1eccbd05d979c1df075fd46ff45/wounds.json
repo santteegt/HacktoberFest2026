@@ -1,0 +1,111 @@
+{
+ "address": "0x6b00da74da51b1eccbd05d979c1df075fd46ff45",
+ "tier": "slither",
+ "compiler_version": "0.7.4+commit.3f05b770",
+ "analyzed_files": [
+  "SaffronERC20StakingPool.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "SaffronERC20StakingPool.add_liquidity(uint256,ISaffronBase.Tranche) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "SaffronERC20StakingPool.sol",
+   "lines": [
+    1050,
+    1078
+   ],
+   "snippet": "  function add_liquidity(uint256 amount, Tranche tranche) external override {\n    require(!_shutdown, \"pool shutdown\");\n    require(tranche == Tranche.S, \"ERC20 pool has no tranches\");\n    uint256 epoch = get_current_epoch();\n    require(amount != 0, \"can't add 0\");\n    require(epoch == 18, \"v1.18: only epoch 18 only\");\n\n    // Calculate the dsec for deposited base_asset tokens\n    uint256 dsec = amount.mul(get_seconds_until_epoch_end(epoch));\n\n    // Update pool principal eternal and epoch state\n    pool_principal = pool_principal.add(amount);                 // Add base_asset token amount to pool principal total \n    epoch_principal[epoch] = epoch_principal[epoch].add(amount); // Add base_asset token amount to principal epoch total\n\n    // Update dsec and principal balance state\n    total_dsec[epoch] = total_dsec[epoch].add(dsec);\n\n    // Transfer base_asset tokens from LP to pool\n    IERC20(base_asset_address).safeTransferFrom(msg.sender, address(this), amount);\n\n    // Mint Saffron LP epoch 1 <base_asset_name> dsec tokens and transfer them to sender\n    SaffronLPBalanceToken(dsec_token_addresses[epoch]).mint(msg.sender, dsec);\n\n    // Mint Saffron LP epoch 1 <base_asset_name> principal tokens and transfer them to sender\n    SaffronLPBalanceToken(principal_token_addresses[epoch]).mint(msg.sender, amount);\n\n    emit DsecGeneration(get_seconds_until_epoch_end(epoch), amount, dsec, dsec_token_addresses[epoch], epoch, uint256(tranche), msg.sender, principal_token_addresses[epoch]);\n    emit AddLiquidity(pool_principal, epoch_principal[epoch], total_dsec[epoch]);\n  }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: SaffronERC20StakingPool.add_liquidity(uint256,ISaffronBase.Tranche) (SaffronERC20StakingPool.sol#1050-1078) uses a dangerous strict equality:\n\t- require(bool,string)(epoch == 18,v1.18: only epoch 18 only) (SaffronERC20StakingPool.sol#1055)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w2",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "SaffronERC20StakingPool.add_liquidity(uint256,ISaffronBase.Tranche) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "SaffronERC20StakingPool.sol",
+   "lines": [
+    1050,
+    1078
+   ],
+   "snippet": "  function add_liquidity(uint256 amount, Tranche tranche) external override {\n    require(!_shutdown, \"pool shutdown\");\n    require(tranche == Tranche.S, \"ERC20 pool has no tranches\");\n    uint256 epoch = get_current_epoch();\n    require(amount != 0, \"can't add 0\");\n    require(epoch == 18, \"v1.18: only epoch 18 only\");\n\n    // Calculate the dsec for deposited base_asset tokens\n    uint256 dsec = amount.mul(get_seconds_until_epoch_end(epoch));\n\n    // Update pool principal eternal and epoch state\n    pool_principal = pool_principal.add(amount);                 // Add base_asset token amount to pool principal total \n    epoch_principal[epoch] = epoch_principal[epoch].add(amount); // Add base_asset token amount to principal epoch total\n\n    // Update dsec and principal balance state\n    total_dsec[epoch] = total_dsec[epoch].add(dsec);\n\n    // Transfer base_asset tokens from LP to pool\n    IERC20(base_asset_address).safeTransferFrom(msg.sender, address(this), amount);\n\n    // Mint Saffron LP epoch 1 <base_asset_name> dsec tokens and transfer them to sender\n    SaffronLPBalanceToken(dsec_token_addresses[epoch]).mint(msg.sender, dsec);\n\n    // Mint Saffron LP epoch 1 <base_asset_name> principal tokens and transfer them to sender\n    SaffronLPBalanceToken(principal_token_addresses[epoch]).mint(msg.sender, amount);\n\n    emit DsecGeneration(get_seconds_until_epoch_end(epoch), amount, dsec, dsec_token_addresses[epoch], epoch, uint256(tranche), msg.sender, principal_token_addresses[epoch]);\n    emit AddLiquidity(pool_principal, epoch_principal[epoch], total_dsec[epoch]);\n  }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: SaffronERC20StakingPool.add_liquidity(uint256,ISaffronBase.Tranche) (SaffronERC20StakingPool.sol#1050-1078) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool,string)(epoch == 18,v1.18: only epoch 18 only) (SaffronERC20StakingPool.sol#1055)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w3",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "SaffronERC20StakingPool.wind_down_epoch(uint256,uint256) uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "SaffronERC20StakingPool.sol",
+   "lines": [
+    1082,
+    1097
+   ],
+   "snippet": "  function wind_down_epoch(uint256 epoch, uint256 amount_sfi) public override {\n    require(msg.sender == address(strategy), \"must be strategy\");\n    require(!epoch_wound_down[epoch], \"epoch already wound down\");\n    uint256 current_epoch = get_current_epoch();\n    require(epoch < current_epoch, \"cannot wind down future epoch\");\n\n    uint256 previous_epoch = current_epoch - 1;\n    require(block.timestamp >= get_epoch_end(previous_epoch), \"can't call before epoch ended\");\n\n    SFI_earned[epoch] = amount_sfi;\n\n    // Total dsec\n    uint256 epoch_dsec = total_dsec[epoch];\n    epoch_wound_down[epoch] = true;\n    emit WindDownEpochState(previous_epoch, SFI_earned[epoch], epoch_dsec);\n  }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: SaffronERC20StakingPool.wind_down_epoch(uint256,uint256) (SaffronERC20StakingPool.sol#1082-1097) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool,string)(epoch < current_epoch,cannot wind down future epoch) (SaffronERC20StakingPool.sol#1086)\n\t- require(bool,string)(block.timestamp >= get_epoch_end(previous_epoch),can't call before epoch ended) (SaffronERC20StakingPool.sol#1089)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w4",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "SaffronERC20StakingPool.shutdown() uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "SaffronERC20StakingPool.sol",
+   "lines": [
+    1168,
+    1172
+   ],
+   "snippet": "  function shutdown() external override {\n    require(msg.sender == strategy || msg.sender == governance, \"must be strategy\");\n    require(block.timestamp > get_epoch_end(1) - 1 days, \"trying to shutdown too early\");\n    _shutdown = true;\n  }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: SaffronERC20StakingPool.shutdown() (SaffronERC20StakingPool.sol#1168-1172) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool,string)(block.timestamp > get_epoch_end(1) - 86400,trying to shutdown too early) (SaffronERC20StakingPool.sol#1170)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  },
+  {
+   "id": "w5",
+   "check": "timestamp",
+   "swc": "SWC-116",
+   "title": "SaffronERC20StakingPool.get_current_epoch() uses timestamp for comparisons",
+   "impact": "Informational",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "SaffronERC20StakingPool.sol",
+   "lines": [
+    1190,
+    1193
+   ],
+   "snippet": "  function get_current_epoch() public view returns (uint256) {\n    require(block.timestamp > epoch_cycle.start_date, \"before epoch 0\");\n    return (block.timestamp - epoch_cycle.start_date) / epoch_cycle.duration;\n  }",
+   "description": "Logic depends on block.timestamp, which miners can nudge by a few seconds (informational). Slither: SaffronERC20StakingPool.get_current_epoch() (SaffronERC20StakingPool.sol#1190-1193) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- require(bool,string)(block.timestamp > epoch_cycle.start_date,before epoch 0) (SaffronERC20StakingPool.sol#1191)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#timestamp"
+  }
+ ],
+ "incident": null,
+ "slither_raw": "data/ghosts/0x6b00da74da51b1eccbd05d979c1df075fd46ff45/slither.json",
+ "catalog_entry": null,
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 6.2
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.7.4"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:30:29Z"
+}

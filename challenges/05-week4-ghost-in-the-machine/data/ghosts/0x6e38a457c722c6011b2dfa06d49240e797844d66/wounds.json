@@ -1,0 +1,15 @@
+{
+ "address": "0x6e38a457c722c6011b2dfa06d49240e797844d66",
+ "tier": "regex",
+ "compiler_version": null,
+ "analyzed_files": [
+  "source.eh.sol"
+ ],
+ "source_origin": "eh",
+ "findings": [],
+ "incident": null,
+ "slither_raw": null,
+ "catalog_entry": null,
+ "run": null,
+ "analyzed_at": "2026-10-29T05:26:24Z"
+}

@@ -1,0 +1,29 @@
+{
+ "address": "0xdc59ac4fefa32293a95889dc396682858d52e5db",
+ "kind": "bad",
+ "reasons": [
+  "documented incident: BeanstalkFarms (2022-04-16)",
+  "1 fatal wound(s) (confirmed, High impact, Medium+ confidence); first: catalog (High/High) BeanstalkFarms",
+  "35 successful calls in the last 12 months out of 5093 lifetime txs (0.7%)"
+ ],
+ "activity": {
+  "lifetime_txs": 5093,
+  "last_tx": "2026-10-21T15:48:59Z",
+  "last_12m_txs": 35,
+  "last_12m_capped": false,
+  "silent_years": 0.0
+ },
+ "wounds": {
+  "count": 1,
+  "confirmed": 1,
+  "worst_impact": "High",
+  "scars": 0,
+  "fatal": 1
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

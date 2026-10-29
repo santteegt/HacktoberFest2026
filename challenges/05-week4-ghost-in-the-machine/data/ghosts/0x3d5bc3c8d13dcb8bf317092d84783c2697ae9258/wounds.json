@@ -1,0 +1,439 @@
+{
+ "address": "0x3d5bc3c8d13dcb8bf317092d84783c2697ae9258",
+ "tier": "slither",
+ "compiler_version": "0.5.17+commit.d19bba13",
+ "analyzed_files": [
+  "contracts/CToken.sol",
+  "contracts/CTokenInterfaces.sol",
+  "contracts/CarefulMath.sol",
+  "contracts/ComptrollerInterface.sol",
+  "contracts/ComptrollerStorage.sol",
+  "contracts/EIP20Interface.sol",
+  "contracts/EIP20NonStandardInterface.sol",
+  "contracts/ErrorReporter.sol",
+  "contracts/Exponential.sol",
+  "contracts/InterestRateModel.sol",
+  "contracts/PriceOracle.sol",
+  "contracts/Unitroller.sol"
+ ],
+ "source_origin": "src",
+ "findings": [
+  {
+   "id": "w1",
+   "check": "catalog",
+   "swc": null,
+   "title": "CreamFinance",
+   "impact": "High",
+   "confidence": "High",
+   "confirmed": true,
+   "file": null,
+   "lines": null,
+   "snippet": null,
+   "description": "Price Manipulation",
+   "reference_url": "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-10/Cream_2_exp.sol"
+  },
+  {
+   "id": "w2",
+   "check": "controlled-delegatecall",
+   "swc": "SWC-112",
+   "title": "Unitroller.fallback() uses delegatecall to a input-controlled function id",
+   "impact": "High",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "contracts/Unitroller.sol",
+   "lines": [
+    135,
+    147
+   ],
+   "snippet": "    function () payable external {\n        // delegate all other functions to current implementation\n        (bool success, ) = comptrollerImplementation.delegatecall(msg.data);\n\n        assembly {\n              let free_mem_ptr := mload(0x40)\n              returndatacopy(free_mem_ptr, 0, returndatasize)\n\n              switch success\n              case 0 { revert(free_mem_ptr, returndatasize) }\n              default { return(free_mem_ptr, returndatasize) }\n        }\n    }",
+   "description": "The function delegatecalls into code chosen by the caller, so a stranger can run their code with this contract's storage and balance. Slither: Unitroller.fallback() (contracts/Unitroller.sol#135-147) uses delegatecall to a input-controlled function id\n\t- (success,None) = comptrollerImplementation.delegatecall(msg.data) (contracts/Unitroller.sol#137)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#controlled-delegatecall"
+  },
+  {
+   "id": "w3",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CarefulMath.mulUInt(uint256,uint256) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CarefulMath.sol",
+   "lines": [
+    24,
+    36
+   ],
+   "snippet": "    function mulUInt(uint a, uint b) internal pure returns (MathError, uint) {\n        if (a == 0) {\n            return (MathError.NO_ERROR, 0);\n        }\n\n        uint c = a * b;\n\n        if (c / a != b) {\n            return (MathError.INTEGER_OVERFLOW, 0);\n        } else {\n            return (MathError.NO_ERROR, c);\n        }\n    }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CarefulMath.mulUInt(uint256,uint256) (contracts/CarefulMath.sol#24-36) uses a dangerous strict equality:\n\t- a == 0 (contracts/CarefulMath.sol#25)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w4",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.initialize(ComptrollerInterface,InterestRateModel,uint256,string,string,uint8) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    26,
+    57
+   ],
+   "snippet": "    function initialize(ComptrollerInterface comptroller_,\n                        InterestRateModel interestRateModel_,\n                        uint initialExchangeRateMantissa_,\n                        string memory name_,\n                        string memory symbol_,\n                        uint8 decimals_) public {\n        require(msg.sender == admin, \"only admin may initialize the market\");\n        require(accrualBlockNumber == 0 && borrowIndex == 0, \"market may only be initialized once\");\n\n        // Set initial exchange rate\n        initialExchangeRateMantissa = initialExchangeRateMantissa_;\n        require(initialExchangeRateMantissa > 0, \"initial exchange rate must be greater than zero.\");\n\n        // Set the comptroller\n        uint err = _setComptroller(comptroller_);\n        require(err == uint(Error.NO_ERROR), \"setting comptroller failed\");\n\n        // Initialize block number and borrow index (block number mocks depend on comptroller being set)\n        accrualBlockNumber = getBlockNumber();\n        borrowIndex = mantissaOne;\n\n        // Set the interest rate model (depends on block number / borrow index)\n        err = _setInterestRateModelFresh(interestRateModel_);\n        require(err == uint(Error.NO_ERROR), \"setting interest rate model failed\");\n\n        name = name_;\n        symbol = symbol_;\n        decimals = decimals_;\n\n        // The counter starts true to prevent changing it from zero to non-zero (i.e. smaller cost/refund)\n        _notEntered = true;\n    }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.initialize(ComptrollerInterface,InterestRateModel,uint256,string,string,uint8) (contracts/CToken.sol#26-57) uses a dangerous strict equality:\n\t- require(bool,string)(err == uint256(Error.NO_ERROR),setting comptroller failed) (contracts/CToken.sol#41)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w5",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CarefulMath.divUInt(uint256,uint256) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CarefulMath.sol",
+   "lines": [
+    41,
+    47
+   ],
+   "snippet": "    function divUInt(uint a, uint b) internal pure returns (MathError, uint) {\n        if (b == 0) {\n            return (MathError.DIVISION_BY_ZERO, 0);\n        }\n\n        return (MathError.NO_ERROR, a / b);\n    }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CarefulMath.divUInt(uint256,uint256) (contracts/CarefulMath.sol#41-47) uses a dangerous strict equality:\n\t- b == 0 (contracts/CarefulMath.sol#42)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w6",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.transfer(address,uint256) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    135,
+    137
+   ],
+   "snippet": "    function transfer(address dst, uint256 amount) external nonReentrant returns (bool) {\n        return transferTokens(msg.sender, msg.sender, dst, amount) == uint(Error.NO_ERROR);\n    }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.transfer(address,uint256) (contracts/CToken.sol#135-137) uses a dangerous strict equality:\n\t- transferTokens(msg.sender,msg.sender,dst,amount) == uint256(Error.NO_ERROR) (contracts/CToken.sol#136)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w7",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.transferFrom(address,address,uint256) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    146,
+    148
+   ],
+   "snippet": "    function transferFrom(address src, address dst, uint256 amount) external nonReentrant returns (bool) {\n        return transferTokens(msg.sender, src, dst, amount) == uint(Error.NO_ERROR);\n    }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.transferFrom(address,address,uint256) (contracts/CToken.sol#146-148) uses a dangerous strict equality:\n\t- transferTokens(msg.sender,src,dst,amount) == uint256(Error.NO_ERROR) (contracts/CToken.sol#147)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w8",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "Exponential.mulExp(Exponential.Exp,Exponential.Exp) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/Exponential.sol",
+   "lines": [
+    146,
+    166
+   ],
+   "snippet": "    function mulExp(Exp memory a, Exp memory b) pure internal returns (MathError, Exp memory) {\n\n        (MathError err0, uint doubleScaledProduct) = mulUInt(a.mantissa, b.mantissa);\n        if (err0 != MathError.NO_ERROR) {\n            return (err0, Exp({mantissa: 0}));\n        }\n\n        // We add half the scale before dividing so that we get rounding instead of truncation.\n        //  See \"Listing 6\" and text above it at https://accu.org/index.php/journals/1717\n        // Without this change, a result like 6.6...e-19 will be truncated to 0 instead of being rounded to 1e-18.\n        (MathError err1, uint doubleScaledProductWithHalfScale) = addUInt(halfExpScale, doubleScaledProduct);\n        if (err1 != MathError.NO_ERROR) {\n            return (err1, Exp({mantissa: 0}));\n        }\n\n        (MathError err2, uint product) = divUInt(doubleScaledProductWithHalfScale, expScale);\n        // The only error `div` can return is MathError.DIVISION_BY_ZERO but we control `expScale` and it is not zero.\n        assert(err2 == MathError.NO_ERROR);\n\n        return (MathError.NO_ERROR, Exp({mantissa: product}));\n    }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: Exponential.mulExp(Exponential.Exp,Exponential.Exp) (contracts/Exponential.sol#146-166) uses a dangerous strict equality:\n\t- assert(bool)(err2 == MathError.NO_ERROR) (contracts/Exponential.sol#163)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w9",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.balanceOfUnderlying(address) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    190,
+    195
+   ],
+   "snippet": "    function balanceOfUnderlying(address owner) external returns (uint) {\n        Exp memory exchangeRate = Exp({mantissa: exchangeRateCurrent()});\n        (MathError mErr, uint balance) = mulScalarTruncate(exchangeRate, accountTokens[owner]);\n        require(mErr == MathError.NO_ERROR, \"balance could not be calculated\");\n        return balance;\n    }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.balanceOfUnderlying(address) (contracts/CToken.sol#190-195) uses a dangerous strict equality:\n\t- require(bool,string)(mErr == MathError.NO_ERROR,balance could not be calculated) (contracts/CToken.sol#193)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w10",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.borrowBalanceStored(address) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    271,
+    275
+   ],
+   "snippet": "    function borrowBalanceStored(address account) public view returns (uint) {\n        (MathError err, uint result) = borrowBalanceStoredInternal(account);\n        require(err == MathError.NO_ERROR, \"borrowBalanceStored: borrowBalanceStoredInternal failed\");\n        return result;\n    }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.borrowBalanceStored(address) (contracts/CToken.sol#271-275) uses a dangerous strict equality:\n\t- require(bool,string)(err == MathError.NO_ERROR,borrowBalanceStored: borrowBalanceStoredInternal failed) (contracts/CToken.sol#273)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w11",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.exchangeRateStored() uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    328,
+    332
+   ],
+   "snippet": "    function exchangeRateStored() public view returns (uint) {\n        (MathError err, uint result) = exchangeRateStoredInternal();\n        require(err == MathError.NO_ERROR, \"exchangeRateStored: exchangeRateStoredInternal failed\");\n        return result;\n    }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.exchangeRateStored() (contracts/CToken.sol#328-332) uses a dangerous strict equality:\n\t- require(bool,string)(err == MathError.NO_ERROR,exchangeRateStored: exchangeRateStoredInternal failed) (contracts/CToken.sol#330)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w12",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.exchangeRateStoredInternal() uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    339,
+    369
+   ],
+   "snippet": "    function exchangeRateStoredInternal() internal view returns (MathError, uint) {\n        uint _totalSupply = totalSupply;\n        if (_totalSupply == 0) {\n            /*\n             * If there are no tokens minted:\n             *  exchangeRate = initialExchangeRate\n             */\n            return (MathError.NO_ERROR, initialExchangeRateMantissa);\n        } else {\n            /*\n             * Otherwise:\n             *  exchangeRate = (totalCash + totalBorrows - totalReserves) / totalSupply\n             */\n            uint totalCash = getCashPrior();\n            uint cashPlusBorrowsMinusReserves;\n            Exp memory exchangeRate;\n            MathError mathErr;\n\n            (mathErr, cashPlusBorrowsMinusReserves) = addThenSubUInt(totalCash, totalBorrows, totalReserves);\n            if (mathErr != MathError.NO_ERROR) {\n                return (mathErr, 0);\n            }\n\n            (mathErr, exchangeRate) = getExp(cashPlusBorrowsMinusReserves, _totalSupply);\n            if (mathErr != MathError.NO_ERROR) {\n                return (mathErr, 0);\n            }\n\n            return (MathError.NO_ERROR, exchangeRate.mantissa);\n        }\n    }",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.exchangeRateStoredInternal() (contracts/CToken.sol#339-369) uses a dangerous strict equality:\n\t- _totalSupply == 0 (contracts/CToken.sol#341)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w13",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.accrueInterest() uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    390,
+    390
+   ],
+   "snippet": "        if (accrualBlockNumberPrior == currentBlockNumber) {",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.accrueInterest() (contracts/CToken.sol#384-462) uses a dangerous strict equality:\n\t- accrualBlockNumberPrior == currentBlockNumber (contracts/CToken.sol#390)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w14",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.accrueInterest() uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    406,
+    406
+   ],
+   "snippet": "        require(mathErr == MathError.NO_ERROR, \"could not calculate block delta\");",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.accrueInterest() (contracts/CToken.sol#384-462) uses a dangerous strict equality:\n\t- require(bool,string)(mathErr == MathError.NO_ERROR,could not calculate block delta) (contracts/CToken.sol#406)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w15",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.mintFresh(address,uint256) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    536,
+    536
+   ],
+   "snippet": "        require(vars.mathErr == MathError.NO_ERROR, \"MINT_EXCHANGE_CALCULATION_FAILED\");",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.mintFresh(address,uint256) (contracts/CToken.sol#497-561) uses a dangerous strict equality:\n\t- require(bool,string)(vars.mathErr == MathError.NO_ERROR,MINT_EXCHANGE_CALCULATION_FAILED) (contracts/CToken.sol#536)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w16",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.mintFresh(address,uint256) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    544,
+    544
+   ],
+   "snippet": "        require(vars.mathErr == MathError.NO_ERROR, \"MINT_NEW_TOTAL_SUPPLY_CALCULATION_FAILED\");",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.mintFresh(address,uint256) (contracts/CToken.sol#497-561) uses a dangerous strict equality:\n\t- require(bool,string)(vars.mathErr == MathError.NO_ERROR,MINT_NEW_TOTAL_SUPPLY_CALCULATION_FAILED) (contracts/CToken.sol#544)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w17",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.mintFresh(address,uint256) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    547,
+    547
+   ],
+   "snippet": "        require(vars.mathErr == MathError.NO_ERROR, \"MINT_NEW_ACCOUNT_BALANCE_CALCULATION_FAILED\");",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.mintFresh(address,uint256) (contracts/CToken.sol#497-561) uses a dangerous strict equality:\n\t- require(bool,string)(vars.mathErr == MathError.NO_ERROR,MINT_NEW_ACCOUNT_BALANCE_CALCULATION_FAILED) (contracts/CToken.sol#547)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w18",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.repayBorrowFresh(address,address,uint256) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    899,
+    899
+   ],
+   "snippet": "        require(vars.mathErr == MathError.NO_ERROR, \"REPAY_BORROW_NEW_ACCOUNT_BORROW_BALANCE_CALCULATION_FAILED\");",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.repayBorrowFresh(address,address,uint256) (contracts/CToken.sol#850-916) uses a dangerous strict equality:\n\t- require(bool,string)(vars.mathErr == MathError.NO_ERROR,REPAY_BORROW_NEW_ACCOUNT_BORROW_BALANCE_CALCULATION_FAILED) (contracts/CToken.sol#899)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w19",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.repayBorrowFresh(address,address,uint256) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    902,
+    902
+   ],
+   "snippet": "        require(vars.mathErr == MathError.NO_ERROR, \"REPAY_BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED\");",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.repayBorrowFresh(address,address,uint256) (contracts/CToken.sol#850-916) uses a dangerous strict equality:\n\t- require(bool,string)(vars.mathErr == MathError.NO_ERROR,REPAY_BORROW_NEW_TOTAL_BALANCE_CALCULATION_FAILED) (contracts/CToken.sol#902)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w20",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.liquidateBorrowFresh(address,address,uint256,CTokenInterface) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    997,
+    997
+   ],
+   "snippet": "        require(amountSeizeError == uint(Error.NO_ERROR), \"LIQUIDATE_COMPTROLLER_CALCULATE_AMOUNT_SEIZE_FAILED\");",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.liquidateBorrowFresh(address,address,uint256,CTokenInterface) (contracts/CToken.sol#952-1020) uses a dangerous strict equality:\n\t- require(bool,string)(amountSeizeError == uint256(Error.NO_ERROR),LIQUIDATE_COMPTROLLER_CALCULATE_AMOUNT_SEIZE_FAILED) (contracts/CToken.sol#997)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w21",
+   "check": "incorrect-equality",
+   "swc": "SWC-132",
+   "title": "CToken.liquidateBorrowFresh(address,address,uint256,CTokenInterface) uses a dangerous strict equality",
+   "impact": "Medium",
+   "confidence": "High",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    1011,
+    1011
+   ],
+   "snippet": "        require(seizeError == uint(Error.NO_ERROR), \"token seizure failed\");",
+   "description": "A strict equality on a balance or amount can be broken by someone sending a little extra, locking the logic. Slither: CToken.liquidateBorrowFresh(address,address,uint256,CTokenInterface) (contracts/CToken.sol#952-1020) uses a dangerous strict equality:\n\t- require(bool,string)(seizeError == uint256(Error.NO_ERROR),token seizure failed) (contracts/CToken.sol#1011)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-equality"
+  },
+  {
+   "id": "w22",
+   "check": "reentrancy-no-eth",
+   "swc": "SWC-107",
+   "title": "Reentrancy in CToken.redeemFresh(address,uint256,uint256)",
+   "impact": "Medium",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    613,
+    652
+   ],
+   "snippet": "    function redeemFresh(address payable redeemer, uint redeemTokensIn, uint redeemAmountIn) internal returns (uint) {\n        require(redeemTokensIn == 0 || redeemAmountIn == 0, \"one of redeemTokensIn or redeemAmountIn must be zero\");\n\n        RedeemLocalVars memory vars;\n\n        /* exchangeRate = invoke Exchange Rate Stored() */\n        (vars.mathErr, vars.exchangeRateMantissa) = exchangeRateStoredInternal();\n        if (vars.mathErr != MathError.NO_ERROR) {\n            return failOpaque(Error.MATH_ERROR, FailureInfo.REDEEM_EXCHANGE_RATE_READ_FAILED, uint(vars.mathErr));\n        }\n\n        /* If redeemTokensIn > 0: */\n        if (redeemTokensIn > 0) {\n            /*\n             * We calculate the exchange rate and the amount of underlying to be redeemed:\n             *  redeemTokens = redeemTokensIn\n             *  redeemAmount = redeemTokensIn x exchangeRateCurrent\n             */\n            vars.redeemTokens = redeemTokensIn;\n\n            (vars.mathErr, vars.redeemAmount) = mulScalarTruncate(Exp({mantissa: vars.exchangeRateMantissa}), redeemTokensIn);\n            if (vars.mathErr != MathError.NO_ERROR) {\n                return failOpaque(Error.MATH_ERROR, FailureInfo.REDEEM_EXCHANGE_TOKENS_CALCULATION_FAILED, uint(vars.mathErr));\n            }\n        } else {\n            /*\n             * We get the current exchange rate and calculate the amount to be redeemed:\n             *  redeemTokens = redeemAmountIn / exchangeRate\n             *  redeemAmount = redeemAmountIn\n             */\n\n            (vars.mathErr, vars.redeemTokens) = divScalarByExpTruncate(redeemAmountIn, Exp({mantissa: vars.exchangeRateMantissa}));\n            if (vars.mathErr != MathError.NO_ERROR) {\n                return failOpaque(Error.MATH_ERROR, FailureInfo.REDEEM_EXCHANGE_AMOUNT_CALCULATION_FAILED, uint(vars.mathErr));\n            }\n\n            vars.redeemAmount = redeemAmountIn;\n        }\n\n        /* Fail if redeem not allowed */",
+   "description": "The function calls out to another contract before it finishes updating its own state. A malicious callee can re-enter while the state is half-written; no ether moves in the reentrant path itself, but the stale state can be abused. Slither: Reentrancy in CToken.redeemFresh(address,uint256,uint256) (contracts/CToken.sol#613-707):\n\tExternal calls:\n\t- allowed = comptroller.redeemAllowed(address(this),redeemer,vars.redeemTokens) (contracts/CToken.sol#653)\n\tState variables written after the call(s):\n\t- totalSupply = vars.totalSupplyNew (contracts/CToken.sol#696)\n\tCTokenStorage.totalSupply (contracts/CTokenInterfaces.sol#91) can be used in cross function reentrancies:\n\t- CToken.exchangeRateStoredInternal() (contracts/CToken.sol#339-369)\n\t- CTokenStorage.totalSupply (contracts/CTokenInterfaces.sol#91)",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-no-eth"
+  },
+  {
+   "id": "w23",
+   "check": "reentrancy-no-eth",
+   "swc": "SWC-107",
+   "title": "Reentrancy in CToken.liquidateBorrowInternal(address,uint256,CTokenInterface)",
+   "impact": "Medium",
+   "confidence": "Medium",
+   "confirmed": true,
+   "file": "contracts/CToken.sol",
+   "lines": [
+    926,
+    941
+   ],
+   "snippet": "    function liquidateBorrowInternal(address borrower, uint repayAmount, CTokenInterface cTokenCollateral) internal nonReentrant returns (uint, uint) {\n        uint error = accrueInterest();\n        if (error != uint(Error.NO_ERROR)) {\n            // accrueInterest emits logs on errors, but we still want to log the fact that an attempted liquidation failed\n            return (fail(Error(error), FailureInfo.LIQUIDATE_ACCRUE_BORROW_INTEREST_FAILED), 0);\n        }\n\n        error = cTokenCollateral.accrueInterest();\n        if (error != uint(Error.NO_ERROR)) {\n            // accrueInterest emits logs on errors, but we still want to log the fact that an attempted liquidation failed\n            return (fail(Error(error), FailureInfo.LIQUIDATE_ACCRUE_COLLATERAL_INTEREST_FAILED), 0);\n        }\n\n        // liquidateBorrowFresh emits borrow-specific logs on errors, so we don't need to\n        return liquidateBorrowFresh(msg.sender, borrower, repayAmount, cTokenCollateral);\n    }",
+   "description": "The function calls out to another contract before it finishes updating its own state. A malicious callee can re-enter while the state is half-written; no ether moves in the reentrant path itself, but the stale state can be abused. Slither: Reentrancy in CToken.liquidateBorrowInternal(address,uint256,CTokenInterface) (contracts/CToken.sol#926-941):\n\tExternal calls:\n\t- error = cTokenCollateral.accrueInterest() (contracts/CToken.sol#933)\n\t- liquidateBorrowFresh(msg.sender,borrower,repayAmount,cTokenCollateral) (contracts/CToken.sol#940)\n\t\t- allowed = comptroller.seizeAllowed(address(this),seizerToken,liquidator,borrower,seizeTokens) (contracts/CToken.sol#1047)\n\t\t- allowed = comptroller.repayBorrowAllowed(address(this),payer,borrower,repayAmount) (contracts/CToken.sol#852)\n\t\t- allowed = comptroller.liquidateBorrowAllowed(address(thi",
+   "reference_url": "https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-no-eth"
+  }
+ ],
+ "incident": {
+  "id": "defihacklabs-2021-10-27-creamfinance",
+  "name": "CreamFinance",
+  "date": "2021-10-27",
+  "loss_usd": 130000000,
+  "loss_eth": null,
+  "loss_note": "$130M",
+  "cause": "Price Manipulation",
+  "swc": null,
+  "summary": "CreamFinance (2021-10-27), documented in the DeFiHackLabs repository: Price Manipulation. Reported loss: $130M.",
+  "references": [
+   "https://github.com/SunWeb3Sec/DeFiHackLabs/blob/main/src/test/2021-10/Cream_2_exp.sol",
+   "https://medium.com/immunefi/hack-analysis-cream-finance-oct-2021-fc222d913fc5"
+  ]
+ },
+ "slither_raw": "data/ghosts/0x3d5bc3c8d13dcb8bf317092d84783c2697ae9258/slither.json",
+ "catalog_entry": "defihacklabs-2021-10-27-creamfinance",
+ "run": {
+  "method": "solc-json",
+  "errors": [],
+  "seconds": {
+   "solc-json": 4.61
+  },
+  "tools": {
+   "slither": "0.11.6",
+   "solc": "0.5.17"
+  }
+ },
+ "analyzed_at": "2026-10-29T05:43:35Z"
+}

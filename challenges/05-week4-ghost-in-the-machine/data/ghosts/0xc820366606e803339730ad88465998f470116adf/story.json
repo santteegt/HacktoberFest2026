@@ -1,0 +1,78 @@
+{
+ "address": "0xc820366606e803339730ad88465998f470116adf",
+ "name": "0xc820366606e803339730ad88465998f470116adf",
+ "kind": "friendly",
+ "kind_source": "verdict.json",
+ "title": "The Silent Small Half",
+ "tagline": "A lonely forwarding wallet from the Homestead era that remains untouched by any human hand.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The ghost of the homestead era",
+   "paragraphs": [
+    "Candelabras flicker against the shadows of May 26, 2016. On this day, a wallet named 0x5149…f0f1 brought a new life into the world. It was born during the Homestead era of Ethereum. This contract is a small program that lives on Ethereum.",
+    "The contract took its place in a block, one page of Ethereum's shared record book. It now sits as a quiet ghost at 10.4 years old. It remains a small half of a Big/Small pair, waiting in the silence."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.birth.deployer",
+    "facts.birth.timestamp"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The house of silence",
+   "paragraphs": [
+    "The contract appeared on May 26, 2016. It has lived for 10.4 years in the quiet. Nobody ever called it.",
+    "No one ever knocked on its door. It holds 0.0 ETH. Its code still rests on the chain."
+   ],
+   "facts_cited": [
+    "derived.age_years",
+    "facts.birth.timestamp",
+    "facts.life.token_transfers"
+   ],
+   "variant": "never called"
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 12.5,
+  "model_seconds": 12.4,
+  "calls": 3,
+  "prompt_tokens": 1408,
+  "output_tokens": 277
+ },
+ "verifier": {
+  "sentences": 15,
+  "grounded": 15,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "never_called": true,
+  "born_on": "May 26, 2016",
+  "born_year": 2016,
+  "age_years": 10.4,
+  "age_years_whole": 10,
+  "balance_eth": 0.0,
+  "deployer_short": "0x5149…f0f1",
+  "address_short": "0xc820…6adf",
+  "other_wounds": 3
+ },
+ "notes": [
+  "never called (life.never_called): no life chapter, no last call"
+ ],
+ "generated_at": "2026-10-29T16:40:53Z"
+}

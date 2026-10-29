@@ -1,0 +1,82 @@
+{
+ "address": "0x007fe7c498a2cf30971ad8f2cbc36bd14ac51156",
+ "started_at": "2026-10-29T05:42:38Z",
+ "finished_at": "2026-10-29T05:43:19Z",
+ "kind": "bad",
+ "title": "The Ghost of Olympus Debt",
+ "name": "BondFixedExpiryTeller",
+ "ok": true,
+ "error": null,
+ "steps": [
+  {
+   "name": "pick",
+   "ok": true,
+   "seconds": 0.1,
+   "note": "incident: victim of OlympusDAO (2022-10-21): No input validation, about $292,000 lost"
+  },
+  {
+   "name": "summon",
+   "ok": true,
+   "seconds": 5.2,
+   "note": "BondFixedExpiryTeller; via blockscout, rpc, sourcify"
+  },
+  {
+   "name": "wounds",
+   "ok": true,
+   "seconds": 10.8,
+   "note": "tier slither, 8 finding(s), incident: OlympusDAO"
+  },
+  {
+   "name": "classify",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "bad"
+  },
+  {
+   "name": "face",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "skipped: --skip-face",
+   "skipped": true
+  },
+  {
+   "name": "story",
+   "ok": true,
+   "seconds": 24.2,
+   "note": "24.2 s, 5 calls; verifier 33/33 grounded, 0 repaired, 0 dropped"
+  },
+  {
+   "name": "render",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "59,270 bytes"
+  },
+  {
+   "name": "gallery",
+   "ok": true,
+   "seconds": 0.0,
+   "note": "24 ghost(s) in the index"
+  }
+ ],
+ "options": {
+  "sites": [],
+  "force": false,
+  "skip_face": true,
+  "deploy": false
+ },
+ "picked": {
+  "source": "incident",
+  "reason": "victim of OlympusDAO (2022-10-21): No input validation, about $292,000 lost",
+  "name": "BondFixedExpiryTeller",
+  "year": 2022,
+  "hint": true
+ },
+ "incident_hint": {
+  "id": "defihacklabs-2022-10-21-olympusdao",
+  "name": "OlympusDAO",
+  "date": "2022-10-21",
+  "cause": "No input validation",
+  "loss_note": "~$292K (30500 OHM)"
+ },
+ "gallery_path": "web/ghosts/0x007fe7c498a2cf30971ad8f2cbc36bd14ac51156/"
+}

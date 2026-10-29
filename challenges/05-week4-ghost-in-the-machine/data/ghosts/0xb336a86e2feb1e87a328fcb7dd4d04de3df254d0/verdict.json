@@ -1,0 +1,29 @@
+{
+ "address": "0xb336a86e2feb1e87a328fcb7dd4d04de3df254d0",
+ "kind": "bad",
+ "reasons": [
+  "documented incident: King of the Ether Throne failed payments (Turbulent Age) (2016-02-06)",
+  "3 scars (unchecked-send), none fatal",
+  "0 successful calls in the last 12 months out of 21 lifetime txs (0.0%)"
+ ],
+ "activity": {
+  "lifetime_txs": 21,
+  "last_tx": "2016-02-19T21:51:14Z",
+  "last_12m_txs": 0,
+  "last_12m_capped": false,
+  "silent_years": 10.7
+ },
+ "wounds": {
+  "count": 4,
+  "confirmed": 3,
+  "worst_impact": "Medium",
+  "scars": 3,
+  "fatal": 0
+ },
+ "labels": {
+  "historian_story": true,
+  "verified_source": true,
+  "site_known": true
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

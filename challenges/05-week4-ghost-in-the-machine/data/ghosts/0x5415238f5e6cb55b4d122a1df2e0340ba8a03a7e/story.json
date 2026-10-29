@@ -1,0 +1,94 @@
+{
+ "address": "0x5415238f5e6cb55b4d122a1df2e0340ba8a03a7e",
+ "name": "DSTP",
+ "kind": "friendly",
+ "kind_source": "verdict.json",
+ "title": "The Echo of Arrow Glacier",
+ "tagline": "A friendly spirit born and silenced on a single February day.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of dstp",
+   "paragraphs": [
+    "Candles flicker near the image of the Arrow Glacier era. On February 6, 2022, the contract came into being. It is a small program that lives on Ethereum. A wallet ending in aea5 brought it into the world.",
+    "The contract was written in Solidity 0.8.7. On the day it was born, it was written into a block, one page of Ethereum's shared record book. It has lived for 4.7 years now."
+   ],
+   "facts_cited": [
+    "facts.age.hardfork",
+    "facts.birth.timestamp",
+    "facts.source.compiler_version",
+    "verdict.activity.silent_years"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "A quiet rest",
+   "paragraphs": [
+    "The contract sits still now. It was last busy in 2022. Only 1 transaction ever moved through its gates.",
+    "People called setRoyalties once. It remains a ghost on the chain. No websites point to it today."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.life.last_tx.method"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The final echo",
+   "paragraphs": [
+    "The code still rests on the chain like a stone in a garden. It has waited in silence for 4.7 years. No one has spoken to it since February 6, 2022.",
+    "The last call was setRoyalties. It sits now with 0.0 ETH left inside. The ghost of DSTP remains, still there but perfectly still."
+   ],
+   "facts_cited": [
+    "facts.birth.timestamp",
+    "facts.life.last_tx.method",
+    "facts.life.token_transfers",
+    "verdict.activity.silent_years"
+   ]
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 10.2,
+  "model_seconds": 10.1,
+  "calls": 4,
+  "prompt_tokens": 1651,
+  "output_tokens": 335
+ },
+ "verifier": {
+  "sentences": 21,
+  "grounded": 21,
+  "repaired": 0,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "February 6, 2022",
+  "born_year": 2022,
+  "age_years": 4.7,
+  "age_years_whole": 4,
+  "last_seen_on": "February 6, 2022",
+  "last_seen_year": 2022,
+  "silent_years": 4.7,
+  "silent_days": 1725,
+  "active_days": 0,
+  "balance_eth": 0.0,
+  "deployer_short": "0x6394…aea5",
+  "address_short": "0x5415…3a7e",
+  "compiler_label": "Solidity 0.8.7",
+  "activity_label": "last busy in 2022"
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:38:41Z"
+}

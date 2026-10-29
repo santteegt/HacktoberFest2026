@@ -1,0 +1,28 @@
+{
+ "address": "0xb3215bf5b10bdb13b6c015fd66548b13a926098c",
+ "kind": "bad",
+ "reasons": [
+  "1 fatal wound(s) (confirmed, High impact, Medium+ confidence); first: unchecked-transfer (High/Medium) UserWallet.collectToken(address) ignores return value by t.transfer(owner,balance)",
+  "0 successful calls in the last 12 months out of 0 lifetime txs (0.0%)"
+ ],
+ "activity": {
+  "lifetime_txs": 0,
+  "last_tx": null,
+  "last_12m_txs": 0,
+  "last_12m_capped": false,
+  "silent_years": null
+ },
+ "wounds": {
+  "count": 1,
+  "confirmed": 1,
+  "worst_impact": "High",
+  "scars": 0,
+  "fatal": 1
+ },
+ "labels": {
+  "historian_story": false,
+  "verified_source": true,
+  "site_known": false
+ },
+ "decided_at": "2026-10-29T05:50:09Z"
+}

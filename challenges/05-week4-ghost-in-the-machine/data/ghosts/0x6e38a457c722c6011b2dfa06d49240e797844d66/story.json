@@ -1,0 +1,118 @@
+{
+ "address": "0x6e38a457c722c6011b2dfa06d49240e797844d66",
+ "name": "TerraNullius",
+ "kind": "lingering",
+ "kind_source": "verdict.json",
+ "title": "The Ghost of Frontier Claims",
+ "tagline": "A lingering contract from the Frontier era where permanent messages still haunt the chain.",
+ "chapters": [
+  {
+   "id": "birth",
+   "heading": "The birth of TerraNullius",
+   "paragraphs": [
+    "TerraNullius was born on August 7, 2015. It was deployed by a wallet. It arrived during the Frontier era of Ethereum.",
+    "The contract is a small program that lives on Ethereum. It let people stake claims and leave messages. Each block is one page of Ethereum's shared record book."
+   ],
+   "facts_cited": [
+    "facts.eh.description",
+    "facts.eh.name"
+   ]
+  },
+  {
+   "id": "life",
+   "heading": "The long watch of TerraNullius",
+   "paragraphs": [
+    "The contract sits like a quiet ghost in the early days. It was born on August 7, 2015. It appeared just 15 days after the mainnet launched. The gas limit was still climbing toward a higher point. It used Solidity 0.1.1 to write its short life. Only 15 lines of source code hold its secrets.",
+    "People came to call the claim function with simple messages. It saved their addresses and the block numbers. These words stayed in an append-only array forever. The contract became a message board for human expression. It remained active through many eras of art and new interests. It still holds 805 transactions today.",
+    "The contract lived through the years and saw the world change. It stayed active every year since 2023. People still made claims as recently as 2026. It served as a permanent home for words on the chain. It recorded 796 transactions in its long life."
+   ],
+   "facts_cited": [
+    "facts.eh.description",
+    "facts.fetched_at",
+    "facts.life.last_12m_txs",
+    "facts.life.tx_count",
+    "facts.sites[1].first_capture"
+   ]
+  },
+  {
+   "id": "silence",
+   "heading": "The knocking",
+   "paragraphs": [
+    "TerraNullius sits quiet with 0.0 ETH left inside. It has been active every year since 2023. People still knock on its door to claim. They also ask for the number of claims.",
+    "One website is gone since 2021. The other website is still online in 2026. It still lives on the chain today."
+   ],
+   "facts_cited": [
+    "facts.eh.name",
+    "facts.fetched_at",
+    "facts.life.token_transfers",
+    "facts.sites[0].first_capture",
+    "facts.sites[1].first_capture"
+   ],
+   "variant": "the knocking"
+  }
+ ],
+ "scary": null,
+ "buster": null,
+ "model": {
+  "id": "gemma4:12b-it-qat",
+  "think": false,
+  "num_ctx": 8192,
+  "seconds": 34.9,
+  "model_seconds": 34.9,
+  "calls": 5,
+  "prompt_tokens": 2687,
+  "output_tokens": 498
+ },
+ "verifier": {
+  "sentences": 32,
+  "grounded": 31,
+  "repaired": 1,
+  "dropped": 0,
+  "dropped_text": [],
+  "style": {
+   "rewritten": 0,
+   "dropped": 0
+  },
+  "details": [
+   {
+    "chapter": "birth",
+    "verdict": "repaired",
+    "text": "A wallet ending in 6090 brought it into the world.",
+    "problems": [
+     {
+      "kind": "number",
+      "token": "6090"
+     }
+    ],
+    "rewrite": "It was deployed by a wallet."
+   }
+  ],
+  "method": "lexical: every year, date, month, multi-digit number, ETH amount, multi-word name, identifier and quoted phrase must appear in facts/verdict/wounds or code-derived values; style: no full 0x hex, commit strings, birth block or year lists"
+ },
+ "derived": {
+  "today": "October 29, 2026",
+  "born_on": "August 7, 2015",
+  "born_year": 2015,
+  "age_years": 11.2,
+  "age_years_whole": 11,
+  "last_seen_on": "August 18, 2026",
+  "last_seen_year": 2026,
+  "silent_years": 0.2,
+  "silent_days": 71,
+  "active_days": 4028,
+  "balance_eth": 0.0,
+  "deployer_short": "0x7e7e…6090",
+  "address_short": "0x6e38…4d66",
+  "activity_label": "active every year since 2023",
+  "site_years": {
+   "http://pastebin.com/N5ANMPSy": "2021-2021",
+   "https://www.guinnessworldrecords.com/world-records/696281-first-ethereum-nft": "2023-2026"
+  },
+  "site_labels": [
+   "pastebin.com/N5ANMPSy, online since 2021, last seen online in 2021",
+   "guinnessworldrecords.com/world-records/696281-first-ethereum-nft, online since 2023 and still online in 2026"
+  ]
+ },
+ "notes": [],
+ "generated_at": "2026-10-29T05:26:52Z"
+}

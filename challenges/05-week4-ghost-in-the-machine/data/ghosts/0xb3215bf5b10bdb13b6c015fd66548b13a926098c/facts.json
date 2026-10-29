@@ -1,0 +1,109 @@
+{
+ "address": "0xb3215bf5b10bdb13b6c015fd66548b13a926098c",
+ "chain_id": 1,
+ "fetched_at": "2026-10-29T05:35:59Z",
+ "eh": {
+  "layer": "documented",
+  "era_id": "byzantium",
+  "era_name": "Byzantium",
+  "name": null,
+  "token": {
+   "token_name": null,
+   "token_symbol": null,
+   "token_decimals": null
+  },
+  "heuristics": {
+   "contract_type": "other",
+   "confidence": 0.5,
+   "is_proxy": false,
+   "has_selfdestruct": false,
+   "is_erc20_like": false
+  },
+  "decompilation_success": false,
+  "code_size_bytes": 670,
+  "short_description": null,
+  "description": null,
+  "historical_significance": null,
+  "historical_context": null,
+  "verification_status": "bytecode_only",
+  "verification_method": null,
+  "links": [],
+  "metadata": [],
+  "has_source": false,
+  "has_abi": false
+ },
+ "birth": {
+  "block": 5135023,
+  "timestamp": "2018-02-22T07:57:08.000000Z",
+  "tx": "0x0b379483ca5585dd8bdc389f7373199e0a3b48bf47397d93cd47f5df7a9cfd19",
+  "deployer": "0x17bc58b788808dab201a9a90817ff3c168bf3d61",
+  "timestamp_source": "blockscout"
+ },
+ "blockscout": {
+  "name": "UserWallet",
+  "is_contract": true,
+  "is_verified": true,
+  "ens": null,
+  "creation_tx": "0x0b379483ca5585dd8bdc389f7373199e0a3b48bf47397d93cd47f5df7a9cfd19",
+  "creator": "0x17Bc58b788808DaB201a9A90817fF3C168BF3d61",
+  "has_logs": false
+ },
+ "life": {
+  "tx_count": 0,
+  "token_transfers": 0,
+  "gas_used": 0,
+  "last_tx": null,
+  "recent_methods": [],
+  "recent_years": [],
+  "balance_wei": 0,
+  "balance_eth": 0.0,
+  "last_12m_capped": false,
+  "first_tx_timestamp": "2018-02-22T07:57:08.000000Z",
+  "calls": 0,
+  "calls_source": "blockscout-txlist",
+  "calls_capped": false,
+  "never_called": true,
+  "first_call_timestamp": null,
+  "last_12m_txs": 0
+ },
+ "chain": {
+  "code_present": true,
+  "code_bytes": 670,
+  "balance_wei": 0,
+  "balance_eth": 0.0
+ },
+ "source": {
+  "provider": "blockscout",
+  "match": "verified",
+  "name": "UserWallet",
+  "compiler_version": "v0.4.16+commit.d7661dd9",
+  "language": "solidity",
+  "files": [
+   "UserWallet.sol"
+  ],
+  "dir": "/Users/santteegt/GitRepositories/HacktoberFest2026/challenges/05-week4-ghost-in-the-machine/data/ghosts/0xb3215bf5b10bdb13b6c015fd66548b13a926098c/src"
+ },
+ "age": {
+  "hardfork": "Byzantium",
+  "eh_era": "Byzantium"
+ },
+ "sites": [],
+ "sites_excluded": [],
+ "name": "UserWallet",
+ "sources_used": [
+  "blockscout",
+  "ethereumhistory",
+  "rpc"
+ ],
+ "names": [
+  {
+   "name": "UserWallet",
+   "source": "blockscout"
+  },
+  {
+   "name": "UserWallet",
+   "source": "source:blockscout"
+  }
+ ],
+ "proxy": false
+}
