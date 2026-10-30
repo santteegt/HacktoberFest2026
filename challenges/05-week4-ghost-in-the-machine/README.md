@@ -2,7 +2,7 @@
 
 > Old Ethereum contracts whose dapps are gone but whose code still answers, each told as a short comic by an open-weight model running on my Mac, from facts that code checked first.
 
-**Gallery:** https://eth-ghosts.decentraminds.tech
+**Gallery:** https://eth-ghosts.decentraminds.tech · **Post:** staged as a draft on DEV (article 4944855) on 2026-10-30, to be published before the deadline; the draft text is [SUBMISSION.md](SUBMISSION.md)
 
 **Challenge:** [Hacktoberfest Open-Source AI Challenge: Week 4, Ghost in the Machine](https://dev.to/challenges/hacktoberfest-week4-2026-10-26) (DEV event 82) · **Window:** Oct 26 19:00 → Nov 1 06:59 UTC · **Tags:** `#hf26challenge` `#devchallenge`
 
@@ -112,7 +112,7 @@ No login is needed to see the demo: the gallery is public.
 
 ## How it was built
 
-One coordinator session (Claude Code) wrote the lane contracts in [docs/LANES.md](docs/LANES.md) (owned paths, file schemas, the taxonomy) and handed the work to worker lanes A-G and this README's lane H, Opus for the design and correctness lanes and Sonnet for the plumbing; each lane logged its measurements and failures in [docs/lanes/](docs/lanes/). Feasibility checks and decisions are in [docs/ASSESSMENT.md](docs/ASSESSMENT.md) and the running log in [docs/CHALLENGE-MEMORY.md](docs/CHALLENGE-MEMORY.md).
+One coordinator session (Claude Code) wrote the lane contracts in [docs/LANES.md](docs/LANES.md) (owned paths, file schemas, the taxonomy) and handed the work to worker lanes: A-G for the pipeline, C1-C3 for the template and gallery, H for this README, I for the post, J-L for the author's gallery feedback rounds (shared header and audio, favicon and pagination, the first-visit welcome), M-O for the post's diagram, screenshot and agent session; Opus for the design and correctness lanes and Sonnet for the plumbing. Each lane logged its measurements and failures in [docs/lanes/](docs/lanes/). The retrospective is in the knowledge base: [retrospective-week4-ghost-in-the-machine.md](../../knowledge-base/hacktoberfest-2026/raw/retrospective-week4-ghost-in-the-machine.md). Feasibility checks and decisions are in [docs/ASSESSMENT.md](docs/ASSESSMENT.md) and the running log in [docs/CHALLENGE-MEMORY.md](docs/CHALLENGE-MEMORY.md).
 
 ## Limits
 

@@ -1,7 +1,7 @@
 ---
 type: concept
 title: "Challenge playbook"
-description: "Ten practical rules for the next Hacktoberfest challenges, learned from the weekend build."
+description: "Practical rules for the next Hacktoberfest challenges, learned from the weekend build through Week 4."
 tags: [challenges, ideas]
 timestamp: "2026-10-25T00:00:00Z"
 ---
@@ -30,6 +30,8 @@ A short list of habits that would have saved time or avoided bugs in the weekend
 - Week 2 published 2 h 38 min before the deadline after a late start; the author did the last edits directly on DEV, so sync the local post from the live draft before any API update.
 - Week 3 additions: choose the idea within a day of opening; spend an hour on contracts before parallel agent lanes and keep one writer for shared config; set Hermes' local model to at least 64k context; drain a single-slot local model after browser timeouts; make skill-first a hard rule for small models; park old Hermes profiles; keep crons off the keychain; verify agent work in the agent's own environment; check cost math against the harness's estimate; run the measured demo before the freeze.
 - Week 3 published about 2 h 27 min before the deadline; the 15:00 freeze was missed and the measured run, polish and post all landed in the last 7.5 hours. Screenshots replaced a demo video.
+- Week 4 additions: hold the idea decision to the kill rule's date (Week 4 still waited two days); write the claims table with the pick, even if rows say "pending", and supersede rows with dated entries; never render or deploy while a lane writes to the shared data folder; treat a zero from an indexer as unknown; let the model pick names and words while code assembles anything that must compile or be true; turn autoplay limits into a first-click moment ([Browser autoplay first-visit gesture](browser-autoplay-first-visit-gesture.md)); push before the first DEV save and repin if images stay broken ([DEV draft image cache](dev-draft-image-cache.md)); read back after any "DEV is unavailable" before retrying; stamp every log entry with `date -u` and say UTC; test the agent's chat path, not only its scripts, before calling it live.
+- Week 4 staged the draft about 50 h before the deadline, with the freeze set for Sat 15:00 and the first measured live run done on Oct 29.
 
 ## Related Concepts
 
@@ -42,7 +44,11 @@ A short list of habits that would have saved time or avoided bugs in the weekend
 - [Messaging agent patterns](messaging-agent-patterns.md)
 - [Week 2 challenge: Side Hustle](week2-challenge-side-hustle.md)
 - [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md)
-- [Parallel agent lanes](parallel-agent-lanes.md)
+- [Parallel agent lanes](parallel-agent-lanes.md)- [Week 4 challenge: Ghost in the Machine](week4-challenge-ghost-in-the-machine.md)
+- [Fact-grounded generation](fact-grounded-generation.md)
+- [Browser autoplay first-visit gesture](browser-autoplay-first-visit-gesture.md)
+- [DEV draft image cache](dev-draft-image-cache.md)
+
 
 ## Sources
 
@@ -50,3 +56,4 @@ A short list of habits that would have saved time or avoided bugs in the weekend
 - [Retrospective: Week 1 Touch Grass (Idea Leash)](sources/retrospective-week1-touch-grass.md)
 - [Retrospective: Week 2 Side Hustle (PartsPaddock)](sources/retrospective-week2-side-hustle.md)
 - [Retrospective: Week 3 Slow and Steady (Skunkworks Sloth)](sources/retrospective-week3-slow-and-steady.md)
+- [Retrospective: Week 4 Ghost in the Machine (Eth Ghosts)](sources/retrospective-week4-ghost-in-the-machine.md)

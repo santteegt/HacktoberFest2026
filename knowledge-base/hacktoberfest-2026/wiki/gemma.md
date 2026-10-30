@@ -21,6 +21,7 @@ Gemma 4 is a family of open-weight models released from 2026-03-31, with text, i
 - First-hand (Week 2): Gemma 4 26B A4B (MoE, about 4B active) through OpenRouter ran a WhatsApp agent in Spanish and English; it produced correct listing values but drifted field names (`type` for `kind`, `price` for `price_usd`) and invented phone numbers when asked to pass identity. The free `:free` pool was rate-limited; the paid id cost about $0.0014 per 20k-token call.
 - First-hand (Week 3): Gemma 4 12B QAT on Ollama (64k context) triaged 969 links at about 4.2 s of compute per link on an M4 Max, after code capped article and thread kinds and the prompt spelled the scale out with the author's examples; it agreed with the author on 16 of 20 links the prompt was tuned on. It also skipped its Hermes skill until SOUL.md made skill-first a hard rule.
 - First-hand: `embeddinggemma:300m` placed 917 links into 49 subtopics; raw cosine piled 151 of 321 into one subtopic until vectors were centred per vertical. Gemma 4 26B A4B on OpenRouter built a tested Noir contract in 4.9 min for $0.11, but its notes overstated where the tests ran.
+- First-hand (Week 4): Gemma 4 12B QAT through Ollama with thinking off wrote a comic story per ghost in 14.1-40.5 s on an M4 Max (a full haunt 20-80 s in a batch); one schema-constrained sentence took 20.1 s with thinking on. A lexical verifier found 536 of 540 sentences grounded and repaired 4; the remaining errors are semantic (an invented feature, wrong deployer wording). Gemma picks names for fix recipes but never decides a fact. See [Fact-grounded generation](fact-grounded-generation.md). The project entered the Gemma category.
 
 ## Related Concepts
 
@@ -31,7 +32,9 @@ Gemma 4 is a family of open-weight models released from 2026-03-31, with text, i
 - [Small local model agent patterns](small-local-model-agent-patterns.md)
 - [OpenRouter](openrouter.md)
 - [Week 2 challenge: Side Hustle](week2-challenge-side-hustle.md)
-- [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md)
+- [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md)- [Week 4 challenge: Ghost in the Machine](week4-challenge-ghost-in-the-machine.md)
+- [Fact-grounded generation](fact-grounded-generation.md)
+
 
 ## Sources
 
@@ -39,3 +42,4 @@ Gemma 4 is a family of open-weight models released from 2026-03-31, with text, i
 - [Retrospective: Week 1 Touch Grass (Idea Leash)](sources/retrospective-week1-touch-grass.md)
 - [Retrospective: Week 2 Side Hustle (PartsPaddock)](sources/retrospective-week2-side-hustle.md)
 - [Retrospective: Week 3 Slow and Steady (Skunkworks Sloth)](sources/retrospective-week3-slow-and-steady.md)
+- [Retrospective: Week 4 Ghost in the Machine (Eth Ghosts)](sources/retrospective-week4-ghost-in-the-machine.md)

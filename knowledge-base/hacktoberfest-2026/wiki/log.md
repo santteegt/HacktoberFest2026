@@ -79,3 +79,11 @@
 - Hash: `sha256:08adb38c5d077d42685d9b34b28196759cb9ca8d8d97fdd6c7d1f646d82b3fdf`
 - Pages created/updated: 13
 - New concepts: Week 3 challenge: Slow and Steady, Parallel agent lanes (updated: Hermes Agent, Gemma, Ollama, Browserbase, Tiger Data, OpenRouter, Auth0 for AI Agents, Small local model agent patterns, Challenge playbook, Week 2 challenge: Side Hustle)
+
+## [2026-10-30] ingest | Retrospective: Week 4 Ghost in the Machine (Eth Ghosts)
+
+- **Ingest**: Retrospective: Week 4 Ghost in the Machine processed from `raw/retrospective-week4-ghost-in-the-machine.md`
+- Source: `raw/retrospective-week4-ghost-in-the-machine.md`
+- Hash: `sha256:f3b2c9b8c531647848f42c4e57578fb62208dc6954d386441aaacf059e95eae5`
+- Pages created/updated: 14
+- New concepts: Week 4 challenge: Ghost in the Machine, Fact-grounded generation, Browser autoplay first-visit gesture, DEV draft image cache (updated: Parallel agent lanes, Hermes Agent, Gemma, Ollama, Small local model agent patterns, Challenge playbook, Partner tools catalog, Week 3 challenge: Slow and Steady)

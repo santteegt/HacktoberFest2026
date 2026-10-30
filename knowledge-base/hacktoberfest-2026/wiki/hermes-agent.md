@@ -29,6 +29,7 @@ Hermes Agent is an open-source agent harness. A profile is a separate Hermes hom
 - First-hand: `display.platforms.discord` hides tool progress (it printed the command line, user text included); cron jobs run with a sanitized environment, so scripts set PATH themselves and cannot read a locked macOS keychain; `approvals.deny` rules block sudo, keychain and launchctl calls but are a command policy, not a sandbox.
 - First-hand: the agents shipped as profile distributions (`hermes profile install <dir>`, crons installed paused, scripts via `distribution_owned`), with path placeholders filled at install; tested on a scratch `HERMES_HOME`.
 - First-hand: `hermes chat` reports `input_tokens` including cache reads and writes; adding them again doubled a cost estimate. The terminal tool runs `$SHELL -lic`, so checks run outside Hermes need the login-shell PATH.
+- First-hand (Week 4): a `ghosts` profile ran two crons (ghost of the day, weekly incident), read an MCP server for contract history and posted a report line to Discord; the first live haunt through the profile script took 28 s. `gateway stop` refused to park a profile with no host running, so the parked marker was written by hand. The bot connected, but its first post got Discord 403 "Missing Access" until channel permissions were fixed. The Discord chat path (Gemma choosing the skill) and the MCP call from inside Hermes were untested at staging.
 
 ## Related Concepts
 
@@ -38,7 +39,8 @@ Hermes Agent is an open-source agent harness. A profile is a separate Hermes hom
 - [Week 1 challenge: Touch Grass](week1-challenge-touch-grass.md)
 - [Messaging agent patterns](messaging-agent-patterns.md)
 - [Week 2 challenge: Side Hustle](week2-challenge-side-hustle.md)
-- [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md)
+- [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md)- [Week 4 challenge: Ghost in the Machine](week4-challenge-ghost-in-the-machine.md)
+
 - [Parallel agent lanes](parallel-agent-lanes.md)
 
 ## Sources
@@ -46,3 +48,4 @@ Hermes Agent is an open-source agent harness. A profile is a separate Hermes hom
 - [Retrospective: Week 1 Touch Grass (Idea Leash)](sources/retrospective-week1-touch-grass.md)
 - [Retrospective: Week 2 Side Hustle (PartsPaddock)](sources/retrospective-week2-side-hustle.md)
 - [Retrospective: Week 3 Slow and Steady (Skunkworks Sloth)](sources/retrospective-week3-slow-and-steady.md)
+- [Retrospective: Week 4 Ghost in the Machine (Eth Ghosts)](sources/retrospective-week4-ghost-in-the-machine.md)

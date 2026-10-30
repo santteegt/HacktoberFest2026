@@ -19,6 +19,7 @@ Ollama serves open-weight models on a laptop through a native HTTP API and a CLI
 - First-hand: Mastra's model router could not set `num_ctx`, so the project called Ollama's native API directly.
 - First-hand (Week 1): the runtime keeps one model loaded and reloads it when the model name or `num_ctx` changes between callers; `/api/ps` shows what is loaded and with what context. One derived alias and one context size removed the reloads.
 - First-hand (Week 3): one slot serves every caller, so a long triage batch made Discord agent turns take minutes and an abandoned browser request blocked everything behind it. Hermes needs `num_ctx` of at least 64k; per-link compute was the same at 32k and 64k.
+- First-hand (Week 4): `think:false` on Gemma 4 12B cut a story to 14-41 s against 20 s for one sentence with thinking on (about 1,000 thinking tokens). Haunts run on the same model alias as the Hermes crons; the 12B QAT build fits an M4 Max comfortably.
 
 ## Related Concepts
 
@@ -26,10 +27,12 @@ Ollama serves open-weight models on a laptop through a native HTTP API and a CLI
 - [Mastra](mastra.md)
 - [Challenge playbook](challenge-playbook.md)
 - [Hermes Agent](hermes-agent.md)
-- [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md)
+- [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md)- [Week 4 challenge: Ghost in the Machine](week4-challenge-ghost-in-the-machine.md)
+
 
 ## Sources
 
 - [Partner tools feature catalog](sources/partner-tools-feature-catalog.md)
 - [Retrospective: Week 1 Touch Grass (Idea Leash)](sources/retrospective-week1-touch-grass.md)
 - [Retrospective: Week 3 Slow and Steady (Skunkworks Sloth)](sources/retrospective-week3-slow-and-steady.md)
+- [Retrospective: Week 4 Ghost in the Machine (Eth Ghosts)](sources/retrospective-week4-ghost-in-the-machine.md)

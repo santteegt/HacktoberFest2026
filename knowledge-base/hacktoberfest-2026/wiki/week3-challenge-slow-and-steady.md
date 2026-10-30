@@ -23,6 +23,7 @@ The third weekly Open-Source AI challenge (DEV event 81, tags `devchallenge` and
 ## Related Concepts
 
 - [Week 2 challenge: Side Hustle](week2-challenge-side-hustle.md)
+- [Week 4 challenge: Ghost in the Machine](week4-challenge-ghost-in-the-machine.md)
 - [Challenge playbook](challenge-playbook.md)
 - [Small local model agent patterns](small-local-model-agent-patterns.md)
 - [Open-source AI prompt](open-source-ai-prompt.md)

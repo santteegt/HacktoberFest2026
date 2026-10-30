@@ -22,7 +22,7 @@ The two **Required** stickers must be earned first. Signing in alone does not qu
 - [x] Submit to Week 1 (`challenges/02-week1-touch-grass`): [post](https://dev.to/santteegt/idea-leash-an-open-source-walk-buddy-with-a-local-model-for-a-brain-499n), published 2026-10-12 04:30 UTC
 - [x] Submit to Week 2 (`challenges/03-week2-side-hustle`): [post](https://dev.to/santteegt/partspaddock-a-whatsapp-parts-desk-agent-for-rc-clubs-p2p-b2c-market-connecting-hobbyists-14oa), published 2026-10-19 04:21 UTC
 - [x] Submit to Week 3 (`challenges/04-week3-slow-and-steady`): [post](https://dev.to/santteegt/skunkworks-sloth-a-set-of-agents-automating-my-bookmarks-review-keeping-me-focused-and-growing-my-1168), published by 2026-10-26 04:32 UTC
-- [ ] Submit to Week 4
+- [ ] Submit to Week 4 (`challenges/05-week4-ghost-in-the-machine`): draft staged on DEV 2026-10-30 04:40 UTC (article 4944855), not published yet; publish target Oct 31 22:00 local
 
 ## Tools (3)
 - [ ] Install and log in to DevRelay

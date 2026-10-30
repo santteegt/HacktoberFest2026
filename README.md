@@ -14,7 +14,7 @@ Each challenge lives in its own folder under [`challenges/`](challenges/README.m
 | 02 | [Week 1: Touch Grass](challenges/02-week1-touch-grass): Idea Leash | Oct 5 18:00 → Oct 12 06:59 | ✅ [Published](https://dev.to/santteegt/idea-leash-an-open-source-walk-buddy-with-a-local-model-for-a-brain-499n) 2026-10-11 23:30 local |
 | 03 | [Week 2: Side Hustle](challenges/03-week2-side-hustle): PartsPaddock | Oct 12 19:00 → Oct 19 06:59 | ✅ [Published](https://dev.to/santteegt/partspaddock-a-whatsapp-parts-desk-agent-for-rc-clubs-p2p-b2c-market-connecting-hobbyists-14oa) 2026-10-18 23:21 local |
 | 04 | [Week 3: Slow and Steady](challenges/04-week3-slow-and-steady): Skunkworks Sloth | Oct 19 19:00 → Oct 26 06:59 | ✅ [Published](https://dev.to/santteegt/skunkworks-sloth-a-set-of-agents-automating-my-bookmarks-review-keeping-me-focused-and-growing-my-1168) by 2026-10-25 23:32 local |
-| 05 | [Week 4: Ghost in the Machine](challenges/05-week4-ghost-in-the-machine): _project not chosen yet_ | Oct 26 19:00 → Nov 1 06:59 | 🟡 Scaffolded, brainstorm pending |
+| 05 | [Week 4: Ghost in the Machine](challenges/05-week4-ghost-in-the-machine): Ethereum Ghosts | Oct 26 19:00 → Nov 1 06:59 | 🟠 Built and live at [eth-ghosts.decentraminds.tech](https://eth-ghosts.decentraminds.tech); DEV draft staged (article 4944855), publish target Oct 31 22:00 local |
 | – | [Global Hack Week: Hacktoberfest](global-hack-week) (MLH, not a DEV Challenge) | Oct 9 → Oct 15 | 🟡 In progress |
 
 Dates come from live data and have shifted before. Check `challenges/README.md` for the source and discrepancies.

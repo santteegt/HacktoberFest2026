@@ -23,6 +23,7 @@ Habits for building an agent on a small open model (Gemma 4 12B through Ollama i
 - Week 3: make skill-first a hard rule in SOUL.md (load the skill, run the matching command, never answer from general knowledge) and list every request phrase in the skill description; the 12B answered from general knowledge until both changed.
 - Week 3: let code decide what it can (dead links, redirects, archived repos, duplicates decided 48 of 51 removals) and cap the model's scale in code where it overrates; hide login-wall text from the model.
 - Week 3: treat a model's report of its own success as unverified and re-run its checks in the same environment it used.
+- Week 4: the model does language, code does facts. Run a lexical verifier with one repair call and a drop, turn thinking off for latency, and build fixes from hand-written recipes where the model only picks names. Details in [Fact-grounded generation](fact-grounded-generation.md). Expect only semantic errors to remain.
 
 ## Related Concepts
 
@@ -31,10 +32,13 @@ Habits for building an agent on a small open model (Gemma 4 12B through Ollama i
 - [Ollama](ollama.md)
 - [Challenge playbook](challenge-playbook.md)
 - [Week 1 challenge: Touch Grass](week1-challenge-touch-grass.md)
-- [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md)
+- [Week 3 challenge: Slow and Steady](week3-challenge-slow-and-steady.md)- [Week 4 challenge: Ghost in the Machine](week4-challenge-ghost-in-the-machine.md)
+- [Fact-grounded generation](fact-grounded-generation.md)
+
 
 ## Sources
 
 - [Retrospective: Week 1 Touch Grass (Idea Leash)](sources/retrospective-week1-touch-grass.md)
 - [Retrospective: Week 2 Side Hustle (PartsPaddock)](sources/retrospective-week2-side-hustle.md)
 - [Retrospective: Week 3 Slow and Steady (Skunkworks Sloth)](sources/retrospective-week3-slow-and-steady.md)
+- [Retrospective: Week 4 Ghost in the Machine (Eth Ghosts)](sources/retrospective-week4-ghost-in-the-machine.md)
