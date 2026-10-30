@@ -107,11 +107,9 @@ Put together, those pieces turn a dry archive into something people visit, remem
 
 ## My Agent Session
 
-<!-- TODO(coordinator): save the coordinator session with DevRelay (curated, scrubbed of keys), make it public, and replace the line below with its agent_session embed. -->
+The coordinator session, curated to 50 messages with the tool calls kept and the secrets scrubbed: choosing the idea, the lane contracts, the Hermes profile and the first live haunt, the gallery feedback rounds, and the review of this post.
 
-The coordinator session, curated: from choosing the idea, through the lane contracts, the checkpoints, the first batch of 25 ghosts and the first live haunt.
-
-{% embed TODO-AGENT-SESSION %}
+{% agent_session 1294 %}
 
 ## The Spirit of It
 
@@ -145,4 +143,4 @@ That's the version of *Día de los Muertos* I wanted to build: people still visi
 - [ ] Posted before the deadline, Nov 1 06:59 UTC (Sun Nov 1 01:59 local); publish target Sat Oct 31 22:00 local
 - [ ] Image placeholders `docs/post-assets/<file>` replaced with raw GitHub URLs pinned to a commit (9 images)
 - [ ] Title 128 characters or fewer (DEV's limit); ghost counts re-tallied on publish day
-- [ ] Agent session embed replaces `{% embed TODO-AGENT-SESSION %}`
+- [ ] Agent session embed replaces `{% agent_session 1294 %}`
