@@ -1,6 +1,6 @@
 ---
 title: "Eth Ghosts: stories around smart contract souls that live on-chain forever"
-published: false
+published: true
 tags: devchallenge, hf26challenge
 ---
 
@@ -139,9 +139,9 @@ That's the version of *Día de los Muertos* I wanted to build: people still visi
 - [ ] Credits for borrowed code/assets
 - [ ] "The Spirit of It" has a real moment (with permission) or is removed
 - [ ] Written in English (prize eligibility)
-- [ ] Posted with the default `ai_disclosure_level`
-- [ ] Posted before the deadline, Nov 1 06:59 UTC (Sun Nov 1 01:59 local); publish target Sat Oct 31 22:00 local
-- [ ] Image placeholders `docs/post-assets/<file>` replaced with raw GitHub URLs pinned to a commit (9 images)
+- [x] Posted with the default `ai_disclosure_level` (some_ai)
+- [x] Posted before the deadline: 2026-10-30 05:05 UTC (2026-10-30 00:05 local)
+- [x] Image placeholders `docs/post-assets/<file>` replaced with raw GitHub URLs pinned to commit 6cc6094 (9 images)
 - [x] Title 128 characters or fewer (DEV's limit): 74, set by the author on DEV
 - [ ] Ghost counts re-tallied on publish day
 - [ ] Agent session embed replaces `{% agent_session 1294 %}`

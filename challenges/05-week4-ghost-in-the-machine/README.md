@@ -2,7 +2,7 @@
 
 > Old Ethereum contracts whose dapps are gone but whose code still answers, each told as a short comic by an open-weight model running on my Mac, from facts that code checked first.
 
-**Gallery:** https://eth-ghosts.decentraminds.tech · **Post:** staged as a draft on DEV (article 4944855) on 2026-10-30, to be published before the deadline; the draft text is [SUBMISSION.md](SUBMISSION.md)
+**Gallery:** https://eth-ghosts.decentraminds.tech · **Post:** [published on DEV](https://dev.to/santteegt/eth-ghosts-stories-around-smart-contract-souls-that-live-on-chain-forever-1679) 2026-10-30 00:05 local (2026-10-30 05:05 UTC); the text is [SUBMISSION.md](SUBMISSION.md)
 
 **Challenge:** [Hacktoberfest Open-Source AI Challenge: Week 4, Ghost in the Machine](https://dev.to/challenges/hacktoberfest-week4-2026-10-26) (DEV event 82) · **Window:** Oct 26 19:00 → Nov 1 06:59 UTC · **Tags:** `#hf26challenge` `#devchallenge`
 
