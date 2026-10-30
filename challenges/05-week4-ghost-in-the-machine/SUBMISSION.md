@@ -1,5 +1,5 @@
 ---
-title: "Ethereum Ghosts: old contracts whose dapps died tell their life stories, written by a local Gemma and checked by code"
+title: "Eth Ghosts: stories around smart contract souls that live on-chain forever"
 published: false
 tags: devchallenge, hf26challenge
 ---
@@ -142,5 +142,6 @@ That's the version of *Día de los Muertos* I wanted to build: people still visi
 - [ ] Posted with the default `ai_disclosure_level`
 - [ ] Posted before the deadline, Nov 1 06:59 UTC (Sun Nov 1 01:59 local); publish target Sat Oct 31 22:00 local
 - [ ] Image placeholders `docs/post-assets/<file>` replaced with raw GitHub URLs pinned to a commit (9 images)
-- [ ] Title 128 characters or fewer (DEV's limit); ghost counts re-tallied on publish day
+- [x] Title 128 characters or fewer (DEV's limit): 74, set by the author on DEV
+- [ ] Ghost counts re-tallied on publish day
 - [ ] Agent session embed replaces `{% agent_session 1294 %}`
