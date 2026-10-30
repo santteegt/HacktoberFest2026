@@ -65,7 +65,7 @@ def test_gallery_header_labels_and_about():
     about = HTML[HTML.index('<dialog class="about-dialog"'):HTML.index("</dialog>")]
     assert HTML.index('id="about-open"') < HTML.index('id="effects"')  # About sits left of the switches
     assert "Built for the Hacktoberfest 2026 &ldquo;Ghost in the Machine&rdquo; challenge." in about
-    assert "<h3>Thanks</h3>" in about and "https://www.ethereumhistory.com" in about and "MCP server" in about
+    assert "<h3>Special Thanks</h3>" in about and "https://www.ethereumhistory.com" in about and "MCP server" in about
     for credit in ("Music track: Haunted House by Aetheric", "https://freetouse.com/music",
                    '>Jusatti890</a> from <a href="https://pixabay.com/sound-effects//?', ">Ghostie Graves</a>"):
         assert credit in about

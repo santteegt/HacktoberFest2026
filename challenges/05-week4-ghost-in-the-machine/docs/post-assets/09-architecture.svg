@@ -1,0 +1,489 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1880" viewBox="0 0 1600 1880" font-family="'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif"><title>Ethereum Ghosts: how a ghost is made</title><defs><marker id="ah-f29d1f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f29d1f"/></marker><marker id="ah-ffd24a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ffd24a"/></marker><marker id="ah-b48be0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b48be0"/></marker><marker id="ah-f7ead0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f7ead0"/></marker></defs><rect width="1600" height="1880" fill="#1b0b2b"/>
+<line x1="0" y1="6" x2="1600" y2="6" stroke="#cdbbe6" stroke-width="1.5" opacity="0.6"/>
+<path d="M 4 6 L 46 6 L 46 26 L 35.5 34 L 25 26 L 14.5 34 L 4 26 Z" fill="#f29d1f" opacity="0.85"/>
+<circle cx="25" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 54 6 L 96 6 L 96 26 L 85.5 34 L 75 26 L 64.5 34 L 54 26 Z" fill="#e8457a" opacity="0.85"/>
+<circle cx="75" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 104 6 L 146 6 L 146 26 L 135.5 34 L 125 26 L 114.5 34 L 104 26 Z" fill="#2bb3a3" opacity="0.85"/>
+<circle cx="125" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 154 6 L 196 6 L 196 26 L 185.5 34 L 175 26 L 164.5 34 L 154 26 Z" fill="#b48be0" opacity="0.85"/>
+<circle cx="175" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 204 6 L 246 6 L 246 26 L 235.5 34 L 225 26 L 214.5 34 L 204 26 Z" fill="#ffd24a" opacity="0.85"/>
+<circle cx="225" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 254 6 L 296 6 L 296 26 L 285.5 34 L 275 26 L 264.5 34 L 254 26 Z" fill="#f29d1f" opacity="0.85"/>
+<circle cx="275" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 304 6 L 346 6 L 346 26 L 335.5 34 L 325 26 L 314.5 34 L 304 26 Z" fill="#e8457a" opacity="0.85"/>
+<circle cx="325" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 354 6 L 396 6 L 396 26 L 385.5 34 L 375 26 L 364.5 34 L 354 26 Z" fill="#2bb3a3" opacity="0.85"/>
+<circle cx="375" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 404 6 L 446 6 L 446 26 L 435.5 34 L 425 26 L 414.5 34 L 404 26 Z" fill="#b48be0" opacity="0.85"/>
+<circle cx="425" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 454 6 L 496 6 L 496 26 L 485.5 34 L 475 26 L 464.5 34 L 454 26 Z" fill="#ffd24a" opacity="0.85"/>
+<circle cx="475" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 504 6 L 546 6 L 546 26 L 535.5 34 L 525 26 L 514.5 34 L 504 26 Z" fill="#f29d1f" opacity="0.85"/>
+<circle cx="525" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 554 6 L 596 6 L 596 26 L 585.5 34 L 575 26 L 564.5 34 L 554 26 Z" fill="#e8457a" opacity="0.85"/>
+<circle cx="575" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 604 6 L 646 6 L 646 26 L 635.5 34 L 625 26 L 614.5 34 L 604 26 Z" fill="#2bb3a3" opacity="0.85"/>
+<circle cx="625" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 654 6 L 696 6 L 696 26 L 685.5 34 L 675 26 L 664.5 34 L 654 26 Z" fill="#b48be0" opacity="0.85"/>
+<circle cx="675" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 704 6 L 746 6 L 746 26 L 735.5 34 L 725 26 L 714.5 34 L 704 26 Z" fill="#ffd24a" opacity="0.85"/>
+<circle cx="725" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 754 6 L 796 6 L 796 26 L 785.5 34 L 775 26 L 764.5 34 L 754 26 Z" fill="#f29d1f" opacity="0.85"/>
+<circle cx="775" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 804 6 L 846 6 L 846 26 L 835.5 34 L 825 26 L 814.5 34 L 804 26 Z" fill="#e8457a" opacity="0.85"/>
+<circle cx="825" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 854 6 L 896 6 L 896 26 L 885.5 34 L 875 26 L 864.5 34 L 854 26 Z" fill="#2bb3a3" opacity="0.85"/>
+<circle cx="875" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 904 6 L 946 6 L 946 26 L 935.5 34 L 925 26 L 914.5 34 L 904 26 Z" fill="#b48be0" opacity="0.85"/>
+<circle cx="925" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 954 6 L 996 6 L 996 26 L 985.5 34 L 975 26 L 964.5 34 L 954 26 Z" fill="#ffd24a" opacity="0.85"/>
+<circle cx="975" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 1004 6 L 1046 6 L 1046 26 L 1035.5 34 L 1025 26 L 1014.5 34 L 1004 26 Z" fill="#f29d1f" opacity="0.85"/>
+<circle cx="1025" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 1054 6 L 1096 6 L 1096 26 L 1085.5 34 L 1075 26 L 1064.5 34 L 1054 26 Z" fill="#e8457a" opacity="0.85"/>
+<circle cx="1075" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 1104 6 L 1146 6 L 1146 26 L 1135.5 34 L 1125 26 L 1114.5 34 L 1104 26 Z" fill="#2bb3a3" opacity="0.85"/>
+<circle cx="1125" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 1154 6 L 1196 6 L 1196 26 L 1185.5 34 L 1175 26 L 1164.5 34 L 1154 26 Z" fill="#b48be0" opacity="0.85"/>
+<circle cx="1175" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 1204 6 L 1246 6 L 1246 26 L 1235.5 34 L 1225 26 L 1214.5 34 L 1204 26 Z" fill="#ffd24a" opacity="0.85"/>
+<circle cx="1225" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 1254 6 L 1296 6 L 1296 26 L 1285.5 34 L 1275 26 L 1264.5 34 L 1254 26 Z" fill="#f29d1f" opacity="0.85"/>
+<circle cx="1275" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 1304 6 L 1346 6 L 1346 26 L 1335.5 34 L 1325 26 L 1314.5 34 L 1304 26 Z" fill="#e8457a" opacity="0.85"/>
+<circle cx="1325" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 1354 6 L 1396 6 L 1396 26 L 1385.5 34 L 1375 26 L 1364.5 34 L 1354 26 Z" fill="#2bb3a3" opacity="0.85"/>
+<circle cx="1375" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 1404 6 L 1446 6 L 1446 26 L 1435.5 34 L 1425 26 L 1414.5 34 L 1404 26 Z" fill="#b48be0" opacity="0.85"/>
+<circle cx="1425" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 1454 6 L 1496 6 L 1496 26 L 1485.5 34 L 1475 26 L 1464.5 34 L 1454 26 Z" fill="#ffd24a" opacity="0.85"/>
+<circle cx="1475" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 1504 6 L 1546 6 L 1546 26 L 1535.5 34 L 1525 26 L 1514.5 34 L 1504 26 Z" fill="#f29d1f" opacity="0.85"/>
+<circle cx="1525" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<path d="M 1554 6 L 1596 6 L 1596 26 L 1585.5 34 L 1575 26 L 1564.5 34 L 1554 26 Z" fill="#e8457a" opacity="0.85"/>
+<circle cx="1575" cy="16" r="3.5" fill="#1b0b2b" opacity="0.8"/>
+<circle cx="1480" cy="70" r="2" fill="#ffd24a" opacity="0.7"/>
+<circle cx="1530" cy="110" r="1.5" fill="#ffd24a" opacity="0.7"/>
+<circle cx="1370" cy="60" r="1.5" fill="#ffd24a" opacity="0.7"/>
+<circle cx="90" cy="120" r="1.5" fill="#ffd24a" opacity="0.7"/>
+<circle cx="1250" cy="95" r="1.2" fill="#ffd24a" opacity="0.7"/>
+<circle cx="60" cy="70" r="1.2" fill="#ffd24a" opacity="0.7"/>
+<text x="40" y="86" font-size="42" fill="#f7ead0" font-weight="bold" text-anchor="start">Ethereum Ghosts: how a ghost is made</text>
+<text x="40" y="116" font-size="17" fill="#cdbbe6" font-weight="normal" text-anchor="start">From a trigger to a public page. Gemma writes the words; plain code finds, checks and decides every fact.</text>
+<rect x="40" y="134" width="108" height="21" rx="10.5" fill="#2bb3a3"/>
+<text x="94.0" y="148" font-size="13" fill="#0f1f1d" font-weight="bold" text-anchor="middle">OPEN SOURCE</text>
+<rect x="156" y="134" width="91" height="21" rx="10.5" fill="#b48be0"/>
+<text x="201.5" y="148" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">OPEN DATA</text>
+<rect x="255" y="134" width="117" height="21" rx="10.5" fill="#ffd24a"/>
+<text x="313.5" y="148" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">OPEN WEIGHTS</text>
+<rect x="380" y="134" width="134" height="21" rx="10.5" fill="#e8457a"/>
+<text x="447.0" y="148" font-size="13" fill="#ffffff" font-weight="bold" text-anchor="middle">CLOSED SERVICE</text>
+<text x="528" y="149" font-size="14" fill="#f7ead0" font-weight="bold" text-anchor="start">Only Vercel and Discord are closed.</text>
+<rect x="900" y="134" width="57" height="21" rx="10.5" fill="#f29d1f"/>
+<text x="928.5" y="148" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">GEMMA</text>
+<text x="963" y="149" font-size="14" fill="#cdbbe6" font-weight="normal" text-anchor="start">a call to the local model</text>
+<rect x="1149" y="134" width="48" height="21" rx="10.5" fill="none" stroke="#f7ead0" stroke-width="1.5"/>
+<text x="1173.0" y="148" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">CODE</text>
+<text x="1203" y="149" font-size="14" fill="#cdbbe6" font-weight="normal" text-anchor="start">plain Python</text>
+<rect x="1299" y="134" width="48" height="21" rx="10.5" fill="#b48be0"/>
+<text x="1323.0" y="148" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">TOOL</text>
+<text x="1353" y="149" font-size="14" fill="#cdbbe6" font-weight="normal" text-anchor="start">a local binary</text>
+<rect x="40" y="180" width="380" height="360" rx="20" fill="#28143f" stroke="#5a3a8c" stroke-width="2"/>
+<circle cx="70" cy="210" r="15" fill="#f29d1f"/>
+<text x="70" y="217" font-size="18" fill="#1b0b2b" font-weight="bold" text-anchor="middle">1</text>
+<text x="94" y="217" font-size="21" fill="#f29d1f" font-weight="bold" text-anchor="start">Author and triggers</text>
+<rect x="60" y="232" width="340" height="70" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="72" y="256" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Author in Discord</text>
+<rect x="256" y="241" width="134" height="21" rx="10.5" fill="#e8457a"/>
+<text x="323.0" y="255" font-size="13" fill="#ffffff" font-weight="bold" text-anchor="middle">CLOSED SERVICE</text>
+<text x="72" y="276" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">chats with the agent: “haunt”,</text>
+<text x="72" y="293" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">“bad ghost”, “status”, “haunt 0x…”</text>
+<rect x="60" y="312" width="340" height="64" rx="12" fill="#3a1d58" stroke="#f29d1f" stroke-width="2"/>
+<text x="72" y="336" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Hermes cron: ghost-of-the-day</text>
+<text x="72" y="356" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">daily 09:00 · archive pick · --deploy</text>
+<rect x="60" y="386" width="340" height="64" rx="12" fill="#3a1d58" stroke="#f29d1f" stroke-width="2"/>
+<text x="72" y="410" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Hermes cron: weekly-incident</text>
+<text x="72" y="430" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">Mondays 10:00 · incident pick · --deploy</text>
+<rect x="60" y="460" width="340" height="64" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="72" y="484" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Author in a terminal</text>
+<text x="72" y="504" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">uv run ghosts haunt [0x…] [--source …]</text>
+<rect x="470" y="180" width="1090" height="360" rx="20" fill="#28143f" stroke="#5a3a8c" stroke-width="2"/>
+<circle cx="500" cy="210" r="15" fill="#f29d1f"/>
+<text x="500" y="217" font-size="18" fill="#1b0b2b" font-weight="bold" text-anchor="middle">2</text>
+<text x="524" y="217" font-size="21" fill="#f29d1f" font-weight="bold" text-anchor="start">Hermes Agent, profile “ghosts”</text>
+<rect x="1432" y="194" width="108" height="21" rx="10.5" fill="#2bb3a3"/>
+<text x="1486.0" y="208" font-size="13" fill="#0f1f1d" font-weight="bold" text-anchor="middle">OPEN SOURCE</text>
+<text x="872" y="217" font-size="14" fill="#cdbbe6" font-weight="normal" text-anchor="start" font-style="italic">open-source agent harness · persona SOUL.md · terminal tool only</text>
+<rect x="495" y="232" width="335" height="130" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="507" y="256" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">ghost-stories skill</text>
+<rect x="712" y="241" width="108" height="21" rx="10.5" fill="#2bb3a3"/>
+<text x="766.0" y="255" font-size="13" fill="#0f1f1d" font-weight="bold" text-anchor="middle">OPEN SOURCE</text>
+<text x="507" y="276" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">every message → one haunt.sh command;</text>
+<text x="507" y="293" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">answers only from the files it names;</text>
+<text x="507" y="310" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">never decides a kind, a date or a wound</text>
+<rect x="850" y="232" width="335" height="130" rx="12" fill="#3a1d58" stroke="#f29d1f" stroke-width="2"/>
+<text x="862" y="256" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Gemma 4 12B QAT</text>
+<rect x="1058" y="241" width="117" height="21" rx="10.5" fill="#ffd24a"/>
+<text x="1116.5" y="255" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">OPEN WEIGHTS</text>
+<text x="862" y="276" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">the agent&#x27;s model, via Ollama: alias</text>
+<text x="862" y="293" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">ghosts-gemma4-12b, 64k context, OpenAI-</text>
+<text x="862" y="310" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">compatible localhost:11434/v1;</text>
+<text x="862" y="327" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">reads the chat, picks a skill row</text>
+<rect x="1205" y="232" width="335" height="130" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="1217" y="256" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Ethereum History MCP</text>
+<rect x="1439" y="241" width="91" height="21" rx="10.5" fill="#b48be0"/>
+<text x="1484.5" y="255" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">OPEN DATA</text>
+<text x="1217" y="276" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">ethereumhistory.com/mcp · 5 read-only</text>
+<text x="1217" y="293" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">browsing tools (contract of the day, search…)</text>
+<text x="1217" y="310" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">quoted when asked; never replaces a haunt</text>
+<rect x="495" y="380" width="335" height="140" rx="12" fill="#3a1d58" stroke="#f29d1f" stroke-width="2"/>
+<text x="507" y="404" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">haunt.sh</text>
+<rect x="712" y="389" width="108" height="21" rx="10.5" fill="#2bb3a3"/>
+<text x="766.0" y="403" font-size="13" fill="#0f1f1d" font-weight="bold" text-anchor="middle">OPEN SOURCE</text>
+<text x="507" y="424" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">checks arguments, one haunt at a time,</text>
+<text x="507" y="441" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">runs uv run ghosts haunt --json,</text>
+<text x="507" y="458" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">builds the report line in code (no model)</text>
+<rect x="850" y="380" width="335" height="140" rx="12" fill="#3a1d58" stroke="#e8457a" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="862" y="404" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Discord report delivery</text>
+<rect x="1041" y="389" width="134" height="21" rx="10.5" fill="#e8457a"/>
+<text x="1108.0" y="403" font-size="13" fill="#ffffff" font-weight="bold" text-anchor="middle">CLOSED SERVICE</text>
+<text x="862" y="424" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">hermes send --to discord: one line to the</text>
+<text x="862" y="441" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">home channel; without Discord the line</text>
+<text x="862" y="458" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">stays in the cron output</text>
+<rect x="1205" y="380" width="335" height="140" rx="12" fill="#3a1d58" stroke="#e8457a" stroke-width="2"/>
+<text x="1217" y="404" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">deny rules (approvals.deny)</text>
+<text x="1217" y="424" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">blocks sudo, rm -rf, git push, vercel,</text>
+<text x="1217" y="441" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">launchctl, hermes cron… by command text:</text>
+<text x="1217" y="458" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">a command policy, not a sandbox;</text>
+<text x="1217" y="475" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">the agent runs as my macOS user</text>
+<path d="M 400 266 L 493 266" fill="none" stroke="#f7ead0" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="424.88" y="242.5" width="42.24" height="22.5" rx="6" fill="#1b0b2b" opacity="0.92"/>
+<text x="446" y="258" font-size="13.5" fill="#f7ead0" font-weight="bold" text-anchor="middle">chat</text>
+<path d="M 400 344 L 446 344 L 446 420 L 493 420" fill="none" stroke="#f29d1f" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#ah-f29d1f)"/>
+<path d="M 400 418 L 430 418 L 430 446 L 493 446" fill="none" stroke="#f29d1f" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#ah-f29d1f)"/>
+<rect x="424.88" y="460.5" width="42.24" height="22.5" rx="6" fill="#1b0b2b" opacity="0.92"/>
+<text x="446" y="476" font-size="13.5" fill="#f29d1f" font-weight="bold" text-anchor="middle">runs</text>
+<text x="446" y="494" font-size="13" fill="#f29d1f" font-weight="bold" text-anchor="middle">no model</text>
+<text x="446" y="510" font-size="13" fill="#f29d1f" font-weight="bold" text-anchor="middle">turn</text>
+<path d="M 662 362 L 662 378" fill="none" stroke="#f7ead0" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<text x="672" y="375" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="start">runs</text>
+<path d="M 830 470 L 848 470" fill="none" stroke="#f7ead0" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<path d="M 620 520 L 620 578" fill="none" stroke="#f29d1f" stroke-width="3" stroke-linejoin="round" marker-end="url(#ah-f29d1f)"/>
+<rect x="515.72" y="546.5" width="208.56000000000003" height="22.5" rx="6" fill="#1b0b2b" opacity="0.92"/>
+<text x="620" y="562" font-size="13.5" fill="#ffd24a" font-weight="bold" text-anchor="middle">uv run ghosts haunt --json</text>
+<path d="M 760 578 L 760 522" fill="none" stroke="#f7ead0" stroke-width="2.5" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#ah-f7ead0)"/>
+<rect x="762.18" y="540.5" width="155.64000000000001" height="22.5" rx="6" fill="#1b0b2b" opacity="0.92"/>
+<text x="840" y="556" font-size="13.5" fill="#f7ead0" font-weight="bold" text-anchor="middle">haunt record (JSON)</text>
+<path d="M 230 540 L 230 578" fill="none" stroke="#f7ead0" stroke-width="3" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="266.64" y="550.5" width="102.72000000000001" height="22.5" rx="6" fill="#1b0b2b" opacity="0.92"/>
+<text x="318" y="566" font-size="13.5" fill="#f7ead0" font-weight="bold" text-anchor="middle">ghosts haunt</text>
+<rect x="40" y="580" width="1520" height="560" rx="20" fill="#28143f" stroke="#5a3a8c" stroke-width="2"/>
+<circle cx="70" cy="610" r="15" fill="#f29d1f"/>
+<text x="70" y="617" font-size="18" fill="#1b0b2b" font-weight="bold" text-anchor="middle">3</text>
+<text x="94" y="617" font-size="21" fill="#f29d1f" font-weight="bold" text-anchor="start">The ghosts pipeline: Python CLI “ghosts haunt”, one ordered chain per ghost</text>
+<rect x="1432" y="594" width="108" height="21" rx="10.5" fill="#2bb3a3"/>
+<text x="1486.0" y="608" font-size="13" fill="#0f1f1d" font-weight="bold" text-anchor="middle">OPEN SOURCE</text>
+<text x="94" y="640" font-size="14" fill="#cdbbe6" font-weight="normal" text-anchor="start" font-style="italic">resumable: a step whose output file exists is skipped · face and og never stop the chain · an alive pick is skipped and the picker tries again (3 tries)</text>
+<rect x="60" y="662" width="128" height="140" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<rect x="70" y="671" width="48" height="21" rx="10.5" fill="none" stroke="#f7ead0" stroke-width="1.5"/>
+<text x="94.0" y="685" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">CODE</text>
+<text x="72" y="712" font-size="17" fill="#f7ead0" font-weight="bold" text-anchor="start">pick</text>
+<text x="72" y="732" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">archive · incident</text>
+<text x="72" y="748" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">· random block;</text>
+<text x="72" y="764" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">names an address</text>
+<text x="72" y="780" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">and says why</text>
+<rect x="210" y="662" width="128" height="140" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<rect x="220" y="671" width="48" height="21" rx="10.5" fill="none" stroke="#f7ead0" stroke-width="1.5"/>
+<text x="244.0" y="685" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">CODE</text>
+<text x="222" y="712" font-size="17" fill="#f7ead0" font-weight="bold" text-anchor="start">summon</text>
+<text x="222" y="732" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">the facts, by code:</text>
+<text x="222" y="748" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">birth, source,</text>
+<text x="222" y="764" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">calls, balance</text>
+<text x="222" y="780" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">→ facts.json</text>
+<path d="M 188 732 L 208 732" fill="none" stroke="#f7ead0" stroke-width="2.2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="360" y="662" width="128" height="140" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<rect x="370" y="671" width="48" height="21" rx="10.5" fill="none" stroke="#f7ead0" stroke-width="1.5"/>
+<text x="394.0" y="685" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">CODE</text>
+<text x="372" y="712" font-size="17" fill="#f7ead0" font-weight="bold" text-anchor="start">wounds</text>
+<text x="372" y="732" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">Slither, cited</text>
+<text x="372" y="748" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">catalog, or regex</text>
+<text x="372" y="764" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">(suspected only)</text>
+<text x="372" y="780" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">→ wounds.json</text>
+<path d="M 338 732 L 358 732" fill="none" stroke="#f7ead0" stroke-width="2.2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="510" y="662" width="128" height="140" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<rect x="520" y="671" width="48" height="21" rx="10.5" fill="none" stroke="#f7ead0" stroke-width="1.5"/>
+<text x="544.0" y="685" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">CODE</text>
+<text x="522" y="712" font-size="17" fill="#f7ead0" font-weight="bold" text-anchor="start">classify</text>
+<text x="522" y="732" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">friendly, lingering,</text>
+<text x="522" y="748" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">bad, banished,</text>
+<text x="522" y="764" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">alive: in code</text>
+<text x="522" y="780" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">→ verdict.json</text>
+<path d="M 488 732 L 508 732" fill="none" stroke="#f7ead0" stroke-width="2.2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="660" y="662" width="128" height="140" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<rect x="670" y="671" width="48" height="21" rx="10.5" fill="none" stroke="#f7ead0" stroke-width="1.5"/>
+<text x="694.0" y="685" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">CODE</text>
+<text x="672" y="712" font-size="17" fill="#f7ead0" font-weight="bold" text-anchor="start">face</text>
+<text x="672" y="732" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">Wayback captures</text>
+<text x="672" y="748" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">of the dapp&#x27;s site</text>
+<text x="672" y="764" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">→ screenshots</text>
+<text x="672" y="780" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">(Playwright)</text>
+<path d="M 638 732 L 658 732" fill="none" stroke="#f7ead0" stroke-width="2.2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="810" y="662" width="128" height="140" rx="12" fill="#4a2440" stroke="#f29d1f" stroke-width="2"/>
+<rect x="820" y="671" width="57" height="21" rx="10.5" fill="#f29d1f"/>
+<text x="848.5" y="685" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">GEMMA</text>
+<text x="822" y="712" font-size="17" fill="#f7ead0" font-weight="bold" text-anchor="start">story</text>
+<text x="822" y="732" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">one call per</text>
+<text x="822" y="748" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">chapter, then</text>
+<text x="822" y="764" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">verify · repair</text>
+<text x="822" y="780" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">· fix → story.json</text>
+<path d="M 788 732 L 808 732" fill="none" stroke="#f7ead0" stroke-width="2.2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="960" y="662" width="128" height="140" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<rect x="970" y="671" width="48" height="21" rx="10.5" fill="none" stroke="#f7ead0" stroke-width="1.5"/>
+<text x="994.0" y="685" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">CODE</text>
+<text x="972" y="712" font-size="17" fill="#f7ead0" font-weight="bold" text-anchor="start">render</text>
+<text x="972" y="732" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">one self-</text>
+<text x="972" y="748" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">contained HTML</text>
+<text x="972" y="764" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">page per ghost</text>
+<text x="972" y="780" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">(no CDN)</text>
+<path d="M 938 732 L 958 732" fill="none" stroke="#f7ead0" stroke-width="2.2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="1110" y="662" width="128" height="140" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<rect x="1120" y="671" width="48" height="21" rx="10.5" fill="none" stroke="#f7ead0" stroke-width="1.5"/>
+<text x="1144.0" y="685" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">CODE</text>
+<text x="1122" y="712" font-size="17" fill="#f7ead0" font-weight="bold" text-anchor="start">og</text>
+<text x="1122" y="732" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">1200×630</text>
+<text x="1122" y="748" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">preview card</text>
+<text x="1122" y="764" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">(Playwright)</text>
+<text x="1122" y="780" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">→ og.png</text>
+<path d="M 1088 732 L 1108 732" fill="none" stroke="#f7ead0" stroke-width="2.2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="1260" y="662" width="128" height="140" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<rect x="1270" y="671" width="48" height="21" rx="10.5" fill="none" stroke="#f7ead0" stroke-width="1.5"/>
+<text x="1294.0" y="685" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">CODE</text>
+<text x="1272" y="712" font-size="17" fill="#f7ead0" font-weight="bold" text-anchor="start">gallery</text>
+<text x="1272" y="732" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">gallery build:</text>
+<text x="1272" y="748" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">index.json,</text>
+<text x="1272" y="764" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">sitemap.txt</text>
+<path d="M 1238 732 L 1258 732" fill="none" stroke="#f7ead0" stroke-width="2.2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="1410" y="662" width="128" height="140" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<rect x="1420" y="671" width="48" height="21" rx="10.5" fill="none" stroke="#f7ead0" stroke-width="1.5"/>
+<text x="1444.0" y="685" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">CODE</text>
+<text x="1422" y="712" font-size="17" fill="#f7ead0" font-weight="bold" text-anchor="start">deploy</text>
+<text x="1422" y="732" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">scripts/</text>
+<text x="1422" y="748" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">deploy.sh →</text>
+<text x="1422" y="764" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">vercel deploy</text>
+<text x="1422" y="780" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">(only --deploy)</text>
+<path d="M 1388 732 L 1408 732" fill="none" stroke="#f7ead0" stroke-width="2.2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<path d="M 874 802 L 874 830" stroke="#f29d1f" stroke-width="3" stroke-dasharray="4 4"/>
+<rect x="810" y="830" width="740" height="296" rx="16" fill="#331a3a" stroke="#f29d1f" stroke-width="2"/>
+<text x="826" y="856" font-size="17" fill="#f29d1f" font-weight="bold" text-anchor="start">Inside story: the only step that calls the model</text>
+<text x="826" y="877" font-size="14" fill="#cdbbe6" font-weight="normal" text-anchor="start" font-style="italic">every Gemma call sees only its own facts; every sentence it writes is checked by code</text>
+<rect x="824" y="892" width="165" height="104" rx="10" fill="#4a2440" stroke="#f29d1f" stroke-width="2"/>
+<rect x="832" y="900" width="83" height="21" rx="10.5" fill="#f29d1f"/>
+<text x="873.5" y="914" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">GEMMA ×N</text>
+<text x="923" y="916" font-size="14.5" fill="#f7ead0" font-weight="bold" text-anchor="start">chapters</text>
+<text x="833" y="940" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">one call per chapter:</text>
+<text x="833" y="956" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">birth, life, silence or</text>
+<text x="833" y="972" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">knocking; haunting and</text>
+<text x="833" y="988" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">buster for bad ghosts</text>
+<rect x="1004" y="892" width="165" height="104" rx="10" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<rect x="1012" y="900" width="48" height="21" rx="10.5" fill="none" stroke="#f7ead0" stroke-width="1.5"/>
+<text x="1036.0" y="914" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">CODE</text>
+<text x="1068" y="916" font-size="14.5" fill="#f7ead0" font-weight="bold" text-anchor="start">verify</text>
+<text x="1013" y="940" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">every year, date, number,</text>
+<text x="1013" y="956" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">ETH amount, name, quote</text>
+<text x="1013" y="972" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">must exist in facts,</text>
+<text x="1013" y="988" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">verdict or wounds</text>
+<path d="M 989 944 L 1002 944" fill="none" stroke="#f7ead0" stroke-width="2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="1184" y="892" width="165" height="104" rx="10" fill="#4a2440" stroke="#f29d1f" stroke-width="2"/>
+<rect x="1192" y="900" width="57" height="21" rx="10.5" fill="#f29d1f"/>
+<text x="1220.5" y="914" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">GEMMA</text>
+<text x="1257" y="916" font-size="14.5" fill="#f7ead0" font-weight="bold" text-anchor="start">repair</text>
+<text x="1193" y="940" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">one rewrite per failing</text>
+<text x="1193" y="956" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">sentence; if the rewrite</text>
+<text x="1193" y="972" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">fails too, the sentence</text>
+<text x="1193" y="988" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">is dropped</text>
+<path d="M 1169 944 L 1182 944" fill="none" stroke="#f7ead0" stroke-width="2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="1364" y="892" width="165" height="104" rx="10" fill="#4a2440" stroke="#f29d1f" stroke-width="2"/>
+<rect x="1372" y="900" width="57" height="21" rx="10.5" fill="#f29d1f"/>
+<text x="1400.5" y="914" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">GEMMA</text>
+<text x="1437" y="916" font-size="14.5" fill="#f7ead0" font-weight="bold" text-anchor="start">title</text>
+<text x="1373" y="940" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">title and tagline in</text>
+<text x="1373" y="956" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">one call, then verified</text>
+<text x="1373" y="972" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">like the chapters</text>
+<path d="M 1349 944 L 1362 944" fill="none" stroke="#f7ead0" stroke-width="2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="824" y="1008" width="165" height="104" rx="10" fill="#4a2440" stroke="#f29d1f" stroke-width="2"/>
+<rect x="832" y="1016" width="57" height="21" rx="10.5" fill="#f29d1f"/>
+<text x="860.5" y="1030" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">GEMMA</text>
+<text x="897" y="1032" font-size="14.5" fill="#f7ead0" font-weight="bold" text-anchor="start">fix: names</text>
+<text x="833" y="1056" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">maps a fix recipe&#x27;s names</text>
+<text x="833" y="1072" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">to names in the old</text>
+<text x="833" y="1088" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">contract (14 recipes)</text>
+<rect x="1004" y="1008" width="165" height="104" rx="10" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<rect x="1012" y="1016" width="48" height="21" rx="10.5" fill="none" stroke="#f7ead0" stroke-width="1.5"/>
+<text x="1036.0" y="1030" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">CODE</text>
+<text x="1068" y="1032" font-size="14.5" fill="#f7ead0" font-weight="bold" text-anchor="start">rename</text>
+<text x="1013" y="1056" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">applies the renames,</text>
+<text x="1013" y="1072" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">checks the cure is</text>
+<text x="1013" y="1088" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">still in the snippet</text>
+<path d="M 989 1060 L 1002 1060" fill="none" stroke="#f7ead0" stroke-width="2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="1184" y="1008" width="165" height="104" rx="10" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<rect x="1192" y="1016" width="48" height="21" rx="10.5" fill="#b48be0"/>
+<text x="1216.0" y="1030" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">TOOL</text>
+<text x="1248" y="1032" font-size="14.5" fill="#f7ead0" font-weight="bold" text-anchor="start">compile gate</text>
+<text x="1193" y="1056" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">solc 0.8.38 must</text>
+<text x="1193" y="1072" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">compile the fix before</text>
+<text x="1193" y="1088" font-size="13" fill="#eadff5" font-weight="normal" text-anchor="start">it is shown</text>
+<path d="M 1169 1060 L 1182 1060" fill="none" stroke="#f7ead0" stroke-width="2" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<text x="1370" y="1038" font-size="13" fill="#cdbbe6" font-weight="normal" text-anchor="start" font-style="italic">fix only when</text>
+<text x="1370" y="1055" font-size="13" fill="#cdbbe6" font-weight="normal" text-anchor="start" font-style="italic">a recipe fits the</text>
+<text x="1370" y="1072" font-size="13" fill="#cdbbe6" font-weight="normal" text-anchor="start" font-style="italic">worst wound; else</text>
+<text x="1370" y="1089" font-size="13" fill="#cdbbe6" font-weight="normal" text-anchor="start" font-style="italic">advice, no code</text>
+<rect x="480" y="900" width="300" height="152" rx="12" fill="#3a1d58" stroke="#f29d1f" stroke-width="2"/>
+<text x="492" y="924" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Gemma 4 12B QAT</text>
+<rect x="653" y="909" width="117" height="21" rx="10.5" fill="#ffd24a"/>
+<text x="711.5" y="923" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">OPEN WEIGHTS</text>
+<text x="492" y="944" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">gemma4:12b-it-qat in Ollama on my Mac,</text>
+<text x="492" y="960" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">native /api/chat on 127.0.0.1:11434,</text>
+<text x="492" y="976" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">8k context, thinking off</text>
+<text x="492" y="992" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">(same weights Hermes uses at 64k)</text>
+<text x="492" y="1008" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">words only: code holds the facts</text>
+<path d="M 780 976 L 822 976" fill="none" stroke="#f29d1f" stroke-width="3" stroke-linejoin="round" marker-end="url(#ah-f29d1f)"/>
+<rect x="40" y="1180" width="1030" height="330" rx="20" fill="#28143f" stroke="#5a3a8c" stroke-width="2"/>
+<circle cx="70" cy="1210" r="15" fill="#f29d1f"/>
+<text x="70" y="1217" font-size="18" fill="#1b0b2b" font-weight="bold" text-anchor="middle">4</text>
+<text x="94" y="1217" font-size="21" fill="#f29d1f" font-weight="bold" text-anchor="start">Sources: all keyless, all public</text>
+<rect x="60" y="1232" width="236" height="120" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="72" y="1256" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Ethereum History REST API</text>
+<text x="72" y="1276" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">2015-2017 archive: birth,</text>
+<text x="72" y="1293" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">decompiled code, historian&#x27;s story</text>
+<text x="72" y="1310" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">pick (archive), summon</text>
+<rect x="195" y="1326" width="91" height="21" rx="10.5" fill="#b48be0"/>
+<text x="240.5" y="1340" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">OPEN DATA</text>
+<rect x="310" y="1232" width="236" height="120" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="322" y="1256" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Sourcify</text>
+<rect x="445" y="1241" width="91" height="21" rx="10.5" fill="#b48be0"/>
+<text x="490.5" y="1255" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">OPEN DATA</text>
+<text x="322" y="1276" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">verified source</text>
+<text x="322" y="1293" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">(standard JSON input)</text>
+<text x="322" y="1310" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">used by summon</text>
+<rect x="560" y="1232" width="236" height="120" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="572" y="1256" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Blockscout</text>
+<rect x="695" y="1241" width="91" height="21" rx="10.5" fill="#b48be0"/>
+<text x="740.5" y="1255" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">OPEN DATA</text>
+<text x="572" y="1276" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">calls, last call, balance,</text>
+<text x="572" y="1293" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">12-month activity, victim check</text>
+<text x="572" y="1310" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">used by pick, summon</text>
+<rect x="810" y="1232" width="236" height="120" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="822" y="1256" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Public JSON-RPC</text>
+<text x="822" y="1276" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">dRPC: random and old blocks</text>
+<text x="822" y="1293" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">PublicNode: is the code still</text>
+<text x="822" y="1310" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">there? balance · pick, summon</text>
+<rect x="945" y="1326" width="91" height="21" rx="10.5" fill="#b48be0"/>
+<text x="990.5" y="1340" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">OPEN DATA</text>
+<rect x="60" y="1366" width="320" height="124" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="72" y="1390" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Wayback CDX + Playwright</text>
+<text x="72" y="1410" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">Internet Archive captures of the dapp&#x27;s</text>
+<text x="72" y="1427" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">site, rendered to screenshots</text>
+<text x="72" y="1444" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">used by summon, face</text>
+<rect x="279" y="1464" width="91" height="21" rx="10.5" fill="#b48be0"/>
+<text x="324.5" y="1478" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">OPEN DATA</text>
+<rect x="393" y="1366" width="320" height="124" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="405" y="1390" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">DeFiHackLabs</text>
+<rect x="612" y="1375" width="91" height="21" rx="10.5" fill="#b48be0"/>
+<text x="657.5" y="1389" font-size="13" fill="#1d1029" font-weight="bold" text-anchor="middle">OPEN DATA</text>
+<text x="405" y="1410" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">2021-2023 incidents and PoCs,</text>
+<text x="405" y="1427" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">victims checked on Blockscout</text>
+<text x="405" y="1444" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">used by pick (incident), wounds hint</text>
+<rect x="726" y="1366" width="320" height="124" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="738" y="1390" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Hand-written incident catalog</text>
+<text x="738" y="1410" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">10 cited incidents, 2016-2020</text>
+<text x="738" y="1427" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">(TheDAO, Rubixi, King of the Ether…)</text>
+<text x="738" y="1444" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">used by wounds</text>
+<rect x="928" y="1464" width="108" height="21" rx="10.5" fill="#2bb3a3"/>
+<text x="982.0" y="1478" font-size="13" fill="#0f1f1d" font-weight="bold" text-anchor="middle">OPEN SOURCE</text>
+<path d="M 124 1180 L 124 804" fill="none" stroke="#b48be0" stroke-width="3" stroke-linejoin="round" marker-end="url(#ah-b48be0)"/>
+<rect x="80.19999999999999" y="1094.5" width="87.60000000000001" height="22.5" rx="6" fill="#1b0b2b" opacity="0.92"/>
+<text x="124" y="1110" font-size="13.5" fill="#b48be0" font-weight="bold" text-anchor="middle">candidates</text>
+<path d="M 274 1180 L 274 804" fill="none" stroke="#b48be0" stroke-width="3" stroke-linejoin="round" marker-end="url(#ah-b48be0)"/>
+<rect x="215.07999999999998" y="1054.5" width="117.84" height="22.5" rx="6" fill="#1b0b2b" opacity="0.92"/>
+<text x="274" y="1070" font-size="13.5" fill="#b48be0" font-weight="bold" text-anchor="middle">facts, source,</text>
+<rect x="237.76" y="1074.5" width="72.48" height="22.5" rx="6" fill="#1b0b2b" opacity="0.92"/>
+<text x="274" y="1090" font-size="13.5" fill="#b48be0" font-weight="bold" text-anchor="middle">captures</text>
+<path d="M 424 1180 L 424 804" fill="none" stroke="#b48be0" stroke-width="3" stroke-linejoin="round" marker-end="url(#ah-b48be0)"/>
+<rect x="361.3" y="1134.5" width="125.4" height="22.5" rx="6" fill="#1b0b2b" opacity="0.92"/>
+<text x="424" y="1150" font-size="13.5" fill="#b48be0" font-weight="bold" text-anchor="middle">cited incidents</text>
+<rect x="1100" y="1180" width="460" height="330" rx="20" fill="#28143f" stroke="#5a3a8c" stroke-width="2"/>
+<circle cx="1130" cy="1210" r="15" fill="#f29d1f"/>
+<text x="1130" y="1217" font-size="18" fill="#1b0b2b" font-weight="bold" text-anchor="middle">5</text>
+<text x="1154" y="1217" font-size="21" fill="#f29d1f" font-weight="bold" text-anchor="start">Tools, run locally</text>
+<rect x="1120" y="1228" width="420" height="82" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="1132" y="1252" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Slither 0.11.6</text>
+<rect x="1422" y="1237" width="108" height="21" rx="10.5" fill="#2bb3a3"/>
+<text x="1476.0" y="1251" font-size="13" fill="#0f1f1d" font-weight="bold" text-anchor="middle">OPEN SOURCE</text>
+<text x="1132" y="1272" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">wounds on verified source, solc ≥ 0.4;</text>
+<text x="1132" y="1289" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">old compilers via solc-select · wounds</text>
+<rect x="1120" y="1320" width="420" height="82" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="1132" y="1344" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">solc 0.8.38</text>
+<rect x="1422" y="1329" width="108" height="21" rx="10.5" fill="#2bb3a3"/>
+<text x="1476.0" y="1343" font-size="13" fill="#0f1f1d" font-weight="bold" text-anchor="middle">OPEN SOURCE</text>
+<text x="1132" y="1364" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">compiles every fix before it is shown</text>
+<text x="1132" y="1381" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">· the compile gate in story</text>
+<rect x="1120" y="1412" width="420" height="82" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="1132" y="1436" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Playwright Chromium</text>
+<rect x="1422" y="1421" width="108" height="21" rx="10.5" fill="#2bb3a3"/>
+<text x="1476.0" y="1435" font-size="13" fill="#0f1f1d" font-weight="bold" text-anchor="middle">OPEN SOURCE</text>
+<text x="1132" y="1456" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">renders Wayback captures and the</text>
+<text x="1132" y="1473" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">1200×630 preview cards · face, og</text>
+<path d="M 1257 1180 L 1257 1128" fill="none" stroke="#b48be0" stroke-width="3" stroke-linejoin="round" marker-end="url(#ah-b48be0)"/>
+<rect x="1278.88" y="1144.5" width="42.24" height="22.5" rx="6" fill="#1b0b2b" opacity="0.92"/>
+<text x="1300" y="1160" font-size="13.5" fill="#b48be0" font-weight="bold" text-anchor="middle">solc</text>
+<rect x="40" y="1550" width="1520" height="290" rx="20" fill="#28143f" stroke="#5a3a8c" stroke-width="2"/>
+<circle cx="70" cy="1580" r="15" fill="#f29d1f"/>
+<text x="70" y="1587" font-size="18" fill="#1b0b2b" font-weight="bold" text-anchor="middle">6</text>
+<text x="94" y="1587" font-size="21" fill="#f29d1f" font-weight="bold" text-anchor="start">Outputs</text>
+<path d="M 1085 1142 L 1085 1548" fill="none" stroke="#f29d1f" stroke-width="3" stroke-linejoin="round" marker-end="url(#ah-f29d1f)"/>
+<rect x="980.72" y="1520.5" width="208.56000000000003" height="22.5" rx="6" fill="#1b0b2b" opacity="0.92"/>
+<text x="1085" y="1536" font-size="13.5" fill="#ffd24a" font-weight="bold" text-anchor="middle">JSON, pages, cards, deploy</text>
+<rect x="60" y="1606" width="256" height="136" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="72" y="1630" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">data/ghosts/&lt;address&gt;/</text>
+<text x="72" y="1650" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">facts.json · wounds.json</text>
+<text x="72" y="1668" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">verdict.json · story.json</text>
+<text x="72" y="1686" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">(+ haunt.json, shots/)</text>
+<rect x="198" y="1714" width="108" height="21" rx="10.5" fill="#2bb3a3"/>
+<text x="252.0" y="1728" font-size="13" fill="#0f1f1d" font-weight="bold" text-anchor="middle">OPEN SOURCE</text>
+<rect x="366" y="1606" width="256" height="136" rx="12" fill="#3a1d58" stroke="#b48be0" stroke-width="2"/>
+<text x="378" y="1630" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">web/ static gallery</text>
+<text x="378" y="1650" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">one self-contained HTML page</text>
+<text x="378" y="1668" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">per ghost, index.json,</text>
+<text x="378" y="1686" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">og.png preview cards</text>
+<rect x="504" y="1714" width="108" height="21" rx="10.5" fill="#2bb3a3"/>
+<text x="558.0" y="1728" font-size="13" fill="#0f1f1d" font-weight="bold" text-anchor="middle">OPEN SOURCE</text>
+<path d="M 316 1674 L 364 1674" fill="none" stroke="#f7ead0" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="672" y="1606" width="256" height="136" rx="12" fill="#3a1d58" stroke="#e8457a" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="684" y="1630" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Vercel CLI deploy</text>
+<text x="684" y="1650" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">scripts/deploy.sh runs</text>
+<text x="684" y="1668" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">vercel deploy --prod from web/</text>
+<text x="684" y="1686" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">(hosting is closed)</text>
+<rect x="784" y="1714" width="134" height="21" rx="10.5" fill="#e8457a"/>
+<text x="851.0" y="1728" font-size="13" fill="#ffffff" font-weight="bold" text-anchor="middle">CLOSED SERVICE</text>
+<path d="M 622 1674 L 670 1674" fill="none" stroke="#f7ead0" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="978" y="1606" width="256" height="136" rx="12" fill="#3a1d58" stroke="#f29d1f" stroke-width="2"/>
+<text x="990" y="1630" font-size="15" fill="#f7ead0" font-weight="bold" text-anchor="start">eth-ghosts.decentraminds.tech</text>
+<text x="990" y="1650" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">the public gallery, no login;</text>
+<text x="990" y="1668" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">a ghost page is</text>
+<text x="990" y="1686" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">/ghosts/&lt;address&gt;</text>
+<path d="M 928 1674 L 976 1674" fill="none" stroke="#f7ead0" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#ah-f7ead0)"/>
+<rect x="1284" y="1606" width="256" height="136" rx="12" fill="#3a1d58" stroke="#e8457a" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="1296" y="1630" font-size="16" fill="#f7ead0" font-weight="bold" text-anchor="start">Discord report</text>
+<text x="1296" y="1650" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">one line built in code by haunt.sh:</text>
+<text x="1296" y="1668" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">Ghost of the day: name (kind, era).</text>
+<text x="1296" y="1686" font-size="13.5" fill="#eadff5" font-weight="normal" text-anchor="start">“title” tagline link</text>
+<rect x="1396" y="1714" width="134" height="21" rx="10.5" fill="#e8457a"/>
+<text x="1463.0" y="1728" font-size="13" fill="#ffffff" font-weight="bold" text-anchor="middle">CLOSED SERVICE</text>
+<text x="341" y="1664" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">render</text>
+<text x="647" y="1664" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">web/</text>
+<text x="953" y="1664" font-size="13" fill="#f7ead0" font-weight="bold" text-anchor="middle">deploy</text>
+<text x="1412" y="1764" font-size="13" fill="#cdbbe6" font-weight="normal" text-anchor="middle" font-style="italic">posted via Hermes (box 2)</text>
+<text x="800" y="1810" font-size="14" fill="#cdbbe6" font-weight="normal" text-anchor="middle">Online, not offline: the data sources are web services; the model, the checks and the files are local. Hermes talks to Gemma through Ollama&#x27;s</text>
+<text x="800" y="1830" font-size="14" fill="#cdbbe6" font-weight="normal" text-anchor="middle">OpenAI-compatible /v1 endpoint; the pipeline calls Ollama&#x27;s native /api/chat. Diagram checked against the code on 2026-10-29.</text></svg>
